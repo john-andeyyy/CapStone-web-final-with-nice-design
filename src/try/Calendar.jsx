@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { enUS } from 'date-fns/locale';
-// import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Modal from '../AdminDashBoard/Components/Modal';
@@ -40,13 +39,21 @@ const CalendarComponent = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [statusFilters, setStatusFilters] = useState({
+        Pending: false,
+        Rejected: false,
+        Approved: true,
+        Completed: false,
+        Missed: false,
+        Cancelled: false,
+    });
 
     const fetchAppointments = async () => {
         try {
             const response = await axios.get(`${Baseurl}/Appointments/appointments/filter`);
             const appointmentsData = response.data;
             const filteredAppointments = appointmentsData.filter(data =>
-                data.status === "Completed" || data.status === "Approved"
+                statusFilters[data.status] // Use statusFilters to filter events
             );
 
             const mappedEvents = filteredAppointments.map((appointment) => {
@@ -74,7 +81,7 @@ const CalendarComponent = () => {
 
     useEffect(() => {
         fetchAppointments();
-    }, []);
+    }, [statusFilters]); // Fetch appointments whenever statusFilters change
 
     const handleDateChange = (newDate) => {
         setDate(newDate);
@@ -103,6 +110,42 @@ const CalendarComponent = () => {
             </div>
         );
     };
+    const getBackgroundColor = (status) => {
+        switch (status) {
+            case 'Pending':
+                return 'bg-yellow-200 bg-opacity-50'; // Yellow
+            case 'Approved':
+                return 'bg-blue-200 bg-opacity-50'; // Blue
+            case 'Completed':
+                return 'bg-green-200 bg-opacity-50'; // Green
+            case 'Missed':
+                return 'bg-red-200 bg-opacity-50'; // Red
+            case 'Rejected':
+            case 'Cancelled':
+                return 'bg-gray-200 bg-opacity-50'; // Gray
+            default:
+                return 'bg-gray-200 bg-opacity-50'; // Fallback
+        }
+    };
+
+
+    const getIconColor = (status) => {
+        switch (status) {
+            case 'Pending':
+                return '#FFC107'; // Yellow
+            case 'Approved':
+                return '#007BFF'; // Blue
+            case 'Completed':
+                return '#28A745'; // Green
+            case 'Missed':
+                return '#DC3545'; // Red
+            case 'Rejected':
+            case 'Cancelled':
+                return '#6C757D'; // Gray
+            default:
+                return 'inherit'; // Fallback to inherit if needed
+        }
+    };
 
     const eventStyleGetter = (event) => {
         let backgroundColor;
@@ -127,7 +170,7 @@ const CalendarComponent = () => {
                 backgroundColor = '#6C757D'; // Secondary
                 break;
             default:
-                backgroundColor = '#6C757D'; // Default
+                backgroundColor = '';
         }
 
         return {
@@ -142,22 +185,57 @@ const CalendarComponent = () => {
         };
     };
 
+    const toggleStatusFilter = (status) => {
+        setStatusFilters((prevFilters) => ({
+            ...prevFilters,
+            [status]: !prevFilters[status],
+        }));
+    };
+
     return (
-        <div className="p-4 min-h-screen">
+        <div className="p-4 min-h-screen bg-[#3EB489] bg-opacity-50">
+            <h1 className="text-2xl font-semibold mb-4">View Appointments</h1>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pb-2">
+                {Object.keys(statusFilters).map((status) => (
+                    <div
+                        key={status}
+                        className={`flex items-center cursor-pointer p-2 rounded-md ${getBackgroundColor(status)} hover:bg-opacity-75 transition duration-200`}
+                        onClick={() => toggleStatusFilter(status)}
+                    >
+                        <span
+                            className="material-symbols-outlined text-2xl"
+                            style={{ color: getIconColor(status) }}
+                        >
+                            {statusFilters[status] ? 'radio_button_checked' : 'radio_button_unchecked'}
+                        </span>
+                        <p className="text-gray-700 font-medium ml-2">{status}</p>
+                    </div>
+                ))}
+            </div>
+
+
+
             {loading ? (
                 <div className="flex justify-center items-center h-screen">
                     <span className="loading loading-spinner loading-lg"></span>
                 </div>
             ) : (
-                <div className="">
-
-                    <div className="cursor-pointer">
+                <div className='bg-white px-2 sm:px-4 md:px-9 py-0'>
+                    <div className="w-full">
                         <Calendar
                             localizer={localizer}
                             events={events}
                             startAccessor="start"
                             endAccessor="end"
-                            style={{ height: 500, margin: '50px', backgroundColor: 'bg-base-200', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', hover: 'red' }}
+                            style={{
+                                height: 'calc(100vh - 200px)', // Adjust height dynamically
+                                width: '100%', // Make calendar width 100%
+                                backgroundColor: 'bg-base-200',
+                                borderRadius: '10px',
+                                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                margin: '0'
+                            }}
                             view={view}
                             date={date}
                             onNavigate={handleDateChange}
@@ -176,33 +254,12 @@ const CalendarComponent = () => {
                             eventPropGetter={eventStyleGetter}
                         />
                     </div>
-
-                        <div className="flex items-center">
-                            <span className="w-4 h-4 bg-yellow-400 rounded-full inline-block mr-2"></span>
-                            <p className="text-gray-700">Pending</p>
-                        </div>
-                        <div className="flex items-center">
-                            <span className="w-4 h-4 bg-blue-400 rounded-full inline-block mr-2"></span>
-                            <p className="text-gray-700">Approved</p>
-                        </div>
-                        <div className="flex items-center">
-                            <span className="w-4 h-4 bg-green-400 rounded-full inline-block mr-2"></span>
-                            <p className="text-gray-700">Completed</p>
-                        </div>
-                        <div className="flex items-center">
-                            <span className="w-4 h-4 bg-red-400 rounded-full inline-block mr-2"></span>
-                            <p className="text-gray-700">Missed</p>
-                        </div>
-                        <div className="flex items-center">
-                            <span className="w-4 h-4 bg-gray-400 rounded-full inline-block mr-2"></span>
-                            <p className="text-gray-700">Rejected/Cancelled</p>
-                        </div>
                 </div>
             )}
 
             {modalOpen && (
                 <Modal isOpen={modalOpen}>
-                    <div className="p-4 rounded ">
+                    <div className="p-4 rounded">
                         <h2 className="text-xl font-bold">{selectedEvent?.title}</h2>
                         <p>{formatEventDate(selectedEvent?.start, selectedEvent?.end)}</p>
                         <p>Notes: {selectedEvent?.notes}</p>
@@ -221,11 +278,12 @@ const CalendarComponent = () => {
                                 Close
                             </button>
                         </div>
-
                     </div>
                 </Modal>
             )}
         </div>
+
+
     );
 };
 

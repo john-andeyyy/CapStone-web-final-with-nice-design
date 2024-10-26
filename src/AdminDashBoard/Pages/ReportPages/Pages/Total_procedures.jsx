@@ -110,15 +110,25 @@ export default function TotalProcedures() {
 
     const saveAsPDF = () => {
         const doc = new jsPDF();
+        const themeColor = "#3EB489"; // Same theme color as generatePDF
+        const rowHeight = 10;
+        let y = 30;
+
+        // Title Section
         doc.setFontSize(18);
+        doc.setTextColor(0, 0, 0); // Black text for title
         doc.text('Total Procedures Report', 14, 16);
+
         const formattedMonth = currentMonth.format('MMMM YYYY');
         doc.setFontSize(12);
         doc.setTextColor(100);
         doc.text(`Month: ${formattedMonth}`, 14, 24);
+
+        // Line under the title
         doc.setLineWidth(0.5);
         doc.line(14, 26, 196, 26);
 
+        // Prepare data for the table
         const data = [];
         const selectedKey = isYearView ? currentYear : currentMonth.format('YYYY-MM');
         if (procedureReport[selectedKey]) {
@@ -127,28 +137,34 @@ export default function TotalProcedures() {
             }
         }
 
-        doc.autoTable({
-            startY: 30,
-            head: [['Procedure Name', 'Count']],
-            body: data,
-            theme: 'grid',
-            headStyles: {
-                fillColor: [22, 160, 133],
-                textColor: [255, 255, 255],
-                fontStyle: 'bold',
-                fontSize: 12,
-            },
-            bodyStyles: {
-                fontSize: 10,
-            },
-            alternateRowStyles: {
-                fillColor: [240, 240, 240],
-            },
-            tableLineColor: [0, 0, 0],
-            tableLineWidth: 0.1,
-            margin: { top: 10 },
+        // Table Header
+        doc.setFillColor(themeColor); // Set fill color for header
+        doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
+        doc.setFontSize(10);
+        doc.setTextColor(255, 255, 255); // White text for header
+        doc.text("Procedure Name", 12, y + 7);
+        doc.text("Count", 132, y + 7); // Adjusted to maintain consistency
+
+        // Reset text color for rows
+        doc.setTextColor(0, 0, 0); // Black text
+        y += rowHeight; // Move to the first row
+
+        // Table rows with Zebra Striping
+        data.forEach((row, index) => {
+            // Alternate row color for zebra striping
+            if (index % 2 === 0) {
+                doc.setFillColor(240, 240, 240); // Light gray for even rows
+                doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
+            }
+
+            // Add data to the PDF
+            doc.text(row[0], 12, y + 7); // Procedure Name
+            doc.text(row[1].toString(), 132, y + 7); // Count
+
+            y += rowHeight; // Move to the next row
         });
 
+        // Add page numbers
         const pageCount = doc.internal.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {
             doc.setPage(i);
@@ -157,6 +173,7 @@ export default function TotalProcedures() {
             doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.getWidth() - 20, doc.internal.pageSize.getHeight() - 10);
         }
 
+        // Save the PDF
         doc.save(`Total_Procedures_${selectedKey}.pdf`);
     };
 
@@ -205,105 +222,105 @@ export default function TotalProcedures() {
 
     return (
         <div className="rounded-md"
-        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-    <div className="bg-gray-100 rounded-md">
-        <div className="grid grid-cols-2 ">
-            <div className="flex flex-col ">
-                <div className='flex items-center'>
-                <ReportMenu />
-                </div>
-            </div>
+            style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+            <div className="bg-gray-100 rounded-md">
+                <div className="grid grid-cols-2 ">
+                    <div className="flex flex-col ">
+                        <div className='flex items-center'>
+                            <ReportMenu />
+                        </div>
+                    </div>
 
-            <div className="flex justify-end items-start p-5">
-                <button 
-                onClick={saveAsPDF} 
-                className="mt-2 sm:mt-0 px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200"
-                >
-                Generate PDF
-                </button>
-            </div>
-    </div>
-
-            <div className=" rounded-lg shadow-md p-2">
-            <div className='grid grid-cols-2'>
-                <div className='flex flex-col'>
-                    <h1 className="text-2xl text-[#3EB489] font-bold p-2">
-                    Total Procedures Done {isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}
-                    </h1>
+                    <div className="flex justify-end items-start p-5">
+                        <button
+                            onClick={saveAsPDF}
+                            className="mt-2 sm:mt-0 px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200"
+                        >
+                            Generate PDF
+                        </button>
+                    </div>
                 </div>
 
-                <div className="flex justify-end items-start p-2">
-                    <div className="flex items-center"> 
-                    <label htmlFor="period-selector" className="block text-sm mr-2 font-medium text-gray-700">
-        Select Frequency:
-      </label>
-                        {/* <span className="mr-2 "> 
+                <div className=" rounded-lg shadow-md p-2">
+                    <div className='grid grid-cols-2'>
+                        <div className='flex flex-col'>
+                            <h1 className="text-2xl text-[#3EB489] font-bold p-2">
+                                Total Procedures Done {isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}
+                            </h1>
+                        </div>
+
+                        <div className="flex justify-end items-start p-2">
+                            <div className="flex items-center">
+                                <label htmlFor="period-selector" className="block text-sm mr-2 font-medium text-gray-700">
+                                    Select Frequency:
+                                </label>
+                                {/* <span className="mr-2 "> 
                         Select Frequency:
                         </span> */}
-                        <select
-                        id="navigation-dropdown"
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            
-                            // Reset to month view when switching options
-                            if (value === 'year') {
-                            setIsYearView(true);
-                            } else {
-                            setIsYearView(false); // Reset to month view
-                            }
+                                <select
+                                    id="navigation-dropdown"
+                                    onChange={(e) => {
+                                        const value = e.target.value;
 
-                            if (value === 'prevMonth') {
-                            handlePrevMonth();
-                            } else if (value === 'nextMonth') {
-                            handleNextMonth();
-                            } else if (value === 'today' && (!isToday || isYearView)) {
-                            handleToday();
-                            }
-                        }}
-                        className="block p-2 border border-gray-400 rounded-md focus:outline-none transition max-w-xs"
-                        >
-                        <option value="">Select an option</option>
-                        <option value="year">View Year</option>
-                        <option value="prevMonth">Previous Month</option>
-                        <option value="nextMonth">Next Month</option>
-                        {/* {(!isToday || isYearView) && <option value="today">Back</option>} */}
-                        </select>
-                    </div>
-                    </div>
+                                        // Reset to month view when switching options
+                                        if (value === 'year') {
+                                            setIsYearView(true);
+                                        } else {
+                                            setIsYearView(false); // Reset to month view
+                                        }
 
-
-                </div>
+                                        if (value === 'prevMonth') {
+                                            handlePrevMonth();
+                                        } else if (value === 'nextMonth') {
+                                            handleNextMonth();
+                                        } else if (value === 'today' && (!isToday || isYearView)) {
+                                            handleToday();
+                                        }
+                                    }}
+                                    className="block p-2 border border-gray-400 rounded-md focus:outline-none transition max-w-xs"
+                                >
+                                    <option value="">Select an option</option>
+                                    <option value="year">View Year</option>
+                                    <option value="prevMonth">Previous Month</option>
+                                    <option value="nextMonth">Next Month</option>
+                                    {/* {(!isToday || isYearView) && <option value="today">Back</option>} */}
+                                </select>
+                            </div>
+                        </div>
 
 
-                <div className="w-full pr-4 rounded-lg overflow-y-auto">
-                    <div className="pb-7 flex flex-col sm:flex-row items-center space-x-0 sm:space-x-3">
-                        {isYearView && (
-                            // <div className="inline-block">
-                    <div className="w-full flex justify-end"> {/* Use justify-end to align the selector to the right */}
-                    <div className="mb-4 "> {/* Optional: Set a max-width for better control */}
-                        <label htmlFor="year-selector" className="block text-sm font-medium text-gray-700">
-                        Select Year:
-                        </label>
-                        <select
-                        id="year-selector"
-                        value={selectedYear}
-                        onChange={(e) => setSelectedYear(Number(e.target.value))}
-                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
-                        >
-                        <option value="">--Select Year--</option>
-                        {years.map((year) => (
-                            <option key={year} value={year}>{year}</option>
-                        ))}
-                        </select>
-                    </div>
                     </div>
 
 
-                            // </div>
+                    <div className="w-full pr-4 rounded-lg overflow-y-auto">
+                        <div className="pb-7 flex flex-col sm:flex-row items-center space-x-0 sm:space-x-3">
+                            {isYearView && (
+                                // <div className="inline-block">
+                                <div className="w-full flex justify-end"> {/* Use justify-end to align the selector to the right */}
+                                    <div className="mb-4 "> {/* Optional: Set a max-width for better control */}
+                                        <label htmlFor="year-selector" className="block text-sm font-medium text-gray-700">
+                                            Select Year:
+                                        </label>
+                                        <select
+                                            id="year-selector"
+                                            value={selectedYear}
+                                            onChange={(e) => setSelectedYear(Number(e.target.value))}
+                                            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+                                        >
+                                            <option value="">--Select Year--</option>
+                                            {years.map((year) => (
+                                                <option key={year} value={year}>{year}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
 
 
-                        )}
-                        {/* <button onClick={() => setIsYearView(true)} className="mr-2 mt-2 sm:mt-0 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition duration-200">
+                                // </div>
+
+
+                            )}
+                            {/* <button onClick={() => setIsYearView(true)} className="mr-2 mt-2 sm:mt-0 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition duration-200">
                             View Year
                         </button>
                         <button onClick={handlePrevMonth} className="mr-2 mt-2 sm:mt-0 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">
@@ -317,52 +334,52 @@ export default function TotalProcedures() {
                                 Today
                             </button>
                         )} */}
-                        
 
+
+                        </div>
                     </div>
-                </div>
 
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-5">
-                    {/* Left Column: Scrollable Area */}
-                    <div className="overflow-y-auto" style={{ maxHeight: '400px' }}>
-                        <table className="min-w-full border">
-                            <thead>
-                                <tr className='bg-primary text-white'>
-                                    <th className="py-2 px-4 border-b font-bold text-left border border-black text-center">Procedure Name</th>
-                                    <th className="py-2 px-4 border-b font-bold text-left border border-black text-center">Count</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Object.keys(currentReport).length > 0 ? (
-                                    Object.keys(currentReport).map(procedureName => (
-                                        <tr key={procedureName} className="hover:bg-accent bg-gray-100">
-                                            <td className="py-2 px-4 border-b border border-black">{procedureName}</td>
-                                            <td className="py-2 px-4 border-b border border-black">{currentReport[procedureName]}</td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="2" className="py-2 px-4 text-center">No procedures recorded for this month/year.</td>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-5">
+                        {/* Left Column: Scrollable Area */}
+                        <div className="overflow-y-auto" style={{ maxHeight: '400px' }}>
+                            <table className="min-w-full border">
+                                <thead>
+                                    <tr className='bg-primary text-white'>
+                                        <th className="py-2 px-4 border-b font-bold text-left border border-black ">Procedure Name</th>
+                                        <th className="py-2 px-4 border-b font-bold text-left border border-black ">Count</th>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {Object.keys(currentReport).length > 0 ? (
+                                        Object.keys(currentReport).map(procedureName => (
+                                            <tr key={procedureName} className="hover:bg-accent bg-gray-100">
+                                                <td className="py-2 px-4 border-b border border-black">{procedureName}</td>
+                                                <td className="py-2 px-4 border-b border border-black">{currentReport[procedureName]}</td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="2" className="py-2 px-4 text-center">No procedures recorded for this month/year.</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
 
-                    {/* Responsive Pie Chart */}
-                    <div className="rounded-xl"
-                        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-                    <div className="mt-4 sm:mt-0 bg-accent  py-3 rounded-xl">
-                        {Object.keys(currentReport).length > 0 ? (
-                            <PieChart labels={labels} datasets={datasets} title={`Total Procedures Done ${isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}`} />
-                        ) : (
-                            <div className="text-center text-gray-700">No procedures recorded for this month/year.</div>
-                        )}
+                        {/* Responsive Pie Chart */}
+                        <div className="rounded-xl"
+                            style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+                            <div className="mt-4 sm:mt-0 bg-accent  py-3 rounded-xl">
+                                {Object.keys(currentReport).length > 0 ? (
+                                    <PieChart labels={labels} datasets={datasets} title={`Total Procedures Done ${isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}`} />
+                                ) : (
+                                    <div className="text-center text-gray-700">No procedures recorded for this month/year.</div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     );

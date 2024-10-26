@@ -118,14 +118,15 @@ const DentistSchedule = () => {
     }
     return (
         <div className="px-4 py-6">
-            <button
-                onClick={() => navigate(-1)}
-                className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
-            >
-                Go Back
-            </button>
-            <div className='mb-4 space-y-3'>
-                <h2 className="text-2xl font-bold text-green-600 ">Appointment Schedule</h2>
+           <button
+                        onClick={() => navigate(-1)}
+                        className="flex items-center text-[#3EB489] hover:text-[#62A78E] mb-3 font-semibold focus:outline-none"
+                    >
+                        <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
+                        <p className='text-xl'>Go Back</p>
+                    </button>
+            <div className='mb-4 space-y-3 mt-10'>
+                <h2 className="text-2xl font-bold mb-10 ">Appointment Schedule</h2>
                 <h3 className=' text-xl font-bold'>Dr. {dentistName}</h3>
             </div>
 
@@ -205,14 +206,14 @@ const DentistSchedule = () => {
             </div>
 
             {filteredAppointments.length ? (
-                <table className="min-w-full border border-gray-300">
+                <table className="min-w-full bg-gray-100 border border-black">
                     <thead>
                         <tr className="bg-primary text-white">
-                            <th className="py-2 px-4 border-b border-gray-300">Date</th>
-                            <th className="py-2 px-4 border-b border-gray-300">Start</th>
-                            <th className="py-2 px-4 border-b border-gray-300">End</th>
-                            <th className="py-2 px-4 border-b border-gray-300">Patient Name</th>
-                            <th className="py-2 px-4 border-b border-gray-300">Procedure</th>
+                            <th className="py-2 px-4 border border-black">Date</th>
+                            <th className="py-2 px-4 border border-black">Start</th>
+                            <th className="py-2 px-4 border border-black">End</th>
+                            <th className="py-2 px-4 border border-black">Patient Name</th>
+                            <th className="py-2 px-4 border border-black">Procedure</th>
                             {/* <th className="py-2 px-4 border-b border-gray-300">Status</th> */}
                         </tr>
                     </thead>
@@ -220,20 +221,20 @@ const DentistSchedule = () => {
                         {filteredAppointments.map((appointment) => (
                             <tr
                                 key={appointment._id}
-                                className="hover:bg-secondary cursor-pointer"
+                                className="hover:bg-accent  border border-black cursor-pointer"
                                 onClick={() => handleRowClick(appointment)}
                             >
-                                <td className="py-2 px-4 border-b border-gray-300">
+                                <td className="py-2 px-4 border border-black ">
                                     {dayjs(appointment.date).format('MMMM D, YYYY')}
                                 </td>
-                                <td className="py-2 px-4 border-b border-gray-300">
+                                <td className="py-2 px-4 border border-black">
                                     {dayjs(appointment.Start).format('h:mm A')}
                                 </td>
-                                <td className="py-2 px-4 border-b border-gray-300">
+                                <td className="py-2 px-4 border border-black">
                                     {dayjs(appointment.End).format('h:mm A')}
                                 </td>
-                                <td className="py-2 px-4 border-b border-gray-300">{`${appointment.patient.FirstName} ${appointment.patient.LastName}`}</td>
-                                <td className="py-2 px-4 border-b border-gray-300">
+                                <td className="py-2 px-4 border border-black">{`${appointment.patient.FirstName} ${appointment.patient.LastName}`}</td>
+                                <td className="py-2 px-4 border border-black">
                                     {appointment.procedures.map(proc => proc.Procedure_name).join(', ')}
                                 </td>
                                 {/* <td className="py-2 px-4 border-b border-gray-300">{appointment.Status}</td> */}

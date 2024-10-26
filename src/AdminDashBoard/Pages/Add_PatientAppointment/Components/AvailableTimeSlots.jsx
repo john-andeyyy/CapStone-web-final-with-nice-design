@@ -5,11 +5,17 @@ const AvailableTimeSlots = ({ selectedDate, unavailableDates, appointments, onSe
     const endOfDay = new Date(selectedDate);
     endOfDay.setHours(17, 0, 0); // End time at 5:00 PM
 
-
     // Generate time slots in 30-minute increments
     for (let time = new Date(startOfDay); time <= endOfDay; time.setMinutes(time.getMinutes() + 30)) {
         timeSlots.push(new Date(time));
     }
+
+    // Get current date (without time)
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set to midnight to compare only the date
+
+    const isPastDate = selectedDate < currentDate; // Check if selected date is in the past
+
     return (
         <div className="flex flex-col items-center p-4 w-full max-w-3xl mx-auto sm:p-6">
             <div className="flex items-center justify-center w-full mb-4 sm:mb-6">
@@ -28,17 +34,10 @@ const AvailableTimeSlots = ({ selectedDate, unavailableDates, appointments, onSe
             <div className="w-full">
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                     {timeSlots.map((slot, index) => {
-                        //isUnavailable is for the clinic close time and date
+                        // isUnavailable is for the clinic close time and date
                         const isUnavailable = unavailableDates.some(unavailable =>
                             slot >= new Date(unavailable.start) && slot < new Date(unavailable.end)
                         );
-
-                        // !! 
-                        // const isBooked = appointments.some(appointment => {
-                        //     const appointmentStart = new Date(appointment.start);
-                        //     const appointmentEnd = new Date(appointment.end);
-                        //     return slot >= appointmentStart && slot < new Date(appointmentEnd.getTime() + 30 * 60 * 1000);
-                        // });
 
                         const isBooked = appointments.some(appointment => {
                             const appointmentStart = new Date(appointment.start);
@@ -46,8 +45,7 @@ const AvailableTimeSlots = ({ selectedDate, unavailableDates, appointments, onSe
                             return slot >= appointmentStart && slot < appointmentEnd;
                         });
 
-                        const isDisabled = allButtonsDisabled || isUnavailable || isBooked
-                        //  || slot < currentDate; // Disable if in the past
+                        const isDisabled = allButtonsDisabled || isUnavailable || isBooked || isPastDate; // Disable if in the past
 
                         return (
                             <button

@@ -15,7 +15,7 @@ const ViewTipModal = ({ tip, onClose }) => {
                         className=" text-gray-500 py-2"
                         onClick={onClose}
                     >
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             close
                         </span>
                     </button>

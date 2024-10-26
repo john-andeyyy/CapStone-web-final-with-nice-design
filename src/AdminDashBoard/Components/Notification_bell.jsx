@@ -6,6 +6,8 @@ import Settings from '../Components/Settings';
 import NotificationModal from '../Components/Modal'; // Import the modal
 
 const Notification_bell = () => {
+    const Baseurl = import.meta.env.VITE_BASEURL;
+
     const navigate = useNavigate();
     const dropdownRef = useRef(null); // Ref for the dropdown
     const modalRef = useRef(null); // Ref for the modal
@@ -58,7 +60,7 @@ const Notification_bell = () => {
 
     const markAsRead = async (notifId) => {
         try {
-            await axios.put('http://localhost:3000/Notification/admin/adminmarkas', {
+            await axios.put(`${Baseurl}/Notification/admin/adminmarkas`, {
                 notifid: notifId,
                 mark_as: true,
             }, {
@@ -92,11 +94,11 @@ const Notification_bell = () => {
         <div className="relative flex justify-end items-center bg-base-100">
             <div>
                 {/* <ThemeController /> */}
-                <Settings/>
+                <Settings />
             </div>
             <button className="btn btn-ghost btn-circle relative" onClick={toggleDropdown}>
                 <div className="indicator"
-                title='notification'>
+                    title='notification'>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -119,7 +121,7 @@ const Notification_bell = () => {
 
             {isOpen && (
                 <div ref={dropdownRef} className="absolute top-full right-0 mt-2 w-80 bg-neutral shadow-lg rounded-lg z-10 overflow-hidden">
-                    <div className="p-3 text-lg font-semibold border-b border-gray-200 flex justify-between">
+                    <div className="p-3 text-lg fo border-b border-gray-200 flex justify-between">
                         <div>Notifications</div>
                         <button
                             onClick={() => {
@@ -138,14 +140,14 @@ const Notification_bell = () => {
                                 {notifications.map((notification) => (
                                     <li
                                         key={notification._id}
-                                        className={`my-1 p-3 border-b border-gray-200 hover:bg-secondary text-black cursor-pointer ${!notification.adminisRead ? 'bg-green-200' : ''}`}
+                                        className={`my-1 p-3 border-b border-gray-200 hover:bg-secondary text-black cursor-pointer ${!notification.adminisRead && 'bg-[#9ED9C4] font-medium' }`}
                                         onClick={() => handleNotificationClick(notification)}
                                     >
-                                        <div className="flex justify-between items-center">
+                                        <div className={`flex justify-between items-center `}  >
                                             <div className="flex flex-col">
-                                                <strong className="text-sm">
+                                                <span className="text-sm">
                                                     {notification.user_Appointment_Title || notification.user_Appointment_message}
-                                                </strong>
+                                                </span>
                                             </div>
                                             <span className="text-xs text-gray-500">{formatDate(notification.createdAt)}</span>
                                         </div>
@@ -154,26 +156,39 @@ const Notification_bell = () => {
                             </ul>
                         )}
                     </div>
+
                 </div>
-            )}
+            )
+            }
 
             {/* Modal to show notification details */}
-            {isModalOpen && (
-                <NotificationModal ref={modalRef} isOpen={isModalOpen} onClose={closeModal}>
-                    {selectedNotification && (
-                        <div className="p-4">
-                            <h2 className="text-xl font-bold">{selectedNotification.user_Appointment_Title}</h2>
-                            <p>{selectedNotification.user_Appointment_message}</p>
-                            <div className='flex justify-center'>
-                                <button className="bg-[#D9D9D9] hover:bg-[#ADAAAA] btn mt-4" onClick={closeModal}>
-                                    Close
-                                </button>
+            {
+                isModalOpen && (
+                    <NotificationModal ref={modalRef} isOpen={isModalOpen} onClose={closeModal}>
+                        {selectedNotification && (
+                            <div >
+                                <h1 className='text-center text-2xl font-bold text-[#3EB489] '>Notification</h1>
+                                <div className="p-4">
+                                    <h2 className="text-xl font-bold">{selectedNotification.user_Appointment_Title}</h2>
+                                    <p>{selectedNotification.user_Appointment_message}</p>
+                                    <div className='flex justify-evenly'>
+                                        <button className="bg-[#D9D9D9] hover:bg-[#ADAAAA] btn mt-4" onClick={closeModal}>
+                                            Close
+                                        </button>
+                                        <button className="bg-[#3EB489] hover:bg-[#3eb489b3] btn mt-4" onClick={() => {
+                                            closeModal()
+                                            navigate(`appointment/${selectedNotification.appointmentStatus[0].appointment_id}`)
+                                        }}>
+                                            View
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </NotificationModal>
-            )}
-        </div>
+                        )}
+                    </NotificationModal>
+                )
+            }
+        </div >
     );
 };
 

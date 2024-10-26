@@ -2,27 +2,45 @@ import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import '../Dashboard components/Calendar.css'; // Import your CSS
 import Dashboard_Fetch from './Dashboard_Fetch';
+import Modal from '../Modal';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard_Calendar() {
-    const [date, setDate] = useState(new Date()); // Current date (today) as default
+    const navigate = useNavigate()
+    const [date, setDate] = useState(new Date());
     const [view, setView] = useState('month');
     const [selectedDate, setSelectedDate] = useState(null);
     const [events, setEvents] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+
+    const handleEventClick = (event) => {
+        setSelectedEvent(event);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => setIsModalOpen(false); // Close modal handler
+
 
     const { data, loading, error } = Dashboard_Fetch();
-
     useEffect(() => {
         if (data.Appointment_Approved) {
-            const formattedEvents = data.Appointment_Approved.map(appointment => ({
-                title: `${appointment.patient.FirstName} ${appointment.patient.MiddleName} ${appointment.patient.LastName}`,
-                start: new Date(appointment.start),
-                end: new Date(appointment.end),
-                status: appointment.status,
-            }));
+            const formattedEvents = data.Appointment_Approved.map(appointment => {
+                return {
+                    title: `${appointment.patient.FirstName} ${appointment.patient.MiddleName} ${appointment.patient.LastName}`,
+                    start: new Date(appointment.start),
+                    end: new Date(appointment.end),
+                    status: appointment.status,
+                    id: appointment.id,
+                    procedures: appointment.procedures,
+                };
+
+            });
 
             setEvents(formattedEvents);
         }
     }, [data.Appointment_Approved]);
+
 
     // Loading and error states
     if (loading) return <div>Loading...</div>;
@@ -34,10 +52,10 @@ export default function Dashboard_Calendar() {
                     onChange={(value) => setDate(value)}
                     value={date}
                     view={view}
-                    // onClickDay={handleDayClick}
-                    // tileClassName={tileClassName}
-                    // navigationLabel={navigationLabel}
-                    // onActiveStartDateChange={preventHeaderClick}
+                // onClickDay={handleDayClick}
+                // tileClassName={tileClassName}
+                // navigationLabel={navigationLabel}
+                // onActiveStartDateChange={preventHeaderClick}
                 />
             </div>
         );
@@ -60,30 +78,32 @@ export default function Dashboard_Calendar() {
         return (
             <div className="day-view-container p-4 rounded-lg ">
                 <div className="flex justify-start mb-4">
-                    <button className="px-2 py-1 text-lg" onClick={() => setView('month')}>
-                        Back to Month View
+                    <button className="p-2 rounded-lg text-lg bg-[#3EB489]" onClick={() => setView('month')}>
+                        Month View
                     </button>
                 </div>
 
                 <h3 className="text-lg font-bold mb-2">Schedule for {selectedDate?.toDateString()}</h3>
                 <div className="time-slots overflow-auto max-h-64">
                     {dayEvents.length > 0 ? (
-                        <table className="table-auto w-full text-lg">
+                        <table className="table-auto w-full text-lg border-separate border-spacing-y-2">
                             <thead>
-                                <tr>
-                                    <th className="p-2 text-left ">No.</th>
-                                    <th className="p-2 text-left ">Event Title</th>
-                                    <th className="p-2 text-left ">Event Time</th>
+                                <tr className="bg-primary text-white">
+                                    <th className="p-3 text-left">No.</th>
+                                    <th className="p-3 text-left">Event Title</th>
+                                    <th className="p-3 text-left">Event Time</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {dayEvents
-                                    .sort((a, b) => a.start - b.start) // Sort events by start time
+                                    .sort((a, b) => a.start - b.start)
                                     .map((event, index) => (
-                                        <tr key={index} className="bg-secondary mb-1 rounded">
-                                            <td className="text-lg p-2">{index + 1}</td>
-                                            <td className="p-2 font-bold text-lg">{event.title}</td>
-                                            <td className="p-2 text-lg">
+                                        <tr
+                                            onClick={() => handleEventClick(event)}
+                                            key={index} className={`rounded-lg ${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'} hover:bg-[#3EB489] cursor-pointer `}>
+                                            <td className="p-3 text-center font-medium">{event.id.slice(-3)}</td>
+                                            <td className="p-3 font-semibold">{event.title}</td>
+                                            <td className="p-3 text-center">
                                                 {event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} -
                                                 {event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
                                             </td>
@@ -91,10 +111,71 @@ export default function Dashboard_Calendar() {
                                     ))}
                             </tbody>
                         </table>
+
                     ) : (
                         <p>No approved events for today.</p>
                     )}
                 </div>
+
+                <Modal isOpen={isModalOpen} close={closeModal}>
+                    <div className="flex justify-between items-center mb-4 border-b pb-2">
+                        <h3 className="text-lg font-semibold text-gray-800">Event Details</h3>
+                        <button
+                            className="text-sm text-black hover:text-gray-700 transition-colors"
+                            onClick={closeModal}
+                        >
+                            <span className="material-symbols-outlined">
+                                close
+                            </span>
+                        </button>
+                    </div>
+                    {selectedEvent && (
+                        <div>
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-3 py-4 text-sm text-gray-700">
+                                <div>
+                                    <p className="font-medium">Title</p>
+                                    <p>{selectedEvent.title}</p>
+                                </div>
+                                <div>
+                                    <p className="font-medium">Start</p>
+                                    <p>{selectedEvent.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                                </div>
+                                <div>
+                                    <p className="font-medium">End</p>
+                                    <p>{selectedEvent.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                                </div>
+                                <div>
+                                    <p className="font-medium">Status</p>
+                                    <p>{selectedEvent.status}</p>
+                                </div>
+                                {/* Procedures */}
+                                <div className="col-span-2 mt-4">
+                                    <p className="font-medium">Procedures</p>
+                                    <ul className="list-disc list-inside space-y-0.5">
+                                        {selectedEvent.procedures.map((procedure, index) => (
+                                            <li key={procedure.id || index} className="text-black text-lg text-left">
+                                                {procedure.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className='text-right '>
+                                <button
+                                    className='bg-[#3EB489] hover:bg-[#3eb489aa] p-3 rounded-lg '
+                                    onClick={() => {
+                                        closeModal()
+                                        navigate(`/appointment/${selectedEvent.id}`)
+                                    }}
+                                >View Full Details</button>
+                            </div>
+                        </div>
+                    )}
+                </Modal>
+
+
+
+
             </div>
         );
     };
@@ -132,7 +213,7 @@ export default function Dashboard_Calendar() {
                     })}
                 </div>
                 <button className="mt-2 px-2 py-1 bg-secondary rounded text-sm" onClick={() => setView('month')}>
-                    Back to Month View
+                    Month View
                 </button>
             </div>
         );
@@ -143,7 +224,7 @@ export default function Dashboard_Calendar() {
             const eventForDay = getEventsForDay(date);
             if (eventForDay.length > 0) {
                 return 'bg-[#3EB489] text-white rounded-full hover:bg-red-600; cursor-pointer';
-                
+
             }
         }
         return null;
@@ -165,36 +246,43 @@ export default function Dashboard_Calendar() {
         setView('month'); // Reset view to month
     };
 
-    return (   
-    <div className="rounded-md"
-                        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-        <div className="p-4 rounded-lg mt-5 text-center max-w-4xl mx-auto bg-neutral shadow-lg">
-          
-            {/* <h1 className="font-bold text-xl text-green-500 mb-2">Calendar</h1> Adjusted size */}
+    return (
+        <div className="rounded-md"
+            style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+            <div className="p-4 rounded-lg mt-5 text-center max-w-4xl mx-auto bg-neutral shadow-lg">
 
-            <div className="">
-                <button className="rounded-lg text-3xl px-2 py-1 mb-5" onClick={goToToday}>
-                    Today
-                </button>
+                {/* <h1 className="font-bold text-xl text-green-500 mb-2">Calendar</h1> Adjusted size */}
+
+                <div className="">
+                    <button className="rounded-lg text-3xl px-2 py-1 mb-5" onClick={goToToday}>
+                        Today
+                    </button>
+                </div>
+                <div className='flex justify-center h-full'>
+                    {view === 'month' && (
+                        <Calendar
+                            className="react-calendar rounded-lg shadow-md text-2xl w-full h-full"
+                            onChange={(value) => setDate(value)}
+                            value={date}
+                            view={view}
+                            onClickDay={handleDayClick}
+                            tileClassName={tileClassName}
+                            navigationLabel={navigationLabel}
+                            onActiveStartDateChange={preventHeaderClick}
+                        />
+                    )}
+                </div>
+                {view === 'day' && selectedDate && renderDayView()}
+                {view === 'year' && renderYearView()}
+                <p className='flex items-center text-[#3EB489] text-xl py-2'>
+                    {/* <span className='text-red-500'>Note:</span> */}
+                    <span className="material-symbols-outlined text-red-500 mx-1 align-middle">
+                        info
+                    </span>
+                    <span>Approved appointments only</span>
+                </p>
+
             </div>
-            <div className='flex justify-center h-full'>
-                {view === 'month' && (
-                    <Calendar
-                        className="react-calendar rounded-lg shadow-md text-2xl w-full h-full"
-                        onChange={(value) => setDate(value)}
-                        value={date}
-                        view={view}
-                        onClickDay={handleDayClick}
-                        tileClassName={tileClassName}
-                        navigationLabel={navigationLabel}
-                        onActiveStartDateChange={preventHeaderClick}
-                    />
-                )}
-            </div>
-            {view === 'day' && selectedDate && renderDayView()}
-            {view === 'year' && renderYearView()}
-            <p className='text-[#3EB489]  text-xl'>Approved appointments only</p>
-        </div>
         </div>
     );
 }

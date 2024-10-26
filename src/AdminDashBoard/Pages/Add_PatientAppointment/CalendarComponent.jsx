@@ -345,6 +345,8 @@ const CalendarComponent = () => {
 
     return (
         <div className="p-4 mx-auto">
+            <h1 className="text-[#3EB489] text-4xl font-bold">Create Appointment</h1>
+
             {loading ? (
                 <div className="flex justify-center items-center h-screen">
                     <span className="loading loading-spinner loading-lg"></span>

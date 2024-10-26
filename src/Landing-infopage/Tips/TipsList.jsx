@@ -209,7 +209,7 @@ const TipsList = () => {
                                             onClick={() => handleViewClick(tip)}
                                             title='view'
                                         >
-                                            <span class="material-symbols-outlined">
+                                            <span className="material-symbols-outlined">
                                                 visibility
                                             </span>
                                         </button>
@@ -218,7 +218,7 @@ const TipsList = () => {
                                             onClick={() => handleUpdateClick(tip)}
                                             title='edit'
                                         >
-                                            <span class="material-symbols-outlined">
+                                            <span className="material-symbols-outlined">
                                                 edit
                                             </span>
                                         </button>
@@ -227,7 +227,7 @@ const TipsList = () => {
                                             onClick={() => handleDeleteClick(tip)}
                                             title='delete'
                                         >
-                                            <span class="material-symbols-outlined">
+                                            <span className="material-symbols-outlined">
                                                 delete
                                             </span>
                                         </button>

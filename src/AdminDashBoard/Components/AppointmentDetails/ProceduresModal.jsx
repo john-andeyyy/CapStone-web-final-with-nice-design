@@ -67,16 +67,17 @@ const ProceduresModal = ({ isOpen, onClose, allProcedures, onSelectProcedures, a
                             <li className="text-gray-500">No procedures available</li>
                         )}
                     </ul>
-                    <div className="flex justify-between mt-4">
-                        <button className="bg-error px-4 py-2 rounded" onClick={onClose}>
-                            Cancel
-                        </button>
+                    <div className="flex justify-center gap-4 mt-4">
                         <button
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded"
                             onClick={handleConfirmSelection}
                         >
                             Confirm
                         </button>
+                        <button className="bg-[#D9D9D9] hover:bg-[#ADAAAA] px-4 py-2 rounded" onClick={onClose}>
+                            Cancel
+                        </button>
+                        
                     </div>
                 </div>
             </div>

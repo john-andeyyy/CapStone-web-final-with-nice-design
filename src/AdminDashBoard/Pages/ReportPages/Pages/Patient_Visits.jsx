@@ -79,7 +79,7 @@ export default function Patient_Visits() {
 
         setVisitCounts({ today: todayCount, week: weekCount, month: monthCount, year: yearCount });
     };
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [dateselected, setdateselected] = useState(null);
     const filterReportData = (appointments) => {
         const today = new Date();
@@ -235,85 +235,83 @@ export default function Patient_Visits() {
 
     return (
 
-         <div className="rounded-md"
+        <div className="rounded-md"
             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-        <div className="bg-gray-100 rounded-md">
+            <div className="bg-gray-100 rounded-md">
 
-        <div className="grid grid-cols-2 ">
-        <div className='flex items-center'>
-            <ReportMenu />
-        </div>
-            <div className="flex justify-end items-start p-5">
-            <PDFPatientVisit
-                    appointments={reportData}
-                    title={
-                        dateselected
-                            ? `Patient Visits in ${dateselected}` // Directly use the year value.
-                            : `Patient Visits in ${selectedYear}` // Default to selected year if dateselected is null.
-                    }
-                />
-            </div>
-        </div>
-<div className='p-2'>
-        <div className='grid grid-cols-2'>
-  <div className='flex flex-col'>
-    <h2 className="text-2xl font-bold p-2 text-[#3EB489]">Patient Visits Report</h2>
-  </div>
-  
-  <div className="flex justify-end items-start ml-auto"> {/* Added ml-auto for more right alignment */}
-    <div className="mb-4 flex items-center"> {/* Optional: Set max-width for the dropdown */}
-      <label htmlFor="period-selector" className="block text-sm font-medium mr-2 text-gray-700">
-        Select Visit Period:
-      </label>
-      <select
-        id="period-selector"
-        onChange={(e) => setPeriod(e.target.value)}
-        className="mt-1 block p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
-      >
-        <option value="month" >Select an option</option>
-        <option value="today">Today Visits</option>
-        <option value="week">This Week Visits</option>
-        <option value="year">This Year Visits</option>
-      </select>
-    </div>
-  </div>
-</div>
+                <div className="grid grid-cols-2 ">
+                    <div className='flex items-center'>
+                        <ReportMenu />
+                    </div>
+                    <div className="flex justify-end items-start p-5">
+                        <PDFPatientVisit
+                            appointments={reportData}
+                            title={
+                                dateselected
+                                    ? `Patient Visits in ${dateselected}` // Directly use the year value.
+                                    : `Patient Visits in ${selectedYear}` // Default to selected year if dateselected is null.
+                            }
+                        />
+                    </div>
+                </div>
+                <div className='p-2'>
+                    <div className='grid grid-cols-2'>
+                        <div className='flex flex-col'>
+                            <h2 className="text-2xl font-bold p-2 text-[#3EB489]">Patient Visits Report</h2>
+                        </div>
 
-
-
-<div className="flex justify-end space-x-5"> {/* Align everything to the right */}
-  
-  <input
-    type="month"
-    id="month"
-    value={`${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}`} // Set the value to the selected year and month
-    onChange={(e) => {
-      const [year, month] = e.target.value.split('-');
-      setSelectedYear(Number(year));
-      setSelectedMonth(Number(month) - 1); // Convert month back to 0-indexed
-    }}
-    className="border rounded h-10 w-40 shadow-sm mt-8 p-2 focus:ring focus:ring-opacity-50" // Set fixed height and padding
-  />
-  
-  {period === 'year' && (
-    <div className="py-3 flex items-center"> {/* Align items vertically */}
-      <div className="w-40"> {/* Set width to match month input */}
-        <label htmlFor="year-selector" className="block text-sm font-medium text-gray-700">Select Year:</label>
-        <select
-          id="year-selector"
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(Number(e.target.value))}
-          className="border rounded h-10 w-full shadow-sm p-2 focus:ring focus:ring-opacity-50" // Set fixed height and padding
-        >
-          {years.map((year) => (
-            <option key={year} value={year}>{year}</option>
-          ))}
-        </select>
-      </div>
-    </div>
-  )}
+                        <div className="flex justify-end items-start ml-auto"> {/* Added ml-auto for more right alignment */}
+                            <div className="mb-4 flex items-center"> {/* Optional: Set max-width for the dropdown */}
+                                <label htmlFor="period-selector" className="block text-sm font-medium mr-2 text-gray-700">
+                                    Select Visit Period:
+                                </label>
+                                <select
+                                    id="period-selector"
+                                    onChange={(e) => setPeriod(e.target.value)}
+                                    className="mt-1 block p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+                                >
+                                    <option value="month" >Select an option</option>
+                                    <option value="today">Today Visits</option>
+                                    <option value="week">This Week Visits</option>
+                                    <option value="year">This Year Visits</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
 
+
+                    <div className="flex justify-end space-x-5"> {/* Align everything to the right */}
+
+                        <input
+                            type="month"
+                            id="month"
+                            value={`${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}`} // Set the value to the selected year and month
+                            onChange={(e) => {
+                                const [year, month] = e.target.value.split('-');
+                                setSelectedYear(Number(year));
+                                setSelectedMonth(Number(month) - 1); // Convert month back to 0-indexed
+                            }}
+                            className="border rounded h-10 w-40 shadow-sm mt-8 p-2 focus:ring focus:ring-opacity-50" // Set fixed height and padding
+                        />
+
+                        {period === 'year' && (
+                            <div className="py-3 flex items-center"> {/* Align items vertically */}
+                                <div className="w-40"> {/* Set width to match month input */}
+                                    <label htmlFor="year-selector" className="block text-sm font-medium text-gray-700">Select Year:</label>
+                                    <select
+                                        id="year-selector"
+                                        value={selectedYear}
+                                        onChange={(e) => setSelectedYear(Number(e.target.value))}
+                                        className="border rounded h-10 w-full shadow-sm p-2 focus:ring focus:ring-opacity-50" // Set fixed height and padding
+                                    >
+                                        {years.map((year) => (
+                                            <option key={year} value={year}>{year}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
 
 
 
@@ -321,18 +319,20 @@ export default function Patient_Visits() {
 
 
 
-                {/* <button onClick={() => setPeriod('today')} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">
+
+
+                        {/* <button onClick={() => setPeriod('today')} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">
                     Today Visits
                 </button>
                 <button onClick={() => setPeriod('week')} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200">
                     This Week Visits
                 </button> */}
-                {/* <button onClick={() => setPeriod('month')} className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition duration-200">
+                        {/* <button onClick={() => setPeriod('month')} className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition duration-200">
                     This Month Visits
                 </button> */}
 
-               
-{/* 
+
+                        {/* 
                 <button onClick={() => setPeriod('year')} className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition duration-200">
                     This Year Visits
                 </button> */}
@@ -341,75 +341,75 @@ export default function Patient_Visits() {
 
 
 
-               
-
-            </div>
-
-            
-            <p className="text-xl font-bold mb-4 ">{reportTitle}</p>
-
-            <div className="p-4 my-5 bg-[#3EB489] rounded-md shadow-md text-center">
-                <p className="text-white text-lg font-semibold">
-                    Total Visits: <strong>{visitCounts[period]}</strong>
-                </p>
-            </div>
 
 
-            {loading ? (
-                <div className="text-center text-gray-600">Loading...</div>
-            ) : (
-                <>
-                    <div className="overflow-x-auto pb-8">
-                        {reportData.length > 0 ? (
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead>
-                                    <tr className='bg-[#3EB489] text-white'>
-                                        <th className="py-2 px-4 border border-black text-center text-sm font-medium ">ID</th>
-                                        <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Name</th>
-                                        <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Last Visit</th>
-                                        <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Visit (Month Year)</th>
-                                        <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Total Visits</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {reportData.map((visit) => (
-                                        <tr key={visit.id} className="transition bg-white">
-                                            <td className="py-2 px-4 border border-black">{visit.id}</td>
-                                            <td className="py-2 px-4 border border-black">{visit.name}</td>
-                                            <td className="py-2 px-4 border border-black">{visit.lastVisit}</td>
-                                            <td className="py-2 px-4 border border-black">{visit.monthYear}</td>
-                                            <td className="py-2 px-4 border border-black">{visit.totalVisits}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        ) : (
-                            <div className="text-center text-gray-600">No completed visits found.</div>
-                        )}
                     </div>
 
-                    <div className=''>
-                        {period === 'month' && (
-                            <>
-                                {/* <h3 className="text-xl font-bold mb-4 text-green-500">Visits per Week in {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })}</h3>
+
+                    <p className="text-xl font-bold mb-4 ">{reportTitle}</p>
+
+                    <div className="p-4 my-5 bg-[#3EB489] rounded-md shadow-md text-center">
+                        <p className="text-white text-lg font-semibold">
+                            Total Visits: <strong>{visitCounts[period]}</strong>
+                        </p>
+                    </div>
+
+
+                    {loading ? (
+                        <div className="text-center text-gray-600">Loading...</div>
+                    ) : (
+                        <>
+                            <div className="overflow-x-auto pb-8">
+                                {reportData.length > 0 ? (
+                                    <table className="min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr className='bg-[#3EB489] text-white'>
+                                                <th className="py-2 px-4 border border-black text-center text-sm font-medium ">ID</th>
+                                                <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Name</th>
+                                                <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Last Visit</th>
+                                                <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Visit (Month Year)</th>
+                                                <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Total Visits</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {reportData.map((visit) => (
+                                                <tr key={visit.id} className="transition bg-white">
+                                                    <td className="py-2 px-4 border border-black">{visit.id}</td>
+                                                    <td className="py-2 px-4 border border-black">{visit.name}</td>
+                                                    <td className="py-2 px-4 border border-black">{visit.lastVisit}</td>
+                                                    <td className="py-2 px-4 border border-black">{visit.monthYear}</td>
+                                                    <td className="py-2 px-4 border border-black">{visit.totalVisits}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                ) : (
+                                    <div className="text-center text-gray-600">No completed visits found.</div>
+                                )}
+                            </div>
+
+                            <div className=''>
+                                {period === 'month' && (
+                                    <>
+                                        {/* <h3 className="text-xl font-bold mb-4 text-green-500">Visits per Week in {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })}</h3>
                                     <div className="mb-6">
                                         <BarChart chartData={getMonthChartData()} />
                                     </div> */}
-                            </>
-                        )}
-                        {period === 'year' && (
-                            <>
-                                <h3 className="text-xl font-bold mb-4 text-[#3EB489]">Visits per Month in {selectedYear}</h3>
-                                <div className="mb-6 ">
-                                    <BarChart chartData={getYearChartData()} />
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </>
-            )}
-        </div>
-        </div>
+                                    </>
+                                )}
+                                {period === 'year' && (
+                                    <>
+                                        <h3 className="text-xl font-bold mb-4 text-[#3EB489]">Visits per Month in {selectedYear}</h3>
+                                        <div className="mb-6 ">
+                                            <BarChart chartData={getYearChartData()} />
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
+            </div>
         </div>
 
     );

@@ -469,9 +469,9 @@ export default function Appointments() {
                                             </button>
 
 
-                                            <Link to={`/appointment/${appointment.id}`} className="flex flex-col  rounded-2xl items-center p-2 px-3  justify-center bg-blue-200 text-blue-700 hover:text-blue-900 transition rounded-lg shadow-sm"
+                                            <Link to={`/appointment/${appointment.id}`} className="flex flex-col  items-center p-2 px-3  justify-center bg-blue-200 text-blue-700 hover:text-blue-900 transition rounded-lg shadow-sm"
                                             title='view'>
-                                            <span class="material-symbols-outlined text-2xl">
+                                                <span className="material-symbols-outlined text-2xl">
                                                 visibility
                                                 </span>
                                             </Link>

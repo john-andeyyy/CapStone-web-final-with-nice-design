@@ -17,11 +17,13 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
 
     return (
         <SemiFullModal isOpen={isOpen} onClose={onClose}>
-            <div className="p-6">
+            <div className="p-2">
                 <>
-                    <h2 className="text-lg font-bold mb-4">Add New Tooth</h2>
+                    <h2 className="text-lg font-bold text-[#266D53] text-center">Add New Tooth</h2>
                     <form onSubmit={handleSubmit}>
-                        <div className="mb-4">
+                    <div className=" gap-4 mb-4">
+                        <div className="flex items-center space-x-4">
+                            <div className="flex flex-col w-1/2">
                             <label className="block text-sm mb-1">Name</label>
                             <input
                                 type="text"
@@ -30,8 +32,9 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                 required
                                 className="border rounded w-full py-2 px-3"
                             />
-                        </div>
-                        <div className="mb-4">
+                            </div>
+                            
+                        <div className="flex flex-col w-1/2">
                             <label className="block text-sm mb-1">Status</label>
                             <input
                                 type="text" // Change from select to input
@@ -41,7 +44,12 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                 className="border rounded w-full py-2 px-3"
                             />
                         </div>
-                        <div className="mb-4">
+                    </div>
+                    </div>
+                        
+                        <div className=" gap-4 mb-4">
+                        <div className="flex items-center space-x-4">
+                            <div className="flex flex-col w-1/2">
                             <label className="block text-sm mb-1">Jaw</label>
                             <select
                                 value={jaw}
@@ -51,8 +59,9 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                 <option value="Upper">Upper</option>
                                 <option value="Lower">Lower</option>
                             </select>
-                        </div>
-                        <div className="mb-4">
+                            </div>
+
+                            <div className="flex flex-col w-1/2">
                             <label className="block text-sm mb-1">Position</label>
                             <select
                                 value={position}
@@ -62,12 +71,17 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                 <option value="first">First</option>
                                 <option value="last">Last</option>
                             </select>
+                            </div>
                         </div>
-                        <div className="flex justify-end">
-                            <button type="button" className="mr-2 text-gray-500" onClick={onClose}>
+                        </div>
+
+
+                        
+                        <div className="flex justify-center">
+                            {/* <button type="button" className="mr-2 text-gray-500" onClick={onClose}>
                                 Cancel
-                            </button>
-                            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+                            </button> */}
+                            <button type="submit" className="bg-[#4285F4] hover:bg-[#0C65F8] text-white py-2 px-4 rounded">
                                 Add Tooth
                             </button>
                         </div>

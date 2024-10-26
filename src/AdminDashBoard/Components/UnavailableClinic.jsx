@@ -316,7 +316,7 @@ const UnavailableClinic = () => {
                                         <button onClick={() => initiateEdit(item)} className=" flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm" title='edit'>
                                             <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span></button>
                                         <button onClick={() => deleteUnavailableTime(item._id)} className="flex flex-col items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm" title='delete'>
-                                            <span class="material-symbols-outlined">
+                                            <span className="material-symbols-outlined">
                                                 delete
                                             </span>
                                         </button>

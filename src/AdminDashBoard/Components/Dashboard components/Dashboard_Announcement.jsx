@@ -50,7 +50,7 @@ export default function Announcement() {
 
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-secondary rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 max-h-[80vh] max-w-[90vw] overflow-hidden">
+                <div className="bg-secondary rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 max-h-[80vh] overflow-hidden">
                     <div className="flex justify-between items-center p-4 border-b">
                         <h2 className="text-lg font-semibold">{title}</h2>
                         <button className="text-gray-600" onClick={onClose}>X</button>
@@ -62,24 +62,29 @@ export default function Announcement() {
     };
 
     return (
-        <div className="p-6 rounded-lg ">
-            <div className='relative mb-4'> {/* Add relative positioning to the container */}
-    <h1 className='text-2xl font-semibold text-[#266D53]'>Announcements</h1>
-    <button 
-        className='absolute top-0 right-0 font-semibold text-md' 
-        onClick={() => navigate('/AnnouncementPage')}
-    >
-        <span className="ml-1">See More</span> {/* Add some margin for spacing */}
-    </button>
-    {/* Add any additional content for announcements here */}
-</div>
+        <div className="p rounded-lg">
+            <div className='relative mb-4'>
+                <h1 className='flex items-center text-2xl font-semibold text-[#266D53]'>
+                    <span className="material-symbols-outlined text-red-500 mr-1">
+                        campaign
+                    </span>
+                    Announcements
+                </h1>
+
+                <button
+                    className='absolute top-0 right-0 font-semibold text-md'
+                    onClick={() => navigate('/AnnouncementPage')}
+                >
+                    <span className="ml-1">See More</span>
+                </button>
+            </div>
 
             <div className="border-2 bg-accent border-[#3EB489] rounded-lg max-h-64 overflow-y-auto p-5">
                 {loading ? (
                     <p className="text-center py-4">Loading announcements...</p>
                 ) : announcements.length > 0 ? (
                     announcements.map((announcement) => (
-                        <div key={announcement._id} className="p-2 max-h-40 border-b border-white">
+                        <div key={announcement._id} className="p-2 max-h-30 border-b border-white">
                             <div className="flex justify-between items-center">
                                 <h2 className="flex items-center font-semibold text-sm">
                                     <span className="material-symbols-outlined mr-2 text-error">campaign</span>

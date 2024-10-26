@@ -162,9 +162,9 @@ const PatientProfile = () => {
                 onClick={() => {
                     navigate(`/Patient2d/${userIds}`);
                 }}
-                className='p-9 bg-orange-400'
-            >view 2d
-            <span>paki ayos heheh</span>
+                 className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
+            >View 2D
+            
             </button>
 
             <div className="w-auto mt-5">
@@ -225,7 +225,7 @@ const PatientProfile = () => {
                     <div className=" bg-accent p-6 rounded-lg shadow-lg w-11/12 md:w-1/2">
                         <div className='flex justify-end'>
                             <button onClick={() => setIsModalOpen(false)} className="text-gary-500">
-                                <span class="material-symbols-outlined">
+                                <span className="material-symbols-outlined">
                                     close
                                 </span>
                             </button>

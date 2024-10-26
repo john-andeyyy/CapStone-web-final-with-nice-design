@@ -215,8 +215,8 @@ export default function AppointmentDetails() {
                 </div>
             </div>
 
-            <div className='flex justify-between items-end mb-6 p-4 bg-gray-100 rounded-lg shadow-md'>
-                <h1 className="text-3xl font-semibold text-gray-800">Appointment Details</h1>
+            <div className='flex justify-between items-end mb-6 p-4  '>
+                <h1 className="text-2xl font-semibold text-gray-800">Appointment Details</h1>
 
             </div>
 
@@ -320,6 +320,7 @@ export default function AppointmentDetails() {
                     </div>
                 </div>
                 <ProceduresTable appointment={appointment} />
+                
                 <div className="flex justify-center">
                     <button className='btn bg-[#3EB489] hover:bg-[#62A78E] text-black'
                         onClick={() => toggleImages()}>
@@ -429,9 +430,9 @@ export default function AppointmentDetails() {
                     onClick={() => {
                         navigate(`/Patient2d/${userid}`);
                     }}
-                    className='p-9 bg-orange-400'
-                >view 2d
-                    <span>paki ayos heheh</span>
+                   className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
+                >View 2D
+                
                 </button>
 
 

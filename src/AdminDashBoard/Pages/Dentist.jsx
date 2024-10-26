@@ -15,7 +15,7 @@ export default function Dentist() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [previewImage, setPreviewImage] = useState(null);
     const [filterText, setFilterText] = useState('');
-    const [availabilityFilter, setAvailabilityFilter] = useState('available');
+    const [availabilityFilter, setAvailabilityFilter] = useState('all');
     const [isEditmodal, setisEditmodal] = useState(false);
 
     const [newDentist, setNewDentist] = useState({
@@ -247,14 +247,19 @@ export default function Dentist() {
                 </button>
 
                 <div className="flex space-x-4">
+                    <div className='relative'>
                     {/* Filter by name */}
                     <input
                         type="text"
-                        placeholder="Filter by name"
+                        placeholder="Search Dentist"
                         value={filterText}
                         onChange={(e) => setFilterText(e.target.value)}
-                        className="p-2 rounded-lg border "
+                        className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                     />
+                            <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
+                                <span className="material-symbols-outlined">search</span>
+                            </div>
+                    </div>
 
                     {/* Filter by availability */}
                     <select

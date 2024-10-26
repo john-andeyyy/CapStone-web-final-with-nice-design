@@ -304,7 +304,7 @@ export default function Add_Procedure() {
 
                   <button
                     className={`flex flex-col items-center justify-center w-10 transition rounded-lg shadow-sm 
-                ${procedure.available ? 'bg-red-100 text-red-500' : 'bg-red-100 text-red-600'}`}
+                ${procedure.available ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-600'}`}
                     onClick={() => openDeleteConfirmationModal(procedure)}
                     title={procedure.available ? 'Set Out of Service' : 'Set In Service'} // Tooltip text
                   >
@@ -697,15 +697,15 @@ export default function Add_Procedure() {
           Are you sure you want to make this procedure {procedureToDelete?.available ? 'unavailable' : 'available'}?
         </p>
         <p className="text-center text-lg mt-5">{procedureToDelete?.Procedure_name}</p>
-        <div className="modal-action">
+        <div className="modal-action flex justify-center">
 
           {procedureToDelete && procedureToDelete.available ? (
             <button
               type="button"
-              className="btn bg-[#4285F4] hover:bg-[#0C65F8]"
+              className="btn bg-red-500 hover:bg-red-600"
               onClick={() => confirmtongleStatus(false)}
             >
-              Mark as Not Available
+              Mark as Unavailable
             </button>
           ) : (
             <button

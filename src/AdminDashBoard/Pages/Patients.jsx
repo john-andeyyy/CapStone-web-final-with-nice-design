@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { fetchPatients } from '../Fetchs/patient/patient_account';
 import AddPatientModal from './Components/AddPatientModal';
-
+import { jsPDF } from 'jspdf';
 
 export default function Patients_List() {
     const navigate = useNavigate();
@@ -16,27 +16,24 @@ export default function Patients_List() {
     const fetch_patient = async () => {
         setLoading(true);
         const response = await fetchPatients();
-        console.log(response);
-        setPatientsInfo(response);
-        // sessionStorage.setItem('patientsData', JSON.stringify(response));
+        const sortedPatients = response.sort((a, b) =>
+            a.LastName.toLowerCase().localeCompare(b.LastName.toLowerCase())
+        );
+
+        setPatientsInfo(sortedPatients);
         setLoading(false);
     };
 
     useEffect(() => {
-        const cachedData = sessionStorage.getItem('patientsData');
-        // if (cachedData) {
-        //     setPatientsInfo(JSON.parse(cachedData));
-        //     setLoading(false);
-        // } else {
         fetch_patient();
-        // }
     }, []);
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
+
     const handlePatientAdded = () => {
-        fetch_patient(); // Refresh the patient list after adding a new patient
+        fetch_patient();
     };
 
     const handleSort = () => {
@@ -48,13 +45,71 @@ export default function Patients_List() {
                 : lastNameB.localeCompare(lastNameA);
         });
         setPatientsInfo(sortedPatients);
-        setSortAscending(!sortAscending); // Toggle sorting direction
+        setSortAscending(!sortAscending); 
     };
 
     const filteredPatients = patientsInfo.filter((patient) => {
         const fullName = `${patient.FirstName} ${patient.LastName}`.toLowerCase();
         return fullName.includes(searchQuery.toLowerCase());
     });
+
+    const generatePDF = () => {
+        const doc = new jsPDF();
+        const themeColor = "#3EB489";
+        const rowHeight = 10;
+        let y = 30;
+
+        doc.setFillColor(themeColor);
+        doc.rect(0, 0, doc.internal.pageSize.getWidth(), 20, "F");
+        doc.setFontSize(16);
+        doc.setTextColor(255, 255, 255);
+        doc.text("Patients List", 10, 12);
+
+        doc.setFillColor(themeColor);
+        doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
+        doc.setFontSize(10);
+        doc.setTextColor(255, 255, 255); 
+        doc.text("No.", 12, y + 7);
+        doc.text("ID", 22, y + 7);
+        doc.text("Last Name", 42, y + 7);
+        doc.text("First Name", 82, y + 7);
+        doc.text("Middle Name", 122, y + 7);
+        doc.text("Last Visit", 162, y + 7);
+
+        doc.setTextColor(0, 0, 0);
+        y += rowHeight;
+
+        filteredPatients.forEach((patient, index) => {
+            const rowNumber = index + 1; 
+
+            if (index % 2 === 0) {
+                doc.setFillColor(240, 240, 240); 
+                doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
+            }
+
+            doc.text(rowNumber.toString(), 12, y + 7);
+            doc.text(patient.id.toString(), 22, y + 7);
+            doc.text(patient.LastName, 42, y + 7);
+            doc.text(patient.FirstName, 82, y + 7);
+            doc.text(patient.MiddleName ? patient.MiddleName : "N/A", 122, y + 7);
+            doc.text(
+                patient.LatestAppointment
+                    ? new Date(patient.LatestAppointment.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })
+                    : "No Record",
+                162,
+                y + 7
+            );
+
+            y += rowHeight; 
+        });
+
+        doc.save("Patients_List.pdf");
+    };
+
 
     return (
         <div className='container mx-auto p-4'>
@@ -84,19 +139,25 @@ export default function Patients_List() {
                                 <span className="material-symbols-outlined">search</span>
                             </div>
                         </div>
-                        
                     </div>
 
                     <div className="flex justify-end mt-2">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded"
                         >
                             Add Patient
                         </button>
+
+                        <button
+                            onClick={generatePDF}
+                            className="bg-[#3EB489] hover:bg-[#62A78E] ml-2 text-white px-4 py-2 rounded"
+                        >
+                            Generate PDF
+                        </button>
                     </div>
 
-
+                    {/* Table and Modal Components */}
                     <div className='mt-4 overflow-auto max-h-[510px]'>
                         <table className='w-full text-left border-collapse'>
                             <thead className='bg-[#3EB489]  text-white sticky top-0 z-1'>
@@ -110,8 +171,8 @@ export default function Patients_List() {
                                             </span>
                                         </button>
                                     </th>
-                                    <th className='p-2 text-center border border-black'>Fisrst Name</th>
-                                    <th className='p-2 text-center border border-black'>Middle Name </th>
+                                    <th className='p-2 text-center border border-black'>First Name</th>
+                                    <th className='p-2 text-center border border-black'>Middle Name</th>
                                     <th className='p-2 text-center border border-black'>Last Visit</th>
                                     <th className='p-2 text-center border border-black'>View</th>
                                 </tr>
@@ -120,11 +181,11 @@ export default function Patients_List() {
                                 {filteredPatients.length > 0 ? (
                                     filteredPatients.map((patient) => (
                                         <tr key={patient.id} className='border-b'>
-                                            <td className='p-2  bg-gray-100 border border-black'>{patient.id}</td>
-                                            <td className='p-2  bg-gray-100 border border-black'>{patient.LastName}</td>
-                                            <td className='p-2  bg-gray-100 border border-black'>{patient.FirstName}</td>
-                                            <td className='p-2  bg-gray-100 border border-black'>{patient.MiddleName ? (patient.MiddleName ):('N/A')}</td>
-                                            <td className='p-2  bg-gray-100 border border-black'>
+                                            <td className='p-2 bg-gray-100 border border-black'>{patient.id}</td>
+                                            <td className='p-2 bg-gray-100 border border-black'>{patient.LastName}</td>
+                                            <td className='p-2 bg-gray-100 border border-black'>{patient.FirstName}</td>
+                                            <td className='p-2 bg-gray-100 border border-black'>{patient.MiddleName || 'N/A'}</td>
+                                            <td className='p-2 bg-gray-100 border border-black'>
                                                 {patient.LatestAppointment
                                                     ? new Date(patient.LatestAppointment.date).toLocaleDateString('en-US', {
                                                         year: 'numeric',
@@ -142,12 +203,11 @@ export default function Patients_List() {
                                                     <span className="material-symbols-outlined">visibility</span>
                                                 </button>
                                             </td>
-
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="4" className='p-4 text-center'>No patients found.</td>
+                                        <td colSpan="6" className='p-4 text-center'>No patients found.</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -155,12 +215,11 @@ export default function Patients_List() {
                     </div>
                     <AddPatientModal
                         isOpen={isModalOpen}
-                        onClose={() => setIsModalOpen(false)} // Close modal handler
-                        onPatientAdded={handlePatientAdded} // Callback to refresh patient list
+                        onClose={() => setIsModalOpen(false)}
+                        onPatientAdded={handlePatientAdded}
                     />
                 </>
             )}
         </div>
-
     );
 }

@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import ProceduresModal from './ProceduresModal'; 
+import ProceduresModal from './ProceduresModal';
 
 const ProceduresTable = ({ appointment }) => {
-    const [userProceduresList, setUserProceduresList] = useState(appointment.procedures || []); 
+    const [userProceduresList, setUserProceduresList] = useState(appointment.procedures || []);
     const [allProcedures, setAllProcedures] = useState([]);
     const [addedProcedures, setAddedProcedures] = useState([]);
-    const [markedForRemoval, setMarkedForRemoval] = useState([]); 
+    const [markedForRemoval, setMarkedForRemoval] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isEditing, setIsEditing] = useState(false); 
+    const [isEditing, setIsEditing] = useState(false);
     const [editedAmount, setEditedAmount] = useState(appointment.Amount || 0);
     const [appointmentAmount, setappointmentAmount] = useState(appointment.Amount || 0);
+
+    const [ModalOpen, setModalOpen] = useState(false);
+    const openModal = () => setModalOpen(true);
+    const closeModal = () => setModalOpen(false);
+
 
     const fetchAllProcedures = async () => {
         try {
@@ -29,7 +34,7 @@ const ProceduresTable = ({ appointment }) => {
 
     useEffect(() => {
         setUserProceduresList(appointment.procedures || []);
-        setEditedAmount(appointment.Amount || 0); 
+        setEditedAmount(appointment.Amount || 0);
     }, [appointment]);
 
     const handleMarkForRemoval = (id) => {
@@ -109,14 +114,14 @@ const ProceduresTable = ({ appointment }) => {
     return (
         <div>
 
-             <div className='grid grid-cols-2 gap-4'>
-                <p className='text-2xl'>Procedures:</p>
-        
+            <div className='grid grid-cols-2 gap-4'>
+                <p className='text-xl'><strong>Procedures:</strong></p>
+
                 <div className='flex flex-col justify-end text-right'>
                     <div>
                         <button
                             onClick={handleToggleEdit}
-                            className={`px-4 py-2 rounded ${isEditing ? 'bg-[#4285F4] hover:bg-[#0C65F8]' : 'bg-[#4285F4] hover:bg-[#0C65F8]'
+                            className={`px-4 py-2 rounded ${isEditing ? 'bg-[#3EB489] hover:bg-[#62A78E]' : 'bg-[#4285F4] hover:bg-[#0C65F8]'
                                 } text-white`}
                         >
                             {isEditing ? 'Save' : 'Edit'}
@@ -129,10 +134,10 @@ const ProceduresTable = ({ appointment }) => {
                     <table className="min-w-full mb-4 table-fixed">
                         <thead>
                             <tr>
-                                <th className="px-4 py-2 text-left w-1/2 sticky text-white text-center border border-black top-0 bg-[#3EB489]">Procedure Name</th>
-                                <th className="px-4 py-2 text-left w-1/4 sticky text-white text-center border border-black top-0 bg-[#3EB489]">Price</th>
+                                <th className="px-4 py-2 text-center text-white w-1/2 sticky top-0 bg-[#3EB489]">Procedure Name</th>
+                                <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#3EB489]">Price</th>
                                 {isEditing && (
-                                    <th className="px-4 py-2 text-left w-1/4 sticky text-white text-center border border-black top-0 bg-[#3EB489]">Actions</th>
+                                    <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#3EB489]">Actions</th>
                                 )}
                             </tr>
                         </thead>
@@ -142,10 +147,10 @@ const ProceduresTable = ({ appointment }) => {
                                     key={procedure._id}
                                     className={markedForRemoval.includes(procedure._id) ? 'bg-red-200' : ''}
                                 >
-                                    <td className="border border-black px-4 py-2 truncate bg-gray-100">{procedure.Procedure_name}</td>
-                                    <td className="border border-black px-4 py-2 truncate bg-gray-100">{`₱${procedure.Price}`}</td>
+                                    <td className="border px-4 py-2 truncate">{procedure.Procedure_name}</td>
+                                    <td className="border px-4 py-2 truncate">{`₱${procedure.Price}`}</td>
                                     {isEditing && (
-                                        <td className="border border-black px-4 py-2 bg-gray-100">
+                                        <td className="border px-4 py-2 flex justify-center">
                                             {markedForRemoval.includes(procedure._id) ? (
                                                 <button
                                                     className="text-red-500"
@@ -155,20 +160,20 @@ const ProceduresTable = ({ appointment }) => {
                                                     Remove
                                                 </button>
                                             ) : (
+
                                                 <div>
-                                                    <div className='flex justify-center '>
+
                                                     <button
                                                         className="flex items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm"
                                                         onClick={() => handleMarkForRemoval(procedure._id)}
                                                         aria-label={`Delete ${procedure.Procedure_name}`}
                                                         title='delete'
                                                     >
-                                                        <span class="material-symbols-outlined">
-                                                        delete
-                                                        </span>
+                                                        <span className="material-symbols-outlined">delete</span>
                                                     </button>
-                                                    </div>
                                                 </div>
+
+
                                             )}
                                         </td>
                                     )}
@@ -203,7 +208,7 @@ const ProceduresTable = ({ appointment }) => {
                 <div className='flex flex-row justify-between pb-4'>
                     <div>
                         <button
-                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-black px-4 py-2 rounded"
+                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded"
                             onClick={() => setIsModalOpen(true)}
                         >
                             Add Procedures
@@ -211,10 +216,11 @@ const ProceduresTable = ({ appointment }) => {
                     </div>
                     <div>
                         <button
-                            className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black px-4 py-2 rounded"
+                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
                             onClick={() => {
                                 setAddedProcedures([])
                                 setIsEditing(false)
+                                setMarkedForRemoval([])
                             }}
                         >
                             Cancel Add Procedures

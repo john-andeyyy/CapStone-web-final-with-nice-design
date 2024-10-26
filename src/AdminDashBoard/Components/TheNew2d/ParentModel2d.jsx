@@ -54,16 +54,23 @@ export default function ParentModel2d() {
   };
 
   return (
-    <div className="container mx-auto p-6 bg-primary rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4 text-center">Dental Records</h1>
-      <button
-        onClick={() => setIsAddModalOpen(true)}
-        className="bg-green-500 text-white px-4 py-2 rounded mb-4"
-      >
-        Add Tooth
-      </button>
+    <div className=" rounded-md"
+    style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+    <div className="container mx-auto p-6 bg-gray-100 rounded-lg shadow-md mb-5">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold text-center text-[#266D53] flex-1">Dental Records</h1>
 
-      <div>
+        <button
+          onClick={() => setIsAddModalOpen(true)}
+          className="bg-[#3EB489] hover:bg-[#62A78E] text-white px-4 py-2 rounded"
+        >
+          Add Tooth
+        </button>
+      </div>
+
+
+
+      <div className='mt-5'>
         {/* Upper Teeth Section */}
         <h2 className="text-xl font-bold mb-2">Upper Teeth</h2>
         <div className="flex justify-center space-x-1 flex-wrap mb-4">
@@ -125,6 +132,7 @@ export default function ParentModel2d() {
         onAdd={addTooth}
         patientId={userid}
       />
+    </div>
     </div>
   );
 }

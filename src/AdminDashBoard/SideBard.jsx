@@ -84,27 +84,23 @@ export default function Sidebar() {
 
     const toggleLandingPageDropdown = () => {
         setIsLandingPageDropdownOpen(!isLandingPageDropdownOpen);
-        setIsAppointmentsDropdownOpen(false); // Close appointments dropdown when opening landing page
-        setIsMedicalRequestsDropdownOpen(false); // Close medical requests dropdown
+        setIsAppointmentsDropdownOpen(false);
+        setIsMedicalRequestsDropdownOpen(false); 
     };
 
     const toggleMedicalRequestsDropdown = () => {
         setIsMedicalRequestsDropdownOpen(!isMedicalRequestsDropdownOpen);
-        setIsAppointmentsDropdownOpen(false); // Close other dropdowns
-        setIsLandingPageDropdownOpen(false); // Close landing page dropdown
+        setIsAppointmentsDropdownOpen(false); 
+        setIsLandingPageDropdownOpen(false); 
     };
 
     const handleLogout = () => {
-        axios.post(`${BASEURL}/Admin/auth/Logout`)
+        axios.post(`${BASEURL}/Admin/auth/Logout`,{},{withCredentials:true})
             .then((res) => {
-                if (res.status === 200) {  // Use triple equals for strict comparison
-                    // Clear local storage
+                if (res.status === 200) {
                     localStorage.clear();
 
-                    // Navigate to the homepage
                     navigate('/');
-
-                    // Optionally, reload the page to clear any cached data
                     window.location.reload();
                 }
             })
@@ -116,15 +112,15 @@ export default function Sidebar() {
 
 
     return (
-        <div className='text-white'>
+        <div className='text-white z-10'>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="lg:hidden fixed top-4 left-4 z-50 text-primary"
+                className="lg:hidden fixed top-4 left-4 text-primary"
             >
                 {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
 
-            <div className={`fixed z-10 h-screen w-60 bg-[#3EB489] p-4 flex flex-col justify-between transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+            <div className={`fixed  h-screen w-60 bg-[#3EB489] p-4 flex flex-col justify-between transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
                 <div>
                     {/* <div className="flex justify-between items-center pb-3"> */}
                         {/* <button className="" onClick={() => setIsModalOpen(true)}>
