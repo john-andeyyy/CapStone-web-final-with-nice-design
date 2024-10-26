@@ -8,12 +8,21 @@ export default function DashboardTips() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const BASEURL = import.meta.env.VITE_BASEURL;
-
+    const getRandomTips = (data, numberOfTips) => {
+        // Shuffle the array
+        const shuffled = data.sort(() => 0.5 - Math.random());
+        // Select the first 'numberOfTips' elements
+        return shuffled.slice(0, numberOfTips);
+    };
     useEffect(() => {
         const fetchTips = async () => {
             try {
                 const response = await axios.get(`${BASEURL}/Tips/gettips`);
-                setTips(response.data);
+                if (response.data.length >= 9) {
+                    setTips(getRandomTips(response.data, 9));
+                } else {
+                    setTips(response.data); 
+                }
             } catch (error) {
                 console.error("Error fetching tips:", error);
                 setError("Failed to load tips. Please try again later.");
