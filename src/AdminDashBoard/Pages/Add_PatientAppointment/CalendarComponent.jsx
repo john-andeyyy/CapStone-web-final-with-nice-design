@@ -50,8 +50,8 @@ const formatEventDate = (start, end) => {
 const CalendarComponent = () => {
     const [view, setView] = useState('month');
     const [currentDate, setCurrentDate] = useState(new Date());
-    // const [date, setDate] = useState(new Date());
-    const [date, setDate] = useState(new Date(new Date().getFullYear(), 11, 1)); // December 1st of the current year
+    const [date, setDate] = useState(new Date());
+    // const [date, setDate] = useState(new Date(new Date().getFullYear(), 11, 1)); // December 1st of the current year
 
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
