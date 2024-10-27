@@ -100,9 +100,9 @@ export default function Sidebar() {
                 if (res.status === 200) {
                     localStorage.clear();
 
-                    // navigate('/');
-                    // window.location.reload();
-                    navigate('/', { replace: true });
+                    navigate('/');
+                    window.location.reload();
+                    // navigate('/', { replace: true });
                 }
             })
             .catch((error) => {

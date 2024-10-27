@@ -35,11 +35,11 @@ export default function AdminLogin() {
                 localStorage.setItem('lastActiveTime', currentTime);
 
                 showToast('success', 'Login successful!');
-                navigate('/dashboard', { replace: true });
-                // setTimeout(() => {
-                //     navigate('/dashboard');
-                //     window.location.reload();
-                // }, 1000);
+                // navigate('/dashboard', { replace: true });
+                setTimeout(() => {
+                    navigate('/dashboard');
+                    window.location.reload();
+                }, 1000);
             } else {
                 setError(response.data.message || 'Login failed');
             }
