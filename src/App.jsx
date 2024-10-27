@@ -54,6 +54,7 @@ import CalendarComponentsss from './AdminDashBoard/Pages/Add_PatientAppointment/
 import MyCalendar from './try/MyCalendar';
 import Our2d from './AdminDashBoard/Our2d';
 import ParentModel2d from './AdminDashBoard/Components/TheNew2d/ParentModel2d';
+import WebsocketSample from './AdminDashBoard/WebSocket/Websocket-sample';
 
 function AdminRoutes() {
   const location = useLocation();
@@ -138,6 +139,7 @@ function AdminRoutes() {
         <Route path="/Chart" element={<ShowChart />} />
         {/* //! palyground */}
         <Route path="/Our2d" element={<Our2d />} />
+        <Route path="/WebsocketSample" element={<WebsocketSample />} />
 
 
 

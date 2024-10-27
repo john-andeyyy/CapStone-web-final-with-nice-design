@@ -5,6 +5,7 @@ import { enUS } from 'date-fns/locale';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Modal from '../AdminDashBoard/Components/Modal';
+import Socket from '../Utils/Socket';
 
 const Baseurl = import.meta.env.VITE_BASEURL;
 
@@ -81,7 +82,45 @@ const CalendarComponent = () => {
 
     useEffect(() => {
         fetchAppointments();
-    }, [statusFilters]); // Fetch appointments whenever statusFilters change
+    }, [statusFilters]);
+
+
+    
+    useEffect(() => {
+        const Socketeventname = 'new-appointment-set';
+
+        const handleNewAppointment = (newAppointment) => {
+            const startUTC = new Date(newAppointment.start);
+            const endUTC = new Date(newAppointment.end);
+
+            const formattedAppointment = {
+                id: newAppointment.id,
+                title: `${newAppointment.patient.FirstName} ${newAppointment.patient.LastName}`,
+                start: startUTC,
+                end: endUTC,
+                allDay: false,
+                notes: newAppointment.notes,
+                status: newAppointment.status,
+            };
+
+            setEvents((prevAppointments) => {
+                const updatedEvents = [formattedAppointment, ...prevAppointments];
+
+                return updatedEvents.filter(event => statusFilters[event.status]);
+            });
+        };
+
+        Socket.on(Socketeventname, handleNewAppointment);
+        Socket.on('disconnect', () => console.log('Disconnected from server'));
+
+        return () => {
+            Socket.off(Socketeventname, handleNewAppointment);
+        };
+    }, [statusFilters]);
+
+
+
+
 
     const handleDateChange = (newDate) => {
         setDate(newDate);

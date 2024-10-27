@@ -14,7 +14,7 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
 
     useEffect(() => {
         if (isSubmited) {
-            setSelectedProcedures(''); 
+            setSelectedProcedures([]); 
             onselectprocedures(null); 
             setSearchTerm('')
         }

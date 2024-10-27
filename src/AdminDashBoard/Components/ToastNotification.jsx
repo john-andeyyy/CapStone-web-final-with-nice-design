@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToastContainer, toast, Bounce, Slide } from 'react-toastify';
+import { ToastContainer, toast, Bounce, Slide, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // ToastNotification component for displaying toast messages
@@ -7,17 +7,19 @@ import 'react-toastify/dist/ReactToastify.css';
 const ToastNotification = () => {
     return (
         <ToastContainer
+            // position="top-right"
             position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
+            autoClose={3000}
+            hideProgressBar={true}
             newestOnTop={false}
-            limit={2}
+            limit={3}
             closeOnClick
             rtl={false}
             pauseOnFocusLoss
             draggable
+            theme="colored"
             pauseOnHover={false}
-            transition={Slide} // Correctly use Slide
+            transition={Zoom} // Correctly use Slide
         />
     );
 };
@@ -27,14 +29,14 @@ export const showToast = (type, message) => {
     const commonOptions = {
         // position: "top-right",
         position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
+        autoClose: 3000,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: "light",
-        transition: Slide, // Use Slide directly
+        theme: "colored",
+        transition: Zoom, // Use Slide directly
     };
 
     switch (type) {
