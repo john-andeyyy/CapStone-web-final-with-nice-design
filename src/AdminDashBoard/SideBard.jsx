@@ -85,23 +85,24 @@ export default function Sidebar() {
     const toggleLandingPageDropdown = () => {
         setIsLandingPageDropdownOpen(!isLandingPageDropdownOpen);
         setIsAppointmentsDropdownOpen(false);
-        setIsMedicalRequestsDropdownOpen(false); 
+        setIsMedicalRequestsDropdownOpen(false);
     };
 
     const toggleMedicalRequestsDropdown = () => {
         setIsMedicalRequestsDropdownOpen(!isMedicalRequestsDropdownOpen);
-        setIsAppointmentsDropdownOpen(false); 
-        setIsLandingPageDropdownOpen(false); 
+        setIsAppointmentsDropdownOpen(false);
+        setIsLandingPageDropdownOpen(false);
     };
 
     const handleLogout = () => {
-        axios.post(`${BASEURL}/Admin/auth/Logout`,{},{withCredentials:true})
+        axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
             .then((res) => {
                 if (res.status === 200) {
                     localStorage.clear();
 
-                    navigate('/');
-                    window.location.reload();
+                    // navigate('/');
+                    // window.location.reload();
+                    navigate('/', { replace: true });
                 }
             })
             .catch((error) => {
@@ -123,17 +124,17 @@ export default function Sidebar() {
             <div className={`fixed  h-screen w-60 bg-[#3EB489] p-4 flex flex-col justify-between transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
                 <div>
                     {/* <div className="flex justify-between items-center pb-3"> */}
-                        {/* <button className="" onClick={() => setIsModalOpen(true)}>
+                    {/* <button className="" onClick={() => setIsModalOpen(true)}>
                             <span className="material-symbols-outlined text-red-500">logout</span>
                         </button> */}
 
-                   
-                        <h2 className="text-xl uppercase font-serif font-bold mt-5 mb-5 text-center md:block">
-                            <span className='text-white'>{dentalname.DentalName}</span> <span className='text-black'>Clinic</span>
-                        </h2>
-                        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
-                            {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-                        </button>
+
+                    <h2 className="text-xl uppercase font-serif font-bold mt-5 mb-5 text-center md:block">
+                        <span className='text-white'>{dentalname.DentalName}</span> <span className='text-black'>Clinic</span>
+                    </h2>
+                    <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
+                        {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                    </button>
                     {/* </div> */}
 
                     <div className="flex flex-col items-center pb-3" onClick={handleImageClick}>
@@ -256,8 +257,8 @@ export default function Sidebar() {
                     </div>
                 </div>
                 <div className="">
-                    <button 
-                        onClick={handleLogout} 
+                    <button
+                        onClick={handleLogout}
                         className="flex items-center text-white py-2 px-4 hover:text-red-500 "
                     >
                         <span className="material-symbols-outlined text-2xl mr-2">
