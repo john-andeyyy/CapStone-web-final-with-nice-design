@@ -20,7 +20,7 @@ export default function Appointments() {
 
     const [appointments, setAppointments] = useState([]);
     const [filteredAppointments, setFilteredAppointments] = useState([]);
-    const [selectedStatus, setSelectedStatus] = useState('Pending');
+    const [selectedStatus, setSelectedStatus] = useState(['Pending', 'Approved']);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [viewType, setViewType] = useState('current');
@@ -94,20 +94,39 @@ export default function Appointments() {
     const filterAppointments = (appointments) => {
         let filtered = [];
 
+        // Filter appointments based on the view type
         if (viewType === 'current') {
             filtered = appointments.filter(app => new Date(app.start) >= new Date());
-            filtered.sort((a, b) => new Date(a.start) - new Date(b.start));
         } else {
             filtered = appointments;
-            filtered.sort((a, b) => new Date(b.start) - new Date(a.start));
         }
 
+        // Sort filtered appointments by start date
+        filtered.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+        // Apply time period filter
         filtered = filterByTimePeriod(filtered);
 
-        const statusFiltered = filtered.filter(app => app.status === selectedStatus || selectedStatus === '');
+        // Filter by status
+        const statusFiltered = filtered.filter(app =>
+            selectedStatus.length === 0 || selectedStatus.includes(app.status)
+        );
 
+        // Update the state with the filtered appointments
         setFilteredAppointments(statusFiltered);
     };
+
+
+    const toggleStatus = (status) => {
+        setSelectedStatus((prevSelected) => {
+            if (prevSelected.includes(status)) {
+                return prevSelected.filter(item => item !== status); // Remove status if already selected
+            } else {
+                return [...prevSelected, status]; // Add status if not selected
+            }
+        });
+    };
+
 
     const filterByTimePeriod = (appointments) => {
         let filtered = [];
@@ -234,16 +253,54 @@ export default function Appointments() {
     const handleSelectChange = (event) => {
         const value = event.target.value;
         if (value === 'day') {
-            day(); // Call the 'today' function if 'Today' is selected
+            day();
         } else {
-            setTimeView(value); // Update the state for other options
+            setTimeView(value);
+        }
+    };
+
+    const getBackgroundColor = (status) => {
+        switch (status) {
+            case 'Pending':
+                return 'bg-yellow-200 bg-opacity-50';
+            case 'Approved':
+                return 'bg-blue-200 bg-opacity-50';
+            case 'Completed':
+                return 'bg-green-200 bg-opacity-50';
+            case 'Missed':
+                return 'bg-red-200 bg-opacity-50';
+            case 'Rejected':
+                return 'bg-red-100 bg-opacity-50';
+            case 'Cancelled':
+                return 'bg-gray-300 bg-opacity-50';
+            default:
+                return 'bg-gray-200 bg-opacity-50';
+        }
+    };
+
+    const getIconColor = (status) => {
+        switch (status) {
+            case 'Pending':
+                return '#FFC107';
+            case 'Approved':
+                return '#007BFF';
+            case 'Completed':
+                return '#28A745';
+            case 'Missed':
+                return '#DC3545';
+            case 'Rejected':
+                return '#C82333';
+            case 'Cancelled':
+                return '#6C757D';
+            default:
+                return 'inherit';
         }
     };
 
 
     return (
 
-        <div>
+        <div className=''>
             <h1 className="text-3xl font-bold mb-4">Appointment Requests</h1>
             <div className="text-gray-600 mb-8">{formattedDate}</div>
 
@@ -269,32 +326,7 @@ export default function Appointments() {
                         </button>
                     </div>
 
-                    {/* Right Side Buttons */}
 
-                    {/* <button 
-                                onClick={() => setTimeView('day')} 
-                                className={`p-2 border rounded mr-2 ${timeView === 'day' ? 'bg-green-500 text-white' : 'bg-green-900'}`}
-                            >
-                                Day
-                            </button>
-                            <button 
-                                onClick={() => setTimeView('week')} 
-                                className={`p-2 border rounded mr-2 ${timeView === 'week' ? 'bg-green-500 text-white' : 'bg-green-900'}`}
-                            >
-                                Week
-                            </button>
-                            <button 
-                                onClick={() => setTimeView('month')} 
-                                className={`p-2 border rounded mr-2 ${timeView === 'month' ? 'bg-green-500 text-white' : 'bg-green-900'}`}
-                            >
-                                Month
-                            </button>
-                            <button
-                                onClick={() => today()}
-                                className="rounded p-2 bg-blue-500 text-white"
-                            >
-                                Today
-                            </button> */}
                     <div className="flex items-center w-full max-w-sm">
                         <span className=' text-black mr-2'>Select Frequency: </span><select
                             value={timeView}
@@ -302,9 +334,6 @@ export default function Appointments() {
                             className="p-2 border rounded bg-gray-100 text-black  mb-2 flex-1"
                         >
 
-                            {/* <option value="today" className=" text-black">
-                                    Today
-                                </option> */}
                             <option value="filter" className=" text-black">
                                 --Select Frequency--
                             </option>
@@ -326,29 +355,30 @@ export default function Appointments() {
 
 
             {/* Time View Selectors */}
-
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pb-2">
+                {['Pending', 'Approved', 'Completed', 'Missed', 'Rejected', 'Cancelled'].map(status => (
+                    <div
+                        key={status}
+                        className={`flex items-center cursor-pointer p-2 rounded-md ${getBackgroundColor(status)} hover:bg-opacity-75 transition duration-200`}
+                        onClick={() => toggleStatus(status)}
+                    >
+                        <span
+                            className="material-symbols-outlined text-2xl"
+                            style={{ color: getIconColor(status) }}
+                        >
+                            {selectedStatus.includes(status) ? 'radio_button_checked' : 'radio_button_unchecked'}
+                        </span>
+                        <p className="text-gray-700 font-medium ml-2">{status}</p>
+                    </div>
+                ))}
+            </div>
 
 
             <div className='grid grid-cols-2 gap-4'>
                 {/* Appointment List */}
-                <div className="mb-4">
-                    <h2 className="text-xl font-semibold mb-4">Appointment Requests List</h2>
 
-                    {/* Select Dropdown */}
-                    <select
-                        className="p-2 border rounded mb-4"
-                        value={selectedStatus}
-                        onChange={(e) => setSelectedStatus(e.target.value)}
-                    >
-                        <option value="">View All</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Rejected">Rejected</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Missed">Missed</option>
-                        <option value="Cancelled">Cancelled</option>
-                    </select>
-                </div>
+
+
 
                 {/* Date Picker Section */}
                 <div className="ml-auto mb-8 flex items-center">
@@ -382,20 +412,6 @@ export default function Appointments() {
                         </>
                     )}
 
-                    {/* {timeView === 'today' && (
-                    <>
-                    <p className="mb-0 mr-2">Today: need filter</p>
-                    <div className="pl-7 pr-7 pt-2 pb-2 border rounded text-black">
-                        {new Date().toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                        })}
-                        
-                    </div>
-                    </>
-                )} */}
-
                     {/* Week Picker */}
                     {timeView === 'week' && (
                         <div className="mb-4">
@@ -417,94 +433,96 @@ export default function Appointments() {
             <div className="space-y-4">
                 {filteredAppointments.length === 0 ? (
                     <div className="text-center">
-                        <h1>No {selectedStatus} appointments</h1>
-                    </div>
-                ) : (
-                    <div className="overflow-auto max-h-screen">
-                        {filteredAppointments.map(appointment => {
-                            const appointmentDateTime = new Date(appointment.start);
-                            const appointmentEndTime = new Date(appointment.end);
+                                {selectedStatus.map((status) => (
+                                <h1 key={status}>No {status} appointments</h1>
+                            ))}
+                        </div>
+                        ) : (
+                        <div className="overflow-auto max-h-screen">
+                            {filteredAppointments.map(appointment => {
+                                const appointmentDateTime = new Date(appointment.start);
+                                const appointmentEndTime = new Date(appointment.end);
 
-                            if (isNaN(appointmentDateTime.getTime()) || isNaN(appointmentEndTime.getTime())) {
-                                return <span key={appointment.id} className="text-red-500">Invalid Date</span>;
-                            }
+                                if (isNaN(appointmentDateTime.getTime()) || isNaN(appointmentEndTime.getTime())) {
+                                    return <span key={appointment.id} className="text-red-500">Invalid Date</span>;
+                                }
 
-                            const { text: relativeTime, color: relativeColor } = getRelativeTime(appointmentDateTime);
-                            const isApproveDisabled = disabledStatuses.includes(appointment.status) || appointmentDateTime < currentDate;
-                            const isDeclineDisabled = appointment.status !== "Pending" || appointmentDateTime < currentDate;
+                                const { text: relativeTime, color: relativeColor } = getRelativeTime(appointmentDateTime);
+                                const isApproveDisabled = disabledStatuses.includes(appointment.status) || appointmentDateTime < currentDate;
+                                const isDeclineDisabled = appointment.status !== "Pending" || appointmentDateTime < currentDate;
 
-                            return (
-                                <div key={appointment.id} className="p-4 my-1 bg-gray-100 rounded flex justify-between items-center">
-                                    <div>
-                                        <div className="font-semibold">
-                                            {appointmentDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })} -
-                                            {appointmentEndTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })},
-                                            {appointmentDateTime.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                                        </div>
-
-                                        <div className="text-gray-600">
-                                            {appointment.patient.FirstName} {appointment.patient.LastName}
-                                        </div>
-
+                                return (
+                                    <div key={appointment.id} className="p-4 my-1 bg-gray-100 rounded flex justify-between items-center">
                                         <div>
-                                            {appointment.procedures.length > 0
-                                                ? appointment.procedures[0].name
-                                                : 'No procedure listed'}
+                                            <div className="font-semibold">
+                                                {appointmentDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })} -
+                                                {appointmentEndTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })},
+                                                {appointmentDateTime.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                            </div>
+
+                                            <div className="text-gray-600">
+                                                {appointment.patient.FirstName} {appointment.patient.LastName}
+                                            </div>
+
+                                            <div>
+                                                {appointment.procedures.length > 0
+                                                    ? appointment.procedures[0].name
+                                                    : 'No procedure listed'}
+                                            </div>
+                                            <div className="text-gray-600">
+                                                <p>
+                                                    <strong>Status: </strong>
+                                                    <span className={getStatusColor(appointment.status)}>
+                                                        {appointment.status}
+                                                    </span>
+                                                </p>
+                                                <p className={`text-sm ${relativeColor}`}>
+                                                    {relativeTime}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className="text-gray-600">
-                                            <p>
-                                                <strong>Status: </strong>
-                                                <span className={getStatusColor(appointment.status)}>
-                                                    {appointment.status}
+
+                                        <div className="flex space-x-2 items-center">
+                                            <button
+                                                onClick={() => updateAppointmentStatus(appointment.id, 'Approved')}
+                                                disabled={isApproveDisabled || loadingApprove[appointment.id]} // Disable when approving
+                                                className={`p-2 px-3 rounded-2xl ${isApproveDisabled || loadingApprove[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-green-200 text-green-700 hover:text-green-900 transition rounded-lg shadow-sm"}`}
+                                                title='approve'
+                                            >
+                                                {loadingApprove[appointment.id] ? (
+                                                    <span className="loading loading-spinner"></span> // Show spinner when approving
+                                                ) : (
+                                                    <span className="material-symbols-outlined text-green text-2xl">check_box</span>
+                                                )}
+                                            </button>
+
+                                            <button
+                                                onClick={() => updateAppointmentStatus(appointment.id, 'Rejected')}
+                                                disabled={isDeclineDisabled || loadingReject[appointment.id]} // Disable when rejecting
+                                                className={`p-2 px-3 rounded-2xl ${isDeclineDisabled || loadingReject[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-red-200 text-red-700 hover:text-red-900 transition rounded-lg shadow-sm"}`}
+                                                title='cancel'
+                                            >
+                                                {loadingReject[appointment.id] ? (
+                                                    <span className="loading loading-spinner"></span> // Show spinner when rejecting
+                                                ) : (
+                                                    <span className="material-symbols-outlined text-red text-2xl">cancel</span>
+                                                )}
+                                            </button>
+
+
+                                            <Link to={`/appointment/${appointment.id}`} className="flex flex-col  items-center p-2 px-3  justify-center bg-blue-200 text-blue-700 hover:text-blue-900 transition rounded-lg shadow-sm"
+                                                title='view'>
+                                                <span className="material-symbols-outlined text-2xl">
+                                                    visibility
                                                 </span>
-                                            </p>
-                                            <p className={`text-sm ${relativeColor}`}>
-                                                {relativeTime}
-                                            </p>
+                                            </Link>
                                         </div>
                                     </div>
-
-                                    <div className="flex space-x-2 items-center">
-                                        <button
-                                            onClick={() => updateAppointmentStatus(appointment.id, 'Approved')}
-                                            disabled={isApproveDisabled || loadingApprove[appointment.id]} // Disable when approving
-                                            className={`p-2 px-3 rounded-2xl ${isApproveDisabled || loadingApprove[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-green-200 text-green-700 hover:text-green-900 transition rounded-lg shadow-sm"}`}
-                                            title='approve'
-                                        >
-                                            {loadingApprove[appointment.id] ? (
-                                                <span className="loading loading-spinner"></span> // Show spinner when approving
-                                            ) : (
-                                                <span className="material-symbols-outlined text-green text-2xl">check_box</span>
-                                            )}
-                                        </button>
-
-                                        <button
-                                            onClick={() => updateAppointmentStatus(appointment.id, 'Rejected')}
-                                            disabled={isDeclineDisabled || loadingReject[appointment.id]} // Disable when rejecting
-                                            className={`p-2 px-3 rounded-2xl ${isDeclineDisabled || loadingReject[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-red-200 text-red-700 hover:text-red-900 transition rounded-lg shadow-sm"}`}
-                                            title='cancel'
-                                        >
-                                            {loadingReject[appointment.id] ? (
-                                                <span className="loading loading-spinner"></span> // Show spinner when rejecting
-                                            ) : (
-                                                <span className="material-symbols-outlined text-red text-2xl">cancel</span>
-                                            )}
-                                        </button>
-
-
-                                        <Link to={`/appointment/${appointment.id}`} className="flex flex-col  items-center p-2 px-3  justify-center bg-blue-200 text-blue-700 hover:text-blue-900 transition rounded-lg shadow-sm"
-                                            title='view'>
-                                            <span className="material-symbols-outlined text-2xl">
-                                                visibility
-                                            </span>
-                                        </Link>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
+                                );
+                            })}
+                        </div>
                 )}
-            </div>
+                    </div>
         </div>
-    );
+            );
 }

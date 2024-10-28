@@ -45,7 +45,7 @@ const NotificationBell = () => {
             Socket.off('new-admin-notification', addNotificationToUI);
         };
     }, [Baseurl]);
-    
+
 
     const addNotificationToUI = (notification) => {
         showToast('success', 'New Appointment sent');
@@ -102,7 +102,7 @@ const NotificationBell = () => {
         }
     };
 
-   
+
 
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -121,7 +121,7 @@ const NotificationBell = () => {
     }, []);
 
     return (
-        <div className="relative flex justify-end items-center bg-base-100">
+        <div className="relative flex justify-end items-center ">
             <Settings />
             <button className="btn btn-ghost btn-circle relative" onClick={toggleDropdown}>
                 <div className="indicator" title='notification'>
@@ -158,18 +158,23 @@ const NotificationBell = () => {
                         {notifications.length === 0 ? (
                             <div className="p-3 text-center text-gray-500">No new notifications</div>
                         ) : (
-                            <ul className="p-3 pt-0">
+                            <ul className="p-2 pr-0 pt-0">
                                 {notifications.map((notification) => (
                                     <li
                                         key={notification._id}
-                                        className={`my-1 p-3 border-b border-gray-200 hover:bg-secondary text-black cursor-pointer ${!notification.adminisRead ? 'bg-[#9ED9C4] font-medium' : ''}`}
+                                        className={`my-1 p-3 border-b border-gray-200 hover:bg-secondary text-black cursor-pointer ${!notification.adminisRead ? 'bg-[#69dcb4] font-medium bg-opacity-50 ' : ' bg-[#69dcb4]  bg-opacity-15'}`}
                                         onClick={() => handleNotificationClick(notification)}
                                     >
                                         <div className="flex justify-between items-center">
-                                            <div className="flex flex-col">
-                                                <span className="text-sm">{notification.user_Appointment_Title || notification.user_Appointment_message}</span>
+                                            <div className="flex flex-col space-y-1">
+                                                <p className="text-sm">{notification.user_Appointment_Title || notification.user_Appointment_message}</p>
+                                                <p className="text-xs text-gray-500">created at: {formatDate(notification.createdAt)}</p>
+
                                             </div>
-                                            <span className="text-xs text-gray-500">{formatDate(notification.createdAt)}</span>
+                                            <br />
+                                            <div>
+
+                                            </div>
                                         </div>
                                     </li>
                                 ))}

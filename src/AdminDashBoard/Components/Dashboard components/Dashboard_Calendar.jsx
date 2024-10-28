@@ -185,7 +185,7 @@ export default function Dashboard_Calendar() {
         const months = [...Array(12).keys()];
 
         return (
-            <div className="year-view-container p-2 rounded-lg text-center">
+            <div className="year-view-container p-2 rounded-lg text-center bg">
                 <h3 className="text-lg font-bold mb-2">Year {year}</h3>
                 <div className="flex justify-between mb-2">
                     <button className="px-2 py-1 bg-secondary rounded text-sm" onClick={() => setDate(new Date(year - 1, date.getMonth(), 1))}>
@@ -247,7 +247,7 @@ export default function Dashboard_Calendar() {
     };
 
     return (
-        <div className="rounded-md"
+        <div className="rounded-md bg-[#3EB489] p-5"
             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
             <div className="p-4 rounded-lg mt-5 text-center max-w-4xl mx-auto bg-neutral shadow-lg">
 

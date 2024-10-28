@@ -57,6 +57,25 @@ import ParentModel2d from './AdminDashBoard/Components/TheNew2d/ParentModel2d';
 import WebsocketSample from './AdminDashBoard/WebSocket/Websocket-sample';
 
 function AdminRoutes() {
+
+
+  const handleLogout = () => {
+    axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200) {
+          localStorage.clear();
+
+          navigate('/');
+          window.location.reload();
+          // navigate('/', { replace: true });
+        }
+      })
+      .catch((error) => {
+        console.log('Logout error:', error);
+      });
+  };
+
+
   const location = useLocation();
   const isProfilePage = location.pathname === "/ProfilePage";
   const [isExpired, setIsExpired] = useState(false);
@@ -69,6 +88,7 @@ function AdminRoutes() {
     if (new Date().getTime() >= expirationTime) {
       console.log('1 hour has passed since your last activity.');
       setIsExpired(true);
+      handleLogout()
     }
   }
 
@@ -154,7 +174,7 @@ function AdminRoutes() {
 
 function App() {
   const [isExpired, setIsExpired] = useState(false);
-  const isLogin = localStorage.getItem('Islogin');
+  const [isLogin, setisLogin] = useState(localStorage.getItem('Islogin'));
   const Baseurl = import.meta.env.VITE_BASEURL
   console.log('App', Baseurl)
 
@@ -169,6 +189,9 @@ function App() {
     }
   }, []);
 
+  const login = () => {
+    setisLogin(localStorage.getItem('Islogin'))
+  }
 
   return (
     // <>
@@ -197,7 +220,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/CreateAccount" element={<CreateAccount />} />
-            <Route path="/AdminLogin" element={<AdminLogin />} />
+              <Route path="/AdminLogin" element={<AdminLogin login={login} />} />
             <Route path="/admindashboard" element={<Dashboard />} />
             <Route path="/AllServices" element={<AllServices />} />
             <Route path="/The_DeanTeam" element={<The_DeanTeam />} />

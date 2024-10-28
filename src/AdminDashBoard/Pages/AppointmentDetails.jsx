@@ -5,8 +5,13 @@ import { showToast } from '../Components/ToastNotification';
 import { useNavigate } from 'react-router-dom';
 import ProceduresTable from '../Components/AppointmentDetails/ProceduresTable';
 import Tooth2d from '../Components/Tooth2d';
+import ThemeController from '../../Guest/GuestComponents/ThemeController';
+
+
 
 export default function AppointmentDetails() {
+
+    
     const navigate = useNavigate();
 
     const { id } = useParams();
@@ -24,6 +29,7 @@ export default function AppointmentDetails() {
     const [showimage, setshowimage] = useState(false);
     const [show2d, setshow2d] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [RequestToCancel, setRequestToCancel] = useState();
     const [modalAction, setModalAction] = useState(null);
 
     const [originalAppointment, setOriginalAppointment] = useState({});
@@ -39,6 +45,7 @@ export default function AppointmentDetails() {
             const data = response.data;
             setuserid(data.patient._id)
             setAppointment(data);
+            setRequestToCancel(data.RequestToCancel)
             setOriginalAppointment({
                 Before: data.BeforeImage || '',
                 After: data.AfterImage || '',
@@ -193,6 +200,28 @@ export default function AppointmentDetails() {
 
     if (!appointment) return <div>No appointment data available.</div>;
 
+    const Cancellappointment = async (newStatus) => {
+        setLoading(true)
+        try {
+            const response = await axios.put(
+                `${import.meta.env.VITE_BASEURL}/Appointments/admin/appointmentUpdate/${id}`,
+                { newStatus: "Cancelled" },
+                { withCredentials: true }
+            );
+
+            if (response.status === 200) {
+                showToast('success', `Appointment: ${newStatus} `);
+
+                RequestToCancel(false)
+            }
+        } catch (error) {
+            console.error("Error updating appointment status:", error);
+        } finally {
+            setLoading(false)
+        }
+    };
+
+
 
     const toggleImages = () => {
         setshowimage(prev => !prev);
@@ -201,7 +230,7 @@ export default function AppointmentDetails() {
         setshow2d(prev => !prev);
     };
     return (
-        <div className="p-6 mx-auto max-w-7xl">
+        <div className="p-6 mx-auto max-w-7xl ">
             {/* max-w-5xl  */}
             <div className='grid grid-cols-2 items-center'>
                 <div className='flex items-center'>
@@ -220,8 +249,8 @@ export default function AppointmentDetails() {
 
             </div>
 
-            <div>
-                <div className="shadow-lg rounded-xl p-8 mb-8 space-y-6 bg-[#F5F5F5] ">
+            <div className=''>
+                <div className="shadow-lg rounded-xl p-8 mb-8 space-y-6 bg-[#F5F5F5 ">
                     <div className="grid grid-cols-3 gap-6">
                         <div className="flex flex-col">
                             <p className="font-bold uppercase text-gray-700">Patient Name</p>
@@ -306,6 +335,7 @@ export default function AppointmentDetails() {
                         </div>
                     </div>
 
+
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col">
                             <p className="font-bold uppercase">Notes</p>
@@ -313,14 +343,26 @@ export default function AppointmentDetails() {
                                 {appointment.notes || 'N/A'}
                             </div>
                         </div>
-
-                        <div className="flex flex-col mt-5 ml-20">
-                            <p className="font-bold uppercase">Request to Cancel: {appointment.RequestToCancel ? 'Yes' : 'No'}</p>
+                        <div className="flex flex-col ">
+                            {RequestToCancel  && (
+                                <div className="flex flex-col items-start">
+                                    <p className=" font-bold uppercase">Request to Cancel</p>
+                                    <button className="ml-10 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300"
+                                        onClick={() => { Cancellappointment() }}
+                                    >
+                                        Cancel Appointment
+                                    </button>
+                                </div>
+                            )}
                         </div>
+
                     </div>
+
+
+
                 </div>
                 <ProceduresTable appointment={appointment} />
-                
+
                 <div className="flex justify-center">
                     <button className='btn bg-[#3EB489] hover:bg-[#62A78E] text-black'
                         onClick={() => toggleImages()}>
@@ -430,9 +472,9 @@ export default function AppointmentDetails() {
                     onClick={() => {
                         navigate(`/Patient2d/${userid}`);
                     }}
-                   className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
+                    className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
                 >View 2D
-                
+
                 </button>
 
 
