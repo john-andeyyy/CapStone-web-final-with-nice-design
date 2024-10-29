@@ -4,12 +4,14 @@ import axios from 'axios';
 import { fetchPatients } from '../Fetchs/patient/patient_account';
 import AddPatientModal from './Components/AddPatientModal';
 import { jsPDF } from 'jspdf';
+import TreatmentPlanModal from '../Components/PatientTreatment/Component/TreatmentPlanModal';
 
 export default function Patients_List() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [patientsInfo, setPatientsInfo] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [selecteduser, setSelectedUser] = useState('');
     const [sortAscending, setSortAscending] = useState(true); // Sorting state
     const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
 
@@ -45,7 +47,7 @@ export default function Patients_List() {
                 : lastNameB.localeCompare(lastNameA);
         });
         setPatientsInfo(sortedPatients);
-        setSortAscending(!sortAscending); 
+        setSortAscending(!sortAscending);
     };
 
     const filteredPatients = patientsInfo.filter((patient) => {
@@ -68,7 +70,7 @@ export default function Patients_List() {
         doc.setFillColor(themeColor);
         doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
         doc.setFontSize(10);
-        doc.setTextColor(255, 255, 255); 
+        doc.setTextColor(255, 255, 255);
         doc.text("No.", 12, y + 7);
         doc.text("ID", 22, y + 7);
         doc.text("Last Name", 42, y + 7);
@@ -80,10 +82,10 @@ export default function Patients_List() {
         y += rowHeight;
 
         filteredPatients.forEach((patient, index) => {
-            const rowNumber = index + 1; 
+            const rowNumber = index + 1;
 
             if (index % 2 === 0) {
-                doc.setFillColor(240, 240, 240); 
+                doc.setFillColor(240, 240, 240);
                 doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
             }
 
@@ -104,13 +106,17 @@ export default function Patients_List() {
                 y + 7
             );
 
-            y += rowHeight; 
+            y += rowHeight;
         });
 
         doc.save("Patients_List.pdf");
     };
 
 
+    const [isModaltreatment, setIsModaltreatment] = useState(false);
+
+    const handleOpenModaltreatmen = () => setIsModaltreatment(true);
+    const handleCloseModaltreatmen = () => setIsModaltreatment(false);
     return (
         <div className='container mx-auto p-4'>
             {loading ? (
@@ -174,7 +180,7 @@ export default function Patients_List() {
                                     <th className='p-2 text-center border border-black'>First Name</th>
                                     <th className='p-2 text-center border border-black'>Middle Name</th>
                                     <th className='p-2 text-center border border-black'>Last Visit</th>
-                                    <th className='p-2 text-center border border-black'>View</th>
+                                    <th className='p-2 text-center border border-black'>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -195,14 +201,27 @@ export default function Patients_List() {
                                                     : <span className='text-red-600'>No Record</span>}
                                             </td>
                                             <td className='p-2 text-center bg-gray-100 border border-black flex justify-center'>
-                                                <button
-                                                    className='flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm'
-                                                    onClick={() => navigate(`/PatientProfile/${patient.id}`)}
-                                                    title='View'
-                                                >
-                                                    <span className="material-symbols-outlined">visibility</span>
-                                                </button>
+                                                <div className='flex space-x-2'>
+                                                    <button
+                                                        className='flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm'
+                                                        onClick={() => navigate(`/PatientProfile/${patient.id}`)}
+                                                        title='View'
+                                                    >
+                                                        <span className="material-symbols-outlined">visibility</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedUser(patient.id); // Set the selected user
+                                                            setIsModaltreatment(true); // Open the treatment modal
+                                                        }}
+                                                        className='text-green-500 hover:underline'
+                                                    >
+                                                        View Treatment
+                                                    </button>
+                                                </div>
                                             </td>
+
+
                                         </tr>
                                     ))
                                 ) : (
@@ -218,8 +237,15 @@ export default function Patients_List() {
                         onClose={() => setIsModalOpen(false)}
                         onPatientAdded={handlePatientAdded}
                     />
+
+                    <TreatmentPlanModal
+                        patientId={selecteduser}
+                        isOpen={isModaltreatment}
+                        onClose={handleCloseModaltreatmen}
+                    />
                 </>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }
