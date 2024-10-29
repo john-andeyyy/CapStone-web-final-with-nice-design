@@ -4,17 +4,18 @@ import Swal from 'sweetalert2';
 export default function Sweetconfirm({
     title = "Are you sure?", // Default title
     text = "You won't be able to revert this!", // Default text
-    confirmButtonText = "Yes, delete it!", // Default confirm button text
+    confirmButtonText = "Yes, confirm it!", // Default confirm button text
     cancelButtonText = "Cancel", // Default cancel button text
     confirmButtonColor = "#3085d6", // Default confirm button color
     cancelButtonColor = "#d33", // Default cancel button color
+    icon = "warning", // Default icon type
     onConfirm, // Function to call on confirmation
 }) {
-    const handleDelete = () => {
+    const handleConfirm = () => {
         Swal.fire({
             title: title,
             text: text,
-            icon: "warning",
+            icon: icon,
             showCancelButton: true,
             confirmButtonColor: confirmButtonColor,
             cancelButtonColor: cancelButtonColor,
@@ -23,12 +24,10 @@ export default function Sweetconfirm({
         }).then((result) => {
             if (result.isConfirmed) {
                 // Call the onConfirm function if provided
-                if (onConfirm) {
-                    onConfirm();
-                }
+                if (onConfirm) onConfirm();
                 Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
+                    title: "Confirmed!",
+                    text: "Your action was successful.",
                     icon: "success",
                 });
             }
@@ -36,20 +35,11 @@ export default function Sweetconfirm({
     };
 
     return (
-        <div>
-            <button onClick={handleDelete}>Delete File</button>
-        </div>
+        <button onClick={handleConfirm} className="text-white py-2 px-4 hover:text-red-500">
+            <span className="material-symbols-outlined text-2xl mr-2">
+                warning
+            </span>
+            Confirm Action
+        </button>
     );
 }
-
-
-// <Sweetconfirm
-//     title="Confirm Deletion"
-//     text="Are you sure you want to delete this file?"
-//     confirmButtonText="Yes, delete it!"
-//     cancelButtonText="No, keep it"
-//     onConfirm={() => {
-//         // Custom function to execute on confirmation
-//         console.log("File deleted");
-//     }}
-// />

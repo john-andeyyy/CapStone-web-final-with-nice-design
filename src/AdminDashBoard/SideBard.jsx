@@ -9,6 +9,8 @@ import { get_profile } from './Fetchs/Admin/admin_profile';
 import ThemeController from '../Guest/GuestComponents/ThemeController';
 import Daisyui_modal from './Components/Daisyui_modal';
 import axios from 'axios';
+
+import Swal from 'sweetalert2';
 export default function Sidebar() {
     const BASEURL = import.meta.env.VITE_BASEURL;
 
@@ -95,21 +97,30 @@ export default function Sidebar() {
     };
 
     const handleLogout = () => {
-        axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
-            .then((res) => {
-                if (res.status === 200) {
-                    localStorage.clear();
-
-                    navigate('/');
-                    window.location.reload();
-                    // navigate('/', { replace: true });
-                }
-            })
-            .catch((error) => {
-                console.log('Logout error:', error);
-            });
+        Swal.fire({
+            title: 'Log Out Confirmation',
+            text: "Are you sure you want to log out? This will end your current session.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3EB489',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log out!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            localStorage.clear();
+                            navigate('/');
+                            window.location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        console.log('Logout error:', error);
+                    });
+            }
+        });
     };
-
 
 
     return (
