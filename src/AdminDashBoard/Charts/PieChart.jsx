@@ -1,8 +1,8 @@
 // PieChart.jsx
 import React, { useEffect, useRef } from 'react';
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
 
-Chart.register(ArcElement, Tooltip, Legend);
+Chart.register(PieController, ArcElement, Tooltip, Legend);
 
 const PieChart = ({ labels, datasets, title }) => {
     const chartRef = useRef(null);

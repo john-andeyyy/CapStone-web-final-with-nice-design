@@ -80,10 +80,15 @@ const UnavailableDentist = ({ dentistId }) => {
         fetchUnavailableTimes();
     }, [dentistId]);
 
-    const formatDate = (dateString) => {
+    function formatDate(dateString) {
         const date = new Date(dateString);
-        return date.toLocaleString([], { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
-    };
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+
 
     const addUnavailableTime = async (e) => {
         e.preventDefault();
@@ -146,6 +151,9 @@ const UnavailableDentist = ({ dentistId }) => {
         }
     };
 
+  
+
+
     return (
         <div className="p-4">
             <h2 className="text-xl font-bold mb-4 text-[#266D53] text-center">Manage Unavailable Times for Dentist</h2>
@@ -158,7 +166,7 @@ const UnavailableDentist = ({ dentistId }) => {
                         <label htmlFor="fromDate" className="block mb-1">From:</label>
                         <input
                             id="fromDate"
-                            type="datetime-local"
+                            type="date"  // Change here to "date"
                             value={fromDate}
                             onChange={(e) => setFromDate(e.target.value)}
                             className="border rounded px-2 py-1"
@@ -169,13 +177,14 @@ const UnavailableDentist = ({ dentistId }) => {
                         <label htmlFor="toDate" className="block mb-1">To:</label>
                         <input
                             id="toDate"
-                            type="datetime-local"
+                            type="date"  // Change here to "date"
                             value={toDate}
                             onChange={(e) => setToDate(e.target.value)}
                             className="border rounded px-2 py-1"
                             required
                         />
                     </div>
+
                     <button type="submit" className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-1 mt-5 rounded">
                         Add Unavailable Time
                     </button>
@@ -200,6 +209,7 @@ const UnavailableDentist = ({ dentistId }) => {
                                 <td className="border border-gray-500 px-4 py-2 bg-gray-100">{item._id}</td>
                                 <td className="border border-gray-500 px-4 py-2 bg-gray-100">{formatDate(item.from)}</td>
                                 <td className="border border-gray-500 px-4 py-2 bg-gray-100">{formatDate(item.to)}</td>
+
                                 <td className="border border-gray-500 px-4 py-2 bg-gray-100">
 
                                     <div className="flex items-center">

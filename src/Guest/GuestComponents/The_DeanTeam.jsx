@@ -30,60 +30,60 @@ export default function TheDeanTeam() {
     };
 
     return (
-         <div className="relative min-h-screen">
-        <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div>
+        <div className="relative min-h-screen">
+            <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div>
             {/* <h1 className="text-3xl font-bold mb-4 text-green-500 p-2">DenTeam:</h1> */}
-<div className='p-8'>
-            <div id="title" className='pb-2 text-center inline-block justify-center items-center flex'>
-                <div className=" flex-1 rounded-md mt-5  ml-10 mr-10 inline-block"
-                    style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-                    <h1 className="text-5xl font-bold uppercase p-2 bg-accent rounded">
-                        The <span className='text-[#266D53]'>DenTeam</span>
-                    </h1>
+            <div className='p-8'>
+                <div id="title" className='pb-2 text-center inline-block justify-center items-center '>
+                    <div className=" flex-1 rounded-md mt-5  ml-10 mr-10 inline-block"
+                        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+                        <h1 className="text-5xl font-bold uppercase p-2 bg-accent rounded">
+                            The <span className='text-[#266D53]'>DenTeam</span>
+                        </h1>
+                    </div>
                 </div>
-            </div>
 
-            <div className=" p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {members.length > 0 ? (
-                    members.map(member => (
-                        <div key={member._id} className="card card-compact bg-white shadow-xl">
-                            <figure>
-                                <img
-                                    src={getProfileImage(member.ProfilePicture)} // Handle base64 image
-                                    alt={`${member.FirstName} ${member.LastName}`}
-                                    className="object-cover h-48 pt-5 " // Ensures the image covers the card
-                                />
-                            </figure>
-                            <div className="card-body">
-                                <div className='flex justify-center items-center'>
-                                <h1 className="card-title text-[#266D53] text-center">{`${member.FirstName} ${member.LastName}`}</h1>
-                                </div>
-                                <div className="flex items-center"> 
-                                    <h4 className='font-bold mr-2'>Role:</h4>
-                                    <span>{member.Role}</span> 
-                                </div>
+                <div className=" p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {members.length > 0 ? (
+                        members.map(member => (
+                            <div key={member._id} className="card card-compact bg-white shadow-xl">
+                                <figure>
+                                    <img
+                                        src={getProfileImage(member.ProfilePicture)} // Handle base64 image
+                                        alt={`${member.FirstName} ${member.LastName}`}
+                                        className="object-cover h-48 pt-5 " // Ensures the image covers the card
+                                    />
+                                </figure>
+                                <div className="card-body">
+                                    <div className='flex justify-center items-center'>
+                                        <h1 className="card-title text-[#266D53] text-center">{`${member.FirstName} ${member.LastName}`}</h1>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <h4 className='font-bold mr-2'>Role:</h4>
+                                        <span>{member.Role}</span>
+                                    </div>
 
-                                <div className="flex items-center"> 
-                                    <h4 className='font-bold mr-2'>Contact Number:</h4> 
-                                    <span>{member.ContactNumber}</span> 
-                                </div>
+                                    <div className="flex items-center">
+                                        <h4 className='font-bold mr-2'>Contact Number:</h4>
+                                        <span>{member.ContactNumber}</span>
+                                    </div>
 
-                                <div className='flex space-x-5'>
-                                    <a href={member.Facebooklink} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-                                        Facebook Profile
-                                    </a>
-                                    <a href={member.Email} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-                                        Email
-                                    </a>
+                                    <div className='flex space-x-5'>
+                                        <a href={member.Facebooklink} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                                            Facebook Profile
+                                        </a>
+                                        <a href={member.Email} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                                            Email
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
-                ) : (
-                    <p className="col-span-full text-center">No members found.</p>
-                )}
+                        ))
+                    ) : (
+                        <p className="col-span-full text-center">No members found.</p>
+                    )}
+                </div>
             </div>
-        </div>
         </div>
     );
 }

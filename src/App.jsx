@@ -187,6 +187,7 @@ function App() {
     if (new Date().getTime() >= expirationTime) {
       setIsExpired(true);
       localStorage.clear()
+      window.location.reload();
     }
   }, []);
 
@@ -221,7 +222,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/CreateAccount" element={<CreateAccount />} />
-              <Route path="/AdminLogin" element={<AdminLogin login={login} />} />
+            <Route path="/AdminLogin" element={<AdminLogin login={login} />} />
             <Route path="/admindashboard" element={<Dashboard />} />
             <Route path="/AllServices" element={<AllServices />} />
             <Route path="/The_DeanTeam" element={<The_DeanTeam />} />

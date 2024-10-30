@@ -12,8 +12,8 @@ export default function Patients_List() {
     const [patientsInfo, setPatientsInfo] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selecteduser, setSelectedUser] = useState('');
-    const [sortAscending, setSortAscending] = useState(true); // Sorting state
-    const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+    const [sortAscending, setSortAscending] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetch_patient = async () => {
         setLoading(true);
@@ -112,11 +112,11 @@ export default function Patients_List() {
         doc.save("Patients_List.pdf");
     };
 
-
     const [isModaltreatment, setIsModaltreatment] = useState(false);
 
     const handleOpenModaltreatmen = () => setIsModaltreatment(true);
     const handleCloseModaltreatmen = () => setIsModaltreatment(false);
+
     return (
         <div className='container mx-auto p-4'>
             {loading ? (
@@ -163,75 +163,76 @@ export default function Patients_List() {
                         </button>
                     </div>
 
-                    {/* Table and Modal Components */}
                     <div className='mt-4 overflow-auto max-h-[510px]'>
-                        <table className='w-full text-left border-collapse'>
-                            <thead className='bg-[#3EB489]  text-white sticky top-0 z-1'>
-                                <tr>
-                                    <th className='p-2 text-center border border-black'>ID</th>
-                                    <th className='p-2 text-center border border-black'>
-                                        Last Name
-                                        <button onClick={handleSort} className='ml-2 '>
-                                            <span className="material-symbols-outlined">
-                                                {sortAscending ? 'arrow_upward' : 'arrow_downward'}
-                                            </span>
-                                        </button>
-                                    </th>
-                                    <th className='p-2 text-center border border-black'>First Name</th>
-                                    <th className='p-2 text-center border border-black'>Middle Name</th>
-                                    <th className='p-2 text-center border border-black'>Last Visit</th>
-                                    <th className='p-2 text-center border border-black'>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredPatients.length > 0 ? (
-                                    filteredPatients.map((patient) => (
-                                        <tr key={patient.id} className='border-b'>
-                                            <td className='p-2 bg-gray-100 border border-black'>{patient.id}</td>
-                                            <td className='p-2 bg-gray-100 border border-black'>{patient.LastName}</td>
-                                            <td className='p-2 bg-gray-100 border border-black'>{patient.FirstName}</td>
-                                            <td className='p-2 bg-gray-100 border border-black'>{patient.MiddleName || 'N/A'}</td>
-                                            <td className='p-2 bg-gray-100 border border-black'>
-                                                {patient.LatestAppointment
-                                                    ? new Date(patient.LatestAppointment.date).toLocaleDateString('en-US', {
-                                                        year: 'numeric',
-                                                        month: 'long',
-                                                        day: 'numeric',
-                                                    })
-                                                    : <span className='text-red-600'>No Record</span>}
-                                            </td>
-                                            <td className='p-2 text-center bg-gray-100 border border-black flex justify-center'>
-                                                <div className='flex space-x-2'>
-                                                    <button
-                                                        className='flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm'
-                                                        onClick={() => navigate(`/PatientProfile/${patient.id}`)}
-                                                        title='View'
-                                                    >
-                                                        <span className="material-symbols-outlined">visibility</span>
-                                                    </button>
-                                                    <button
-                                                        onClick={() => {
-                                                            setSelectedUser(patient.id); // Set the selected user
-                                                            setIsModaltreatment(true); // Open the treatment modal
-                                                        }}
-                                                        className='text-green-500 hover:underline'
-                                                    >
-                                                        View Treatment
-                                                    </button>
-                                                </div>
-                                            </td>
-
-
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full text-left border-collapse">
+                                    <thead className="bg-[#3EB489] text-white sticky top-0 z-1">
+                                        <tr>
+                                            <th className="p-2 text-center border border-black">ID</th>
+                                            <th className="p-2 text-center border border-black">
+                                                Last Name
+                                                <button onClick={handleSort} className="ml-2">
+                                                    <span className="material-symbols-outlined">
+                                                        {sortAscending ? 'arrow_upward' : 'arrow_downward'}
+                                                    </span>
+                                                </button>
+                                            </th>
+                                            <th className="p-2 text-center border border-black">First Name</th>
+                                            <th className="p-2 text-center border border-black">Middle Name</th>
+                                            <th className="p-2 text-center border border-black">Last Visit</th>
+                                            <th className="p-2 text-center border border-black">Action</th>
                                         </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="6" className='p-4 text-center'>No patients found.</td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                                    </thead>
+                                    <tbody>
+                                        {filteredPatients.length > 0 ? (
+                                            filteredPatients.map((patient) => (
+                                                <tr key={patient.id} className="border-b">
+                                                    <td className="p-2 bg-gray-100 border border-black">{patient.id}</td>
+                                                    <td className="p-2 bg-gray-100 border border-black">{patient.LastName}</td>
+                                                    <td className="p-2 bg-gray-100 border border-black">{patient.FirstName}</td>
+                                                    <td className="p-2 bg-gray-100 border border-black">{patient.MiddleName || 'N/A'}</td>
+                                                    <td className="p-2 bg-gray-100 border border-black">
+                                                        {patient.LatestAppointment
+                                                            ? new Date(patient.LatestAppointment.date).toLocaleDateString('en-US', {
+                                                                year: 'numeric',
+                                                                month: 'long',
+                                                                day: 'numeric',
+                                                            })
+                                                            : <span className="text-red-600">No Record</span>}
+                                                    </td>
+                                                    <td className="p-2 text-center bg-gray-100 border border-black flex justify-center">
+                                                        <div className="flex space-x-2">
+                                                            <button
+                                                                className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
+                                                                onClick={() => navigate(`/PatientProfile/${patient.id}`)}
+                                                                title="View"
+                                                            >
+                                                                <span className="material-symbols-outlined">visibility</span>
+                                                            </button>
+                                                            <button
+                                                                onClick={() => {
+                                                                    setSelectedUser(patient.id); // Set the selected user
+                                                                    setIsModaltreatment(true); // Open the treatment modal
+                                                                }}
+                                                                className="text-green-500 hover:underline"
+                                                            >
+                                                                Treatment Recommendation
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="6" className="p-4 text-center">No patients found.</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+
                     </div>
+
                     <AddPatientModal
                         isOpen={isModalOpen}
                         onClose={() => setIsModalOpen(false)}
@@ -244,8 +245,7 @@ export default function Patients_List() {
                         onClose={handleCloseModaltreatmen}
                     />
                 </>
-            )
-            }
-        </div >
+            )}
+        </div>
     );
 }

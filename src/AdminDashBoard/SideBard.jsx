@@ -195,31 +195,37 @@ export default function Sidebar() {
                                 <span>Patients</span>
                             </li>
 
-                            {/* Medical Requests Dropdown */}
-                            <li className="relative">
-                                <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleMedicalRequestsDropdown}>
+                            <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}>
+                                <FaFileAlt className="pr-1" />
+                                <span>Dental Certificate Requests</span>
+                            </li>
+
+
+                            {/* <li className="relative"> */}
+                                {/* <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleMedicalRequestsDropdown}>
                                     <FaFileAlt className="mr-3" />
                                     <span>Documents</span>
                                     {isMedicalRequestsDropdownOpen ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
-                                </div>
+                                </div> */}
 
-                                {isMedicalRequestsDropdownOpen && (
-                                    <ul className="ml-3 mt-2 space-y-1">
-                                        <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}>
-                                            <FaFileAlt className="pr-1" />
-                                            <span>Dental Certificate Requests</span>
-                                        </li>
+                                {/* {isMedicalRequestsDropdownOpen && (
+                                    // <ul className="ml-3 mt-2 space-y-1">
+                                        {/* <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}> */}
+                                            {/* <FaFileAlt className="pr-1" /> */}
+                                            {/* <span>Dental Certificate Requests</span> */}
+                                        {/* </li> */}
                                         {/* <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'completedRequests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests/completed', 'completedRequests')}>
                                             <span className="material-symbols-outlined mr-2">done</span>
                                             Completed Requests
                                         </li> */}
-                                    </ul>
-                                )}
-                            </li>
+                                    {/* </ul> */}
+
+
+                            {/* </li> */}
 
                             <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'add-procedure' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Add_Procedure', 'add-procedure')}>
                                 <FaPlus className="mr-3" />
-                                <span>Add Procedure</span>
+                                <span> Services</span>
                             </li>
 
                             <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Dentist' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Dentist', 'Dentist')}>

@@ -8,14 +8,28 @@ export default function GuestNavBar() {
     const navigate = useNavigate()
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [name, setname] = useState([]);
+    const [logo, setlogo] = useState();
 
     const BASEURL = import.meta.env.VITE_BASEURL;
+
+
+    const getProfileImage = (profilePicture) => {
+
+        // Check if the profile picture is available
+        if (profilePicture) {
+            return `data:image/jpeg;base64,${profilePicture}`; // Adjust to image format (jpeg/png)
+        } else {
+            return "https://via.placeholder.com/150"; // Fallback if no image
+        }
+    };
+
 
     useEffect(() => {
         axios.get(`${BASEURL}/Contactus/contactus`)
             .then(response => {
                 if (response.data.length > 0) {
                     setname(response.data[0]);
+                    setlogo(getProfileImage(response.data[0].logo))
                 }
             })
             .catch(error => {
@@ -32,13 +46,11 @@ export default function GuestNavBar() {
     return (
         <div className="bg-[#3EB489] sticky top-0 z-50">
             <div className="navbar container mx-auto flex items-center justify-between flex-wrap">
-            <div className="flex-1">
-                    <a className="btn btn-ghost text-2xl font-serif text-white font-bold uppercase" onClick={() => navigate('/')}>{name.DentalName}</a>
+                <div className="flex-1">
+                    <img src={logo} alt="" className='h-12' />
+                    <a className="  text-2xl font-serif text-white font-bold uppercase" onClick={() => navigate('/')}>{name.DentalName}</a>
+                    
                 </div>
-
-            {/* <a className="btn btn-ghost flex items-center" onClick={() => navigate('/')}>
-                <img src="/public/logo.png" alt="Logo" className="mr-2 h-8 w-auto h-full rounded-mb" /> 
-            </a> */}
 
                 <div className="block lg:hidden">
                     <button onClick={toggleMenu} className="btn btn-ghost text-green-500">
@@ -58,7 +70,7 @@ export default function GuestNavBar() {
                         <li className="mb-2 md:mb-0">
                             <button className="btn btn-ghost font-bold text-white text-xl"
                                 onClick={() => { navigate('The_DeanTeam') }}
-                            >The DenTeam </button>
+                            >The DEANTEAM </button>
                         </li>
                         {/*                         
                         <li className="mb-2 md:mb-0">
@@ -72,7 +84,7 @@ export default function GuestNavBar() {
                         <li className="mb-2 md:mb-0">
                             <button className="btn  bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black" onClick={() => navigate('/AdminLogin')}>LOGIN</button>
                         </li>
-                
+
                     </ul>
                 </div>
             </div>

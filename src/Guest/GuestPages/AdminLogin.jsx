@@ -98,7 +98,7 @@ export default function AdminLogin({ login }) {
                         </form>
                         <div className="mt-4 text-center">
                             <Link to={`/Forget_pass`} className="text-green-600 hover:text-green-700 transition duration-150">
-                                Forget Password?
+                                Forgot Password?
                             </Link>
                         </div>
                     </div>

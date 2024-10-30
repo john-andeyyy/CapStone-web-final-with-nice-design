@@ -11,11 +11,11 @@ const ProceduresTable = ({ appointment }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedAmount, setEditedAmount] = useState(appointment.Amount || 0);
     const [appointmentAmount, setappointmentAmount] = useState(appointment.Amount || 0);
-
+    
     const [ModalOpen, setModalOpen] = useState(false);
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
-
+    
 
     const fetchAllProcedures = async () => {
         try {
@@ -48,6 +48,7 @@ const ProceduresTable = ({ appointment }) => {
 
     const handleSaveProcedures = async () => {
         console.log('Payload size (bytes):', JSON.stringify(addedProcedures).length);
+        window.location.reload();
 
         try {
             const updatedProcedures = [...userProceduresList, ...addedProcedures];
@@ -63,7 +64,6 @@ const ProceduresTable = ({ appointment }) => {
                 },
                 { withCredentials: true }
             );
-
             console.log('Procedures saved successfully');
 
             setUserProceduresList(finalProcedures);
@@ -80,6 +80,7 @@ const ProceduresTable = ({ appointment }) => {
         const addedProceduresTotal = addedProcedures.reduce((total, proc) => total + proc.Price, 0);
         return existingProceduresTotal + addedProceduresTotal;
     };
+    const [totoalamount, settoal] = useState(calculateTotal());
 
     const handleSelectProcedures = (selectedProcedures) => {
         const newProcedures = selectedProcedures.filter(procedure => {
@@ -110,6 +111,16 @@ const ProceduresTable = ({ appointment }) => {
             console.log('Edit mode enabled');
         }
     };
+
+    const formattedAmount = new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP',
+    }).format(totoalamount);
+    
+    const formattedAmountapi = new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP',
+    }).format(totoalamount);
 
     return (
         <div>
@@ -148,7 +159,12 @@ const ProceduresTable = ({ appointment }) => {
                                     className={markedForRemoval.includes(procedure._id) ? 'bg-red-200' : ''}
                                 >
                                     <td className="border px-4 py-2 truncate">{procedure.Procedure_name}</td>
-                                    <td className="border px-4 py-2 truncate">{`₱${procedure.Price}`}</td>
+                                    <td className="border px-4 py-2 truncate">
+                                        {new Intl.NumberFormat('en-PH', {
+                                            style: 'currency',
+                                            currency: 'PHP'
+                                        }).format(procedure.Price)}
+                                    </td>
                                     {isEditing && (
                                         <td className="border px-4 py-2 flex justify-center">
                                             {markedForRemoval.includes(procedure._id) ? (
@@ -234,7 +250,7 @@ const ProceduresTable = ({ appointment }) => {
 
             <div className="flex justify-between mt-4 space-x-1">
                 <p className="font-semibold ">Total of all procedures: </p>
-                <p className="font-semibold">{`₱${calculateTotal()}`}</p>
+                <p className="font-semibold">{formattedAmount}</p>
             </div>
             {/* Procedures Modal */}
             <ProceduresModal

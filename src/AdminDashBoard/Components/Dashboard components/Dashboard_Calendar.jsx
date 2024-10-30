@@ -23,6 +23,7 @@ export default function Dashboard_Calendar() {
 
 
     const { data, loading, error } = Dashboard_Fetch();
+    
     useEffect(() => {
         if (data.Appointment_Approved) {
             const formattedEvents = data.Appointment_Approved.map(appointment => {

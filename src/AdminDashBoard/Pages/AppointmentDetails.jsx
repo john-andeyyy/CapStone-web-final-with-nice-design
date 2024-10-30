@@ -323,14 +323,15 @@ export default function AppointmentDetails() {
                         <div className="flex flex-col">
                             <p className="font-bold uppercase">Start</p>
                             <div className="bg-[#D3CDCD] p-2 rounded">
-                                {new Date(appointment.Start).toLocaleTimeString('en-US')}
+                                {new Date(appointment.Start).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                             </div>
                         </div>
 
                         <div className="flex flex-col">
                             <p className="font-bold uppercase">End</p>
                             <div className="bg-[#D3CDCD] p-2 rounded">
-                                {new Date(appointment.End).toLocaleTimeString('en-US')}
+                                {new Date(appointment.End).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+
                             </div>
                         </div>
                     </div>

@@ -19,8 +19,7 @@ export default function Dashboard_Fetch() {
 
                 setData({
                     Appointment_Approved: response1.data,
-                    data2: response2?.data || null,
-                    data3: response3?.data || null,
+                    
                 });
             } catch (err) {
                 setError('Error fetching data');

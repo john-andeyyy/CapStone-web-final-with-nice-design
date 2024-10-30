@@ -172,7 +172,7 @@ console.log(response.data)
                         <div>
                             <label className="block mb-1">Contact Number</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="ContactNumber"
                                 value={dentistData.ContactNumber}
                                 onChange={handleChange}
