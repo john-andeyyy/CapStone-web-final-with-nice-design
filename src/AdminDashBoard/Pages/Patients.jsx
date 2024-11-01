@@ -200,8 +200,8 @@ export default function Patients_List() {
                                                             })
                                                             : <span className="text-red-600">No Record</span>}
                                                     </td>
-                                                    <td className="p-2 text-center bg-gray-100 border border-black flex justify-center">
-                                                        <div className="flex space-x-2">
+                                                    <td className="p-2 text-center bg-gray-100 border border-black ">
+                                                        <div className="flex space-x-2 flex justify-center">
                                                             <button
                                                                 className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
                                                                 onClick={() => navigate(`/PatientProfile/${patient.id}`)}
@@ -214,10 +214,14 @@ export default function Patients_List() {
                                                                     setSelectedUser(patient.id); // Set the selected user
                                                                     setIsModaltreatment(true); // Open the treatment modal
                                                                 }}
-                                                                className="text-green-500 hover:underline"
+                                                                className="flex items-center justify-center w-10 bg-gray-200 text-gray-600 hover:text-black transition rounded-lg shadow-sm"
+                                                                title="Treatment Recommendations"
                                                             >
-                                                                Treatment Recommendation
+                                                                <span className="material-symbols-outlined">
+                                                                    clinical_notes
+                                                                </span>
                                                             </button>
+
                                                         </div>
                                                     </td>
                                                 </tr>

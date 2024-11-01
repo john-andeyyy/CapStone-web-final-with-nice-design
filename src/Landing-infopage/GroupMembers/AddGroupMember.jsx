@@ -86,8 +86,8 @@ export default function AddGroupMemberModal({ isOpen, onClose, memberlist, addto
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
-      <div className="relative p-5 border max-w-4xl shadow-lg rounded-md bg-secondary">
-        <h1 className="text-2xl font-bold mb-6 text-center">Add Group Member</h1>
+      <div className="relative p-5 border max-w-4xl shadow-lg rounded-md bg-[#C6E4DA]">
+        <h1 className="text-2xl font-bold mb-6 text-[#266D53] text-center">Add Group Member</h1>
         <div className="flex justify-center">
           {previewImage && (
             <div className="mt-2">
@@ -202,13 +202,12 @@ export default function AddGroupMemberModal({ isOpen, onClose, memberlist, addto
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-400 text-white font-semibold py-2 px-4 rounded-md mr-2 hover:bg-gray-500"
-            >
+              className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black font-semibold py-2 px-4 rounded-md mr-2">
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600"
+              className=" text-black font-semibold py-2 px-4 rounded-md bg-[#4285F4] hover:bg-[#0C65F8]"
             >
               Add Member
             </button>

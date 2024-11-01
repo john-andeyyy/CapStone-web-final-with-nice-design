@@ -150,7 +150,7 @@ export default function AppointmentDetails() {
                 // setIsEditingNotes(false);
                 setFiles({ Before: null, After: null, Xray: null });
                 setPreviewImages({ Before: null, After: null, Xray: null });
-                showToast('success', 'Update Successfully');
+                showToast('success', 'Updated Successfully');
 
                 getdata();
             })

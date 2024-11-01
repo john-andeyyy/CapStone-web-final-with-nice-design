@@ -168,7 +168,7 @@ const NotificationBell = () => {
                                         <div className="flex justify-between items-center">
                                             <div className="flex flex-col space-y-1">
                                                 <p className="text-sm">{notification.user_Appointment_Title || notification.user_Appointment_message}</p>
-                                                <p className="text-xs text-gray-500">created at: {formatDate(notification.createdAt)}</p>
+                                                {/* <p className="text-xs text-gray-500">created at: {formatDate(notification.createdAt)}</p> */}
 
                                             </div>
                                             <br />

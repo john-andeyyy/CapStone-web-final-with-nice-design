@@ -69,7 +69,7 @@ export default function Dashboard() {
                 {/* Right Column - Full Height Calendar */}
                 <div className="w-full p-4 border border-primary bg-green-200 bg-opacity-50 rounded-lg col-span-1 lg:col-span-2">
                     <Dashboard_Calendar />
-                    <span className='text-7xl uppercase flex justify-center items-center mt-10  font-serif font-semibold text-[#3EB489]'>Calendar</span>
+                    <span className='text-6xl uppercase flex justify-center items-center mt-5  font-serif font-semibold text-[#3EB489]'>Calendar</span>
                 </div>
             </div>
         </div>

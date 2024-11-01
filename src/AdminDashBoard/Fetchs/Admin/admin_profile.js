@@ -45,7 +45,7 @@ export const update_profile = async (profileData) => {
             response: response.data,
             status: response.data.message
         }
-        showToast('success', 'Update successful!');
+        showToast('success', 'Updated successfully!');
 
         setTimeout(() => {
         window.location.reload();

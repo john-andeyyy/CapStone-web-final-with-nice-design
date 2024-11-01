@@ -55,12 +55,12 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="rounded-lg shadow-lg p-6 w-11/12 max-w-5xl bg-[#3EB489]">
+            <div className="rounded-lg shadow-lg p-6 w-11/12 max-w-5xl bg-[#C6E4DA]">
                 {/* <h2 className="text-2xl font-bold mb-6 text-[#C6E4DA] text-center">
                     {isAdding ? 'Add Treatment Plan' : isEditing ? 'Edit Treatment Plan' : `Treatment Plans for ${treatmentPlans.length > 0 ? `${treatmentPlans[0].patient.FirstName} ${treatmentPlans[0].patient.LastName}` : 'N/A'}`}
                 </h2> */}
 
-                <h2 className="text-2xl font-bold mb-6 text-[#C6E4DA] text-center">
+                <h2 className="text-2xl font-bold mb-6 text-[#266D53] text-center">
                     Treatment Plan
                 </h2>
 
@@ -112,27 +112,27 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                                 <p className="text-center text-red-500">No treatment plans found.</p> // Display no records message
                             ) : (
                                 <div className='max-h-96 overflow-y-auto'>
-                                    <table className="min-w-full border border-gray-300 bg-[#C6E4DA]">
+                                    <table className="min-w-full border border-black bg-gray-100 text-white">
                                         <thead className="bg-gray-100">
                                             <tr>
-                                                <th className="py-2 px-4 border-b">Treatment Stage</th>
-                                                <th className="py-2 px-4 border-b">Procedure</th>
-                                                <th className="py-2 px-4 border-b">Estimated Cost</th>
-                                                <th className="py-2 px-4 border-b">Date</th>
-                                                <th className="py-2 px-4 border-b">Status</th>
-                                                <th className="py-2 px-4 border-b">Update Status</th>
-                                                <th className="py-2 px-4 border-b">Edit</th>
+                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Treatment Stage</th>
+                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Procedure</th>
+                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Estimated Cost</th>
+                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Date</th>
+                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Status</th>
+                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Update Status</th>
+                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Edit</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {treatmentPlans.map((plan) => (
                                                 <tr key={plan._id} className={plan.Status === 'Completed' ? 'bg-green-200 bg-opacity-50' : ''}>
-                                                    <td className="py-2 px-4 border-b">{plan.TreatmentStage}</td>
-                                                    <td className="py-2 px-4 border-b">{plan.ProcedureList.map((item) => item.Procedure.Procedure_name).join(', ')}</td>
-                                                    <td className="py-2 px-4 border-b">{plan.EstimatedCost.toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</td>
-                                                    <td className="py-2 px-4 border-b">{new Date(plan.scheduleOn).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })}</td>
-                                                    <td className="py-2 px-4 border-b">{plan.Status}</td>
-                                                    <td className="py-2 px-4 border-b">
+                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{plan.TreatmentStage}</td>
+                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{plan.ProcedureList.map((item) => item.Procedure.Procedure_name).join(', ')}</td>
+                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{plan.EstimatedCost.toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</td>
+                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{new Date(plan.scheduleOn).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })}</td>
+                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{plan.Status}</td>
+                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">
                                                         {plan.Status === 'Completed' ? (
                                                             <span className="text-green-700 font-semibold">Completed</span>
                                                         ) : (
@@ -141,7 +141,7 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                                                                     <>
                                                                         <button
                                                                             onClick={() => updateStatus(plan._id, 'Completed')}
-                                                                            className="py-1 px-3 text-sm rounded bg-blue-500 text-white hover:bg-blue-600"
+                                                                            className="py-1 px-3 text-sm rounded text-white bg-[#4285F4] hover:bg-[#0C65F8]"
                                                                         >
                                                                             Completed
                                                                         </button>
@@ -156,7 +156,7 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                                                             </div>
                                                         )}
                                                     </td>
-                                                    <td className="py-2 px-4 border-b">
+                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">
                                                         <button
                                                             onClick={() => handleEditClick(plan)}
                                                             className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600"
@@ -173,13 +173,13 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                             <div className="mt-4 flex justify-end">
                                 <button
                                     onClick={() => setIsAdding(true)}
-                                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                                    className=" text-black py-2 px-4 rounded bg-[#4285F4] hover:bg-[#0C65F8]"
                                 >
                                     Add Treatment Plan
                                 </button>
                                 <button
                                     onClick={onClose}
-                                    className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 ml-2"
+                                    className=" text-black py-2 px-4 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA] ml-2"
                                 >
                                     Close
                                 </button>

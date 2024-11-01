@@ -70,7 +70,7 @@ export default function GuestNavBar() {
                         <li className="mb-2 md:mb-0">
                             <button className="btn btn-ghost font-bold text-white text-xl"
                                 onClick={() => { navigate('The_DeanTeam') }}
-                            >The DEANTEAM </button>
+                            >DEANTEAM </button>
                         </li>
                         {/*                         
                         <li className="mb-2 md:mb-0">

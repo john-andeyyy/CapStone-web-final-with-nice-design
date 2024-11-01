@@ -120,7 +120,7 @@ export default function Dashboard_Calendar() {
 
                 <Modal isOpen={isModalOpen} close={closeModal}>
                     <div className="flex justify-between items-center mb-4 border-b pb-2">
-                        <h3 className="text-lg font-semibold text-gray-800">Event Details</h3>
+                        <h3 className="text-lg font-semibold text-[#266D53] text-center">Event Details</h3>
                         <button
                             className="text-sm text-black hover:text-gray-700 transition-colors"
                             onClick={closeModal}
@@ -151,7 +151,7 @@ export default function Dashboard_Calendar() {
                                 </div>
                                 {/* Procedures */}
                                 <div className="col-span-2 mt-4">
-                                    <p className="font-medium">Procedures</p>
+                                    <p className="font-medium text-xl">Procedures</p>
                                     <ul className="list-disc list-inside space-y-0.5">
                                         {selectedEvent.procedures.map((procedure, index) => (
                                             <li key={procedure.id || index} className="text-black text-lg text-left">
@@ -163,7 +163,7 @@ export default function Dashboard_Calendar() {
                             </div>
                             <div className='text-right '>
                                 <button
-                                    className='bg-[#3EB489] hover:bg-[#3eb489aa] p-3 rounded-lg '
+                                    className='bg-[#3EB489] hover:bg-[#62A78E] p-3 rounded-lg '
                                     onClick={() => {
                                         closeModal()
                                         navigate(`/appointment/${selectedEvent.id}`)

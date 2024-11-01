@@ -159,7 +159,7 @@ const UnavailableClinic = () => {
             setEditFrom('');
             setEditTo('');
             fetchUnavailableTimes();
-            showToast('success', ' Update successful!');
+            showToast('success', ' Updated successfully!');
         } catch (err) {
             setError(err.response?.data?.message || 'Error updating unavailable time');
         }

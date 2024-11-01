@@ -162,14 +162,14 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
             </div>
 
             <div className="mt-4 flex justify-end">
-                <button onClick={handleAddPlan} className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+                <button onClick={handleAddPlan} className="bg-[#4285F4] hover:bg-[#0C65F8] text-black py-2 px-4 rounded ">
                     Add Plan
                 </button>
                 <button
                     onClick={onCancel}
-                    className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 ml-2"
+                    className=" text-black py-2 px-4 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA] ml-2"
                 >
-                    Cancel/back
+                    Cancel
                 </button>
             </div>
         </div>
