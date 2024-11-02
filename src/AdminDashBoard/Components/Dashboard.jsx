@@ -30,7 +30,7 @@ export default function Dashboard() {
 
     return (
         <div className="p-4">
-            <div className="grid grid-cols-2 items-center"> 
+            <div className="grid grid-cols-2 items-center">
                 <div className="flex flex-col">
                     <header>
                         <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -68,8 +68,24 @@ export default function Dashboard() {
 
                 {/* Right Column - Full Height Calendar */}
                 <div className="w-full p-4 border border-primary bg-green-200 bg-opacity-50 rounded-lg col-span-1 lg:col-span-2">
+                    {/* <div className="w-full p-4 border border-primary bg-green-200 bg-opacity-50 rounded-lg col-span-1 lg:col-span-2"> */}
                     <Dashboard_Calendar />
-                    <span className='text-6xl uppercase flex justify-center items-center mt-5  font-serif font-semibold text-[#3EB489]'>Calendar</span>
+                    <span className="
+    text-3xl
+    sm:text-4xl
+    md:text-5xl
+    lg:text-6xl
+    uppercase
+    flex
+    justify-center
+    items-center
+    mt-5
+    font-serif
+    font-semibold
+    text-[#3EB489]
+">
+                        Calendar
+                    </span>
                 </div>
             </div>
         </div>

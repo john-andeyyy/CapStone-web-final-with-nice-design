@@ -163,23 +163,23 @@ export default function Patients_List() {
                         </button>
                     </div>
 
-                    <div className='mt-4 overflow-auto max-h-[510px]'>
+                        <div className="mt-4 overflow-auto max-h-[510px]">
                             <div className="overflow-x-auto">
                                 <table className="min-w-full text-left border-collapse">
                                     <thead className="bg-[#3EB489] text-white sticky top-0 z-1">
                                         <tr>
-                                            <th className="p-2 text-center border border-black">ID</th>
+                                            <th className="p-2 text-center border border-black hidden md:table-cell">ID</th>
                                             <th className="p-2 text-center border border-black">
                                                 Last Name
-                                                <button onClick={handleSort} className="ml-2">
+                                                {/* <button onClick={handleSort} className="ml-2">
                                                     <span className="material-symbols-outlined">
                                                         {sortAscending ? 'arrow_upward' : 'arrow_downward'}
                                                     </span>
-                                                </button>
+                                                </button> */}
                                             </th>
                                             <th className="p-2 text-center border border-black">First Name</th>
-                                            <th className="p-2 text-center border border-black">Middle Name</th>
-                                            <th className="p-2 text-center border border-black">Last Visit</th>
+                                            <th className="p-2 text-center border border-black hidden md:table-cell">Middle Name</th>
+                                            <th className="p-2 text-center border border-black hidden md:table-cell">Last Visit</th>
                                             <th className="p-2 text-center border border-black">Action</th>
                                         </tr>
                                     </thead>
@@ -187,11 +187,11 @@ export default function Patients_List() {
                                         {filteredPatients.length > 0 ? (
                                             filteredPatients.map((patient) => (
                                                 <tr key={patient.id} className="border-b">
-                                                    <td className="p-2 bg-gray-100 border border-black">{patient.id}</td>
+                                                    <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">{patient.id}</td>
                                                     <td className="p-2 bg-gray-100 border border-black">{patient.LastName}</td>
                                                     <td className="p-2 bg-gray-100 border border-black">{patient.FirstName}</td>
-                                                    <td className="p-2 bg-gray-100 border border-black">{patient.MiddleName || 'N/A'}</td>
-                                                    <td className="p-2 bg-gray-100 border border-black">
+                                                    <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">{patient.MiddleName || 'N/A'}</td>
+                                                    <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">
                                                         {patient.LatestAppointment
                                                             ? new Date(patient.LatestAppointment.date).toLocaleDateString('en-US', {
                                                                 year: 'numeric',
@@ -200,8 +200,8 @@ export default function Patients_List() {
                                                             })
                                                             : <span className="text-red-600">No Record</span>}
                                                     </td>
-                                                    <td className="p-2 text-center bg-gray-100 border border-black ">
-                                                        <div className="flex space-x-2 flex justify-center">
+                                                    <td className="p-2 text-center bg-gray-100 border border-black">
+                                                        <div className="flex space-x-2 justify-center">
                                                             <button
                                                                 className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
                                                                 onClick={() => navigate(`/PatientProfile/${patient.id}`)}
@@ -217,11 +217,16 @@ export default function Patients_List() {
                                                                 className="flex items-center justify-center w-10 bg-gray-200 text-gray-600 hover:text-black transition rounded-lg shadow-sm"
                                                                 title="Treatment Recommendations"
                                                             >
-                                                                <span className="material-symbols-outlined">
-                                                                    clinical_notes
-                                                                </span>
+                                                                <span className="material-symbols-outlined">clinical_notes</span>
                                                             </button>
+                                                            <button
+                                                                onClick={() => navigate(`/Patient2d/${patient.id}`)}
 
+                                                                className="flex items-center justify-center w-10 bg-white text-gray-600 hover:text-black transition rounded-lg shadow-sm"
+                                                                title="tooth history"
+                                                            >
+                                                                <span className="material-symbols-outlined">dentistry</span>
+                                                            </button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -234,8 +239,8 @@ export default function Patients_List() {
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
 
-                    </div>
 
                     <AddPatientModal
                         isOpen={isModalOpen}

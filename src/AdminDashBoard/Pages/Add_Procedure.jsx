@@ -26,7 +26,9 @@ export default function Add_Procedure() {
           withCredentials: true
         });
         if (Array.isArray(response.data)) {
-          setProcedureList(response.data);
+          const sortedProcedures = sortProceduresAlphabetically(response.data);
+          console.log('response.data', response.data)
+          setProcedureList(sortedProcedures);
         } else {
           console.error('Unexpected response format:', response.data);
         }
@@ -37,6 +39,7 @@ export default function Add_Procedure() {
 
     fetchProcedures();
   }, [BASEURL]);
+
 
   const openAddPatientModal = () => {
     setNewProcedure({ _id: '', Procedure_name: '', Duration: '', Price: '', Description: '' });
@@ -165,7 +168,7 @@ export default function Add_Procedure() {
 
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     setProcedureList(sortedProcedures);
-  };
+  }; 
 
   const filteredProcedures = procedureList.filter((procedure) =>
     procedure.Procedure_name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -181,10 +184,16 @@ export default function Add_Procedure() {
     }
   };
 
-  const filteredAndAvailableProcedures = filteredProcedures.filter((procedure) => {
-    if (availabilityFilter === null) return true; // No filter applied
-    return procedure.available === availabilityFilter;
-  });
+  const filteredAndAvailableProcedures = filteredProcedures
+    .filter((procedure) => {
+      if (availabilityFilter === null) return true; // Include all if no filter
+      return procedure.available === availabilityFilter; // Filter by availability
+    })
+    .sort((a, b) => a.Procedure_name.localeCompare(b.Procedure_name, undefined, { sensitivity: 'base' })); // Sort by Procedure_name
+
+
+
+
   const formatDuration = (totalMinutes) => {
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
@@ -195,135 +204,135 @@ export default function Add_Procedure() {
       return `${minutes} mins`; // Only show minutes if there are no hours
     }
   };
+  const sortProceduresAlphabetically = (procedures) => {
+    return procedures.sort((a, b) =>
+      a.Procedure_name.localeCompare(b.Procedure_name, undefined, { sensitivity: 'base' })
+    );
+  };
 
 
   return (
-    <div className='container mx-auto text-sm lg:text-md mt-5'>
-      <div className='flex justify-between items-center pb-5'>
-        <h1 className='text-2xl font-semibold l:text-sm'>Procedure List</h1>
-        <div className='relative'>
-          <input
-            type='text'
-            placeholder='Search procedures...'
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className='block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
-          />
-          <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
-            <span className="material-symbols-outlined">search</span>
-          </div>
 
+
+    <div className='container mx-auto text-sm lg:text-md mt-5'>
+      <div>
+        <div className='flex justify-between items-center '>
+          <h1 className='text-2xl font-semibold l:text-sm'>Procedure List</h1>
+          <div className='relative'>
+            <input
+              type='text'
+              placeholder='Search procedures...'
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className='block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#3EB489]'
+            />
+            <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
+              <span className="material-symbols-outlined">search</span>
+            </div>
+
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4 mb-4 py-5 md:flex md:gap-4 md:flex-row md:mb-0 ">
+          <button
+            className={`btn ${availabilityFilter === true ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400 '}`}
+            onClick={() => setAvailabilityFilter(true)}
+          >
+            Show Available
+          </button>
+          <button
+            className={`btn ${availabilityFilter === false ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400 '}`}
+            onClick={() => setAvailabilityFilter(false)}
+          >
+            Show Not Available
+          </button>
+          <button
+            className={`btn ${availabilityFilter === null ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400 '}`}
+            onClick={() => setAvailabilityFilter(null)}
+          >
+            Show All
+          </button>
+          <button className='btn bg-[#4285F4] hover:bg-[#0C65F8] text-white  md:ml-auto' onClick={openAddPatientModal}>
+            Create Procedure
+          </button>
+        </div>
+
+        <div className="text-sm overflow-auto max-h-[74vh] bg-gray-100">
+          <table className="w-full border border-gray-500">
+            <thead className="bg-[#3EB489] text-sm">
+              <tr>
+                <th className="border border-gray-500 p-2 text-white ">Procedure Name</th>
+                <th className="border border-gray-500 p-2 text-white hidden lg:table-cell">Duration</th>
+                <th className="border border-gray-500 p-2 text-white hidden lg:table-cell">Price</th>
+                <th className="border border-gray-500 p-2 text-white hidden lg:table-cell">Status</th>
+                <th className="border border-gray-500 text-white p-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredAndAvailableProcedures
+                .sort((a, b) => a.Procedure_name.localeCompare(b.Procedure_name)) // Sort by Procedure_name in ascending order
+                .map((procedure) => (
+                <tr key={procedure._id} className="hover:bg-neutral transition duration-200">
+                  <td className="border border-black p-2">{procedure.Procedure_name}</td>
+                  <td className="border border-black p-2 hidden lg:table-cell">
+                    {formatDuration(procedure.Duration)}
+                  </td>
+                  <td className="border border-black p-2 hidden lg:table-cell">
+                    {procedure.Price}
+                  </td>
+                  <td className="border border-black p-2 hidden lg:table-cell">
+                    <div className={`text-${procedure.available ? 'green' : 'red'}-500`}>
+                      {procedure.available ? 'In Service' : 'Out of Service'}
+                    </div>
+                  </td>
+                  <td className="border border-gray-400 p-2 flex gap-2 justify-center">
+                    <button
+                      className="flex flex-col items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
+                      onClick={() => openEditProcedureModal(procedure, 'View')}
+                      title='view'
+                    >
+                      <span className="material-symbols-outlined">visibility</span>
+                    </button>
+
+                    <button
+                      className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
+                      onClick={() => openEditProcedureModal(procedure, 'Edit')}
+                      title="edit"
+                    >
+                      <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span>
+                    </button>
+
+                    {/* <button
+                className={`w-28 p-0.5 flex flex-col items-center rounded-lg shadow-md transition duration-300 ${procedure.available ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-green-100 text-green-600 hover:bg-green-200'}`}
+                onClick={() => openDeleteConfirmationModal(procedure)}
+                title='out of service'
+              >
+                <p className="material-symbols-outlined text-lg">
+                  {procedure.available ? 'cancel' : 'check_circle'}
+                </p>
+                <span className="text-xs">
+                  {procedure.available ? 'Set Out of Service' : 'Set In Service'}
+                </span>
+              </button> */}
+
+                    <button
+                      className={`flex flex-col items-center justify-center w-10 transition rounded-lg shadow-sm 
+                  ${procedure.available ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-600'}`}
+                      onClick={() => openDeleteConfirmationModal(procedure)}
+                      title={procedure.available ? 'Set Out of Service' : 'Set In Service'} // Tooltip text
+                    >
+                      <span className="material-symbols-outlined">
+                        {procedure.available ? 'cancel' : 'check_circle'}
+                      </span>
+                    </button>
+
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
       </div>
-      <div className="flex gap-4 mb-4 mt-5">
-        <button
-          className={`btn ${availabilityFilter === true ? 'bg-[#3EB489] hover:bg-[#62A78E]' : 'btn-outline'}`}
-          onClick={() => setAvailabilityFilter(true)}
-        >
-          Show Available
-        </button>
-        <button
-          className={`btn ${availabilityFilter === false ? 'bg-[#3EB489] hover:bg-[#62A78E]' : 'btn-outline'}`}
-          onClick={() => setAvailabilityFilter(false)}
-        >
-          Show Not Available
-        </button>
-        <button
-          className="btn btn-outline"
-          onClick={() => setAvailabilityFilter(null)}
-        >
-          Show All
-        </button>
-
-        {/* Push the Create Procedure button to the right */}
-        <button className='btn bg-[#4285F4] hover:bg-[#0C65F8] text-white ml-auto' onClick={openAddPatientModal}>
-          Create Procedure
-        </button>
-      </div>
-
-
-
-
-
-      <div className="text-sm overflow-auto max-h-[25rem] bg-gray-100">
-        <table className="w-full border border-gray-500">
-          <thead className="bg-[#3EB489] text-sm">
-            <tr>
-              <th className="border border-gray-500 p-2 text-white ">Procedure Name</th>
-              <th className="border border-gray-500 p-2 text-white hidden lg:table-cell">Duration</th>
-              <th className="border border-gray-500 p-2 text-white hidden lg:table-cell">Price</th>
-              <th className="border border-gray-500 p-2 text-white hidden lg:table-cell">Status</th>
-              <th className="border border-gray-500 text-white p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAndAvailableProcedures.map((procedure) => (
-              <tr key={procedure._id} className="hover:bg-neutral transition duration-200">
-                <td className="border border-black p-2">{procedure.Procedure_name}</td>
-                <td className="border border-black p-2 hidden lg:table-cell">
-                  {formatDuration(procedure.Duration)}
-                </td>
-                <td className="border border-black p-2 hidden lg:table-cell">
-                  {procedure.Price}
-                </td>
-                <td className="border border-black p-2 hidden lg:table-cell">
-                  <div className={`text-${procedure.available ? 'green' : 'red'}-500`}>
-                    {procedure.available ? 'In Service' : 'Out of Service'}
-                  </div>
-                </td>
-                <td className="border border-gray-400 p-2 flex gap-2 justify-center">
-                  <button
-                    className="flex flex-col items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
-                    onClick={() => openEditProcedureModal(procedure, 'View')}
-                    title='view'
-                  >
-                    <span className="material-symbols-outlined">visibility</span>
-                  </button>
-
-                  <button
-                    className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
-                    onClick={() => openEditProcedureModal(procedure, 'Edit')}
-                    title="edit"
-                  >
-                    <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span>
-                  </button>
-
-                  {/* <button
-              className={`w-28 p-0.5 flex flex-col items-center rounded-lg shadow-md transition duration-300 ${procedure.available ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-green-100 text-green-600 hover:bg-green-200'}`}
-              onClick={() => openDeleteConfirmationModal(procedure)}
-              title='out of service'
-            >
-              <p className="material-symbols-outlined text-lg">
-                {procedure.available ? 'cancel' : 'check_circle'}
-              </p>
-              <span className="text-xs">
-                {procedure.available ? 'Set Out of Service' : 'Set In Service'}
-              </span>
-            </button> */}
-
-                  <button
-                    className={`flex flex-col items-center justify-center w-10 transition rounded-lg shadow-sm 
-                ${procedure.available ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-600'}`}
-                    onClick={() => openDeleteConfirmationModal(procedure)}
-                    title={procedure.available ? 'Set Out of Service' : 'Set In Service'} // Tooltip text
-                  >
-                    <span className="material-symbols-outlined">
-                      {procedure.available ? 'cancel' : 'check_circle'}
-                    </span>
-                  </button>
-
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-
-
-
-
 
       {/* Add Modal */}
       <Modal isOpen={addPatientModalOpen} close={() => setAddPatientModalOpen(false)}>
@@ -609,8 +618,6 @@ export default function Add_Procedure() {
           </form>
         </div>
       </Modal>
-
-
 
       {/* View Modal */}
       <Modal isOpen={viewProcedureModalOpen} close={() => setViewProcedureModalOpen(false)}>

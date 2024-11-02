@@ -115,9 +115,15 @@ function AdminRoutes() {
   }, []);
 
   return (
-    <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'}`}>
-      <Notification_bell />
+    // <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'} bg-green-200 bg-opacity-50 `}>
+     <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'}  `}> 
+      
+      {/* <div className="sticky top-0 z-20 bg-[#DDFBE7]"> */}
+      <div className="sticky top-0 z-20 bg-white ">
+        <Notification_bell />
+      </div>
       <Routes>
+        
         <Route path="/" element={<Dashboard />} />
         <Route path="/appointments" element={<Appointment />} />
         <Route path="/dashboard" element={<Dashboard />} />

@@ -81,8 +81,14 @@ export default function GuestNavBar() {
                                 }}>SIGN UP</button>
                         </li> */}
 
-                        <li className="mb-2 md:mb-0">
+                        {/* <li className="mb-2 md:mb-0">
                             <button className="btn  bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black" onClick={() => navigate('/AdminLogin')}>LOGIN</button>
+                        </li> */}
+
+                        <li className="mb-2 md:mb-0">
+                            <button className="btn btn-ghost font-bold text-white text-xl"
+                                onClick={() => { navigate('AdminLogin') }}
+                            >LOGIN </button>
                         </li>
 
                     </ul>

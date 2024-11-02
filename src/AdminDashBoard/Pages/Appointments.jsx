@@ -54,7 +54,7 @@ export default function Appointments() {
 
             if (response.status === 200) {
                 setAppointments(response.data);
-                filterAppointments(response.data); // Filter appointments based on the view type
+                filterAppointments(response.data); 
             }
         } catch (error) {
             setError('Error fetching appointments. Please try again.');
@@ -96,7 +96,9 @@ export default function Appointments() {
 
         // Filter appointments based on the view type
         if (viewType === 'current') {
-            filtered = appointments.filter(app => new Date(app.start) >= new Date());
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set the time to the beginning of today
+            filtered = appointments.filter(app => new Date(app.start) >= today);
         } else {
             filtered = appointments;
         }
@@ -306,12 +308,12 @@ export default function Appointments() {
 
 
             <div className="rounded mb-4 text-white">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
                     {/* Left Side Buttons */}
-                    <div className="flex">
+                    <div className="flex space-x-2">
                         <button
                             onClick={() => setViewType('current')}
-                            className={`p-2 ${viewType === 'current' ? 'rounded mr-2 bg-[#62A78E] text-white' : 'bg-[#3EB489]'}`}
+                            className={`p-2 text-sm sm:text-base ${viewType === 'current' ? 'rounded bg-[#62A78E] text-white' : 'bg-[#3EB489]'} transition`}
                         >
                             Current & Upcoming
                         </button>
@@ -320,38 +322,29 @@ export default function Appointments() {
                                 setViewType('all');
                                 setTimeView('');
                             }}
-                            className={`p-2 ${viewType === 'all' ? 'ml-2 rounded bg-[#62A78E] text-white' : 'bg-[#3EB489]'}`}
+                            className={`p-2 text-sm sm:text-base ${viewType === 'all' ? 'rounded bg-[#62A78E] text-white' : 'bg-[#3EB489]'} transition`}
                         >
                             All Appointments
                         </button>
                     </div>
 
-
-                    <div className="flex items-center w-full max-w-sm">
-                        <span className=' text-black mr-2'>Select Frequency: </span><select
+                    {/* Right Side Select Dropdown */}
+                    <div className="flex flex-col sm:flex-row items-center w-full max-w-sm space-y-2 sm:space-y-0 sm:space-x-2">
+                        <span className="text-sm sm:text-base text-black">Select Frequency: </span>
+                        <select
                             value={timeView}
                             onChange={handleSelectChange}
-                            className="p-2 border rounded bg-gray-100 text-black  mb-2 flex-1"
+                            className="p-2 border rounded bg-gray-100 text-black text-sm sm:text-base flex-1"
                         >
-
-                            <option value="filter" className=" text-black">
-                                --Select Frequency--
-                            </option>
-                            <option value="day" className=" text-black">
-                                Day
-                            </option>
-                            <option value="week" className=" text-black">
-                                Week
-                            </option>
-                            <option value="month" className="text-black">
-                                Month
-                            </option>
-
+                            <option value="filter" className="text-black">--Select Frequency--</option>
+                            <option value="day" className="text-black">Day</option>
+                            <option value="week" className="text-black">Week</option>
+                            <option value="month" className="text-black">Month</option>
                         </select>
-
                     </div>
                 </div>
             </div>
+
 
 
             {/* Time View Selectors */}

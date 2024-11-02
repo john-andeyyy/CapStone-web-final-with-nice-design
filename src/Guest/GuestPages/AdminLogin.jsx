@@ -76,7 +76,7 @@ export default function AdminLogin({ login }) {
 
                                 />
                             </label>
-                            <label className="form-control w-full mb-4">
+                            <label className="form-control w-full mb-1">
                                 <span className="label-text text-green-600">Password:</span>
                                 <input
                                     className="bg-gray-100 text-gray-900 border border-gray-300 rounded-md p-2 mt-1 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 transition ease-in-out duration-150"
@@ -88,6 +88,11 @@ export default function AdminLogin({ login }) {
                                     disabled={loading}
                                 />
                             </label>
+                            <div className=" text-right">
+                                <Link to={`/Forget_pass`} className="text-green-600 hover:text-green-700 transition duration-150">
+                                    Forgot Password?
+                                </Link>
+                            </div>
                             <button
                                 className={` text-white font-bold py-2 rounded-md mt-4 bg-[#3EB489] hover:bg-[#62A78E] transition ease-in-out duration-150 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 type="submit"
@@ -96,11 +101,11 @@ export default function AdminLogin({ login }) {
                                 {loading ? 'Logging in...' : 'Login'}
                             </button>
                         </form>
-                        <div className="mt-4 text-center">
+                        {/* <div className="mt-4 text-center">
                             <Link to={`/Forget_pass`} className="text-green-600 hover:text-green-700 transition duration-150">
                                 Forgot Password?
                             </Link>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

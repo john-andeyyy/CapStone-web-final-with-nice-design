@@ -124,7 +124,7 @@ export default function Sidebar() {
 
 
     return (
-        <div className='text-white z-10'>
+        <div className='text-white z-50'>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="lg:hidden fixed top-4 left-4 text-primary"

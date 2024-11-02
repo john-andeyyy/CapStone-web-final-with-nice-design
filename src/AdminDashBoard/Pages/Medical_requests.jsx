@@ -143,34 +143,36 @@ export default function MedicalRequests() {
 
   return (
     <div className="container mx-auto p-4">
-      {/* Status Dropdown and Search Bar */}
-      <div className="flex flex-col lg:flex-row justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold py-4 lg:py-0">Medical Certificate Requests</h1>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search patients..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-          />
-          <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
-            <span className="material-symbols-outlined">search</span>
+
+      <div className="p-4">
+        {/* Status Dropdown and Search Bar */}
+        <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 space-y-4 lg:space-y-0">
+          <h1 className="text-2xl font-semibold">Medical Certificate Requests</h1>
+
+          <div className="relative w-full lg:w-auto">
+            <input
+              type="text"
+              placeholder="Search patients..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#3EB489]"
+            />
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500">
+              <span className="material-symbols-outlined">search</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Filter by Status */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex  mb-4">
-          <label htmlFor="status" className="block mb-2 font-semibold mt-3">Filter by Status:</label>
+        {/* Filter by Status */}
+        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+          <label htmlFor="status" className="font-semibold">Filter by Status:</label>
+
           <select
             id="status"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="block p-2 border border-gray-300 rounded-md ml-5"
+            className="block w-full lg:w-auto p-2 border border-gray-300 rounded-md"
           >
-            {/* <option value="All">All</option> */}
             <option value="Approved">Approved</option>
             <option value="Pending">Pending</option>
             <option value="Rejected">Rejected</option>
@@ -178,6 +180,7 @@ export default function MedicalRequests() {
           </select>
         </div>
       </div>
+
       {/* Request List */}
       <div className="p-2">
         <table className="w-full table-auto bg-gray-100 text-black border border-black">
