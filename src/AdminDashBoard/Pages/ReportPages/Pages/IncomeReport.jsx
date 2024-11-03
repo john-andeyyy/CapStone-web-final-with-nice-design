@@ -4,6 +4,7 @@ import ReportMenu from '../components/ReportMenu';
 import { format } from 'date-fns'; // Import date-fns for formatting dates
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'; // Import autoTable
+import Swal from 'sweetalert2';
 
 const AppointmentsReport = () => {
     const [appointments, setAppointments] = useState([]);
@@ -82,8 +83,18 @@ const AppointmentsReport = () => {
         setSelectedDate(today);
     };
 
-
     const generatePDF = () => {
+        createPDF();
+
+        Swal.fire({
+            title: "PDF Generated!",
+            text: "Your PDF has been successfully generated.",
+            icon: "success"
+        });
+    };
+
+
+    const createPDF = () => {
         const doc = new jsPDF();
         const themeColor = "#3EB489"; // Consistent theme color
         const pesoSign = '₱'; // Correct peso sign

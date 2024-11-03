@@ -3,6 +3,7 @@ import axios from 'axios';
 import ReportMenu from '../components/ReportMenu';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import Swal from 'sweetalert2';
 
 const PatientProceduresDone = () => {
     const [patients, setPatients] = useState([]);
@@ -90,6 +91,17 @@ const PatientProceduresDone = () => {
     };
 
     const generatePDF = () => {
+        createPDF();
+
+        Swal.fire({
+            title: "PDF Generated!",
+            text: "Your PDF has been successfully generated.",
+            icon: "success"
+        });
+    };
+
+
+    const createPDF = () => {
         console.log("Generating PDF..."); // Debugging log
         const doc = new jsPDF();
         const themeColor = "#3EB489"; // Consistent theme color

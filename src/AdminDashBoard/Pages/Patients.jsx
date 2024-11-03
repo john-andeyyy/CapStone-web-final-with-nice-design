@@ -5,6 +5,7 @@ import { fetchPatients } from '../Fetchs/patient/patient_account';
 import AddPatientModal from './Components/AddPatientModal';
 import { jsPDF } from 'jspdf';
 import TreatmentPlanModal from '../Components/PatientTreatment/Component/TreatmentPlanModal';
+import Swal from 'sweetalert2';
 
 export default function Patients_List() {
     const navigate = useNavigate();
@@ -56,6 +57,17 @@ export default function Patients_List() {
     });
 
     const generatePDF = () => {
+        createPDF();
+
+        Swal.fire({
+            title: "PDF Generated!",
+            text: "Your PDF has been successfully generated.",
+            icon: "success"
+        });
+    };
+
+
+    const createPDF = () => {
         const doc = new jsPDF();
         const themeColor = "#3EB489";
         const rowHeight = 10;

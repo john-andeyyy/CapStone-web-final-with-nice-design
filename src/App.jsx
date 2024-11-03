@@ -119,7 +119,7 @@ function AdminRoutes() {
      <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'}  `}> 
       
       {/* <div className="sticky top-0 z-20 bg-[#DDFBE7]"> */}
-      <div className="sticky top-0 z-20 bg-white ">
+      <div className="sticky top-0 z-0 bg-white ">
         <Notification_bell />
       </div>
       <Routes>

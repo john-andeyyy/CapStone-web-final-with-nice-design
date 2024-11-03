@@ -1,14 +1,26 @@
 import React from 'react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'; // Import the autoTable function
+import Swal from 'sweetalert2';
 
 
 const PDFReport = ({ appointments, month, title }) => {
+
+    const saveAsPDF = () => {
+        createPDF();
+
+        Swal.fire({
+            title: "PDF Generated!",
+            text: "Your PDF has been successfully generated.",
+            icon: "success"
+        });
+    };
+
     // Calculate completed and missed counts
     const completedCount = appointments.filter(appointment => appointment.status === 'Completed').length;
     const missedCount = appointments.filter(appointment => appointment.status === 'Missed').length;
 
-    const saveAsPDF = () => {
+    const createPDF = () => {
         const doc = new jsPDF();
         const themeColor = "#3EB489"; // Consistent theme color
         const rowHeight = 10; // Row height for tables
@@ -99,7 +111,18 @@ const PDFReport = ({ appointments, month, title }) => {
 
 
 const PDFPatientVisit = ({ appointments, title }) => {
+
     const generatePDF = () => {
+        createPDF();
+
+        Swal.fire({
+            title: "PDF Generated!",
+            text: "Your PDF has been successfully generated.",
+            icon: "success"
+        });
+    };
+
+    const createPDF = () => {
         const doc = new jsPDF();
         const themeColor = "#3EB489"; // Consistent theme color
 

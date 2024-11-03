@@ -5,6 +5,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PieChart from '../../../Charts/PieChart';
 import ReportMenu from '../components/ReportMenu';
+import Swal from 'sweetalert2';
 
 export default function TotalProcedures() {
     const [procedureReport, setProcedureReport] = useState({});
@@ -107,8 +108,17 @@ export default function TotalProcedures() {
         setSelectedYear('');
         setIsYearView(false);
     };
-
     const saveAsPDF = () => {
+        createPDF();
+
+        Swal.fire({
+            title: "PDF Generated!",
+            text: "Your PDF has been successfully generated.",
+            icon: "success"
+        });
+    };
+
+    const createPDF = () => {
         const doc = new jsPDF();
         const themeColor = "#3EB489"; // Same theme color as generatePDF
         const rowHeight = 10;
