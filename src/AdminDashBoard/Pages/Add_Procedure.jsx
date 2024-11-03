@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Modal from '../Components/Modal';
 import axios from 'axios';
 import { showToast } from '../Components/ToastNotification';
+import Swal from 'sweetalert2';
 
 export default function Add_Procedure() {
   const BASEURL = import.meta.env.VITE_BASEURL;
@@ -27,7 +28,7 @@ export default function Add_Procedure() {
         });
         if (Array.isArray(response.data)) {
           const sortedProcedures = sortProceduresAlphabetically(response.data);
-          console.log('response.data', response.data)
+          // console.log('response.data', response.data)
           setProcedureList(sortedProcedures);
         } else {
           console.error('Unexpected response format:', response.data);
@@ -61,6 +62,44 @@ export default function Add_Procedure() {
     setDeleteConfirmationModalOpen(true);
   };
 
+  const confirmToggleStatus = async (procedure, status) => {
+    const statusText = status ? 'available' : 'unavailable';
+
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to make this procedure ${statusText}?`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: status ? "#3085d6" : "#d33",
+        cancelButtonColor: "#d33",
+        confirmButtonText: `Yes, mark as ${statusText}`
+      });
+
+      if (result.isConfirmed) {
+        // Update the procedure status in the database
+        await axios.put(`${BASEURL}/Procedure/updatestatus/${procedure._id}`, { status }, { withCredentials: true });
+
+        // Update the procedure list with the new status
+        setProcedureList((prevProcedureList) =>
+          prevProcedureList.map((p) =>
+            p._id === procedure._id ? { ...p, available: status } : p
+          )
+        );
+
+        // showToast('success', 'Status updated successfully!');
+        Swal.fire({
+          title: 'Status Updated!',
+          text: `The procedure is now marked as ${statusText}.`,
+          icon: 'success',
+          confirmButtonColor: '#3085d6'
+        });
+      }
+    } catch (error) {
+      showToast('error', `Error updating procedure status: ${error.message}`);
+      console.error('Error updating procedure status:', error);
+    }
+  };
   const confirmtongleStatus = async (status) => {
     try {
       await axios.put(`${BASEURL}/Procedure/updatestatus/${procedureToDelete._id}`,
@@ -314,7 +353,7 @@ export default function Add_Procedure() {
                 </span>
               </button> */}
 
-                    <button
+                    {/* <button
                       className={`flex flex-col items-center justify-center w-10 transition rounded-lg shadow-sm 
                   ${procedure.available ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-600'}`}
                       onClick={() => openDeleteConfirmationModal(procedure)}
@@ -323,7 +362,18 @@ export default function Add_Procedure() {
                       <span className="material-symbols-outlined">
                         {procedure.available ? 'cancel' : 'check_circle'}
                       </span>
-                    </button>
+                    </button> */}
+
+                      <button
+                        className={`flex flex-col items-center justify-center w-10 transition rounded-lg shadow-sm 
+    ${procedure.available ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-600'}`}
+                        onClick={() => confirmToggleStatus(procedure, !procedure.available)}
+                        title={procedure.available ? 'Set Out of Service' : 'Set In Service'}
+                      >
+                        <span className="material-symbols-outlined">
+                          {procedure.available ? 'cancel' : 'check_circle'}
+                        </span>
+                      </button>
 
                   </td>
                 </tr>

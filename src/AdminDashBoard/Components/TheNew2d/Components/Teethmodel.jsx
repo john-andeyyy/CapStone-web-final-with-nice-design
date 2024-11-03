@@ -29,6 +29,8 @@ const Teethmodel = ({ status, id, name, onClick, notes }) => {
                 toothColor = toothColors.molar.hover;
             } else if (lowerCaseName.includes('incisor')) {
                 toothColor = toothColors.incisor.hover;
+            } else if (lowerCaseName.includes('canine')) {
+                toothColor = toothColors.canine.hover;
             } else {
                 toothColor = toothColors[lowerCaseName]?.hover || toothColors.default.hover;
             }
@@ -39,6 +41,8 @@ const Teethmodel = ({ status, id, name, onClick, notes }) => {
                 toothColor = toothColors.molar.base;
             } else if (lowerCaseName.includes('incisor')) {
                 toothColor = toothColors.incisor.base;
+            } else if (lowerCaseName.includes('canine')) {
+                toothColor = toothColors.canine.base;
             } else {
                 toothColor = toothColors[lowerCaseName]?.base || toothColors.default.base;
             }
@@ -47,11 +51,11 @@ const Teethmodel = ({ status, id, name, onClick, notes }) => {
 
     return (
         <div className='flex flex-col items-center'>
-            <div className='w-16 h-16'>
+            <div className='w-20 h-w-20 '>
                 <svg
                     fill={toothColor}
-                    height="100%"
-                    width="100%"
+                    height="80%"
+                    width="80%"
                     version="1.1"
                     id={id}
                     xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +81,7 @@ const Teethmodel = ({ status, id, name, onClick, notes }) => {
                     </g>
                 </svg>
             </div>
-            <div className='text-sm text-center'>
+            <div className='text-sm text-center w-20 h-w-20'>
                 {name}
                 <br />
                 {status}

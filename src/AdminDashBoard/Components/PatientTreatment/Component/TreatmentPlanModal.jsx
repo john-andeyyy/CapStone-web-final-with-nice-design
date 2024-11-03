@@ -10,7 +10,7 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
     const [isAdding, setIsAdding] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentPlan, setCurrentPlan] = useState(null);
-    const [noRecords, setNoRecords] = useState(false); // State for no records
+    const [noRecords, setNoRecords] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
@@ -19,15 +19,14 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                     const response = await axios.get(`${BASEURL}/treatmentplan/treatmentplans/patient/${patientId}`);
                     if (response.status === 200) {
                         setTreatmentPlans(response.data.reverse());
-                        setNoRecords(false); // Reset no records state
+                        setNoRecords(false);
                     } else if (response.status === 404) {
-                        setNoRecords(true); // Set no records state
-                        setTreatmentPlans([]); // Clear treatment plans
+                        setNoRecords(true);
+                        setTreatmentPlans([]);
                     }
                 } catch (error) {
-                    // console.error("Error fetching treatment plans:", error);
-                    setNoRecords(true); // Set no records state on error
-                    setTreatmentPlans([]); // Clear treatment plans
+                    setNoRecords(true);
+                    setTreatmentPlans([]);
                 }
             };
 
@@ -40,7 +39,7 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
             await axios.put(`${BASEURL}/treatmentplan/status/${planId}`, { Status: nextStatus });
             const response = await axios.get(`${BASEURL}/treatmentplan/treatmentplans/patient/${patientId}`);
             setTreatmentPlans(response.data.reverse());
-            setNoRecords(false); // Reset no records state after updating
+            setNoRecords(false);
         } catch (error) {
             console.error("Error updating treatment plan status:", error);
         }
@@ -54,17 +53,17 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="rounded-lg shadow-lg p-6 w-11/12 max-w-5xl bg-[#C6E4DA]">
-                {/* <h2 className="text-2xl font-bold mb-6 text-[#C6E4DA] text-center">
-                    {isAdding ? 'Add Treatment Plan' : isEditing ? 'Edit Treatment Plan' : `Treatment Plans for ${treatmentPlans.length > 0 ? `${treatmentPlans[0].patient.FirstName} ${treatmentPlans[0].patient.LastName}` : 'N/A'}`}
-                </h2> */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75">
+            <div className="modal-box w-[90%] h-[90%] max-w-full flex flex-col relative p-5 bg-green-200  ">
 
-                <h2 className="text-2xl font-bold mb-6 text-[#266D53] text-center">
-                    Treatment Plan
-                </h2>
+<div className='text-right'>
+                    <button onClick={onClose}>X</button>
+    
+</div>                {!isAdding && (
+                    <h2 className="text-2xl font-bold mb-4 text-[#266D53] text-center">Treatment Plan</h2>
+                )}
 
-                <div>
+                <div className="flex-grow flex flex-col">
                     {isAdding ? (
                         <AddTreatmentPlan
                             patientId={patientId}
@@ -73,10 +72,10 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                                     try {
                                         const response = await axios.get(`${BASEURL}/treatmentplan/treatmentplans/patient/${patientId}`);
                                         setTreatmentPlans(response.data.reverse());
-                                        setNoRecords(false); // Reset no records state after adding
+                                        setNoRecords(false);
                                     } catch (error) {
                                         console.error("Error fetching treatment plans:", error);
-                                        setNoRecords(true); // Set no records state on error
+                                        setNoRecords(true);
                                     }
                                 };
                                 fetchTreatmentPlans();
@@ -86,15 +85,15 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                     ) : isEditing && currentPlan ? (
                         <EditTreatmentPlan
                             plan={currentPlan}
-                            onSave={(updatedPlan) => {
+                            onSave={() => {
                                 const fetchTreatmentPlans = async () => {
                                     try {
                                         const response = await axios.get(`${BASEURL}/treatmentplan/treatmentplans/patient/${patientId}`);
                                         setTreatmentPlans(response.data.reverse());
-                                        setNoRecords(false); // Reset no records state after saving
+                                        setNoRecords(false);
                                     } catch (error) {
                                         console.error("Error fetching treatment plans:", error);
-                                        setNoRecords(true); // Set no records state on error
+                                        setNoRecords(true);
                                     }
                                 };
                                 fetchTreatmentPlans();
@@ -107,21 +106,21 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                             }}
                         />
                     ) : (
-                        <div>
+                        <div className="flex-grow">
                             {noRecords ? (
-                                <p className="text-center text-red-500">No treatment plans found.</p> // Display no records message
+                                <p className="text-center text-red-500">No treatment plans found.</p>
                             ) : (
-                                <div className='max-h-96 overflow-y-auto'>
+                                <div className="overflow-y-auto max-h-[65vh]">
                                     <table className="min-w-full border border-black bg-gray-100 text-white">
-                                        <thead className="bg-gray-100">
+                                        <thead className="sticky top-0 bg-[#3EB489]">
                                             <tr>
-                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Treatment Stage</th>
-                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Procedure</th>
-                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Estimated Cost</th>
-                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Date</th>
-                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Status</th>
-                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Update Status</th>
-                                                <th className="py-2 px-4 border border-black bg-[#3EB489]">Edit</th>
+                                                <th className="py-2 px-4 border border-black">Treatment Stage</th>
+                                                <th className="py-2 px-4 border border-black">Procedure</th>
+                                                <th className="py-2 px-4 border border-black">Estimated Cost</th>
+                                                <th className="py-2 px-4 border border-black">Date Recommended</th>
+                                                <th className="py-2 px-4 border border-black">Status</th>
+                                                <th className="py-2 px-4 border border-black">Update Status</th>
+                                                <th className="py-2 px-4 border border-black">Edit</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -135,6 +134,8 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                                                     <td className="py-2 px-4 border border-black bg-gray-100 text-black">
                                                         {plan.Status === 'Completed' ? (
                                                             <span className="text-green-700 font-semibold">Completed</span>
+                                                        ) : plan.Status === 'Missed' ? (
+                                                            <span className="text-red-500 font-semibold">Missed</span>
                                                         ) : (
                                                             <div className="flex space-x-2">
                                                                 {plan.Status === 'Pending' && (
@@ -170,23 +171,29 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                                     </table>
                                 </div>
                             )}
-                            <div className="mt-4 flex justify-end">
-                                <button
-                                    onClick={() => setIsAdding(true)}
-                                    className=" text-black py-2 px-4 rounded bg-[#4285F4] hover:bg-[#0C65F8]"
-                                >
-                                    Add Treatment Plan
-                                </button>
-                                <button
-                                    onClick={onClose}
-                                    className=" text-black py-2 px-4 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA] ml-2"
-                                >
-                                    Close
-                                </button>
-                            </div>
                         </div>
                     )}
                 </div>
+
+                {!isAdding && (<div>
+
+                    {/* Buttons fixed at the bottom */}
+                    <div className="mt-4 flex justify-end space-x-2">
+                        <button
+                            onClick={() => setIsAdding(true)}
+                            className="text-black py-2 px-4 rounded bg-[#4285F4] hover:bg-[#0C65F8]"
+                        >
+                            Add Treatment Plan
+                        </button>
+                        <button
+                            onClick={onClose}
+                            className="text-black py-2 px-4 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA]"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+                )}
             </div>
         </div>
     );

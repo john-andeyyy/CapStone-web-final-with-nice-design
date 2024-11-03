@@ -6,7 +6,7 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
     const [newPlan, setNewPlan] = useState({
         patient: patientId,
         TreatmentStage: '',
-        ProcedureList: [{ Procedure: '' }], // Initially set to empty string
+        ProcedureList: [{ Procedure: '' }],
         EstimatedCost: 0,
         Status: 'Pending',
         scheduleOn: '',
@@ -31,7 +31,7 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
     useEffect(() => {
         // Calculate total Estimated Cost
         const totalCost = newPlan.ProcedureList.reduce((total, procedure) => {
-            const proc = procedures.find(p => p._id === procedure.Procedure); // Match by ID
+            const proc = procedures.find(p => p._id === procedure.Procedure);
             return proc ? total + proc.Price : total;
         }, 0);
         setNewPlan(prev => ({ ...prev, EstimatedCost: totalCost }));
@@ -64,6 +64,7 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
                     Status: 'Pending',
                     scheduleOn: ''
                 });
+                onCancel();
             }
         } catch (error) {
             console.error("Error adding treatment plan:", error);
@@ -82,7 +83,7 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
         const { value } = e.target;
         const updatedProcedures = [...newPlan.ProcedureList];
         const selectedProcedure = procedures.find(proc => proc.Procedure_name === value);
-        updatedProcedures[index] = { Procedure: selectedProcedure ? selectedProcedure._id : '' }; // Store the ID
+        updatedProcedures[index] = { Procedure: selectedProcedure ? selectedProcedure._id : '' };
         setNewPlan((prev) => ({
             ...prev,
             ProcedureList: updatedProcedures,
@@ -92,15 +93,15 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
     const addProcedureField = () => {
         setNewPlan((prev) => ({
             ...prev,
-            ProcedureList: [...prev.ProcedureList, { Procedure: '' }], // Add new empty procedure field
+            ProcedureList: [...prev.ProcedureList, { Procedure: '' }],
         }));
     };
 
+    const selectedProcedureIds = newPlan.ProcedureList.map(proc => proc.Procedure);
+
     return (
-        <div>
-            <h2 className="text-2xl font-bold mb-6 text-[#C6E4DA] text-center">
-                Add Treatment Plan
-            </h2>
+        <div className="flex flex-col h-full">
+            <h2 className="text-2xl font-bold mb-6 text-[#266D53] text-center">Add Treatment Plan</h2>
 
             {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
             {successMessage && <div className="text-black mb-4 text-center text-xl font-bold">{successMessage}</div>}
@@ -128,46 +129,55 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
                     >
                         <option value="">Select a procedure</option>
                         {procedures.map((proc) => (
-                            <option key={proc._id} value={proc.Procedure_name}>{proc.Procedure_name}</option>
+                            <option key={proc._id} value={proc.Procedure_name} disabled={selectedProcedureIds.includes(proc._id) && procedure.Procedure !== proc._id}>
+                                {proc.Procedure_name}
+                            </option>
                         ))}
                     </select>
                 </div>
             ))}
-            {/* <button onClick={addProcedureField} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mb-4">
-                Add Procedure
-            </button> */}
-
-            <div className="mb-4">
-                <label className="block text-gray-700">Estimated Cost</label>
-                <input
-                    type="number"
-                    name="EstimatedCost"
-                    value={newPlan.EstimatedCost}
-                    onChange={handleChange}
-                    className="border rounded w-full py-2 px-3"
-                    required
-                />
+            <div>
+                <button onClick={addProcedureField} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mb-4">
+                    Add Procedure
+                </button>
             </div>
 
-            <div className="mb-4">
-                <label className="block text-gray-700">Schedule On</label>
-                <input
-                    type="date"
-                    name="scheduleOn"
-                    value={newPlan.scheduleOn.split('T')[0]}
-                    onChange={handleChange}
-                    className="border rounded w-full py-2 px-3"
-                    required
-                />
+            <div className='grid grid-cols-2 gap-4'>
+                <div className="mb-4">
+                    <label className="block text-gray-700" htmlFor="EstimatedCost">Estimated Cost</label>
+                    <input
+                        type="number"
+                        id="EstimatedCost"
+                        name="EstimatedCost"
+                        value={newPlan.EstimatedCost}
+                        onChange={handleChange}
+                        className="border rounded w-full py-2 px-3"
+                        required
+                        min="0"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label className="block text-gray-700" htmlFor="scheduleOn">Set Recomended Schedule</label>
+                    <input
+                        type="date"
+                        id="scheduleOn"
+                        name="scheduleOn"
+                        value={newPlan.scheduleOn ? newPlan.scheduleOn.split('T')[0] : ''}
+                        onChange={handleChange}
+                        className="border rounded w-full py-2 px-3"
+                        required
+                    />
+                </div>
             </div>
 
-            <div className="mt-4 flex justify-end">
-                <button onClick={handleAddPlan} className="bg-[#4285F4] hover:bg-[#0C65F8] text-black py-2 px-4 rounded ">
+            <div className="mt-auto flex justify-end space-x-2">
+                <button onClick={handleAddPlan} className="bg-[#4285F4] hover:bg-[#0C65F8] text-black py-2 px-4 rounded">
                     Add Plan
                 </button>
                 <button
                     onClick={onCancel}
-                    className=" text-black py-2 px-4 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA] ml-2"
+                    className="text-black py-2 px-4 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA]"
                 >
                     Cancel
                 </button>

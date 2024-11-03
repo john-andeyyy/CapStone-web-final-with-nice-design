@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { axisClasses } from '@mui/x-charts';
 import { showToast } from '../Components/ToastNotification';
 import Socket from '../../Utils/Socket';
+import Swal from 'sweetalert2';
 
 export default function Appointments() {
     const BASEURL = import.meta.env.VITE_BASEURL;
@@ -54,7 +55,7 @@ export default function Appointments() {
 
             if (response.status === 200) {
                 setAppointments(response.data);
-                filterAppointments(response.data); 
+                filterAppointments(response.data);
             }
         } catch (error) {
             setError('Error fetching appointments. Please try again.');
@@ -214,8 +215,34 @@ export default function Appointments() {
         }
     };
 
+    const updateAppointmentStatus = (app_id, newStatus) => {
+        // Swal.fire({
+        //     title: "PDF Generated!",
+        //     text: "Your PDF has been successfully generated.",
+        //     icon: "success"
+        // });
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: `${newStatus}`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                udpatestatus(app_id, newStatus)
+                Swal.fire({
+                    title: `Appointement set ${newStatus}`,
+                    text: `You ${newStatus} the appointmement`,
+                    icon: "success"
+                });
+            }
+        });
+    };
 
-    const updateAppointmentStatus = async (app_id, newStatus) => {
+    // const updateAppointmentStatus = async (app_id, newStatus) => {
+    const udpatestatus = async (app_id, newStatus) => {
         try {
             if (newStatus === 'Approved') {
                 setLoadingApprove(prev => ({ ...prev, [app_id]: true }));
@@ -230,7 +257,8 @@ export default function Appointments() {
             );
 
             if (response.status === 200) {
-                showToast('success', `Appointment: ${newStatus} `);
+                // if (true) {
+                // showToast('success', `Appointment: ${newStatus} `);
 
                 console.log("Appointment status updated successfully");
 
@@ -426,96 +454,96 @@ export default function Appointments() {
             <div className="space-y-4">
                 {filteredAppointments.length === 0 ? (
                     <div className="text-center">
-                                {selectedStatus.map((status) => (
-                                <h1 key={status}>No {status} appointments</h1>
-                            ))}
-                        </div>
-                        ) : (
-                        <div className="overflow-auto max-h-screen">
-                            {filteredAppointments.map(appointment => {
-                                const appointmentDateTime = new Date(appointment.start);
-                                const appointmentEndTime = new Date(appointment.end);
+                        {selectedStatus.map((status) => (
+                            <h1 key={status}>No {status} appointments</h1>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="overflow-auto max-h-screen">
+                        {filteredAppointments.map(appointment => {
+                            const appointmentDateTime = new Date(appointment.start);
+                            const appointmentEndTime = new Date(appointment.end);
 
-                                if (isNaN(appointmentDateTime.getTime()) || isNaN(appointmentEndTime.getTime())) {
-                                    return <span key={appointment.id} className="text-red-500">Invalid Date</span>;
-                                }
+                            if (isNaN(appointmentDateTime.getTime()) || isNaN(appointmentEndTime.getTime())) {
+                                return <span key={appointment.id} className="text-red-500">Invalid Date</span>;
+                            }
 
-                                const { text: relativeTime, color: relativeColor } = getRelativeTime(appointmentDateTime);
-                                const isApproveDisabled = disabledStatuses.includes(appointment.status) || appointmentDateTime < currentDate;
-                                const isDeclineDisabled = appointment.status !== "Pending" || appointmentDateTime < currentDate;
+                            const { text: relativeTime, color: relativeColor } = getRelativeTime(appointmentDateTime);
+                            const isApproveDisabled = disabledStatuses.includes(appointment.status) || appointmentDateTime < currentDate;
+                            const isDeclineDisabled = appointment.status !== "Pending" || appointmentDateTime < currentDate;
 
-                                return (
-                                    <div key={appointment.id} className="p-4 my-1 bg-gray-100 rounded flex justify-between items-center">
-                                        <div>
-                                            <div className="font-semibold">
-                                                {appointmentDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })} -
-                                                {appointmentEndTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })},
-                                                {appointmentDateTime.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                                            </div>
-
-                                            <div className="text-gray-600">
-                                                {appointment.patient.FirstName} {appointment.patient.LastName}
-                                            </div>
-
-                                            <div>
-                                                {appointment.procedures.length > 0
-                                                    ? appointment.procedures[0].name
-                                                    : 'No procedure listed'}
-                                            </div>
-                                            <div className="text-gray-600">
-                                                <p>
-                                                    <strong>Status: </strong>
-                                                    <span className={getStatusColor(appointment.status)}>
-                                                        {appointment.status}
-                                                    </span>
-                                                </p>
-                                                <p className={`text-sm ${relativeColor}`}>
-                                                    {relativeTime}
-                                                </p>
-                                            </div>
+                            return (
+                                <div key={appointment.id} className="p-4 my-1 bg-gray-100 rounded flex justify-between items-center">
+                                    <div>
+                                        <div className="font-semibold">
+                                            {appointmentDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })} -
+                                            {appointmentEndTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })},
+                                            {appointmentDateTime.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                                         </div>
 
-                                        <div className="flex space-x-2 items-center">
-                                            <button
-                                                onClick={() => updateAppointmentStatus(appointment.id, 'Approved')}
-                                                disabled={isApproveDisabled || loadingApprove[appointment.id]} // Disable when approving
-                                                className={`p-2 px-3 rounded-2xl ${isApproveDisabled || loadingApprove[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-green-200 text-green-700 hover:text-green-900 transition rounded-lg shadow-sm"}`}
-                                                title='approve'
-                                            >
-                                                {loadingApprove[appointment.id] ? (
-                                                    <span className="loading loading-spinner"></span> // Show spinner when approving
-                                                ) : (
-                                                    <span className="material-symbols-outlined text-green text-2xl">check_box</span>
-                                                )}
-                                            </button>
+                                        <div className="text-gray-600">
+                                            {appointment.patient.FirstName} {appointment.patient.LastName}
+                                        </div>
 
-                                            <button
-                                                onClick={() => updateAppointmentStatus(appointment.id, 'Rejected')}
-                                                disabled={isDeclineDisabled || loadingReject[appointment.id]} // Disable when rejecting
-                                                className={`p-2 px-3 rounded-2xl ${isDeclineDisabled || loadingReject[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-red-200 text-red-700 hover:text-red-900 transition rounded-lg shadow-sm"}`}
-                                                title='cancel'
-                                            >
-                                                {loadingReject[appointment.id] ? (
-                                                    <span className="loading loading-spinner"></span> // Show spinner when rejecting
-                                                ) : (
-                                                    <span className="material-symbols-outlined text-red text-2xl">cancel</span>
-                                                )}
-                                            </button>
-
-
-                                            <Link to={`/appointment/${appointment.id}`} className="flex flex-col  items-center p-2 px-3  justify-center bg-blue-200 text-blue-700 hover:text-blue-900 transition rounded-lg shadow-sm"
-                                                title='view'>
-                                                <span className="material-symbols-outlined text-2xl">
-                                                    visibility
+                                        <div>
+                                            {appointment.procedures.length > 0
+                                                ? appointment.procedures[0].name
+                                                : 'No procedure listed'}
+                                        </div>
+                                        <div className="text-gray-600">
+                                            <p>
+                                                <strong>Status: </strong>
+                                                <span className={getStatusColor(appointment.status)}>
+                                                    {appointment.status}
                                                 </span>
-                                            </Link>
+                                            </p>
+                                            <p className={`text-sm ${relativeColor}`}>
+                                                {relativeTime}
+                                            </p>
                                         </div>
                                     </div>
-                                );
-                            })}
-                        </div>
-                )}
+
+                                    <div className="flex space-x-2 items-center">
+                                        <button
+                                            onClick={() => updateAppointmentStatus(appointment.id, 'Approved')}
+                                            disabled={isApproveDisabled || loadingApprove[appointment.id]} // Disable when approving
+                                            className={`p-2 px-3 rounded-2xl ${isApproveDisabled || loadingApprove[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-green-200 text-green-700 hover:text-green-900 transition rounded-lg shadow-sm"}`}
+                                            title='approve'
+                                        >
+                                            {loadingApprove[appointment.id] ? (
+                                                <span className="loading loading-spinner"></span> // Show spinner when approving
+                                            ) : (
+                                                <span className="material-symbols-outlined text-green text-2xl">check_box</span>
+                                            )}
+                                        </button>
+
+                                        <button
+                                            onClick={() => updateAppointmentStatus(appointment.id, 'Rejected')}
+                                            disabled={isDeclineDisabled || loadingReject[appointment.id]} // Disable when rejecting
+                                            className={`p-2 px-3 rounded-2xl ${isDeclineDisabled || loadingReject[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-red-200 text-red-700 hover:text-red-900 transition rounded-lg shadow-sm"}`}
+                                            title='cancel'
+                                        >
+                                            {loadingReject[appointment.id] ? (
+                                                <span className="loading loading-spinner"></span> // Show spinner when rejecting
+                                            ) : (
+                                                <span className="material-symbols-outlined text-red text-2xl">cancel</span>
+                                            )}
+                                        </button>
+
+
+                                        <Link to={`/appointment/${appointment.id}`} className="flex flex-col  items-center p-2 px-3  justify-center bg-blue-200 text-blue-700 hover:text-blue-900 transition rounded-lg shadow-sm"
+                                            title='view'>
+                                            <span className="material-symbols-outlined text-2xl">
+                                                visibility
+                                            </span>
+                                        </Link>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
+                )}
+            </div>
         </div>
-            );
+    );
 }

@@ -56,7 +56,7 @@ export default function ParentModel2d() {
   return (
     <div className=" rounded-md"
     style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-    <div className="container mx-auto p-6 bg-gray-100 rounded-lg shadow-md mb-5">
+    <div className="container mx-auto p-6 px-3 bg-gray-100 rounded-lg shadow-md mb-5">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-center text-[#266D53] flex-1">Dental Records</h1>
 
