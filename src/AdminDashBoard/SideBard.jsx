@@ -107,12 +107,13 @@ export default function Sidebar() {
             confirmButtonText: 'Yes, log out!'
         }).then((result) => {
             if (result.isConfirmed) {
+                localStorage.clear();
+                navigate('/');
+                window.location.reload();
                 axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
                     .then((res) => {
                         if (res.status === 200) {
-                            localStorage.clear();
-                            navigate('/');
-                            window.location.reload();
+                            
                         }
                     })
                     .catch((error) => {
