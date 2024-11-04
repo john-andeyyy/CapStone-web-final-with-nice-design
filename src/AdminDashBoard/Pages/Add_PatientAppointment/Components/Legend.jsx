@@ -2,7 +2,7 @@ import React from 'react';
 
 const Legend = () => (
     <div className="p-6 bg-white rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-6 text-gray-800">Markings</h3>
+        <h3 className="text-xl font-semibold mb-6 text-gray-800">Markings (Filter)</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="flex items-center bg-yellow-50 p-2 rounded-md hover:bg-yellow-100 transition duration-200">
                 <span className="w-4 h-4 bg-yellow-400 rounded-full inline-block mr-2"></span>

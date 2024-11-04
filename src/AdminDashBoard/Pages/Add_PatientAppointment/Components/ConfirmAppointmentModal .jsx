@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '../../../Components/Modal';
 
 const ConfirmAppointmentModal = ({ isOpen, patient, dentist, procedures, date, timeSlot, onConfirm, onCancel }) => {
+    const [notes, setNotes] = useState(''); 
+
     if (!isOpen) return null;
 
     // Format the date as 'Month Day, Year'
@@ -10,6 +12,10 @@ const ConfirmAppointmentModal = ({ isOpen, patient, dentist, procedures, date, t
         month: 'long',
         day: 'numeric',
     });
+
+    const handleConfirm = () => {
+        onConfirm(notes); 
+    }
 
     return (
         <Modal isOpen={isOpen} onClose={onCancel}>
@@ -40,9 +46,24 @@ const ConfirmAppointmentModal = ({ isOpen, patient, dentist, procedures, date, t
                         </table>
                     </div>
 
-                    <p className="mt-4"><strong>Total Price:</strong> ₱{procedures.reduce((total, proc) => total + proc.Price, 0).toFixed(2)}</p>
+                    <p className="mt-4">
+                        <strong>Total Price:</strong> ₱ {procedures.reduce((total, proc) => total + proc.Price, 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </p>
                     <p><strong>Date:</strong> {formattedDate}</p>
                     <p><strong>Time Slot:</strong> {timeSlot?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+
+                    {/* Notes Textbox */}
+                    <div className="mt-4">
+                        <label htmlFor="notes" className="block text-gray-700">Notes: <span className='text-red-500 text-sm'>Optinal</span></label>
+                        <textarea
+                            id="notes"
+                            rows="3"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+                            placeholder="Add any notes here..."
+                        />
+                    </div>
                 </div>
 
                 <div className="flex justify-end space-x-4 mt-6">
@@ -53,7 +74,7 @@ const ConfirmAppointmentModal = ({ isOpen, patient, dentist, procedures, date, t
                         Cancel
                     </button>
                     <button
-                        onClick={onConfirm}
+                        onClick={handleConfirm}
                         className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded"
                     >
                         Confirm

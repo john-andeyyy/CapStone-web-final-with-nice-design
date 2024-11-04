@@ -54,12 +54,14 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75">
-            <div className="modal-box w-[90%] h-[90%] max-w-full flex flex-col relative p-5 bg-green-200  ">
+            <div className="modal-box w-[90%] h-[90%] max-w-full flex flex-col relative p-5  bg-[#C6E4DA]  ">
 
-<div className='text-right'>
+{/* <div className='text-right'>
                     <button onClick={onClose}>X</button>
     
-</div>                {!isAdding && (
+</div>                */}
+
+ {!isAdding && (
                     <h2 className="text-2xl font-bold mb-4 text-[#266D53] text-center">Treatment Plan</h2>
                 )}
 

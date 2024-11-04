@@ -6,7 +6,7 @@ const AvailableTimeSlots = ({ selectedDate, unavailableDates, appointments, onSe
     endOfDay.setHours(17, 0, 0); // End time at 5:00 PM
 
     // Generate time slots in 30-minute increments
-    for (let time = new Date(startOfDay); time <= endOfDay; time.setMinutes(time.getMinutes() + 30)) {
+    for (let time = new Date(startOfDay); time <= endOfDay; time.setMinutes(time.getMinutes() + 15)) {
         timeSlots.push(new Date(time));
     }
 
@@ -32,7 +32,7 @@ const AvailableTimeSlots = ({ selectedDate, unavailableDates, appointments, onSe
             </div>
 
             <div className="w-full">
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 w">
                     {timeSlots.map((slot, index) => {
                         // isUnavailable is for the clinic close time and date
                         const isUnavailable = unavailableDates.some(unavailable =>

@@ -24,8 +24,12 @@ const CalendarView = ({ events, view, date, handleDateChange, handleViewChange, 
             startAccessor="start"
             endAccessor="end"
             style={{
-                height: 500,
-                margin: '50px',
+                // height: 750,// 500 lang to
+                height: 500,// 500 lang to
+                // width:500,
+
+                // width:750,
+                margin: '10px',
                 backgroundColor: 'bg-base-200',
                 borderRadius: '10px',
                 boxShadow: '0 2px 10px rgba(0,0,0,0.1)',

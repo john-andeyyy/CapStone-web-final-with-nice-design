@@ -180,13 +180,14 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     {successMessage && <div className="text-green-500 mb-2">{successMessage}</div>}
                 </div>
                 <div className="mb-2 ">
-                    <h2 className="text-2xl font-bold text-center capitalize ">{teethname} Notes</h2>
+                    <h2 className="text-2xl font-bold text-center uppercase text-[#266D53]">{teethname} Notes</h2>
                 </div>
 
                 {/* Tooth Details Section */}
                 <div className="mb-4">
                     {isEditingTooth ? (
                         <form onSubmit={handleUpdateToothDetails} className="flex flex-col">
+                            <div className="grid grid-cols-2 gap-2">
                             <div className="mb-2">
                                 <label className="block">Tooth Name:</label>
                                 <input
@@ -207,23 +208,35 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                     required
                                 />
                             </div>
+                            </div>
                             <div className="flex justify-between">
                                 <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Save Changes</button>
                                 <button type="button" onClick={() => setIsEditingTooth(false)} className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Cancel</button>
                             </div>
                         </form>
                     ) : (
-                        <div className="flex items-center ">
+                        <div className="flex items-center mt-10">
                             <span className="mr-4">Status: <span className='text-xl font-bold capitalize'>{toothDetails.status}</span></span>
                             <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline">Edit</button>
                         </div>
                     )}
                 </div>
 
+            <div className='grid grid-cols-2 mt-5'>
+                
                 <h2 className="text-xl font-bold">Notes:</h2>
+                 {/* Toggle button for adding a new note */}
+                 <button
+                        onClick={() => setIsAddingNote(!isAddingNote)}
+                        className={`px-4 py-2 rounded text-white transition ${isAddingNote ? 'bg-[#D9D9D9] hover:bg-[#ADAAAA]' : 'bg-[#3EB489] hover:bg-[#62A78E]'}`}
+                    >
+                        {isAddingNote ? 'Cancel' : 'Add New Note'}
+                    </button>
+                
+            </div>
 
                 {/* Add New Note Section */}
-                <div className="flex items-center mb-4 w-full">
+                <div className="flex items-center mb-4 w-full mt-5">
                     {isAddingNote && <h1 className="text-xl font-bold mr-4">Create:</h1> }
                     {/* Form for adding a new note */}
                     {isAddingNote && (
@@ -238,7 +251,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                             />
                             <button
                                 type="submit"
-                                className={`ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`ml-2 px-4 py-2 bg-[#4285F4] hover:bg-[#0C65F8] text-white rounded transition ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 disabled={loading}
                             >
                                 {loading ? 'Adding...' : 'Add Note'}
@@ -246,13 +259,13 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                         </form>
                     )}
 
-                    {/* Toggle button for adding a new note */}
+                    {/* Toggle button for adding a new note
                     <button
                         onClick={() => setIsAddingNote(!isAddingNote)}
                         className={`px-4 py-2 rounded text-white transition ${isAddingNote ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}`}
                     >
                         {isAddingNote ? 'Cancel' : 'Add New Note'}
-                    </button>
+                    </button> */}
 
                     {/* Uncomment to add delete functionality */}
                     {/* <button onClick={confirmDeleteTooth} className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
@@ -270,7 +283,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                 type="text"
                                 value={updatedNote}
                                 onChange={(e) => setUpdatedNote(e.target.value)}
-                                className="border border-gray-300 p-2 text-sm flex-grow rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="border border-gray-300 ml-3 p-2 text-sm flex-grow rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 required
                                 placeholder="Update your note here..."
                             />
@@ -284,7 +297,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                         </form>
                         <button
                             onClick={() => setNoteIndexToUpdate(null)}
-                            className="ml-2  btn btn-error"
+                            className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition "
                         >
                             Cancel
                         </button>
@@ -312,12 +325,15 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                             })})
                                         </p>
                                     </div>
-                                    <div>
+                                    <div className='flex justify-center gap-2 '>
                                         <button onClick={() => {
                                             setNoteIndexToUpdate(index); // use index for updating specific note
                                             setUpdatedNote(note.text);   // Set updatedNote to note text only
-                                        }} className="text-blue-500 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300">Edit</button>
-                                        <button onClick={() => confirmDeleteNote(index)} className="text-red-500 ml-2 hover:underline focus:outline-none focus:ring-2 focus:ring-red-300">Delete</button>
+                                        }} className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
+                                        title='edit'> <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span></button>
+                                        <button onClick={() => confirmDeleteNote(index)} className="flex flex-col items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm" title='delete'><span className="material-symbols-outlined">
+                                                delete
+                                            </span></button>
                                     </div>
                                 </li>
                             ))

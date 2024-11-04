@@ -100,12 +100,14 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
     const selectedProcedureIds = newPlan.ProcedureList.map(proc => proc.Procedure);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col">
             <h2 className="text-2xl font-bold mb-6 text-[#266D53] text-center">Add Treatment Plan</h2>
 
             {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
             {successMessage && <div className="text-black mb-4 text-center text-xl font-bold">{successMessage}</div>}
 
+        <div className='grid grid-cols-2'>
+           
             <div className="mb-4">
                 <label className="block text-gray-700">Treatment Stage</label>
                 <input
@@ -141,6 +143,8 @@ export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
                     Add Procedure
                 </button>
             </div>
+        
+        </div>
 
             <div className='grid grid-cols-2 gap-4'>
                 <div className="mb-4">

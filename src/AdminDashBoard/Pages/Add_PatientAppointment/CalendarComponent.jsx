@@ -20,6 +20,7 @@ import ProceduresSelector from './Selector/ProceduresSelector';
 import './react-big-calendar.css'
 import AvailableTimeSlots from './Components/AvailableTimeSlots';
 import ConfirmAppointmentModal from './Components/ConfirmAppointmentModal ';
+import { showToast } from '../../Components/ToastNotification';
 
 const Baseurl = import.meta.env.VITE_BASEURL;
 const locales = {
@@ -122,7 +123,7 @@ const CalendarComponent = () => {
     };
     const handleSelectProcedures = (Procedures) => {
         if (Procedures) {
-            console.log('selectedProcedures', Procedures)
+            // console.log('selectedProcedures', Procedures)
             setProcedures(Procedures)
         } else {
             setselectedPatient('')
@@ -165,7 +166,7 @@ const CalendarComponent = () => {
 
 
     const fetchAppointments = async () => {
-        console.log('fetchAppointments start')
+        // console.log('fetchAppointments start')
         try {
             const response = await axios.get(`${Baseurl}/Appointments/appointments/filter`);
             const appointmentsData = response.data;
@@ -232,12 +233,9 @@ const CalendarComponent = () => {
                 selectedDate >= eventEndDate
             );
         });
-
         setAllButtonsDisabled(isDentistUnavailable);
         console.log('isDentistUnavailable', isDentistUnavailable);
     };
-
-
 
     const handleSelectEvent = (event) => {
         setSelectedEvent(event);
@@ -295,7 +293,9 @@ const CalendarComponent = () => {
 
         // If there are missing fields, show a specific alert
         if (missingFields.length) {
-            alert(`Please ensure the following fields are selected: ${missingFields.join(', ')}`);
+            const errormessage = `Please ensure the following fields are selected: ${missingFields.join(', ')}`
+            // alert(errormessage);
+            showToast('error', errormessage)
         } else {
             setConfirmModalOpen(true); // Open confirmation modal if all fields are selected
         }
@@ -303,9 +303,10 @@ const CalendarComponent = () => {
 
 
 
-    const handleConfirmAppointment = async () => {
+    const handleConfirmAppointment = async (notes) => {
         if (!selectedPatient || !selectedDentist || !procedures.length || !selectedDate || !selectedTimeSlot) {
-            alert('Please ensure all fields are selected.');
+            const errormessage = `Please ensure all fields are selected`;
+            showToast('error', errormessage);
             return;
         }
 
@@ -313,10 +314,15 @@ const CalendarComponent = () => {
         const selectedTime = new Date(selectedTimeSlot);
         localDate.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
 
+        // Calculate total duration from selected procedures
+        const totalDuration = procedures.reduce((sum, procedure) => sum + parseInt(procedure.Duration), 0);
+
+        // Set the end date by adding the total duration to the start time
         const endDate = new Date(localDate);
-        endDate.setMinutes(endDate.getMinutes() + 30);
+        endDate.setMinutes(endDate.getMinutes() + totalDuration);
 
         const appointmentData = {
+            notes: notes,
             procedureIds: procedures.map(p => p._id),
             date: localDate.toISOString().split('T')[0],
             Start: localDate.toISOString(),
@@ -328,7 +334,6 @@ const CalendarComponent = () => {
 
         try {
             const response = await axios.post(`${Baseurl}/Appointments/add/history/${selectedPatient._id}`, appointmentData, { withCredentials: true });
-            console.log('Appointment added to history:', response.data);
             setisSubmited(true);
             setConfirmModalOpen(false);
 
@@ -360,23 +365,32 @@ const CalendarComponent = () => {
                             <ProceduresSelector onselectprocedures={handleSelectProcedures} isSubmited={isSubmited} />
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4"> {/* Set to 2 columns on large screens */}
+
                         {/* Calendar section */}
-                        <div className="lg:col-span-2 border border-green-500 rounded-md flex flex-col justify-between min-h-[500px]">
-                            <CalendarView
-                                events={events}
-                                view={view}
-                                date={date}
-                                handleDateChange={handleDateChange}
-                                handleViewChange={setView}
-                                handleSelectSlot={handleSelectSlot}
-                                handleSelectEvent={handleSelectEvent}
-                                eventStyleGetter={eventStyleGetter}
-                                dayPropGetter={(date) => dayPropGetter(date, events)}
-                            />
+                        {/* <div className="lg:col-span-2 border border-green-500 rounded-md flex flex-col justify-between min-h-[500px]"> */}
+                        <div className="border border-green-500 rounded-md flex flex-col justify-between min-h-[500px]">
+                            <div>
+                                <CalendarView
+                                    events={events}
+                                    view={view}
+                                    date={date}
+                                    handleDateChange={handleDateChange}
+                                    handleViewChange={setView}
+                                    handleSelectSlot={handleSelectSlot}
+                                    handleSelectEvent={handleSelectEvent}
+                                    eventStyleGetter={eventStyleGetter}
+                                    dayPropGetter={(date) => dayPropGetter(date, events)}
+                                />
+                                <Legend />
+                            </div>
+
                         </div>
                         {/* Time slots section */}
-                        <div className="border border-green-500 rounded-md flex justify-center pt-10 min-h-[500px] max-w-90%">
+                        {/* <div className="border border-green-500 rounded-md flex justify-center min-h-[500px] w-full"> */}
+                        <div className="border border-green-500 rounded-md flex justify-center min-h-[500px] w-full">
+
                             <AvailableTimeSlots
                                 selectedDate={date}
                                 unavailableDates={unavailableDates}
@@ -387,7 +401,7 @@ const CalendarComponent = () => {
                             />
                         </div>
                     </div>
-                    <Legend />
+
                 </div>
             )}
             {modalOpen && selectedEvent && (

@@ -142,6 +142,9 @@ export default function Dentist() {
     };
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === "ContactNumber" && value.length > 11) return;
+
         if (e.target.name === 'ProfilePicture') {
             const file = e.target.files[0];
             setNewDentist({ ...newDentist, ProfilePicture: file });
@@ -277,12 +280,6 @@ export default function Dentist() {
                     Add Dentist
                 </button>
             </div>
-
-
-
-
-
-
             <div className="w-full overflow-auto">
                 <table className="min-w-full text-left text-xs sm:text-sm">
                     <thead>
@@ -452,7 +449,7 @@ export default function Dentist() {
 
                         <div className='grid grid-cols-2 gap-4'>
                             <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">Middle Name</label>
+                                <label className="text-[#266D53] mb-1">Middle Name <span className="text-red-500">*</span></label>
                                 <input
                                     type="text"
                                     name="MiddleName"
@@ -465,20 +462,22 @@ export default function Dentist() {
                             <div className="flex flex-col">
                                 <label className="text-[#266D53] mb-1">Contact Number <span className="text-red-500">*</span></label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     name="ContactNumber"
-                                    placeholder="Contact Number"
+                                    placeholder="09XXXXXXXXX" 
                                     value={newDentist.ContactNumber}
                                     onChange={handleChange}
                                     required
+                                    maxLength={11}
                                     className="w-full mb-4 p-2 border border-gray-300 rounded"
                                 />
+
                             </div>
                         </div>
 
                         <div className='grid grid-cols-2 gap-4'>
                             <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">Address</label>
+                                <label className="text-[#266D53] mb-1">Address <span className="text-red-500">*</span></label>
                                 <input
                                     type="text"
                                     name="Address"
@@ -489,7 +488,7 @@ export default function Dentist() {
                                 />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">Gender</label>
+                                <label className="text-[#266D53] mb-1">Gender <span className="text-red-500">*</span></label>
                                 <select
                                     name="Gender"
                                     value={newDentist.Gender}

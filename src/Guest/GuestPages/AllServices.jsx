@@ -76,7 +76,7 @@ export default function OurService() {
                                 </figure>
 
                                 <div className="card-body p-4">
-                                    <h2 className="card-title text-xl text-[#266D53] text-center font-semibold">{procedure.Procedure_name}</h2>
+                                    <h2 className=" text-xl text-[#266D53] text-center font-semibold">{procedure.Procedure_name}</h2>
                                 </div>
                             </div>
                         ))}

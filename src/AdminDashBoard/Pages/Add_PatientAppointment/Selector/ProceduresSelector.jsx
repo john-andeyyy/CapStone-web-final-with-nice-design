@@ -6,74 +6,87 @@ const Baseurl = import.meta.env.VITE_BASEURL;
 export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
     const [procedurelist, setProcedureList] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState();
+    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedProcedures, setSelectedProcedures] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [totalDuration, setTotalDuration] = useState(0);
+    const [selectionError, setSelectionError] = useState('');
 
-
+    // Reset states when submitted
     useEffect(() => {
         if (isSubmited) {
-            setSelectedProcedures([]); 
-            onselectprocedures(null); 
-            setSearchTerm('')
+            setSelectedProcedures([]);
+            onselectprocedures(null);
+            setSearchTerm('');
+            setTotalDuration(0);
+            setSelectionError('');
         }
-    }, [isSubmited, onselectprocedures]);
+    }, [isSubmited]);
 
-
-
+    // Fetch available procedures
     useEffect(() => {
-        axios.get(`${Baseurl}/Procedure/names`)
-            .then((res) => {
-                const tempData = res.data;
-                const data = tempData
-                    .filter((pro) => pro.available === true)
+        const fetchProcedures = async () => {
+            try {
+                const response = await axios.get(`${Baseurl}/Procedure/names`);
+                const data = response.data
+                    .filter((pro) => pro.available)
                     .sort((a, b) => a.Procedure_name.localeCompare(b.Procedure_name));
                 setProcedureList(data);
-            })
-            .catch((err) => {
+            } catch (err) {
                 setError(err);
-            })
-            .finally(() => {
+            } finally {
                 setLoading(false);
-            });
+            }
+        };
+        fetchProcedures();
     }, []);
 
-    // Disable body scrolling when modal is open
+    // Handle body scroll when modal is open
     useEffect(() => {
-        if (isModalOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
+        document.body.style.overflow = isModalOpen ? 'hidden' : 'unset';
     }, [isModalOpen]);
 
-    // Handle search input
+    // Calculate total duration of selected procedures
+    useEffect(() => {
+        const total = selectedProcedures.reduce((sum, procedure) => sum + Number(procedure.Duration || 0), 0);
+        setTotalDuration(total);
+        onselectprocedures(selectedProcedures, total);
+    }, [selectedProcedures, onselectprocedures]);
+
+    // Handle search input change
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
+        setSelectionError('');
     };
 
-    // Handle checkbox selection for procedures
+    // Handle procedure checkbox selection
     const handleCheckboxChange = (procedure) => {
+        setSelectionError('');
         setSelectedProcedures((prevSelected) => {
             if (prevSelected.includes(procedure)) {
                 return prevSelected.filter(p => p !== procedure);
-            } else if (prevSelected.length < 3) { // Only allow up to 3 selections
+            } else if (prevSelected.length < 3) {
                 return [...prevSelected, procedure];
             } else {
-                alert("You can only select up to 3 procedures.");
+                setSelectionError("You can only select up to 3 procedures.");
                 return prevSelected;
             }
         });
     };
-    useEffect(() => {
-        const totalDuration = selectedProcedures.reduce((sum, procedure) => sum + procedure.duration, 0);
-        onselectprocedures(selectedProcedures, totalDuration);
-    }, [selectedProcedures, onselectprocedures]);
 
+    // Format duration for display
+    const formatDuration = (duration) => {
+        const numericDuration = Number(duration);
+        if (isNaN(numericDuration)) return '0 mins';
 
+        const hours = Math.floor(numericDuration / 60);
+        const minutes = numericDuration % 60;
 
-    // Filter procedures based on the search term
+        return `${hours > 0 ? `${hours} hr${hours > 1 ? 's' : ''}` : ''} ${minutes > 0 ? `${minutes} min${minutes > 1 ? 's' : ''}` : ''}`.trim();
+    };
+
+    // Filter procedures based on search term
     const filteredProcedures = procedurelist.filter((pro) =>
         pro.Procedure_name && pro.Procedure_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -89,18 +102,18 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
-                    <div className="bg-[#C6E4DA] rounded-lg shadow-lg p-6 w-96">
-                        <div className=" flex justify-center items-center">
-                            <h2 className="text-lg font-medium text-[#266D53] ">Select Procedures</h2>
-                            {/* <button
-                                className="text-gray-600 hover:text-gray-800"
+                    <div className="bg-[#C6E4DA] rounded-lg shadow-lg p-6 w-[64rem]">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-medium text-[#266D53]">Select Procedures</h2>
+                            <button
+                                className="text-gray-600 hover:text-gray-800 text-3xl"
                                 onClick={() => setIsModalOpen(false)}
                             >
                                 &times;
-                            </button> */}
+                            </button>
                         </div>
 
-                        <label htmlFor="procedure-search" className="block text-gray-700 mt-4">Search procedure:</label>
+                        <label htmlFor="procedure-search" className="block text-gray-700">Search procedure:</label>
                         <input
                             type="text"
                             id="procedure-search"
@@ -110,30 +123,45 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
                             className="mt-2 p-2 border border-gray-300 rounded-md w-full"
                         />
 
-                        <div className="mt-4 max-h-48 overflow-y-auto text-black">
+                        <div className='py-4 text-center'>
+                            {error && (
+                                <p className="text-red-500">Error: {error.message}</p>
+                            )}
+                            {selectionError && (
+                                <p className="text-red-500">{selectionError}</p>
+                            )}
+
+                        </div>
+                        <div className="max-h-80 overflow-y-auto text-black">
+
                             {loading ? (
                                 <div className="flex justify-center items-center">
                                     <span className="loading loading-spinner loading-lg"></span>
                                 </div>
                             ) : (
-                                <div className="space-y-2 max-h-48">
-                                    {error && (
-                                        <p className="text-red-500">Error: {error.message}</p>
-                                    )}
+                                <div className="space-y-2">
                                     {filteredProcedures.length > 0 ? (
-                                        filteredProcedures.map((procedure) => (
-                                            <div key={procedure._id} className="flex items-center space-x-2">
-                                                <input
-                                                    type="checkbox"
-                                                    id={procedure._id}
-                                                    value={procedure}
-                                                    onChange={() => handleCheckboxChange(procedure)}
-                                                    className="form-checkbox"
-                                                    checked={selectedProcedures.includes(procedure)}
-                                                />
-                                                <label htmlFor={procedure._id}>{procedure.Procedure_name}</label>
-                                            </div>
-                                        ))
+                                        <div className=''>
+                                            {filteredProcedures.map((procedure, index) => (
+                                                <div
+                                                    key={procedure._id}
+                                                    className={`flex items-center space-x-2 p-3 ${index % 2 === 0 ? 'bg-[#3EB489]' : 'bg-[#66deb2]'}`}
+                                                    onClick={() => handleCheckboxChange(procedure)}
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        id={procedure._id}
+                                                        onChange={() => handleCheckboxChange(procedure)}
+                                                        className="form-checkbox"
+                                                        checked={selectedProcedures.includes(procedure)}
+                                                    />
+                                                    <div className="grid grid-cols-2 flex-1 cursor-pointer"> {/* Added cursor pointer */}
+                                                        <div className="font-medium">{procedure.Procedure_name}</div>
+                                                        <div className="text-right">{formatDuration(procedure.Duration)}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     ) : (
                                         <p>No procedures found</p>
                                     )}
@@ -141,17 +169,21 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
                             )}
                         </div>
 
-                        <div className="mt-6 flex justify-end">
-                            <button
-                                className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black px-4 py-2 rounded mr-2"
+                        <div className="mt-4 text-sm font-medium text-gray-700">
+                            <p>Total Duration: {formatDuration(totalDuration)}</p>
+                        </div>
+
+                        <div className="mt-6 flex justify-end space-x-2">
+                            {/* <button
+                                className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black px-4 py-2 rounded"
                                 onClick={() => setIsModalOpen(false)}
                             >
                                 Close
-                            </button>
+                            </button> */}
                             <button
-                                className="bg-[#4285F4] hover:bg-[#0C65F8] text-black px-4 py-2 rounded"
+                                className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded"
                                 onClick={() => {
-                                    onselectprocedures(selectedProcedures);
+                                    onselectprocedures(selectedProcedures, totalDuration);
                                     setIsModalOpen(false);
                                 }}
                             >

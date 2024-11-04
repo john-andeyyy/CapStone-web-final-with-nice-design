@@ -85,7 +85,7 @@ const CalendarComponent = () => {
     }, [statusFilters]);
 
 
-    
+
     useEffect(() => {
         const Socketeventname = 'new-appointment-set';
 
@@ -232,8 +232,8 @@ const CalendarComponent = () => {
     };
 
     return (
-        <div className="p-4 min-h-screen bg-[#3EB489] bg-opacity-50">
-            <h1 className="text-2xl font-semibold mb-4">View Appointments</h1>
+        <div className="p-4 min-h-screen bg-accent bg-opacity-40">
+            <h1 className="text-2xl font-semibold mb-4 ">View Appointments</h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pb-2">
                 {Object.keys(statusFilters).map((status) => (
@@ -304,16 +304,16 @@ const CalendarComponent = () => {
                         <p>Notes: {selectedEvent?.notes}</p>
                         <p>Status: {selectedEvent?.status}</p>
 
-                        <div className='flex justify-between items-center pt-4'>
+                        <div className='flex justify-center gap-4 items-center pt-4'>
                             <div className="flex space-x-2">
                                 <Link
                                     to={`/appointment/${selectedEvent.id}`}
-                                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                    className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
                                 >
                                     View Details
                                 </Link>
                             </div>
-                            <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={closeModal}>
+                            <button className="px-4 py-2 bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white rounded" onClick={closeModal}>
                                 Close
                             </button>
                         </div>

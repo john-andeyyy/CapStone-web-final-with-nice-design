@@ -10,17 +10,18 @@ const DentistSelector = ({ onSelectDentist, isSubmited }) => {
 
     useEffect(() => {
         if (isSubmited) {
-            setSelectedDentist(''); 
+            setSelectedDentist('');
             if (onSelectDentist) {
-                onSelectDentist(null); 
+                onSelectDentist(null);
             }
         }
-    }, [isSubmited]); 
+    }, [isSubmited]);
 
     const fetchDentists = async () => {
         try {
             const response = await axios.get(`${Baseurl}/dentist/dentistnames`);
-            setDentists(response.data);
+            const dentist_availableOnly = response.data.filter((den) => den.isAvailable === true)
+            setDentists(dentist_availableOnly);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching dentists:', error);
@@ -30,16 +31,16 @@ const DentistSelector = ({ onSelectDentist, isSubmited }) => {
 
     useEffect(() => {
         fetchDentists();
-    }, []); 
+    }, []);
 
     const handleDentistChange = (e) => {
         const selectedId = e.target.value;
-        const dentistData = dentists.find(dentist => dentist._id === selectedId); 
+        const dentistData = dentists.find(dentist => dentist._id === selectedId);
 
         setSelectedDentist(selectedId);
 
         if (onSelectDentist) {
-            onSelectDentist(dentistData); 
+            onSelectDentist(dentistData);
         }
     };
 

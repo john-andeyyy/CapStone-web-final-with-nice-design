@@ -79,7 +79,7 @@ export default function Announcement() {
                 </button>
             </div>
 
-            <div className="border-2 bg-accent border-[#3EB489] rounded-lg max-h-64 overflow-y-auto p-5">
+            <div className="border-2 bg-accent border-[#3EB489] rounded-lg max-h-72 overflow-y-auto p-5">
                 {loading ? (
                     <p className="text-center py-4">Loading announcements...</p>
                 ) : announcements.length > 0 ? (

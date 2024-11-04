@@ -86,7 +86,7 @@ export default function GuestNavBar() {
                         </li> */}
 
                         <li className="mb-2 md:mb-0">
-                            <button className="btn btn-ghost font-bold text-white text-xl"
+                            <button className="btn btn-ghost font-bold text-[#266D53] bg-[#C6E4DA] text-xl"
                                 onClick={() => { navigate('AdminLogin') }}
                             >LOGIN </button>
                         </li>

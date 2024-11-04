@@ -97,22 +97,29 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                             )}
                         </div>
                     ))}
-                    <div className="flex justify-between mt-8 md:col-span-2 lg:col-span-3">
-                        <button
-                            type="submit"
-                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-black p-4 rounded-md transition duration-200"
-                        >
-                            Add Patient
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleCancel} // Call handleCancel on click
-                            className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-gray-800 p-4 rounded-md transition duration-200"
-                        >
-                            Cancel
-                        </button>
+
+                    <div className="flex flex-col mt-8 md:col-span-2 lg:col-span-3">
+                        <div className="flex justify-between flex-wrap">
+                            <button
+                                type="submit"
+                                className="bg-[#4285F4] hover:bg-[#0C65F8] text-white p-4 rounded-md transition duration-200 w-full md:w-auto"
+                            >
+                                Add Patient
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleCancel} // Call handleCancel on click
+                                className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-gray-800 p-4 rounded-md transition duration-200 w-full md:w-auto mt-2 md:mt-0 md:ml-2"
+                            >
+                                Cancel
+                            </button>
+                        </div>
                     </div>
                 </form>
+                <p className="text-red-600 text-center mt-4">
+                    Note: The username is your <strong>First Name</strong> in all uppercase letters.
+                    The password is your <strong>Last Name</strong> in all uppercase letters.
+                </p>
             </div>
         </div>
     );
