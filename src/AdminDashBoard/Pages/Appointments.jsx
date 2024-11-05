@@ -49,7 +49,7 @@ export default function Appointments() {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get(`${BASEURL}/Appointments/appointments/filter`, {
+            const response = await axios.get(`${BASEURL}/Appointments/appointments/noimage`, {
                 withCredentials: true
             });
 

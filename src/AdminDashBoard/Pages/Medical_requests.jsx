@@ -23,7 +23,9 @@ export default function MedicalRequests() {
   const getAppointments = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${BASEURL}/Appointments/appointments/filter`, {
+      // const response = await axios.get(`${BASEURL}/Appointments/appointments/filter`, {
+      const response = await axios.get(`${BASEURL}/Appointments/appointments/noimage`, {
+
         withCredentials: true
       });
       if (response.status === 200) {
@@ -272,7 +274,7 @@ export default function MedicalRequests() {
               <th className="p-2 font-bold hidden md:table-cell border border-black text-white">Status</th>
               {/* Only show actions when not in 'Approved' or 'All' filter */}
               {/* {statusFilter !== 'Approved' && statusFilter !== 'All' && ( */}
-                <th className="p-2 font-bold text-center border border-black text-white">Actions</th>
+              <th className="p-2 font-bold text-center border border-black text-white">Actions</th>
               {/* // )} */}
             </tr>
           </thead>
@@ -325,7 +327,7 @@ export default function MedicalRequests() {
 
                       {statusFilter !== 'Approved' && statusFilter !== 'All' && (
                         <td className="text-center p-2 border border-black">
-                          <div className="flex justify-center space-x-2"> 
+                          <div className="flex justify-center space-x-2">
                             {/* Always show the View Button */}
                             <button
                               className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
