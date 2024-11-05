@@ -49,7 +49,7 @@ export default function Appointments() {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get(`${BASEURL}/Appointments/appointments/noimage`, {
+            const response = await axios.get(`${BASEURL}/Appointments/appointments/filter`, {
                 withCredentials: true
             });
 
@@ -228,17 +228,21 @@ export default function Appointments() {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: `${newStatus}`
+            confirmButtonText: newStatus.toLowerCase() === "approved" ? "Approve" : "Reject"
         }).then((result) => {
             if (result.isConfirmed) {
-                udpatestatus(app_id, newStatus)
+                udpatestatus(app_id, newStatus);
+
+                // Show a success message after confirmation
                 Swal.fire({
-                    title: `Appointement set ${newStatus}`,
-                    text: `You ${newStatus} the appointmement`,
+                    title: `Appointment ${newStatus}`,
+                    text: `You have ${newStatus.toLowerCase()} the appointment`,
                     icon: "success"
                 });
             }
         });
+
+
     };
 
     // const updateAppointmentStatus = async (app_id, newStatus) => {
