@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import DentistEdit from '../Components/Dentist/Dentist_edit';
 import { Link, useNavigate } from 'react-router-dom';
 import { showToast } from '../../AdminDashBoard/Components/ToastNotification';
 import UnavailableDentist from '../Components/Dentist/UnavailableDentist';
+import DentistEdit from '../Components/Dentist/Dentist_edit';
 import { alignProperty } from '@mui/material/styles/cssUtils';
+import CreateDentist from '../Components/Dentist/CreateDentist';
+import DentistDetailsModal from '../Components/Dentist/DentistDetailsModal';
+import DentistTable from '../Components/Dentist/DentistTable';
 
 export default function Dentist() {
     const BASEURL = import.meta.env.VITE_BASEURL;
@@ -55,14 +58,25 @@ export default function Dentist() {
         setShowModal(true);
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
-        setSelectedDentist(null);
-    };
 
     const handleAddDentist = () => {
         setShowAddModal(true);
     };
+    const handleOpenAddModal = () => {
+        setShowAddModal(true);
+    };
+
+    const handleOpenModal = (dentist) => {
+        setSelectedDentist(dentist);
+        setShowModal(true);
+    };
+
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setisEditmodal(false);
+    };
+
 
     const handleCreateDentist = async (e) => {
         e.preventDefault();
@@ -157,8 +171,6 @@ export default function Dentist() {
         }
     };
 
-
-
     const handle_availability = (userid) => {
         const currentstatus = userid.isAvailable;
         const newStatus = !currentstatus;
@@ -188,13 +200,8 @@ export default function Dentist() {
             });
     };
 
-    const updateDentistData = (updatedDentist) => {
+    const updateDentistData = () => {
         fetchDentistList()
-        // setDentists((prevDentists) =>
-        //     prevDentists.map((dentist) =>
-        //         dentist._id === updatedDentist._id ? updatedDentist : dentist
-        //     )
-        // );
     };
 
 
@@ -217,16 +224,6 @@ export default function Dentist() {
             return nameA.localeCompare(nameB); // Compare the names alphabetically (A to Z)
         });
 
-
-    const getProfileImage = (profilePicture) => {
-        if (profilePicture) {
-            // Convert the buffer to a base64 string
-            const base64String = profilePicture.toString('base64');
-            return `data:image/jpeg;base64,${base64String}`; // Adjust to image format (jpeg/png)
-        } else {
-            return "https://via.placeholder.com/150"; // Fallback if no image
-        }
-    };
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDentistId, setSelectedDentistId] = useState('');
 
@@ -248,7 +245,6 @@ export default function Dentist() {
                 <div className='flex space-x-3'>
                     <div className="flex flex-col lg:flex-row space-x-0 lg:space-x-4 w-full lg:w-auto space-y-2">
                         <div className='relative w-full'>
-                            {/* Filter by name */}
                             <input
                                 type="text"
                                 placeholder="Search Dentist"
@@ -280,83 +276,17 @@ export default function Dentist() {
                     Add Dentist
                 </button>
             </div>
-            <div className="w-full overflow-auto">
-                <table className="min-w-full text-left text-xs sm:text-sm">
-                    <thead>
-                        <tr className="text-sm text-white bg-primary">
-                            <th className="py-3 px-2 sm:px-5 bg-[#3EB489] text-center border border-black">Name</th>
-                            <th className="py-3 px-2 sm:px-5 bg-[#3EB489] text-center border border-black">Available</th>
-                            <th className="py-3 px-2 sm:px-5 bg-[#3EB489] text-center border border-black">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {loading ? (
-                            <tr>
-                                <td colSpan="3" className="py-3 px-2 sm:px-5 text-center">
-                                    <span className="loading loading-spinner loading-lg"></span>
-                                </td>
-                            </tr>
-                        ) : filteredDentists.length > 0 ? (
-                            filteredDentists.map((dentist) => (
-                                <tr key={dentist._id} className="hover:bg-secondary border-b">
-                                    <td className="py-2 sm:py-3 px-2 sm:px-5 bg-gray-100 border border-black">{`${dentist.FirstName} ${dentist.LastName}`}</td>
-                                    <td className="py-2 sm:py-3 px-2 sm:px-5 bg-gray-100 border border-black">{dentist.isAvailable ? 'Yes' : 'No'}</td>
-                                    <td className="py-2 sm:py-3 px-2 sm:px-5 space-x-1 sm:space-x-3 text-center bg-gray-100 border border-black">
-                                        <div className="flex-1 flex gap-1 sm:gap-2 justify-center">
-                                            <button
-                                                className="flex flex-col items-center justify-center w-8 sm:w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
-                                                onClick={() => handleRowClick(dentist)}
-                                                title='view'
-                                            >
-                                                <span className="material-symbols-outlined">visibility</span>
-                                            </button>
-                                            <button
-                                                className={`flex items-center ${dentist.isAvailable ? 'text-green-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-green-100 transition rounded-lg shadow-sm' : 'text-red-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-red-100 transition rounded-lg shadow-sm'}`}
-                                                onClick={() => handle_availability(dentist)}
-                                                title={dentist.isAvailable ? 'to unavailable' : 'to available'}
-                                            >
-                                                <span className="material-symbols-outlined">
-                                                    {dentist.isAvailable ? 'check_circle' : 'do_not_disturb_on'}
-                                                </span>
-                                            </button>
-                                            <button
-                                                className="text-yellow-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-yellow-100 hover:text-yellow-600 transition rounded-lg shadow-sm"
-                                                onClick={() => navigate(`/DentistSchedule/${dentist._id}`)}
-                                                title="Schedule"
-                                            >
-                                                <span className="material-symbols-outlined">calendar_month</span>
-                                            </button>
-                                            <button
-                                                className="text-gray-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-gray-200 hover:text-gray-600 transition rounded-lg shadow-sm"
-                                                onClick={() => openModal(dentist._id)}
-                                                title='manage availability'
-                                            >
-                                                <span className="material-symbols-outlined">manage_accounts</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="3" className="py-3 px-2 sm:px-5 text-center">No dentists found.</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-                {isModalOpen && (
-                    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-                        <div className="bg-accent p-6 rounded shadow-md relative">
-                            <button onClick={closeModal} className="absolute top-4 right-4 text-white">
-                                <span className="material-symbols-outlined text-gray-500">close</span>
-                            </button>
-                            <UnavailableDentist dentistId={selectedDentistId} />
-                        </div>
-                    </div>
-                )}
-            </div>
 
-
+            <DentistTable
+                loading={loading}
+                filteredDentists={filteredDentists}
+                handleRowClick={handleRowClick}
+                handle_availability={handle_availability}
+                openModal={openModal}
+                closeModal={closeModal}
+                isModalOpen={isModalOpen}
+                selectedDentistId={selectedDentistId}
+            />
 
             {isEditmodal && (
                 <DentistEdit
@@ -367,183 +297,19 @@ export default function Dentist() {
                 />
             )}
 
-            {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-[#C6E4DA] rounded-lg p-6 w-11/12 max-w-lg">
-                        <h2 className="text-2xl mb-4 text-[#266D53] text-center">Dentist Details</h2>
-                        {selectedDentist && (
-                            <div className="flex">
-                                {/* Column 1: Image */}
-                                <div className="w-1/3 flex items-center justify-center">
-                                    <img
-                                        src={getProfileImage(selectedDentist.ProfilePicture)}
-                                        alt="Dentist"
-                                        className="w-40 h-36 rounded-full mb-4"
-                                    />
-                                </div>
+            <CreateDentist
+                showAddModal={showAddModal}
+                handleCreateDentist={handleCreateDentist}
+                handleCloseAddModal={handleCloseAddModal}
+            />
 
-                                {/* Column 2: Details */}
-                                <div className="w-2/3 pl-4">
-                                    <p><strong>Name:</strong> {`${selectedDentist.FirstName} ${selectedDentist.LastName}`}</p>
-                                    <p><strong>Contact Number:</strong> {selectedDentist.ContactNumber}</p>
-                                    <p><strong>License No:</strong> {selectedDentist.LicenseNo}</p>
-                                    <p><strong>Address:</strong> {selectedDentist.Address}</p>
-                                    <p><strong>Gender:</strong> {selectedDentist.Gender}</p>
-                                    <p><strong>Available:</strong> {selectedDentist.isAvailable ? 'Yes' : 'No'}</p>
-                                </div>
-                            </div>
-                        )}
-
-                        <div className='grid grid-cols-2 gap-4'>
-                            <button
-                                className="bg-[#4285F4] hover:bg-[#0C65F8] text-black"
-                                onClick={() => {
-                                    setisEditmodal(true);
-                                    setShowModal(false);
-                                    setSelectedDentist(selectedDentist)
-                                }}
-                            >
-                                Edit
-                            </button>
-
-                            <button onClick={handleCloseModal} className=" bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black py-2 px-4 rounded">
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-
-            {showAddModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <form className="bg-[#C6E4DA] rounded-lg p-6 w-11/12 max-w-lg" onSubmit={handleCreateDentist}>
-                        <h2 className="text-2xl mb-4 text-[#266D53] text-center">Add Dentist</h2>
-
-                        <div className='grid grid-cols-2 gap-4 mt-5'>
-                            <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">First Name <span className="text-red-500">*</span></label>
-                                <input
-                                    type="text"
-                                    name="FirstName"
-                                    placeholder="First Name"
-                                    value={newDentist.FirstName}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full mb-4 p-2 border border-gray-300 rounded"
-                                />
-                            </div>
-                            <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">Last Name <span className="text-red-500">*</span></label>
-                                <input
-                                    type="text"
-                                    name="LastName"
-                                    placeholder="Last Name"
-                                    value={newDentist.LastName}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full mb-4 p-2 border border-gray-300 rounded"
-                                />
-                            </div>
-                        </div>
-
-                        <div className='grid grid-cols-2 gap-4'>
-                            <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">Middle Name <span className="text-red-500">*</span></label>
-                                <input
-                                    type="text"
-                                    name="MiddleName"
-                                    placeholder="Middle Name"
-                                    value={newDentist.MiddleName}
-                                    onChange={handleChange}
-                                    className="w-full mb-4 p-2 border border-gray-300 rounded"
-                                />
-                            </div>
-                            <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">Contact Number <span className="text-red-500">*</span></label>
-                                <input
-                                    type="number"
-                                    name="ContactNumber"
-                                    placeholder="09XXXXXXXXX" 
-                                    value={newDentist.ContactNumber}
-                                    onChange={handleChange}
-                                    required
-                                    maxLength={11}
-                                    className="w-full mb-4 p-2 border border-gray-300 rounded"
-                                />
-
-                            </div>
-                        </div>
-
-                        <div className='grid grid-cols-2 gap-4'>
-                            <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">Address <span className="text-red-500">*</span></label>
-                                <input
-                                    type="text"
-                                    name="Address"
-                                    placeholder="Address"
-                                    value={newDentist.Address}
-                                    onChange={handleChange}
-                                    className="w-full mb-4 p-2 border border-gray-300 rounded"
-                                />
-                            </div>
-                            <div className="flex flex-col">
-                                <label className="text-[#266D53] mb-1">Gender <span className="text-red-500">*</span></label>
-                                <select
-                                    name="Gender"
-                                    value={newDentist.Gender}
-                                    onChange={handleChange}
-                                    className="w-full mb-4 p-2 border border-gray-300 rounded"
-                                >
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Prefer not to say">Prefer not to say</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label className="text-[#266D53] mb-1">License No <span className="text-red-500">*</span></label>
-                            <input
-                                type="text"
-                                name="LicenseNo"
-                                placeholder="License No"
-                                value={newDentist.LicenseNo}
-                                onChange={handleChange}
-                                required
-                                className="w-full mb-4 p-2 border border-gray-300 rounded"
-                            />
-                        </div>
-
-                        <div className='text-black mb-3'>
-                            <p>Upload Picture</p>
-                        </div>
-
-                        <input
-                            type="file"
-                            name="ProfilePicture"
-                            accept="image/*"
-                            onChange={handleChange}
-                            className="mb-4"
-                        />
-                        {previewImage && (
-                            <img src={previewImage} alt="Profile Preview" className="w-32 h-32 rounded mb-4 flex" />
-                        )}
-
-                        <div className='grid grid-cols-2 gap-4'>
-                            <button
-                                type="submit"
-                                className="bg-[#4285F4] hover:bg-[#0C65F8] text-black py-2 rounded"
-                            >
-                                Add
-                            </button>
-                            <button onClick={handleCloseAddModal} className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black py-2 rounded">Close</button>
-                        </div>
-                    </form>
-                </div>
-
-            )}
+            <DentistDetailsModal
+                showModal={showModal}
+                selectedDentist={selectedDentist}
+                setisEditmodal={setisEditmodal}
+                setShowModal={setShowModal}
+                handleCloseModal={handleCloseModal}
+            />
         </div>
     );
 }

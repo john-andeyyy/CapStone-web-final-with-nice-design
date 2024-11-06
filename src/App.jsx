@@ -116,14 +116,14 @@ function AdminRoutes() {
 
   return (
     // <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'} bg-green-200 bg-opacity-50 `}>
-     <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'}  `}> 
-      
+    <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'}  `}>
+
       {/* <div className="sticky top-0 z-20 bg-[#DDFBE7]"> */}
-      <div className="sticky top-0 z-20 bg-white ">
+      <div className="sticky top-0 z-10 bg-white ">
         <Notification_bell />
       </div>
       <Routes>
-        
+
         <Route path="/" element={<Dashboard />} />
         <Route path="/appointments" element={<Appointment />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -212,7 +212,7 @@ function App() {
       <ToastNotification />
 
       {isLogin && !isExpired ? (
-        <div className="flex flex-col  md:flex-row">
+        <div className="flex flex-col  md:flex-row ">
           <Sidebar />
           <div className="flex-1 ml-0 md:ml-42 lg:ml-60">
             <AdminRoutes />

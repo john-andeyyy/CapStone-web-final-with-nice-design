@@ -37,7 +37,7 @@ const Setthings = () => {
 
     return (
         <div>
-            <div className="relative mt-2">
+            <div className="relative">
                 <button
                     onClick={() => setSettingsIsOpen(!settingsIsOpen)} 
                     className="text-xl font-semibold text-black btn-ghost btn-circle relative"

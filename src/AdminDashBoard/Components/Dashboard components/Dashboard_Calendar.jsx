@@ -224,7 +224,7 @@ export default function Dashboard_Calendar() {
         if (view === 'month') {
             const eventForDay = getEventsForDay(date);
             if (eventForDay.length > 0) {
-                return 'bg-[#3EB489] text-white rounded-full hover:bg-red-600; cursor-pointer';
+                return 'bg-[#3EB489] text-white rounded-full hover:bg-red-600; cursor-pointer ';
 
             }
         }

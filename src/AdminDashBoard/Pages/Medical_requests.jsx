@@ -30,6 +30,7 @@ export default function MedicalRequests() {
       });
       if (response.status === 200) {
         setRequests(response.data);
+        console.log('response', response)
       }
     } catch (error) {
       console.error('Error fetching appointments:', error);
@@ -225,7 +226,6 @@ export default function MedicalRequests() {
 
   return (
     <div className="container mx-auto p-4">
-
       <div className="p-4">
         {/* Status Dropdown and Search Bar */}
         <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 space-y-4 lg:space-y-0">
@@ -264,23 +264,20 @@ export default function MedicalRequests() {
       </div>
 
       {/* Request List */}
-      <div className="p-2">
+      <div className="p-2 overflow-x-auto">
         <table className="w-full table-auto bg-gray-100 text-black border border-black">
           <thead>
             <tr className="bg-[#3EB489] border border-black">
               <th className="p-2 font-bold border border-black text-white">Name</th>
-              <th className="p-2 font-bold border border-black text-white">Date</th>
-              <th className="p-2 font-bold hidden md:table-cell border border-black text-white">Procedure</th>
-              <th className="p-2 font-bold hidden md:table-cell border border-black text-white">Status</th>
-              {/* Only show actions when not in 'Approved' or 'All' filter */}
-              {/* {statusFilter !== 'Approved' && statusFilter !== 'All' && ( */}
+              <th className="p-2 font-bold border border-black text-white  hidden sm:table-cell">Date</th>
+              <th className="p-2 font-bold  border border-black text-white  hidden sm:table-cell">Procedure</th>
+              <th className="p-2 font-bold border border-black text-white">Status</th>
               <th className="p-2 font-bold text-center border border-black text-white">Actions</th>
-              {/* // )} */}
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr className='border border-black'>
+              <tr className="border border-black">
                 <td colSpan={statusFilter !== 'Approved' && statusFilter !== 'All' ? 5 : 4} className="text-center py-20 border border-black">
                   <span className="loading loading-spinner loading-lg"></span>
                 </td>
@@ -297,24 +294,33 @@ export default function MedicalRequests() {
                   filteredRequests.map((request) => (
                     <tr key={request.id} className="bg-gray-100 cursor-pointer border border-black">
                       {/* Patient's Name */}
-                      <td className="p-2 border border-black">{request.patient.FirstName} {request.patient.LastName}</td>
+                      <td className="p-2 border border-black whitespace-nowrap">{request.patient.FirstName} {request.patient.LastName}</td>
+
                       {/* Request Date */}
-                      <td className="p-2 border border-black">
+                      <td className="p-2 border border-black ">
                         {new Date(request.date).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'short',
                           day: 'numeric'
                         })}
                       </td>
+
                       {/* Procedures */}
-                      <td className="p-2 border border-black">{request.procedures.map(proc => proc.name).join(', ')}</td>
+                      <td className="p-2 border border-black  hidden sm:table-cell">
+                        {request.procedures.length > 2
+                          ? `${request.procedures.slice(0, 2).map(proc => proc.name).join(', ')} ...`
+                          : request.procedures.map(proc => proc.name).join(', ')
+                        }
+                      </td>
+
                       {/* Status */}
                       <td className={`p-2 border border-black ${request.medcertiStatus === 'Pending' ? 'text-green-500' : ''}`}>
                         {request.medcertiStatus}
                       </td>
 
+                      {/* Actions */}
                       {statusFilter === 'Approved' && (
-                        <td className="text-center p-2 border border-black">
+                        <td className="text-center p-2 border border-black  hidden sm:table-cell">
                           <button
                             className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
                             onClick={() => navigate(`/appointment/${request.id}`)}
@@ -326,9 +332,9 @@ export default function MedicalRequests() {
                       )}
 
                       {statusFilter !== 'Approved' && statusFilter !== 'All' && (
-                        <td className="text-center p-2 border border-black">
+                        <td className="text-center p-2 border border-black  hidden sm:table-cell">
                           <div className="flex justify-center space-x-2">
-                            {/* Always show the View Button */}
+                            {/* View Button */}
                             <button
                               className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
                               onClick={() => navigate(`/appointment/${request.id}`)}
@@ -357,7 +363,7 @@ export default function MedicalRequests() {
                                 className="flex items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm"
                                 onClick={() => {
                                   setSelectedRequest(request);
-                                  confirmDeleteRequest(); // Assuming this function shows the delete confirmation
+                                  confirmDeleteRequest();
                                 }}
                                 title="reject"
                               >
@@ -371,7 +377,7 @@ export default function MedicalRequests() {
                                 className="flex items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
                                 onClick={() => {
                                   setSelectedRequest(request);
-                                  confirmArchiveRequest(); // Assuming this function shows the archive confirmation
+                                  confirmArchiveRequest();
                                 }}
                                 title="archive"
                               >
@@ -381,6 +387,7 @@ export default function MedicalRequests() {
                           </div>
                         </td>
                       )}
+                      
                     </tr>
                   ))
                 )}
@@ -388,11 +395,8 @@ export default function MedicalRequests() {
             )}
           </tbody>
         </table>
-
       </div>
-
-
-
     </div>
+
   );
 }

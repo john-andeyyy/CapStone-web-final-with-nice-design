@@ -16,6 +16,7 @@ const PatientProfile = () => {
     const [profilePic, setProfilePic] = useState('../../public/default-avatar.jpg');
     const [dentalHistory, setDentalHistory] = useState([]);
     const [showButton, setShowButton] = useState(false);
+    const [loading, setloading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false); // To control the modal visibility
     const [fullPatient, setFullPatient] = useState(null); // To store full patient details
     const Baseurl = import.meta.env.VITE_BASEURL
@@ -57,7 +58,12 @@ const PatientProfile = () => {
                     withCredentials: true
                 }
             );
-            const historydata = history.data;
+
+            let historydata = history.data;
+
+            // Sort the history by date (most recent first)
+            historydata = historydata.sort((a, b) => new Date(b.date) - new Date(a.date));
+
             const anyPendingOrEmpty = historydata.some(appointment =>
                 appointment.Status.toLowerCase() === 'pending' || appointment.Status === ''
             );
@@ -70,6 +76,7 @@ const PatientProfile = () => {
             console.log(error.message);
         }
     };
+
 
     useEffect(() => {
         get_patient();
@@ -102,27 +109,20 @@ const PatientProfile = () => {
                     </button>
                 </div>
             </div>
-
-
             <h1 className="mt-5 mb-5 text-2xl font-semibold py-4 lg:py-0">Patient Profile</h1>
-
             <div className="shadow-md rounded-lg p-6 bg-[#F5F5F5]">
                 <div className="flex justify-end">
                     <button onClick={() => setIsModalOpen(true)} className="btn text-white bg-[#3EB489] hover:bg-[#62A78E]">
                         Full Details
                     </button>
                 </div>
-
                 <div className="flex flex-col lg:flex-row justify-between items-center mb-4 ">
                     <img
                         src={patient.ProfilePicture || profilePic}
                         alt="Profile Preview"
                         className="mt-4 w-40 h-40 mx-auto"
                     />
-
                 </div>
-
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="field">
                         <label className="block text-sm font-bold uppercase text-black">First Name</label>
@@ -151,10 +151,7 @@ const PatientProfile = () => {
                             className="bg-[#D3CDCD] p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                         />
                     </div>
-
                 </div>
-
-
             </div>
 
             {/* <Tooth2d userIds={userIds} /> */}
@@ -162,60 +159,92 @@ const PatientProfile = () => {
                 onClick={() => {
                     navigate(`/Patient2d/${userIds}`);
                 }}
-                 className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
-            >View 2D
-            
+                className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
+            >Dental Records
             </button>
 
             <div className="w-auto mt-5">
                 <div className='flex justify-between items-center py-5'>
                     <h3 className="text-xl font-semibold">Procedure History</h3>
                     <Add_RecordbyAdmin userIds={userIds} />
-
                 </div>
-
 
                 <div className="overflow-x-auto mt-2">
                     <div className="max-h-96 overflow-y-auto">
                         <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-primary text-white  sticky top-0 z-10 border border-black">
+                            <thead className="bg-primary text-white sticky top-0  border border-black">
                                 <tr>
-                                    <th className="px-2 py-3 text-left font-medium  uppercase border border-black tracking-wider">Date</th>
-                                    <th className="hidden md:table-cell text-center px-2 py-3  border border-black font-medium  uppercase tracking-wider">Procedures</th>
-                                    <th className="hidden md:table-cell text-center px-2 py-3   border border-black font-medium uppercase tracking-wider">Amount</th>
-                                    <th className="hidden md:table-cell text-center px-2 py-3  border border-black font-medium uppercase tracking-wider">Status</th>
-                                    {/* <th className="px-2 py-3 text-xs font-medium  uppercase tracking-wider text-center">Action</th> */}
+                                    <th
+                                        scope="col"
+                                        className="px-2 py-3 text-left font-medium uppercase border border-black tracking-wider"
+                                    >
+                                        Date
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="hidden md:table-cell text-center px-2 py-3 border border-black font-medium uppercase tracking-wider"
+                                    >
+                                        Procedures
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="hidden md:table-cell text-center px-2 py-3 border border-black font-medium uppercase tracking-wider"
+                                    >
+                                        Amount
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="hidden md:table-cell text-center px-2 py-3 border border-black font-medium uppercase tracking-wider"
+                                    >
+                                        Status
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {dentalHistory.map((record) => (
-                                    <tr key={record._id} onClick={() => handleRowClick(record._id)} className="border border-black cursor-pointer bg-gray-100 hover:bg-accent">
-                                        <td className="px-2 py-4 whitespace-nowrap border border-black">
-                                            {new Date(record.date).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'short', // Short month name (e.g., "Oct")
-                                                day: 'numeric',
-                                            })}
+                                {loading ? (
+                                    <tr>
+                                        <td colSpan="4" className="text-center py-4">
+                                            <span className="loading loading-spinner loading-lg"></span>
                                         </td>
-                                        <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">{formatProcedures(record.procedures)}</td>
-                                        <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">{record.Amount}</td>
-                                        <td className="hidden md:table-cell  px-2 py-4 border border-black whitespace-nowrap">{record.Status}</td>
-                                        {/* <td className="px-2 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                            {showButton && record.Status.toLowerCase() === 'Pending' && (
-                                                <button className="text-green-500 hover:text-green-700">
-                                                    <span className="hidden md:inline">📝 Create medical certificate</span>
-                                                    <span className="md:hidden">📝</span>
-                                                </button>
-                                            )}
-                                        </td> */}
                                     </tr>
-                                ))}
+                                ) : dentalHistory.length > 0 ? (
+                                    dentalHistory.map((record) => (
+                                        <tr
+                                            key={record._id}
+                                            onClick={() => handleRowClick(record._id)}
+                                            className="border border-black cursor-pointer bg-gray-100 hover:bg-accent"
+                                        >
+                                            <td className="px-2 py-4 whitespace-nowrap border border-black">
+                                                {new Date(record.date).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                })}
+                                            </td>
+                                            <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">
+                                                {formatProcedures(record.procedures)}
+                                            </td>
+                                            <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">
+                                                <span>₱</span>{record.Amount}
+                                            </td>
+                                            <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">
+                                                {record.Status}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="4" className="text-center py-4">
+                                            No records found.
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
-
                         </table>
                     </div>
-
                 </div>
+
+
             </div>
 
             {/* modal */}

@@ -80,8 +80,8 @@ export default function Sidebar() {
 
     const toggleAppointmentsDropdown = () => {
         setIsAppointmentsDropdownOpen(!isAppointmentsDropdownOpen);
-        setIsLandingPageDropdownOpen(false); // Close landing page dropdown when opening appointments
-        setIsMedicalRequestsDropdownOpen(false); // Close medical requests dropdown
+        setIsLandingPageDropdownOpen(false);
+        setIsMedicalRequestsDropdownOpen(false); 
     };
 
     const toggleLandingPageDropdown = () => {
@@ -125,7 +125,7 @@ export default function Sidebar() {
 
 
     return (
-        <div className='text-white'>
+        <div className='text-white z-40'>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="lg:hidden fixed top-4 left-4 text-primary"
