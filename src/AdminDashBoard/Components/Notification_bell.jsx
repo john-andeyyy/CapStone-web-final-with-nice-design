@@ -158,27 +158,41 @@ const NotificationBell = () => {
                         {notifications.length === 0 ? (
                             <div className="p-3 text-center text-gray-500">No new notifications</div>
                         ) : (
-                            <ul className="p-2 pr-0 pt-0">
-                                {notifications.map((notification) => (
-                                    <li
-                                        key={notification._id}
-                                        className={`my-1 p-3 border-b border-gray-200 hover:bg-secondary text-black cursor-pointer ${!notification.adminisRead ? 'bg-[#69dcb4] font-medium bg-opacity-50 ' : ' bg-[#69dcb4]  bg-opacity-15'}`}
-                                        onClick={() => handleNotificationClick(notification)}
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <div className="flex flex-col space-y-1">
-                                                <p className="text-sm">{notification.user_Appointment_Title || notification.user_Appointment_message}</p>
-                                                {/* <p className="text-xs text-gray-500">created at: {formatDate(notification.createdAt)}</p> */}
+                                <ul className="p-2 pr-0 pt-0">
+                                    {notifications.map((notification) => (
+                                        <li
+                                            key={notification._id}
+                                            className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary ${!notification.adminisRead
+                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
+                                                    : 'bg-[#69dcb4] bg-opacity-15'
+                                                }`}
+                                            onClick={() => handleNotificationClick(notification)}
+                                        >
+                                            <div className="flex items-center space-x-4">
+                                                <span
+                                                    className="material-symbols-outlined text-[#3EB489]"
+                                                    style={{
+                                                        fontVariationSettings: `'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24`
+                                                    }}
+                                                >
+                                                    {notification.ismedicalrequest ? 'picture_as_pdf' : 'notifications'}
+                                                </span>
 
-                                            </div>
-                                            <br />
-                                            <div>
 
+                                                <div className="flex flex-col space-y-1">
+                                                    <p className="text-sm">
+                                                        {notification.user_Appointment_Title || notification.user_Appointment_message}
+                                                    </p>
+                                                    {/* Uncomment if needed:
+                    <p className="text-xs text-gray-500">
+                        created at: {formatDate(notification.createdAt)}
+                    </p> */}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
+                                        </li>
+                                    ))}
+                                </ul>
+
                         )}
                     </div>
                 </div>

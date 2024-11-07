@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal }) => {
+const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal, newNewDentistData, errorMessage }) => {
+    const [error, setError] = useState('');
+
+    const close =()=>{
+        handleCloseAddModal()
+        setError('')
+    }
+    
     const [newDentist, setNewDentist] = useState({
         FirstName: '',
         LastName: '',
@@ -9,20 +16,47 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal 
         Address: '',
         Gender: '',
         LicenseNo: '',
-        ProfilePicture: null
+        ProfilePicture: null,
+        Username: '',
+        Password: '',
+        Email: ''
     });
+
+
+    useEffect(() => {
+        setError(errorMessage);
+    }, [errorMessage]);
+
+    
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        newNewDentistData(newDentist);
+        handleCreateDentist(newDentist); // Pass newDentist directly without event
+        console.log('event', event);
+    };
+
 
     const [previewImage, setPreviewImage] = useState(null);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
-        if (type === 'file') {
+
+        if (name === 'ContactNumber') {
+            const cleanedValue = value.replace(/\D/g, ''); 
+            const limitedValue = cleanedValue.slice(0, 11);  
+            setNewDentist((prev) => ({ ...prev, [name]: limitedValue }));
+        }
+        // Handling for file input
+        else if (type === 'file') {
             const file = files[0];
             setNewDentist((prev) => ({ ...prev, [name]: file }));
             const reader = new FileReader();
-            reader.onloadend = () => setPreviewImage(reader.result);
+            reader.onloadend = () => setPreviewImage(reader.result);  
             reader.readAsDataURL(file);
-        } else {
+        }
+        // Handling for all other inputs
+        else {
             setNewDentist((prev) => ({ ...prev, [name]: value }));
         }
     };
@@ -30,10 +64,11 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal 
     return (
         showAddModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <form className="bg-[#C6E4DA] rounded-lg p-6 w-11/12 max-w-lg" onSubmit={handleCreateDentist}>
+                <form className="bg-[#C6E4DA] rounded-lg p-6 w-10/12 max-w-2xl" onSubmit={handleSubmit}>
                     <h2 className="text-2xl mb-4 text-[#266D53] text-center">Add Dentist</h2>
+                    <p className='text-red-500'>{error}</p>
 
-                    <div className="grid grid-cols-2 gap-4 mt-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
                         <div className="flex flex-col">
                             <label className="text-[#266D53] mb-1">First Name <span className="text-red-500">*</span></label>
                             <input
@@ -58,9 +93,6 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal 
                                 className="w-full mb-4 p-2 border border-gray-300 rounded"
                             />
                         </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col">
                             <label className="text-[#266D53] mb-1">Middle Name <span className="text-red-500">*</span></label>
                             <input
@@ -72,10 +104,14 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal 
                                 className="w-full mb-4 p-2 border border-gray-300 rounded"
                             />
                         </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
                         <div className="flex flex-col">
                             <label className="text-[#266D53] mb-1">Contact Number <span className="text-red-500">*</span></label>
                             <input
-                                type="number"
+                                type="text"
                                 name="ContactNumber"
                                 placeholder="09XXXXXXXXX"
                                 value={newDentist.ContactNumber}
@@ -85,9 +121,6 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal 
                                 className="w-full mb-4 p-2 border border-gray-300 rounded"
                             />
                         </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col">
                             <label className="text-[#266D53] mb-1">Address <span className="text-red-500">*</span></label>
                             <input
@@ -115,17 +148,62 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal 
                         </div>
                     </div>
 
-                    <div className="flex flex-col">
-                        <label className="text-[#266D53] mb-1">License No <span className="text-red-500">*</span></label>
-                        <input
-                            type="text"
-                            name="LicenseNo"
-                            placeholder="License No"
-                            value={newDentist.LicenseNo}
-                            onChange={handleChange}
-                            required
-                            className="w-full mb-4 p-2 border border-gray-300 rounded"
-                        />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                        <div className="flex flex-col">
+                            <label className="text-[#266D53] mb-1">License No <span className="text-red-500">*</span></label>
+                            <input
+                                type="text"
+                                name="LicenseNo"
+                                placeholder="License No"
+                                value={newDentist.LicenseNo}
+                                onChange={handleChange}
+                                required
+                                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                            />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label className="text-[#266D53] mb-1">Username <span className="text-red-500">*</span></label>
+                            <input
+                                type="text"
+                                name="Username"
+                                placeholder="Username"
+                                value={newDentist.Username}
+                                onChange={handleChange}
+                                required
+                                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex flex-col">
+                            <label className="text-[#266D53] mb-1">Password <span className="text-red-500">*</span></label>
+                            <input
+                                type="password"
+                                name="Password"
+                                placeholder="Password"
+                                value={newDentist.Password}
+                                onChange={handleChange}
+                                required
+                                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                            />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label className="text-[#266D53] mb-1">Email <span className="text-red-500">*</span></label>
+                            <input
+                                type="email"
+                                name="Email"
+                                placeholder="Email"
+                                value={newDentist.Email}
+                                onChange={handleChange}
+                                required
+                                className="w-full mb-4 p-2 border border-gray-300 rounded"
+                            />
+                        </div>
                     </div>
 
                     <div className="text-black mb-3">
@@ -143,14 +221,14 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal 
                         <img src={previewImage} alt="Profile Preview" className="w-32 h-32 rounded mb-4 flex" />
                     )}
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <button
                             type="submit"
                             className="bg-[#4285F4] hover:bg-[#0C65F8] text-black py-2 rounded"
                         >
                             Add
                         </button>
-                        <button onClick={handleCloseAddModal} className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black py-2 rounded">Close</button>
+                        <button onClick={()=>{close()}} className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black py-2 rounded">Close</button>
                     </div>
                 </form>
             </div>

@@ -135,7 +135,7 @@ export default function Patients_List() {
                         month: 'long',
                         day: 'numeric',
                     })
-                    : "No Record",
+                    : "Processing",
                 162,
                 y + 7
             );
@@ -261,7 +261,7 @@ export default function Patients_List() {
                 return 'bg-green-200 bg-opacity-50';
             case 'Archived Patients (Older than 3 months)':
                 return 'bg-yellow-200 bg-opacity-50';
-            case 'No Record (No last visit)':
+            case 'Processing (No last visit)':
                 return 'bg-red-200 bg-opacity-50';
             default:
                 return 'bg-gray-200'; // Default color
@@ -273,7 +273,7 @@ export default function Patients_List() {
                 return '#28A745';
             case 'Archived Patients (Older than 3 months)':
                 return '#FFC107';
-            case 'No Record (No last visit)':
+            case 'Processing (No last visit)':
                 return '#DC3545';
             default:
                 return '#000000'; // Default black icon
@@ -334,7 +334,7 @@ export default function Patients_List() {
                         {[
                             { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
                             { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
-                            { label: 'No Record (No last visit)', filterName: 'showNoRecord' },
+                            { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
                         ].map(({ label, filterName }) => (
                             <div
                                 key={filterName}
@@ -383,7 +383,7 @@ export default function Patients_List() {
                                                         month: 'long',
                                                         day: 'numeric',
                                                     })
-                                                    : <span className="text-red-600">No Record</span>}
+                                                    : <span className="text-red-600">Processing</span>}
                                             </td>
                                             <td className="p-2 text-center bg-gray-100 border border-black">
                                                 <div className="flex space-x-2 justify-center">
@@ -433,7 +433,7 @@ export default function Patients_List() {
                                                         month: 'long',
                                                         day: 'numeric',
                                                     })
-                                                    : <span className="text-red-600">No Record</span>}
+                                                    : <span className="text-red-600">Processing</span>}
                                             </td>
                                             <td className="p-2 text-center bg-gray-100 border border-black">
                                                 <div className="flex space-x-2 justify-center">
@@ -481,7 +481,7 @@ export default function Patients_List() {
                                                 {patient.MiddleName || 'N/A'}
                                             </td>
                                             <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">
-                                                <span className="text-red-600">No Record</span>
+                                                <span className="text-red-600">Processing</span>
                                             </td>
                                             <td className="p-2 text-center bg-gray-100 border border-black">
                                                 <div className="flex space-x-2 justify-center">

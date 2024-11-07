@@ -11,7 +11,7 @@ import ThemeController from '../../Guest/GuestComponents/ThemeController';
 
 export default function AppointmentDetails() {
 
-    
+
     const navigate = useNavigate();
 
     const { id } = useParams();
@@ -230,7 +230,7 @@ export default function AppointmentDetails() {
         setshow2d(prev => !prev);
     };
     return (
-        <div className="p-6 mx-auto max-w-7xl ">
+        <div className="p-6 mx-auto max-w-7xl pt-0">
             {/* max-w-5xl  */}
             <div className='grid grid-cols-2 items-center'>
                 <div className='flex items-center'>
@@ -244,7 +244,7 @@ export default function AppointmentDetails() {
                 </div>
             </div>
 
-            <div className='flex justify-between items-end mb-6 p-4  '>
+            <div className='flex justify-between items-end p-4  '>
                 <h1 className="text-2xl font-semibold text-gray-800">Appointment Details</h1>
 
             </div>
@@ -337,15 +337,26 @@ export default function AppointmentDetails() {
                     </div>
 
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                         <div className="flex flex-col">
                             <p className="font-bold uppercase">Notes</p>
                             <div className="bg-[#D3CDCD] p-2 rounded">
                                 {appointment.notes || 'N/A'}
                             </div>
                         </div>
+                        <div className="flex flex-col">
+                            {appointment.Rejectmsg && (
+                                <div>
+                                    <p className="font-bold uppercase">Reject message for certificate</p>
+                                    <div className="bg-[#D3CDCD] p-2 rounded">
+                                        {appointment.Rejectmsg || 'N/A'}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
                         <div className="flex flex-col ">
-                            {RequestToCancel  && (
+                            {RequestToCancel && (
                                 <div className="flex flex-col items-start">
                                     <p className=" font-bold uppercase">Request to Cancel</p>
                                     <button className="ml-10 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300"
@@ -474,7 +485,7 @@ export default function AppointmentDetails() {
                         navigate(`/Patient2d/${userid}`);
                     }}
                     className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
-                >View 2D
+                >Dental Record
 
                 </button>
 

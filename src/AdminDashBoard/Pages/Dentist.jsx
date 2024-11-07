@@ -21,6 +21,8 @@ export default function Dentist() {
     const [availabilityFilter, setAvailabilityFilter] = useState('available');
     const [isEditmodal, setisEditmodal] = useState(false);
 
+   
+    
     const [newDentist, setNewDentist] = useState({
         FirstName: '',
         LastName: '',
@@ -29,8 +31,12 @@ export default function Dentist() {
         Address: '',
         Gender: '',
         LicenseNo: '',
-        ProfilePicture: null
+        ProfilePicture: null,
+        Username: '',
+        Password: '',
+        Email: '',
     });
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -77,25 +83,30 @@ export default function Dentist() {
         setisEditmodal(false);
     };
 
-
-    const handleCreateDentist = async (e) => {
-        e.preventDefault();
+    const [errorMessage, seterrorMessage] = useState('')
+    
+    const handleCreateDentist = async (dentistData) => {
+        // e.preventDefault();
 
         // Check for empty required fields
-        if (!newDentist.FirstName || !newDentist.LastName || !newDentist.ContactNumber || !newDentist.LicenseNo) {
-            alert('Please fill out all required fields.');
-            return; // Exit the function early
-        }
+        // if (!newDentist.FirstName || !newDentist.LastName || !newDentist.ContactNumber || !newDentist.LicenseNo) {
+        //     alert('Please fill out all required fields.');
+        //     return; // Exit the function early
+        // }
+        console.log('newDentist', dentistData)
 
         const formData = new FormData();
-        formData.append('FirstName', newDentist.FirstName);
-        formData.append('LastName', newDentist.LastName);
-        formData.append('MiddleName', newDentist.MiddleName);
-        formData.append('ContactNumber', newDentist.ContactNumber);
-        formData.append('Address', newDentist.Address);
-        formData.append('Gender', newDentist.Gender);
-        formData.append('LicenseNo', newDentist.LicenseNo);
-        formData.append('ProfilePicture', newDentist.ProfilePicture);
+        formData.append('FirstName', dentistData.FirstName);
+        formData.append('LastName', dentistData.LastName);
+        formData.append('MiddleName', dentistData.MiddleName);
+        formData.append('ContactNumber', dentistData.ContactNumber);
+        formData.append('Address', dentistData.Address);
+        formData.append('Gender', dentistData.Gender);
+        formData.append('LicenseNo', dentistData.LicenseNo);
+        formData.append('Username', dentistData.Username);
+        formData.append('Password', dentistData.Password);  
+        formData.append('Email', dentistData.Email);
+        formData.append('ProfilePicture', dentistData.ProfilePicture);
 
         try {
             const response = await axios.post(`${BASEURL}/dentist/create`, formData, {
@@ -108,7 +119,7 @@ export default function Dentist() {
             if (response.status === 201) {
 
                 const createdDentist = {
-                    ...newDentist, // Spread the existing data
+                    ...dentistData, // Spread the existing data
                     _id: response.data.data._id, // Assuming the API returns the new ID
                     isAvailable: true // Default value if needed, adjust according to your logic
                 };
@@ -137,7 +148,8 @@ export default function Dentist() {
         } catch (error) {
             console.error('Error adding dentist:', error);
             const errorMessage = error.response?.data?.message || 'An error occurred.';
-            alert(errorMessage);
+            // alert(errorMessage);
+            seterrorMessage(errorMessage)
         }
     };
 
@@ -301,6 +313,9 @@ export default function Dentist() {
                 showAddModal={showAddModal}
                 handleCreateDentist={handleCreateDentist}
                 handleCloseAddModal={handleCloseAddModal}
+                newNewDentistData={setNewDentist}  
+                errorMessage={errorMessage}
+
             />
 
             <DentistDetailsModal

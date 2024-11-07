@@ -5,6 +5,7 @@ import Tooth2d from '../Components/Tooth2d';
 import Add_RecordbyAdmin from './Components/Add_RecordbyAdmin';
 
 const PatientProfile = () => {
+    const defaultimage = '../../../public/default-avatar.jpg'
     const { id } = useParams();
     const navigate = useNavigate()
     const userIds = id;
@@ -13,12 +14,11 @@ const PatientProfile = () => {
         LastName: "",
         MiddleName: "",
     });
-    const [profilePic, setProfilePic] = useState('../../public/default-avatar.jpg');
     const [dentalHistory, setDentalHistory] = useState([]);
     const [showButton, setShowButton] = useState(false);
     const [loading, setloading] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false); // To control the modal visibility
-    const [fullPatient, setFullPatient] = useState(null); // To store full patient details
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [fullPatient, setFullPatient] = useState(null); 
     const Baseurl = import.meta.env.VITE_BASEURL
     const requiredFields = [
         'FirstName',
@@ -44,12 +44,12 @@ const PatientProfile = () => {
                 }
             );
 
-            // Store full patient details
             setFullPatient(response.data);
             setPatient({
                 FirstName: response.data.FirstName || "...",
                 LastName: response.data.LastName || "...",
-                MiddleName: response.data.MiddleName || "..."
+                MiddleName: response.data.MiddleName || "...",
+                ProfilePicture: response.data.ProfilePicture 
             });
 
             const history = await axios.get(
@@ -95,8 +95,14 @@ const PatientProfile = () => {
         navigate(`/appointment/${id}`);
     };
 
+    const getProfileImage = (profilePicture) => {
+        return profilePicture ? profilePicture.toString('base64') : defaultimage;
+    };
+    const profilePictureDataUrl = getProfileImage(patient.ProfilePicture);
+
+
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 pt-0">
 
             <div className='grid grid-cols-2 items-center'>
                 <div className='flex items-center'>
@@ -117,9 +123,8 @@ const PatientProfile = () => {
                     </button>
                 </div>
                 <div className="flex flex-col lg:flex-row justify-between items-center mb-4 ">
-                    <img
-                        src={patient.ProfilePicture || profilePic}
-                        alt="Profile Preview"
+                    <img src={profilePictureDataUrl}
+                        alt="Profile"
                         className="mt-4 w-40 h-40 mx-auto"
                     />
                 </div>
@@ -225,7 +230,8 @@ const PatientProfile = () => {
                                                 {formatProcedures(record.procedures)}
                                             </td>
                                             <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">
-                                                <span>₱</span>{record.Amount}
+                                                <span>₱</span>
+                                                {new Intl.NumberFormat('en-PH', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(record.Amount)}
                                             </td>
                                             <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">
                                                 {record.Status}

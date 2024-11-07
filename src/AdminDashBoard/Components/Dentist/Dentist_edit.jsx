@@ -50,13 +50,32 @@ export default function DentistEdit({ isOpen, onClose, selectedDentist, updateDe
         }
     }, [isOpen, selectedDentist]);
 
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setDentistData((prevData) => ({
+    //         ...prevData,
+    //         [name]: value,
+    //     }));
+    // };
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setDentistData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+
+        // If the field is 'ContactNumber', limit the value to 11 digits
+        if (name === 'ContactNumber') {
+            // Remove any non-digit characters and limit to 11 digits
+            const cleanValue = value.replace(/\D/g, '').slice(0, 11);
+            setDentistData((prevData) => ({
+                ...prevData,
+                [name]: cleanValue,
+            }));
+        } else {
+            setDentistData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
+
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -172,15 +191,18 @@ console.log(response.data)
                         <div>
                             <label className="block mb-1">Contact Number</label>
                             <input
-                                type="number"
+                                type="text"  // Use text type to handle custom validation
                                 name="ContactNumber"
                                 value={dentistData.ContactNumber}
                                 onChange={handleChange}
                                 placeholder="Contact Number"
                                 required
+                                maxLength={11}  // Maximum of 11 characters (digits)
+                                pattern="\d{11}" // Only allows 11 digits
                                 className="border border-gray-300 rounded-md p-2 w-full"
                             />
                         </div>
+
                         <div>
                             <label className="block mb-1">Address</label>
                             <input
@@ -204,13 +226,13 @@ console.log(response.data)
                                 <option value="">Select gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                                <option value="Non-binary">Non-binary</option>
+                                {/* <option value="Non-binary">Non-binary</option>
                                 <option value="Genderqueer">Genderqueer</option>
                                 <option value="Transgender">Transgender</option>
                                 <option value="Genderfluid">Genderfluid</option>
                                 <option value="Agender">Agender</option>
                                 <option value="Two-spirit">Two-spirit</option>
-                                <option value="Other">Other</option>
+                                <option value="Other">Other</option> */}
                                 <option value="Prefer not to say">Prefer not to say</option>
                             </select>
                         </div>

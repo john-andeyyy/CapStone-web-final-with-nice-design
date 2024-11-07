@@ -69,14 +69,17 @@ export default function MedicalRequests() {
     );
   });
 
-  const handleDeleteRequest = async () => {
+  const handleDeleteRequest = async (Rejectmsg) => {
     console.error('selectedRequest', selectedRequest)
+    console.log('handleDeleteRequest1')
+    if (true) {
+      console.log('handleDeleteRequest2')
 
-    if (selectedRequest) {
       setActionLoading(true);
       try {
-        await axios.put(`${BASEURL}/SendDentalCertificate/${selectedRequest.id}`, {
-          Status: 'Rejected' // Note: Directly set the status in the request body
+        await axios.put(`${BASEURL}/SendDentalCertificate/6728ec46d9f2751eb0a9b237`, {
+          Status: 'Rejected',
+          Rejectmsg
         }, {
           withCredentials: true
         });
@@ -100,24 +103,31 @@ export default function MedicalRequests() {
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",
+      input: "textarea",
+      inputLabel: "Reason for Rejection",
+      inputPlaceholder: "Type your reason here...",
+      inputAttributes: {
+        "aria-label": "Type your reason here"
+      },
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Reject it!"
     }).then((result) => {
-      if (result.isConfirmed) {
-        handleDeleteRequest(); // Call the deletion function if confirmed
+      if (result.isConfirmed && result.value) {
+        handleDeleteRequest(result.value);
+
+
         Swal.fire({
-          title: "Deleted!",
-          text: "You Reject the Request.",
+          title: "Rejected!",
+          text: result.value,
           icon: "success"
         });
+      } else if (result.isConfirmed && !result.value) {
+        Swal.fire("Please provide a reason for rejection.");
       }
     });
   };
-
-
-
 
   const handleArchiveRequest = async () => {
     console.error('selectedRequest', selectedRequest)
@@ -156,7 +166,7 @@ export default function MedicalRequests() {
       confirmButtonText: "Yes, archive it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        handleArchiveRequest(); // Call the archive function if confirmed
+        handleArchiveRequest();
         Swal.fire({
           title: "Archived!",
           text: "Your request has been archived.",
@@ -179,7 +189,6 @@ export default function MedicalRequests() {
       confirmButtonText: "Yes, Approved it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        // Call the onConfirm callback function passed to the showDeleteConfirmation function
         onConfirmhandleAcceptRequest(request);
 
         Swal.fire({
@@ -190,8 +199,6 @@ export default function MedicalRequests() {
       }
     });
   };
-
-
 
   const onConfirmhandleAcceptRequest = async (request) => {
     const selectedRequest = request
@@ -224,12 +231,55 @@ export default function MedicalRequests() {
     setDetailModalOpen(true);
   };
 
+
+  function downloadPatientMedicalCertificate(request) {
+    console.log('req', request)
+    const id = request.id
+    Swal.fire({
+      title: "Fetching Your Certificate",
+      text: "We are retrieving your dental certificate. Please wait a moment.",
+      icon: "info"
+    }).then(() => {
+      axios.get(`${BASEURL}/admin/View-DentalCertificate/${id}`, {
+        responseType: 'arraybuffer',
+        withCredentials: true
+      }).then(response => {
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const newTab = window.open(url, '_blank');
+
+        if (!newTab) {
+          Swal.fire({
+            title: "Error",
+            text: "Failed to open the certificate in a new tab.",
+            icon: "error"
+          });
+        }
+      })
+        .catch(error => {
+          console.error("Axios error:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "An error occurred while fetching the certificate data.",
+            icon: "error"
+          });
+        });
+    });
+  }
+
+
+
+
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 pt-0">
       <div className="p-4">
         {/* Status Dropdown and Search Bar */}
         <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 space-y-4 lg:space-y-0">
           <h1 className="text-2xl font-semibold">Dental Certificate Requests</h1>
+        </div>
+
+        {/* Filter by Status */}
+        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
 
           <div className="relative w-full lg:w-auto">
             <input
@@ -243,10 +293,8 @@ export default function MedicalRequests() {
               <span className="material-symbols-outlined">search</span>
             </div>
           </div>
-        </div>
 
-        {/* Filter by Status */}
-        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+
           <label htmlFor="status" className="font-semibold">Filter by Status:</label>
 
           <select
@@ -367,7 +415,7 @@ export default function MedicalRequests() {
                                 }}
                                 title="reject"
                               >
-                                <span className="material-symbols-outlined">delete</span>
+                                <span className="material-symbols-outlined">cancel</span>
                               </button>
                             )}
 
@@ -384,10 +432,22 @@ export default function MedicalRequests() {
                                 <span className="material-symbols-outlined">archive</span>
                               </button>
                             )}
+                            {/* for dl the medical certi */}
+                            <button
+                              className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
+                              onClick={() => {
+                                // setSelectedRequest(request);
+                                // handleAcceptRequest(request);
+                                downloadPatientMedicalCertificate(request)
+                              }}
+                              title="download"
+                            >
+                              <span className="material-symbols-outlined">download</span>
+                            </button>
                           </div>
                         </td>
                       )}
-                      
+
                     </tr>
                   ))
                 )}
