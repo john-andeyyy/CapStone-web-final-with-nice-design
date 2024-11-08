@@ -13,6 +13,8 @@ const BASEURL = import.meta.env.VITE_BASEURL;
 const DentistSchedule = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const dentistId = id || localStorage.getItem('Accountid')
+
     const [appointments, setAppointments] = useState([]);
     const [filteredAppointments, setFilteredAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ const DentistSchedule = () => {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get(`${BASEURL}/dentist/appointmentlist/${id}`, { withCredentials: true });
+                const response = await axios.get(`${BASEURL}/dentist/appointmentlist/${dentistId}`, { withCredentials: true });
                 if (response.status === 200) {
                     const approvedAppointments = response.data.filter((appointment) => appointment.Status === 'Approved');
                     setDentistName(response.data[0]?.DentistName || 'N/A');
@@ -44,10 +46,10 @@ const DentistSchedule = () => {
                 setLoading(false);
             }
         };
-        
+
 
         fetchAppointments();
-    }, [id]);
+    }, [dentistId]);
 
     useEffect(() => {
         filterAppointments(appointments, filter, selectedYear);
@@ -114,17 +116,30 @@ const DentistSchedule = () => {
     }
 
     if (error) {
-        return <div className="text-center text-red-500 py-4">{error}</div>;
+        return (
+            <div className="flex justify-center items-center h-20">
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-lg text-center shadow-md">
+                    <div className='flex justify-center'>
+
+                        <span class="material-symbols-outlined">
+                            warning
+                        </span>
+
+                        {error}
+                    </div>
+                </div>
+            </div>
+        );
     }
     return (
         <div className="px-4 py-6">
-           <button
-                        onClick={() => navigate(-1)}
-                        className="flex items-center text-[#3EB489] hover:text-[#62A78E] mb-3 font-semibold focus:outline-none"
-                    >
-                        <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
-                        <p className='text-xl'>Go Back</p>
-                    </button>
+            <button
+                onClick={() => navigate(-1)}
+                className="flex items-center text-[#3EB489] hover:text-[#62A78E] mb-3 font-semibold focus:outline-none"
+            >
+                <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
+                <p className='text-xl'>Go Back</p>
+            </button>
             <div className='mb-4 space-y-3 mt-10'>
                 <h2 className="text-2xl font-bold mb-10 ">Appointment Schedule</h2>
                 <h3 className=' text-xl font-bold'>Dr. {dentistName}</h3>

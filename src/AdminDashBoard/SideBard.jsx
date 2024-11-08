@@ -12,6 +12,9 @@ import axios from 'axios';
 
 import Swal from 'sweetalert2';
 export default function Sidebar() {
+    const localrole = localStorage.getItem('Role')
+    const [RoleType, setRoletype] = useState(localrole.toLocaleLowerCase())
+
     const BASEURL = import.meta.env.VITE_BASEURL;
 
     const [isOpen, setIsOpen] = useState(false);
@@ -81,7 +84,7 @@ export default function Sidebar() {
     const toggleAppointmentsDropdown = () => {
         setIsAppointmentsDropdownOpen(!isAppointmentsDropdownOpen);
         setIsLandingPageDropdownOpen(false);
-        setIsMedicalRequestsDropdownOpen(false); 
+        setIsMedicalRequestsDropdownOpen(false);
     };
 
     const toggleLandingPageDropdown = () => {
@@ -113,7 +116,7 @@ export default function Sidebar() {
                 axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
                     .then((res) => {
                         if (res.status === 200) {
-                            
+
                         }
                     })
                     .catch((error) => {
@@ -160,84 +163,111 @@ export default function Sidebar() {
 
                     <div className="flex-grow text-white">
                         <ul className="space-y-2 text-sm">
-                            <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'general' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/dashboard', 'general')}>
-                                <FaHome className="mr-3" />
-                                <span>General</span>
-                            </li>
 
-                            {/* Appointments Dropdown */}
-                            <li className="relative">
-                                <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'appointments' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleAppointmentsDropdown}>
-                                    <FaCalendarAlt className="mr-3" />
-                                    <span>Appointments</span>
-                                    {isAppointmentsDropdownOpen ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
+                            {/* //! DENTIST NAV BAR */}
+                            {RoleType == 'dentist' && (
+
+                                <div>
+                                    <h1 className='text-2xl text-red-500'>dentist view only</h1>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistAppointment' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/DentistSchedule', 'DentistSchedule')}>
+                                        <FaHome className="mr-3" />
+                                        <span>Your Appointment</span>
+                                    </li>
+
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/patients', 'patients')}>
+                                        <FaUser className="mr-3" />
+                                        <span>Patients</span>
+                                    </li>
                                 </div>
 
-                                {isAppointmentsDropdownOpen && (
-                                    <ul className="ml-8 mt-2 space-y-1">
-                                        <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'appointmentList' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/appointments', 'appointmentList')}>
-                                            <span className="material-symbols-outlined mr-2">event_available</span>
-                                            Appointments
-                                        </li>
-                                        <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'calendar' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/CalendarComponent', 'calendar')}>
-                                            <span className="material-symbols-outlined mr-2">calendar_month</span>
-                                            Calendar
-                                        </li>
-                                        <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'Create-appointment' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Create-appointment', 'Create-appointment')}>
-                                            <span className="material-symbols-outlined mr-2">calendar_month</span>
-                                            Create appointment
-                                        </li>
-                                    </ul>
-                                )}
-                            </li>
-
-                            <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/patients', 'patients')}>
-                                <FaUser className="mr-3" />
-                                <span>Patients</span>
-                            </li>
-
-                            <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}>
-                                <FaFileAlt className="mr-3" />
-                                <span>Dental Certificate Requests</span>
-                            </li>
 
 
-                            {/* <li className="relative"> */}
-                            {/* <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleMedicalRequestsDropdown}>
+                            )}
+                            {/* //! ADMIN NAV BAR */}
+
+                            {RoleType == 'admin' && (
+                                <div>
+                                    <h1>for admin only</h1>
+
+
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'general' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/dashboard', 'general')}>
+                                        <FaHome className="mr-3" />
+                                        <span>General</span>
+                                    </li>
+
+                                    {/* Appointments Dropdown */}
+                                    <li className="relative">
+                                        <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'appointments' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleAppointmentsDropdown}>
+                                            <FaCalendarAlt className="mr-3" />
+                                            <span>Appointments</span>
+                                            {isAppointmentsDropdownOpen ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
+                                        </div>
+
+                                        {isAppointmentsDropdownOpen && (
+                                            <ul className="ml-8 mt-2 space-y-1">
+                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'appointmentList' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/appointments', 'appointmentList')}>
+                                                    <span className="material-symbols-outlined mr-2">event_available</span>
+                                                    Appointments
+                                                </li>
+                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'calendar' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/CalendarComponent', 'calendar')}>
+                                                    <span className="material-symbols-outlined mr-2">calendar_month</span>
+                                                    Calendar
+                                                </li>
+                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'Create-appointment' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Create-appointment', 'Create-appointment')}>
+                                                    <span className="material-symbols-outlined mr-2">calendar_month</span>
+                                                    Create appointment
+                                                </li>
+                                            </ul>
+                                        )}
+                                    </li>
+
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/patients', 'patients')}>
+                                        <FaUser className="mr-3" />
+                                        <span>Patients</span>
+                                    </li>
+
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}>
+                                        <FaFileAlt className="mr-3" />
+                                        <span>Dental Certificate Requests</span>
+                                    </li>
+
+
+                                    {/* <li className="relative"> */}
+                                    {/* <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleMedicalRequestsDropdown}>
                                     <FaFileAlt className="mr-3" />
                                     <span>Documents</span>
                                     {isMedicalRequestsDropdownOpen ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
                                 </div> */}
 
-                            {/* {isMedicalRequestsDropdownOpen && (
+                                    {/* {isMedicalRequestsDropdownOpen && (
                                     // <ul className="ml-3 mt-2 space-y-1">
                                         {/* <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}> */}
-                            {/* <FaFileAlt className="pr-1" /> */}
-                            {/* <span>Dental Certificate Requests</span> */}
-                            {/* </li> */}
-                            {/* <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'completedRequests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests/completed', 'completedRequests')}>
+                                    {/* <FaFileAlt className="pr-1" /> */}
+                                    {/* <span>Dental Certificate Requests</span> */}
+                                    {/* </li> */}
+                                    {/* <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'completedRequests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests/completed', 'completedRequests')}>
                                             <span className="material-symbols-outlined mr-2">done</span>
                                             Completed Requests
                                         </li> */}
-                            {/* </ul> */}
+                                    {/* </ul> */}
 
 
-                            {/* </li> */}
+                                    {/* </li> */}
 
-                            <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'add-procedure' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Add_Procedure', 'add-procedure')}>
-                                <FaPlus className="mr-3" />
-                                <span> Services</span>
-                            </li>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'add-procedure' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Add_Procedure', 'add-procedure')}>
+                                        <FaPlus className="mr-3" />
+                                        <span> Services</span>
+                                    </li>
 
-                            <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Dentist' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Dentist', 'Dentist')}>
-                                <span className="material-symbols-outlined mr-2">edit</span>
-                                <span>Dentist</span>
-                            </li>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Dentist' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Dentist', 'Dentist')}>
+                                        <span className="material-symbols-outlined mr-2">edit</span>
+                                        <span>Dentist</span>
+                                    </li>
 
 
 
-                            {/* Landing Page Dropdown */}
-                            {/* <li className="relative">
+                                    {/* Landing Page Dropdown */}
+                                    {/* <li className="relative">
                                 <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'landing-page' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleLandingPageDropdown}>
                                     <span className="material-symbols-outlined mr-2">home</span>
                                     <span>Landing Page</span>
@@ -270,7 +300,8 @@ export default function Sidebar() {
                                 )}
                             </li> */}
 
-
+                                </div>
+                            )}
                         </ul>
                     </div>
                 </div>

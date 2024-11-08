@@ -2,6 +2,7 @@ import axios from "axios";
 import { showToast } from '../../Components/ToastNotification';
 
 const BASEURL = import.meta.env.VITE_BASEURL;
+const DefaultPFP = '../../../../public/default-Dentistpfp.png'
 
 export const get_profile = async () => {
 
@@ -12,6 +13,8 @@ export const get_profile = async () => {
             }
         )
         const response = temp_response.data
+        
+        console.log(response)
         return ({
             Email: response.Email || '',
             FirstName: response.FirstName || '',
@@ -19,10 +22,12 @@ export const get_profile = async () => {
             MiddleName: response.MiddleName || '',
             contactNumber: response.ContactNumber || '',
             ProfilePicture: response.ProfilePicture || '',
-            ProfilePicturePreview: response.ProfilePicture || '',
+            ProfilePicturePreview: response.ProfilePicture || DefaultPFP,
             contactNumber: response.contactNumber || '',
             Username: response.Username || '',
             // status: response.data.message
+            LicenseNo: response.LicenseNo || '',
+            Address: response.Address || '',
         })
     } catch (error) {
         console.log(error);

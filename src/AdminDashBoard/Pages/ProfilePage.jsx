@@ -10,7 +10,7 @@ const ProfilePage = () => {
     const [showEmailModal, setShowEmailModal] = useState(false);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [newEmail, setNewEmail] = useState('');
-
+    const DefaultPFP = '../../../public/default-avatar.jpg'
     const [otp, setOtp] = useState('');
     const [currentpassword, setcurrentpassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -22,8 +22,16 @@ const ProfilePage = () => {
         contactNumber: '',
         ProfilePicture: null,
         Username: '',
-        ProfilePicturePreview: null,
+        ProfilePicturePreview: '',
+
+        // for dentist
+
+        LicenseNo: 'qweeqw',
+        Address: 'weq',
+
     });
+
+    const RoleTyoe = localStorage.getItem('Role')
 
     const [showOtpModal, setShowOtpModal] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
@@ -34,13 +42,14 @@ const ProfilePage = () => {
     });
     const [message, setMessage] = useState('');
 
+    const fetchProfile = async () => {
+        const profile = await get_profile();
+        if (profile) {
+            setProfile(profile);
+        }
+    };
     useEffect(() => {
-        const fetchProfile = async () => {
-            const profile = await get_profile();
-            if (profile) {
-                setProfile(profile);
-            }
-        };
+
         fetchProfile();
     }, []);
 
@@ -63,6 +72,8 @@ const ProfilePage = () => {
                 setShowEmailModal(false);
                 // setcurrentpassword('')
                 // setNewEmail('')
+                fetchProfile();
+
             } else {
                 alert(response.data.message);
             }
@@ -109,6 +120,8 @@ const ProfilePage = () => {
         formData.append('MiddleName', profile.MiddleName);
         formData.append('contactNumber', profile.contactNumber);
         formData.append('Username', profile.Username);
+        formData.append('LicenseNo', profile.LicenseNo);
+        formData.append('Address', profile.Address);
 
         if (profile.ProfilePicture) {
             formData.append('ProfilePicture', profile.ProfilePicture);
@@ -212,7 +225,7 @@ const ProfilePage = () => {
 
     return (
         <div className="min-h-screen flex justify-center items-center p-6">
-            <div className="bg-[#F5F5F5] p-8 rounded-lg shadow-lg w-full max-w-4xl">
+            <div className=" p-8 rounded-lg shadow-lg w-full max-w-4xl bg-green-200 bg-opacity-50">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-3xl font-bold text-[#266D53]">Profile Page</h1>
                     {/* <button
@@ -226,7 +239,7 @@ const ProfilePage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Profile Picture */}
-                    <div className="col-span-1 flex flex-col items-center">
+                    <div className="col-span-1 flex flex-col items-center justify-center">
                         <label className="block text-black mb-2">Profile Picture:</label>
                         {profile.ProfilePicturePreview && (
                             <img
@@ -318,8 +331,13 @@ const ProfilePage = () => {
                                     onChange={handleChange}
                                     className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
                                     readOnly={!isEditable}
+                                    placeholder="09XXXXXXXXX"
+                                    pattern="09[0-9]{9}" // Ensures "09" followed by exactly 9 digits
+                                    maxLength="11"
+                                    required
                                 />
                             </div>
+
 
                             <div className="form-group">
                                 <label className="block font-bold uppercase">Username:</label>
@@ -333,10 +351,44 @@ const ProfilePage = () => {
                                 />
                             </div>
                         </div>
+
+                        {/* //! for dentist */}
+
+                        {RoleTyoe.toLocaleLowerCase() == 'dentist' && (
+                            <div className="grid grid-cols-1 gap-4">
+                                <div className="form-group">
+                                    <label className="block font-bold uppercase">Contact Number:</label>
+                                    <input
+                                        type="text"
+                                        name="LicenseNo"
+                                        value={profile.LicenseNo}
+                                        onChange={handleChange}
+                                        className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                        readOnly={!isEditable}
+                                        required
+                                    />
+                                </div>
+
+
+                                <div className="form-group">
+                                    <label className="block font-bold uppercase">Username:</label>
+                                    <input
+                                        type="text"
+                                        name="Address"
+                                        value={profile.Address}
+                                        onChange={handleChange}
+                                        className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                        readOnly={!isEditable}
+                                    />
+                                </div>
+                            </div>
+
+                        )}
+
                     </div>
                 </div>
                 <div className="flex justify-center items-center">
-                    <div className="bg-[#F5F5F5] w-full">
+                    <div className=" w-full">
                         <div className="flex justify-between items-center">
                             <button className={`mt-8 text-white px-4 py-2 rounded-md 
                                             ${isEditable ? 'bg-red-500 hover:bg-red-600' : 'bg-[#4285F4] hover:bg-[#0C65F8]'}`}

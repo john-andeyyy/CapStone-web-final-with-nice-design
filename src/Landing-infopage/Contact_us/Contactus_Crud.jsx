@@ -152,7 +152,7 @@ export default function ContactusDisplay() {
                         <h2 className="text-lg font-semibold">Current Logo.</h2>
                         <img
                             src={getProfileImage(contactInfo.logo)}
-                            className="object-cover h-48 w-full"
+                            className="object-cover h-48 w-48"
                             alt="Backend Logo"
                         />
                     </div>
@@ -161,7 +161,7 @@ export default function ContactusDisplay() {
                         {formData.logo ? (
                             <img
                                 src={getProfileImage(formData.logo)}
-                                className="object-cover h-48 w-full"
+                                className="object-cover h-48 w-48"
                                 alt="Uploaded Logo Preview"
                             />
                         ) : (

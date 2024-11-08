@@ -79,6 +79,10 @@ function AdminRoutes() {
 
   const location = useLocation();
   const isProfilePage = location.pathname === "/ProfilePage";
+
+  const Roletype = localStorage.getItem('Role')
+
+
   const [isExpired, setIsExpired] = useState(false);
   // Function to check if the time has expired
   function checkExpiration() {
@@ -119,9 +123,14 @@ function AdminRoutes() {
     <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'}  `}>
 
       {/* <div className="sticky top-0 z-20 bg-[#DDFBE7]"> */}
-      <div className="sticky top-0 z-10 bg-white ">
-        <Notification_bell />
-      </div>
+
+      {Roletype !== 'dentist' && (
+        <div className="sticky top-0 z-10 bg-white ">
+          <Notification_bell />
+        </div>
+      )}
+
+      
       <Routes>
 
         <Route path="/" element={<Dashboard />} />
@@ -137,7 +146,7 @@ function AdminRoutes() {
         <Route path="/Annoucement_Notification" element={<Annoucement_Notification />} />
         <Route path="/admindashboard" element={<Dashboard />} />
         <Route path="/CalendarComponent" element={<CalendarComponent />} />
-        <Route path="/DentistSchedule/:id" element={<DentistSchedule />} />
+        <Route path="/DentistSchedule/:id?" element={<DentistSchedule />} />
         <Route path="/UnavailableClinic" element={<UnavailableClinic />} />
         <Route path="/Create-appointment" element={<CalendarComponentsss />} />
         <Route path="/MyCalendar" element={<MyCalendar />} />
@@ -212,6 +221,7 @@ function App() {
       <ToastNotification />
 
       {isLogin && !isExpired ? (
+        // for admin only
         <div className="flex flex-col  md:flex-row ">
           <Sidebar />
           <div className="flex-1 ml-0 md:ml-42 lg:ml-60">
