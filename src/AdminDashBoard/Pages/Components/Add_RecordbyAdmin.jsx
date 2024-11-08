@@ -91,12 +91,15 @@ export default function SetAppointment({ userIds }) {
 
     return (
         <div className=''>
-            <button
-                className="btn text-xl font-semibold bg-[#3EB489] hover:bg-[#62A78E] text-white px-5 py-2 rounded-lg shadow-md transition duration-300"
-                onClick={() => setOpenFullModal(true)}
-            >
-                Add Record
-            </button>
+            {localStorage.getItem('Role') !== 'dentist' && (
+                <button
+                    className="btn text-xl font-semibold bg-[#3EB489] hover:bg-[#62A78E] text-white px-5 py-2 rounded-lg shadow-md transition duration-300"
+                    onClick={() => setOpenFullModal(true)}
+                >
+                    Add Record
+                </button>
+            )}
+
 
             <MediumModal isOpen={openFullModal} onClose={() => {
                 setOpenFullModal(false);
@@ -106,24 +109,24 @@ export default function SetAppointment({ userIds }) {
 
                 <div className='py-10'>
                     <h3 className="text-xl font-bold text-[#266D53] text-center mb-6">Set Appointment</h3>
-    
+
                     <div className="space-y-4 ">
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm mb-1">Select Dentist</label>
                                 <select
-                                className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                value={selectedDentist}
-                                onChange={(e) => setSelectedDentist(e.target.value)}
+                                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    value={selectedDentist}
+                                    onChange={(e) => setSelectedDentist(e.target.value)}
                                 >
-                                <option value="">Choose dentist</option>
-                                {localDentistList.map((dentist) => (
-                                    <option key={dentist._id} value={dentist._id}>
-                                    {`${dentist.FirstName} ${dentist.MiddleName ? dentist.MiddleName + ' ' : ''}${dentist.LastName}`}
-                                    </option>
-                                ))}
+                                    <option value="">Choose dentist</option>
+                                    {localDentistList.map((dentist) => (
+                                        <option key={dentist._id} value={dentist._id}>
+                                            {`${dentist.FirstName} ${dentist.MiddleName ? dentist.MiddleName + ' ' : ''}${dentist.LastName}`}
+                                        </option>
+                                    ))}
                                 </select>
-    
+
                                 <div>
                                     <label className="block text-sm mt-5">Total Amount</label>
                                     <input
@@ -138,23 +141,23 @@ export default function SetAppointment({ userIds }) {
                             <div className="border-2 border-green-400 rounded-lg p-4">
                                 <label className="block text-sm mb-1">Select Procedures</label>
                                 <div className="border border-gray-300 rounded-lg p-2 max-h-40 overflow-auto">
-                                {procedureList.map((procedure) => (
-                                    <div key={procedure._id} className="flex items-center mb-2">
-                                    <input
-                                        type="checkbox"
-                                        id={`procedure-${procedure._id}`}
-                                        onChange={(e) => handleProcedureChange(e, procedure)}
-                                        className="mr-2 focus:ring-blue-400"
-                                    />
-                                    <label htmlFor={`procedure-${procedure._id}`} className="text-sm">
-                                        {procedure.Procedure_name} - ₱ {procedure.Price}
-                                    </label>
-                                    </div>
-                                ))}
+                                    {procedureList.map((procedure) => (
+                                        <div key={procedure._id} className="flex items-center mb-2">
+                                            <input
+                                                type="checkbox"
+                                                id={`procedure-${procedure._id}`}
+                                                onChange={(e) => handleProcedureChange(e, procedure)}
+                                                className="mr-2 focus:ring-blue-400"
+                                            />
+                                            <label htmlFor={`procedure-${procedure._id}`} className="text-sm">
+                                                {procedure.Procedure_name} - ₱ {procedure.Price}
+                                            </label>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-    
+
                         <div className="flex items-center">
                             <label className="block text-sm mr-2">Add Notes?</label>
                             <input
@@ -164,7 +167,7 @@ export default function SetAppointment({ userIds }) {
                                 className="focus:ring-blue-400"
                             />
                         </div>
-    
+
                         {isNotesVisible && (
                             <div>
                                 <label className="block text-sm mb-1">Notes</label>
@@ -177,7 +180,7 @@ export default function SetAppointment({ userIds }) {
                                 />
                             </div>
                         )}
-    
+
                         <div className="grid grid-cols-3 gap-4">
                             <div>
                                 <label className="block text-sm mb-1">Date</label>
@@ -188,7 +191,7 @@ export default function SetAppointment({ userIds }) {
                                     className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 />
                             </div>
-    
+
                             <div>
                                 <label className="block text-sm mb-1">Start Time</label>
                                 <input
@@ -198,7 +201,7 @@ export default function SetAppointment({ userIds }) {
                                     className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 />
                             </div>
-    
+
                             <div>
                                 <label className="block text-sm mb-1">End Time</label>
                                 <input
@@ -215,17 +218,17 @@ export default function SetAppointment({ userIds }) {
                             {errorMessage}
                         </div>
                     )}
-    
+
                     <div className='flex justify-center items-center'>
-                    <button
-                        className="bg-[#4285F4] hover:bg-[#0C65F8] text-white py-2 rounded-lg mt-6 px-8 transition duration-200"
-                        onClick={handleSubmit}
-                        disabled={loading}
-                    >
-                        {loading ? <span className="loading loading-spinner loading-sm"></span> : 'Submit'}
-                    </button>
+                        <button
+                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-white py-2 rounded-lg mt-6 px-8 transition duration-200"
+                            onClick={handleSubmit}
+                            disabled={loading}
+                        >
+                            {loading ? <span className="loading loading-spinner loading-sm"></span> : 'Submit'}
+                        </button>
                     </div>
-              </div>
+                </div>
 
             </MediumModal>
 

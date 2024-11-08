@@ -42,7 +42,7 @@ export default function TotalProcedures() {
 
                     // Check if appointment should be included based on view
                     if (isYearView ? appointmentYear === currentYear : appointmentYear === currentYear && appointmentMonth === currentMonth.format('YYYY-MM')) {
-                        const monthKey = isYearView ? appointmentMonth.substring(0, 7) : appointmentMonth; // Use month key if in year view
+                        const monthKey = isYearView ? appointmentMonth.substring(0, 7) : appointmentMonth; 
                         appointment.procedures.forEach(procedure => {
                             const procedureName = procedure.name;
 

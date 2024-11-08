@@ -86,6 +86,7 @@ const DentistSchedule = () => {
             default:
                 break;
         }
+        filtered.sort((a, b) => dayjs(b.date).valueOf() - dayjs(a.date).valueOf());
 
         setFilteredAppointments(filtered);
     };
@@ -132,14 +133,19 @@ const DentistSchedule = () => {
         );
     }
     return (
-        <div className="px-4 py-6">
-            <button
-                onClick={() => navigate(-1)}
-                className="flex items-center text-[#3EB489] hover:text-[#62A78E] mb-3 font-semibold focus:outline-none"
-            >
-                <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
-                <p className='text-xl'>Go Back</p>
-            </button>
+        <div className="px-4 py-6  min-h-screen">
+            {localStorage.getItem('Role') !== 'dentist' && (
+                <button
+                    onClick={() => navigate(-1)}
+                    className="flex items-center text-[#3EB489] hover:text-[#62A78E] mb-3 font-semibold focus:outline-none"
+                >
+                    <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
+                    <p className='text-xl'>Go Back</p>
+                </button>
+            )}
+
+
+
             <div className='mb-4 space-y-3 mt-10'>
                 <h2 className="text-2xl font-bold mb-10 ">Appointment Schedule</h2>
                 <h3 className=' text-xl font-bold'>Dr. {dentistName}</h3>

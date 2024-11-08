@@ -357,7 +357,7 @@ const ProfilePage = () => {
                         {RoleTyoe.toLocaleLowerCase() == 'dentist' && (
                             <div className="grid grid-cols-1 gap-4">
                                 <div className="form-group">
-                                    <label className="block font-bold uppercase">Contact Number:</label>
+                                    <label className="block font-bold uppercase">License Number</label>
                                     <input
                                         type="text"
                                         name="LicenseNo"

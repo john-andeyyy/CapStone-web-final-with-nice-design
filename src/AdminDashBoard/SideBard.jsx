@@ -178,6 +178,10 @@ export default function Sidebar() {
                                         <FaUser className="mr-3" />
                                         <span>Patients</span>
                                     </li>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistReport' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/DentistReport', 'DentistReport')}>
+                                        <FaUser className="mr-3" />
+                                        <span>DentistReport</span>
+                                    </li>
                                 </div>
 
 

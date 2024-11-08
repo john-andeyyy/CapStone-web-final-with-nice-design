@@ -121,7 +121,7 @@ const NotificationBell = () => {
     }, []);
 
     return (
-        <div className="relative flex justify-end items-center ">
+        <div className="relative flex justify-end items-center bg-[#EEFBF5]">
             <Settings />
             <button className="btn btn-ghost btn-circle relative" onClick={toggleDropdown}>
                 <div className="indicator" title='notification'>

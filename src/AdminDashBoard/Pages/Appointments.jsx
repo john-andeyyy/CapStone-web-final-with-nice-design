@@ -393,7 +393,7 @@ export default function Appointments() {
                         >
                             {selectedStatus.includes(status) ? 'radio_button_checked' : 'radio_button_unchecked'}
                         </span>
-                        <p className="text-gray-700 font-medium ml-2">{status}</p>
+                        <p className="text-gray-700 font-medium ml-2">{status} </p>
                     </div>
                 ))}
             </div>

@@ -71,12 +71,16 @@ export default function ParentModel2d() {
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold text-center text-[#266D53] flex-1">Dental Records</h1>
 
-          <button
-            onClick={() => setIsAddModalOpen(true)}
-            className="bg-[#3EB489] hover:bg-[#62A78E] text-white px-4 py-2 rounded"
-          >
-            Add Tooth
-          </button>
+          {localStorage.getItem('Role') !== 'dentist' && (
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="bg-[#3EB489] hover:bg-[#62A78E] text-white px-4 py-2 rounded"
+            >
+              Add Tooth
+            </button>
+          )}
+
+
         </div>
 
 

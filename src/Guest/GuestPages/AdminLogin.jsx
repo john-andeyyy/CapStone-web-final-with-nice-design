@@ -34,7 +34,7 @@ export default function AdminLogin({ login }) {
                 localStorage.setItem('Accountid', response.data.id);
 
 
-                showToast('success', `Welcome ${response.data.Role}`);
+                // showToast('success', `Welcome ${response.data.Role}`);
                 Swal.fire({
                     title: `Welcome back, ${response.data.Role}!`,
                     text: "Glad to have you here again.",

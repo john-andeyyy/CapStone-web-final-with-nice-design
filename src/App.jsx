@@ -56,6 +56,7 @@ import Our2d from './AdminDashBoard/Our2d';
 import ParentModel2d from './AdminDashBoard/Components/TheNew2d/ParentModel2d';
 import WebsocketSample from './AdminDashBoard/WebSocket/Websocket-sample';
 import axios from 'axios';
+import DentistReport from './AdminDashBoard/Pages/ReportPages/Pages/DentistReport';
 
 function AdminRoutes() {
 
@@ -157,6 +158,7 @@ function AdminRoutes() {
         <Route path="/Patient_Visits" element={< Patient_Visits />} />
         <Route path="/IncomeReport" element={< IncomeReport />} />
         <Route path="/Patient_Procedures_done" element={< Patient_Procedures_done />} />
+        <Route path="/DentistReport/:id?" element={< DentistReport />} />
 
         {/* //! components only! */}
         <Route path="/NotificationPage" element={<NotificationPage />} />
@@ -192,6 +194,8 @@ function App() {
   const [isExpired, setIsExpired] = useState(false);
   const [isLogin, setisLogin] = useState(localStorage.getItem('Islogin'));
   const Baseurl = import.meta.env.VITE_BASEURL
+
+
   console.log('App', Baseurl)
 
   useEffect(() => {
@@ -224,7 +228,7 @@ function App() {
         // for admin only
         <div className="flex flex-col  md:flex-row ">
           <Sidebar />
-          <div className="flex-1 ml-0 md:ml-42 lg:ml-60">
+          <div className="flex-1 ml-0 md:ml-42 lg:ml-60 bg-[#eefbf5]">
             <AdminRoutes />
           </div>
         </div>

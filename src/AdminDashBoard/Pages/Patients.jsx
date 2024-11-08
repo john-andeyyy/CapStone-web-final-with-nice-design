@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 
 export default function Patients_List() {
     const navigate = useNavigate();
+    const Roletype = localStorage.getItem('Role')
     const [loading, setLoading] = useState(true);
     const [patientsInfo, setPatientsInfo] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -50,7 +51,7 @@ export default function Patients_List() {
             const response = await axios.get(
                 `${import.meta.env.VITE_BASEURL}/Contactus/contactus`,
                 {
-                    withCredentials: true 
+                    withCredentials: true
                 }
             );
             const data = response.data[0];
@@ -61,7 +62,7 @@ export default function Patients_List() {
     };
 
     const createPDF = () => {
-        fetchclinicdata(); 
+        fetchclinicdata();
 
         const doc = new jsPDF();
         const themeColor = "#3EB489";
@@ -282,7 +283,7 @@ export default function Patients_List() {
 
 
     return (
-        <div className="container mx-auto p-4 pt-0">
+        <div className={`container mx-auto p-4 min-h-screen ${localStorage.getItem('Role') === 'dentist' ? 'pt-10' : 'pt-0'}`}>
             {loading ? (
                 <div className="flex justify-center items-center h-screen">
                     <span className="loading loading-spinner loading-lg"></span>
@@ -313,12 +314,16 @@ export default function Patients_List() {
                         </div>
 
                         <div className="flex space-x-2">
-                            <button
-                                onClick={() => setIsModalOpen(true)}
-                                className="p-2 text-white bg-[#4285F4] hover:bg-[#0C65F8] rounded"
-                            >
-                                Add Patient
-                            </button>
+                            {localStorage.getItem('Role') !== 'dentist' && (
+                                <button
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="p-2 text-white bg-[#4285F4] hover:bg-[#0C65F8] rounded"
+                                >
+                                    Add Patient
+                                </button>
+                            )}
+
+
 
                             <button
                                 onClick={generatePDF}

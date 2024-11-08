@@ -34,6 +34,7 @@ export default function ReportMenu() {
                     <option value="/Patient_Visits">Patient Visits Summary</option>
                     <option value="/IncomeReport">Income Report Summary</option>
                     <option value="/Patient_Procedures_done">Patient Procedures Done</option>
+                    <option value="/DentistReport">DentistReport</option>
                 </select>
             </div>
         </div>
