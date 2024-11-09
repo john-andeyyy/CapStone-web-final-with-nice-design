@@ -168,7 +168,7 @@ export default function Sidebar() {
                             {RoleType == 'dentist' && (
 
                                 <div>
-                                    <h1 className='text-2xl text-red-500'>dentist view only</h1>
+                                    <h1 className='text-2xl text-red-500'>dentist view only <span>icon</span> </h1>
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistAppointment' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/DentistSchedule', 'DentistSchedule')}>
                                         <FaHome className="mr-3" />
                                         <span>Your Appointment</span>
@@ -181,6 +181,10 @@ export default function Sidebar() {
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistReport' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/DentistReport', 'DentistReport')}>
                                         <FaUser className="mr-3" />
                                         <span>DentistReport</span>
+                                    </li>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistPatient' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/DentistPatient', 'DentistPatient')}>
+                                        <FaUser className="mr-3" />
+                                        <span>Dentist Patient</span>
                                     </li>
                                 </div>
 

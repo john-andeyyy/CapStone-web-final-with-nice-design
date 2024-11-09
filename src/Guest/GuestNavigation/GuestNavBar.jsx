@@ -49,7 +49,7 @@ export default function GuestNavBar() {
                 <div className="flex-1">
                     <img src={logo} alt="" className='h-12' />
                     <a className="  text-2xl font-serif text-white font-bold uppercase" onClick={() => navigate('/')}>{name.DentalName}</a>
-                    
+
                 </div>
 
                 <div className="block lg:hidden">
@@ -62,14 +62,14 @@ export default function GuestNavBar() {
                 <div className={`flex-none ${isMenuOpen ? 'block' : 'hidden'} lg:flex lg:items-center lg:w-auto w-full`}>
                     <ul className="menu menu-horizontal px-1 font-semibold space-x-3 lg:space-x-3 flex flex-col lg:flex-row">
                         <li className="mb-2 md:mb-0">
-                            <button className="btn btn-ghost font-bold text-white text-xl" onClick={() => navigate('/')}>HOME</button>
+                            <button className="btn btn-ghost font-bold text-white text-xl" onClick={() => {navigate('/');toggleMenu()}}>HOME</button>
                         </li>
                         <li className="mb-2 md:mb-0">
-                            <button className="btn btn-ghost font-bold text-white text-xl" onClick={() => { navigate('/AllServices') }}>SERVICES</button>
+                            <button className="btn btn-ghost font-bold text-white text-xl" onClick={() => { navigate('/AllServices'); toggleMenu() }}>SERVICES</button>
                         </li>
                         <li className="mb-2 md:mb-0">
                             <button className="btn btn-ghost font-bold text-white text-xl"
-                                onClick={() => { navigate('The_DeanTeam') }}
+                                onClick={() => { navigate('The_DeanTeam'); toggleMenu() }}
                             >DEANTEAM </button>
                         </li>
                         {/*                         
@@ -87,7 +87,10 @@ export default function GuestNavBar() {
 
                         <li className="mb-2 md:mb-0">
                             <button className="btn btn-ghost font-bold text-[#266D53] bg-[#C6E4DA] text-xl"
-                                onClick={() => { navigate('AdminLogin') }}
+                                onClick={() => {
+                                    navigate('AdminLogin')
+                                    toggleMenu()
+                                }}
                             >LOGIN </button>
                         </li>
 

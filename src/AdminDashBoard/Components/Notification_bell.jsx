@@ -3,37 +3,52 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ThemeController from '../../Guest/GuestComponents/ThemeController';
 import Settings from '../Components/Settings';
-import NotificationModal from '../Components/Modal'; // Import the modal
+import NotificationModal from '../Components/Modal';
 import Socket from '../../Utils/Socket';
 import { showToast } from '../../AdminDashBoard/Components/ToastNotification';
 const NotificationBell = () => {
     const Baseurl = import.meta.env.VITE_BASEURL;
     const navigate = useNavigate();
-    const dropdownRef = useRef(null); // Ref for the dropdown
-    const modalRef = useRef(null); // Ref for the modal
+    const dropdownRef = useRef(null);
+    const modalRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [selectedNotification, setSelectedNotification] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     // Fetch notifications from the server
+    const localrole = localStorage.getItem('Role')
+    const Rolenotif = localrole === 'admin' ? 'AdminNotif' : 'DentistNotif'
+
+
+
     const fetchNotifications = async () => {
         try {
-            const response = await axios.get(`${Baseurl}/Notification/admin/AdminNotif`, {
+            const response = await axios.get(`${Baseurl}/Notification/admin/${Rolenotif}`, {
                 withCredentials: true,
             });
-            const adminNotifications = response.data.filter(notification => notification.adminOnly === true);
 
-            setNotifications(adminNotifications.reverse());
-            const unreadNotifications = adminNotifications.filter(notification => !notification.adminisRead);
-            setUnreadCount(unreadNotifications.length);
+            if (localrole === 'admin') {
+                const adminNotifications = response.data.filter(notification => notification.adminOnly === true);
+                setNotifications(adminNotifications.reverse());
+                const unreadNotifications = adminNotifications.filter(notification => !notification.adminisRead);
+                setUnreadCount(unreadNotifications.length);
+            } else if (localrole === 'dentist') {
+                const dentistNotifications = response.data
+                setNotifications(dentistNotifications.reverse());
+                const unreadNotifications = dentistNotifications.filter(notification => !notification.DentistRead);
+                setUnreadCount(unreadNotifications.length);
+            }
+
+
         } catch (error) {
             console.error('Error fetching notifications:', error);
         }
     };
-    const [hasShownErrorToast, setHasShownErrorToast] = useState(false);
 
     useEffect(() => {
+        console.log('this is a notification bell')
+
         fetchNotifications();
 
         // Listen for new notifications via socket
@@ -47,16 +62,9 @@ const NotificationBell = () => {
     }, [Baseurl]);
 
 
+
     const addNotificationToUI = (notification) => {
         showToast('success', 'New Appointment sent');
-
-        // if (!hasShownErrorToast) {
-        //     setTimeout(() => {
-        //         showToast('error', 'I Miss you Boss');
-        //         setHasShownErrorToast(true); // Set the flag to true after showing
-        //     }, 4000);
-        // }
-
 
         setNotifications((prevNotifications) => {
             const updatedNotifications = [notification, ...prevNotifications];
@@ -69,7 +77,7 @@ const NotificationBell = () => {
 
 
     const toggleDropdown = () => {
-        fetchNotifications(); // Refresh notifications when dropdown is opened
+        fetchNotifications();
         setIsOpen(!isOpen);
     };
 
@@ -79,24 +87,36 @@ const NotificationBell = () => {
     };
 
     const handleNotificationClick = async (notification) => {
-        if (!notification.adminisRead) {
-            await markAsRead(notification._id);
+        if (localrole === 'dentist') {
+            navigate(`appointment/${selectedNotification.appointmentStatus[0].appointment_id}`)
+
+        } else {
+            console.log('notification', notification)
+            if (!notification.adminisRead) {
+                await markAsRead(notification._id);
+            }
+            setSelectedNotification(notification);
+            setIsModalOpen(true);
         }
-        setSelectedNotification(notification);
-        setIsModalOpen(true);
     };
 
     const closeModal = () => setIsModalOpen(false);
 
+
     const markAsRead = async (notifId) => {
+        const RoleMARK =
+            localrole === 'admin' ? 'adminmarkas' :
+                localrole === 'dentist' ? 'dentistmarkas' :
+                    'staffmarkas';
+
         try {
-            await axios.put(`${Baseurl}/Notification/admin/adminmarkas`, {
+            await axios.put(`${Baseurl}/Notification/admin/${RoleMARK}`, {
                 notifid: notifId,
                 mark_as: true,
             }, {
                 withCredentials: true,
             });
-            fetchNotifications(); // Refresh notifications after marking as read
+            fetchNotifications();
         } catch (error) {
             console.error('Error marking notification as read:', error);
         }
@@ -158,40 +178,47 @@ const NotificationBell = () => {
                         {notifications.length === 0 ? (
                             <div className="p-3 text-center text-gray-500">No new notifications</div>
                         ) : (
-                                <ul className="p-2 pr-0 pt-0">
-                                    {notifications.map((notification) => (
-                                        <li
-                                            key={notification._id}
-                                            className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary ${!notification.adminisRead
-                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
-                                                    : 'bg-[#69dcb4] bg-opacity-15'
-                                                }`}
-                                            onClick={() => handleNotificationClick(notification)}
-                                        >
-                                            <div className="flex items-center space-x-4">
-                                                <span
-                                                    className="material-symbols-outlined text-[#3EB489]"
-                                                    style={{
-                                                        fontVariationSettings: `'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24`
-                                                    }}
-                                                >
-                                                    {notification.ismedicalrequest ? 'picture_as_pdf' : 'notifications'}
-                                                </span>
+                            <ul className="p-2 pr-0 pt-0">
+                                {notifications.map((notification) => (
+                                    <li
+                                        key={notification._id}
+                                        className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary ${(Rolenotif === 'admin' ? !notification.adminisRead : !notification.DentistRead)
+                                            ? 'bg-[#69dcb4] font-medium bg-opacity-50'
+                                            : 'bg-[#69dcb4] bg-opacity-15'
+                                            }`}
 
+                                        onClick={() => handleNotificationClick(notification)}
+                                    >
+                                        <div className="flex items-center space-x-4">
+                                            <span
+                                                className="material-symbols-outlined text-[#3EB489]"
+                                                style={{
+                                                    fontVariationSettings: `'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24`
+                                                }}
+                                            >
+                                                {notification.ismedicalrequest ? 'picture_as_pdf' : 'notifications'}
+                                            </span>
 
-                                                <div className="flex flex-col space-y-1">
-                                                    <p className="text-sm">
-                                                        {notification.user_Appointment_Title || notification.user_Appointment_message}
-                                                    </p>
-                                                    {/* Uncomment if needed:
-                    <p className="text-xs text-gray-500">
-                        created at: {formatDate(notification.createdAt)}
-                    </p> */}
-                                                </div>
+                                            <div className="flex flex-col space-y-1">
+                                                <p className="text-sm">
+                                                    {notification.title ? "New appointment set" : (notification.user_Appointment_Title || notification.user_Appointment_message || "")}
+                                                </p>
+
+                                                <p>
+                                                    {notification.patientStatus[0]?.patient
+                                                        ? `${notification.patientStatus[0].patient.LastName}, ${notification.patientStatus[0].patient.FirstName} ${notification.patientStatus[0].patient.MiddleName || ''}`
+                                                        : 'Patient information unavailable'}
+                                                </p>
+                                                {/* Uncomment if needed:
+        <p className="text-xs text-gray-500">
+            created at: {formatDate(notification.createdAt)}
+        </p> */}
                                             </div>
-                                        </li>
-                                    ))}
-                                </ul>
+
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
 
                         )}
                     </div>
@@ -202,7 +229,7 @@ const NotificationBell = () => {
             {isModalOpen && (
                 <NotificationModal isOpen={isModalOpen} onClose={closeModal}>
                     {selectedNotification && (
-                        <div>
+                        <div className=''>
                             <h1 className='text-center text-2xl font-bold text-[#3EB489]'>Notification</h1>
                             <div className="p-4">
                                 <h2 className="text-xl font-bold">{selectedNotification.user_Appointment_Title}</h2>

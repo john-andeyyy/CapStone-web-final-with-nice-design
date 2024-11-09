@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
-import '../Dashboard components/Calendar.css'; // Import your CSS
+import '../Dashboard components/Calendar.css'; 
 import Dashboard_Fetch from './Dashboard_Fetch';
 import Modal from '../Modal';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ export default function Dashboard_Calendar() {
         setIsModalOpen(true);
     };
 
-    const closeModal = () => setIsModalOpen(false); // Close modal handler
+    const closeModal = () => setIsModalOpen(false); 
 
 
     const { data, loading, error } = Dashboard_Fetch();

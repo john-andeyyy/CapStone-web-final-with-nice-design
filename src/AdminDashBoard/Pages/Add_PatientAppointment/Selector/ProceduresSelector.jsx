@@ -101,7 +101,7 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
             </button>
 
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
+                <div className="fixed inset-0 bg-black bg-opacity-65 flex justify-center items-center z-50">
                     <div className="bg-[#C6E4DA] rounded-lg shadow-lg p-6 w-[64rem]">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-medium text-[#266D53]">Select Procedures</h2>

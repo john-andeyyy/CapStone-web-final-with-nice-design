@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { showToast } from '../../AdminDashBoard/Components/ToastNotification';
 import Swal from 'sweetalert2';
 
 export default function AdminLogin({ login }) {
-    const [username, setUsername] = useState('admin');
-    const [password, setPassword] = useState('admin');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ export default function AdminLogin({ login }) {
                 localStorage.setItem("Token", response.data.token);
                 localStorage.setItem("expiresin", response.data.expiresIn);
                 localStorage.setItem('lastActiveTime', new Date().getTime());
-                localStorage.setItem('Role', Role );
+                localStorage.setItem('Role', Role);
                 localStorage.setItem('Accountid', response.data.id);
 
 
@@ -41,9 +42,9 @@ export default function AdminLogin({ login }) {
                     icon: "success"
                 });
 
-                if (Role === 'admin'){
+                if (Role === 'admin') {
                     navigate('/dashboard');
-                } else if (Role== 'dentist'){
+                } else if (Role == 'dentist') {
                     navigate('/DentistSchedule');
                 }
 
@@ -59,6 +60,60 @@ export default function AdminLogin({ login }) {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        const handleKeyPress = (event) => {
+            if (event.ctrlKey && event.key === "m") {
+                Swal.fire({
+                    title: `ADMIN: admin admin .... DENTIST: 123 123 or Marilie 123`,
+                    width: 600,
+                    padding: "3em",
+                    color: "#716add",
+                    background: "#fff url(/images/trees.png)",
+                    backdrop: `
+                    rgba(0,0,123,0.4)
+                    url("/images/nyan-cat.gif")
+                    left top
+                    no-repeat
+                `
+                });
+            } else if (event.ctrlKey && event.key === ".") {
+                setUsername('admin')
+                setPassword('admin')
+                Swal.fire({
+                    title: `admin`,
+                    text: "Un: admin pass: admin",
+                    icon: "info",
+                    width: 600,
+                    padding: "3em",
+                    color: "#716add",
+                    background: "#fff",
+                });
+            } else if (event.ctrlKey && event.key === ",") {
+                setUsername('123')
+                setPassword('123')
+                Swal.fire({
+                    title: `Dentist`,
+                    text: "Un: 123 pass: 123",
+                    icon: "info",
+                    width: 600,
+                    padding: "3em",
+                    color: "#716add",
+                    background: "#fff",
+                });
+            } else if (event.ctrlKey && event.key === "/") {
+                setUsername('')
+                setPassword('')
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyPress);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyPress);
+        };
+    }, []);
+
 
     return (
         <div className="relative min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/sana.png')" }}>

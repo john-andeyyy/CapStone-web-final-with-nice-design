@@ -4,6 +4,7 @@ import axios from 'axios';
 import { showToast } from '../Components/ToastNotification';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Socket from '../../Utils/Socket';
 
 export default function MedicalRequests() {
   const navigate = useNavigate()
@@ -38,10 +39,23 @@ export default function MedicalRequests() {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     getAppointments();
+    Socket.on('new-dentalCerti-request', addNotificationToUI);
+    Socket.on('disconnect', () => console.log('Disconnected from server'));
+
+    // Clean up socket event listeners on unmount
+    return () => {
+      Socket.off('new-dentalCerti-request', addNotificationToUI);
+    };
   }, []);
+
+  const addNotificationToUI = (requestdentalCerti) => {
+    showToast('success', 'New Appointment sent');
+
+    setRequests((prevRequests) => [requestdentalCerti, ...prevRequests]);
+  };
+
 
   const filteredRequests = requests.filter((request) => {
     const showBasedOnStatus = (status) => {
@@ -70,14 +84,11 @@ export default function MedicalRequests() {
   });
 
   const handleDeleteRequest = async (Rejectmsg) => {
-    console.error('selectedRequest', selectedRequest)
-    console.log('handleDeleteRequest1')
     if (true) {
-      console.log('handleDeleteRequest2')
 
       setActionLoading(true);
       try {
-        await axios.put(`${BASEURL}/SendDentalCertificate/6728ec46d9f2751eb0a9b237`, {
+        await axios.put(`${BASEURL}/SendDentalCertificate/${selectedRequest.id}`, {
           Status: 'Rejected',
           Rejectmsg
         }, {
@@ -266,12 +277,8 @@ export default function MedicalRequests() {
         });
     });
   }
-
-
-
-
   return (
-    <div className="container mx-auto p-4 pt-0">
+    <div className="container mx-auto p-4 pt-0 ">
       <div className="p-4">
         {/* Status Dropdown and Search Bar */}
         <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 space-y-4 lg:space-y-0">

@@ -13,7 +13,7 @@ const BASEURL = import.meta.env.VITE_BASEURL;
 const DentistSchedule = () => {
     const navigate = useNavigate();
     const { id } = useParams();
-    const dentistId = id || localStorage.getItem('Accountid')
+    const dentistId = id || localStorage.getItem('Accountid');
 
     const [appointments, setAppointments] = useState([]);
     const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -24,6 +24,7 @@ const DentistSchedule = () => {
     const [showCustomDatePicker, setShowCustomDatePicker] = useState(false);
     const [selectedYear, setSelectedYear] = useState('');
     const [dentistName, setDentistName] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchAppointments = async () => {
@@ -32,10 +33,10 @@ const DentistSchedule = () => {
             try {
                 const response = await axios.get(`${BASEURL}/dentist/appointmentlist/${dentistId}`, { withCredentials: true });
                 if (response.status === 200) {
-                    const approvedAppointments = response.data.filter((appointment) => appointment.Status === 'Approved');
+                    const approvedAppointments = response.data
                     setDentistName(response.data[0]?.DentistName || 'N/A');
                     setAppointments(approvedAppointments);
-                    filterAppointments(approvedAppointments, filter, selectedYear);
+                    filterAppointments(approvedAppointments, filter, selectedYear, searchTerm);
                 } else {
                     setError('No appointments found.');
                 }
@@ -47,20 +48,27 @@ const DentistSchedule = () => {
             }
         };
 
-
         fetchAppointments();
     }, [dentistId]);
 
     useEffect(() => {
-        filterAppointments(appointments, filter, selectedYear);
-    }, [filter, customDateRange, selectedYear, appointments]);
+        filterAppointments(appointments, filter, selectedYear, searchTerm);
+    }, [filter, customDateRange, selectedYear, searchTerm, appointments]);
 
-    const filterAppointments = (appointments, selectedFilter, year) => {
+    const filterAppointments = (appointments, selectedFilter, year, search) => {
         const now = dayjs();
         let filtered = appointments;
 
         if (year) {
             filtered = filtered.filter(appointment => dayjs(appointment.date).year() === parseInt(year, 10));
+        }
+
+        if (search) {
+            filtered = filtered.filter(appointment =>
+                `${appointment.patient.FirstName} ${appointment.patient.LastName}`
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
+            );
         }
 
         switch (selectedFilter) {
@@ -82,6 +90,15 @@ const DentistSchedule = () => {
                 } else {
                     filtered = [];
                 }
+                break;
+            case 'completed':  
+                filtered = filtered.filter(appointment => appointment.Status === 'Completed');
+                break;
+            case 'Approved':  
+                filtered = filtered.filter(appointment => appointment.Status === 'Approved');
+                break;
+            case 'all':  
+                
                 break;
             default:
                 break;
@@ -118,41 +135,36 @@ const DentistSchedule = () => {
 
     if (error) {
         return (
-            <div className="flex justify-center items-center h-20">
+            <div className="flex justify-center items-center h-20 min-h-screen">
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-lg text-center shadow-md">
                     <div className='flex justify-center'>
-
-                        <span class="material-symbols-outlined">
-                            warning
-                        </span>
-
+                        <span className="material-symbols-outlined">warning</span>
                         {error}
                     </div>
                 </div>
             </div>
         );
     }
+
     return (
-        <div className="px-4 py-6  min-h-screen">
+        <div className="px-4 py-6 min-h-screen">
             {localStorage.getItem('Role') !== 'dentist' && (
                 <button
                     onClick={() => navigate(-1)}
                     className="flex items-center text-[#3EB489] hover:text-[#62A78E] mb-3 font-semibold focus:outline-none"
                 >
                     <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
-                    <p className='text-xl'>Go Back</p>
+                    <p className="text-lg sm:text-xl">Go Back</p>
                 </button>
             )}
 
-
-
-            <div className='mb-4 space-y-3 mt-10'>
-                <h2 className="text-2xl font-bold mb-10 ">Appointment Schedule</h2>
-                <h3 className=' text-xl font-bold'>Dr. {dentistName}</h3>
+            <div className="mb-4 space-y-3 mt-10">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-10">Appointment Schedule</h2>
+                <h3 className="text-lg sm:text-xl font-bold">Dr. {dentistName}</h3>
             </div>
 
             <div className="mb-4">
-                <label htmlFor="dateFilter" className="mr-2 font-semibold">Filter by:</label>
+                <label htmlFor="dateFilter" className="block sm:inline mr-2 font-semibold">Filter by:</label>
                 <select
                     id="dateFilter"
                     value={filter}
@@ -166,9 +178,11 @@ const DentistSchedule = () => {
                             setSelectedYear('');
                         }
                     }}
-                    className="p-2 border rounded"
+                    className="p-2 border rounded w-full sm:w-auto"
                 >
-                    <option value="">All Approved</option>
+                    <option value="Approved">Approved</option>
+                    <option value="completed">Completed</option>
+                    <option value="all">All</option>
                     <option value="thisDay">This Day</option>
                     <option value="thisWeek">This Week</option>
                     <option value="thisMonth">This Month</option>
@@ -177,12 +191,17 @@ const DentistSchedule = () => {
                 </select>
 
                 {filter === 'year' && (
-                    <div className="ml-4 inline-block">
+                    <div className="mt-4 sm:mt-0 sm:ml-4 inline-block">
                         <label htmlFor="year" className="mr-2 font-semibold">Select Year:</label>
-                        <select id="year" value={selectedYear} onChange={handleYearChange} className="p-2 border rounded">
+                        <select
+                            id="year"
+                            value={selectedYear}
+                            onChange={handleYearChange}
+                            className="p-2 border rounded w-full sm:w-auto"
+                        >
                             <option value="">--Select Year--</option>
                             {[...Array(101).keys()].map((i) => {
-                                const yearValue = new Date().getFullYear() - i; // Create a dropdown for the last 100 years
+                                const yearValue = new Date().getFullYear() - i;
                                 return (
                                     <option key={yearValue} value={yearValue}>
                                         {yearValue}
@@ -195,10 +214,7 @@ const DentistSchedule = () => {
 
                 {filter === 'customDate' && (
                     <div className="mt-4">
-                        <button
-                            className="bg-blue-500 text-white p-2 rounded"
-                            onClick={toggleDatePicker}
-                        >
+                        <button className="bg-blue-500 text-white p-2 rounded w-full sm:w-auto" onClick={toggleDatePicker}>
                             Select Date
                         </button>
 
@@ -226,45 +242,54 @@ const DentistSchedule = () => {
                 )}
             </div>
 
+            {/* Search by Patient Name */}
+            <div className="mb-4">
+                <label htmlFor="searchName" className="block sm:inline mr-2 font-semibold">Search Patient:</label>
+                <input
+                    type="text"
+                    id="searchName"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Enter patient name"
+                    className="p-2 border rounded w-full sm:w-auto"
+                />
+            </div>
+
             {filteredAppointments.length ? (
-                <table className="min-w-full bg-gray-100 border border-black">
+                <table className="w-full bg-gray-100 border border-black overflow-auto">
                     <thead>
-                        <tr className="bg-primary text-white">
-                            <th className="py-2 px-4 border border-black">Date</th>
-                            <th className="py-2 px-4 border border-black">Start</th>
-                            <th className="py-2 px-4 border border-black">End</th>
-                            <th className="py-2 px-4 border border-black">Patient Name</th>
-                            <th className="py-2 px-4 border border-black">Procedure</th>
-                            {/* <th className="py-2 px-4 border-b border-gray-300">Status</th> */}
+                        <tr className="bg-primary text-white text-sm sm:text-base">
+                            <th className="py-2 px-2 sm:px-4 border border-black">Date</th>
+                            <th className="py-2 px-2 sm:px-4 border border-black">Start</th>
+                            <th className="py-2 px-2 sm:px-4 border border-black">Patient Name</th>
+                            <th className="py-2 px-2 sm:px-4 border border-black">Procedure</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredAppointments.map((appointment) => (
                             <tr
                                 key={appointment._id}
-                                className="hover:bg-accent  border border-black cursor-pointer"
+                                className="hover:bg-accent border border-black cursor-pointer text-sm sm:text-base"
                                 onClick={() => handleRowClick(appointment)}
                             >
-                                <td className="py-2 px-4 border border-black ">
-                                    {dayjs(appointment.date).format('MMMM D, YYYY')}
+                                <td className="py-2 px-2 sm:px-4 border border-black">
+                                    {dayjs(appointment.date).format('MMM D, YYYY')}
                                 </td>
-                                <td className="py-2 px-4 border border-black">
+                                <td className="py-2 px-2 sm:px-4 border border-black">
                                     {dayjs(appointment.Start).format('h:mm A')}
                                 </td>
-                                <td className="py-2 px-4 border border-black">
-                                    {dayjs(appointment.End).format('h:mm A')}
+                                <td className="py-2 px-2 sm:px-4 border border-black">
+                                    {`${appointment.patient.FirstName} ${appointment.patient.LastName}`}
                                 </td>
-                                <td className="py-2 px-4 border border-black">{`${appointment.patient.FirstName} ${appointment.patient.LastName}`}</td>
-                                <td className="py-2 px-4 border border-black">
-                                    {appointment.procedures.map(proc => proc.Procedure_name).join(', ')}
+                                <td className="py-2 px-2 sm:px-4 border border-black">
+                                    {appointment.procedures.map((proc) => proc.Procedure_name).join(', ')}
                                 </td>
-                                {/* <td className="py-2 px-4 border-b border-gray-300">{appointment.Status}</td> */}
                             </tr>
                         ))}
                     </tbody>
                 </table>
             ) : (
-                <div className="text-center text-gray-500">
+                <div className="text-center text-gray-500 mt-4">
                     {filter === 'customDate' ? (
                         <p>Please select a custom date range to view appointments.</p>
                     ) : (
@@ -274,6 +299,7 @@ const DentistSchedule = () => {
             )}
         </div>
     );
+
 };
 
 export default DentistSchedule;
