@@ -206,7 +206,13 @@ const NotificationBell = () => {
 
                                             <div className="flex flex-col space-y-1">
                                                 <p className="text-sm">
-                                                    {notification.title ? "New appointment set" : (notification.user_Appointment_Title || notification.user_Appointment_message || "")}
+                                                    {localrole === 'admin'
+                                                        ? (notification.user_Appointment_Title || notification.user_Appointment_message || "")
+                                                        : (localrole === 'dentist'
+                                                            ? (notification.title ? "New appointment set" : (notification.user_Appointment_Title || notification.user_Appointment_message || ""))
+                                                            : "")
+                                                    }
+
                                                 </p>
 
                                                 <p>
