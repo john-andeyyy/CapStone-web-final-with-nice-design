@@ -16,7 +16,8 @@ export default function TotalProcedures() {
     const BASEURL = import.meta.env.VITE_BASEURL;
     const [years, setYears] = useState([]);
     const [appointmentsData, setappointmentsData] = useState();
-
+    const [selectedMonth, setSelectedMonth] = useState(currentMonth.format('MM'));
+    const [selectedFrequency, setSelectedFrequency] = useState('');
 
     useEffect(() => {
         if (Array.isArray(appointmentsData) && appointmentsData.length > 0) {
@@ -42,7 +43,7 @@ export default function TotalProcedures() {
 
                     // Check if appointment should be included based on view
                     if (isYearView ? appointmentYear === currentYear : appointmentYear === currentYear && appointmentMonth === currentMonth.format('YYYY-MM')) {
-                        const monthKey = isYearView ? appointmentMonth.substring(0, 7) : appointmentMonth; 
+                        const monthKey = isYearView ? appointmentMonth.substring(0, 7) : appointmentMonth;
                         appointment.procedures.forEach(procedure => {
                             const procedureName = procedure.name;
 
@@ -271,15 +272,14 @@ export default function TotalProcedures() {
                                     id="navigation-dropdown"
                                     onChange={(e) => {
                                         const value = e.target.value;
+                                        setSelectedFrequency(value);
 
-                                        // Reset to month view when switching options
                                         if (value === 'year') {
                                             setIsYearView(true);
-                                        } else {
-                                            setIsYearView(false); // Reset to month view
-                                        }
-
-                                        if (value === 'prevMonth') {
+                                        } else if (value === 'month') {
+                                            setIsYearView(false);
+                                            setCurrentMonth(dayjs().month(selectedMonth - 1).year(currentYear));
+                                        } else if (value === 'prevMonth') {
                                             handlePrevMonth();
                                         } else if (value === 'nextMonth') {
                                             handleNextMonth();
@@ -291,10 +291,33 @@ export default function TotalProcedures() {
                                 >
                                     <option value="">Select an option</option>
                                     <option value="year">View Year</option>
-                                    <option value="prevMonth">Previous Month</option>
-                                    <option value="nextMonth">Next Month</option>
-                                    {/* {(!isToday || isYearView) && <option value="today">Back</option>} */}
+                                    <option value="month">Month</option>
                                 </select>
+                                {selectedFrequency === 'month' && (
+                                    <select
+                                        value={selectedMonth}
+                                        onChange={(e) => {
+                                            const month = e.target.value;
+                                            setSelectedMonth(month);
+                                            setCurrentMonth(dayjs().month(month - 1).year(currentYear));
+                                            setIsYearView(false);
+                                        }}
+                                        className="mt-1 p-2 block border border-gray-300 rounded-md"
+                                    >
+                                        <option value="01">January</option>
+                                        <option value="02">February</option>
+                                        <option value="03">March</option>
+                                        <option value="04">April</option>
+                                        <option value="05">May</option>
+                                        <option value="06">June</option>
+                                        <option value="07">July</option>
+                                        <option value="08">August</option>
+                                        <option value="09">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                )}
                             </div>
                         </div>
 
@@ -324,28 +347,7 @@ export default function TotalProcedures() {
                                         </select>
                                     </div>
                                 </div>
-
-
-                                // </div>
-
-
                             )}
-                            {/* <button onClick={() => setIsYearView(true)} className="mr-2 mt-2 sm:mt-0 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition duration-200">
-                            View Year
-                        </button>
-                        <button onClick={handlePrevMonth} className="mr-2 mt-2 sm:mt-0 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">
-                            Previous Month
-                        </button>
-                        <button onClick={handleNextMonth} className="mr-2 mt-2 sm:mt-0 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">
-                            Next Month
-                        </button>
-                        {(!isToday || isYearView) && (
-                            <button onClick={handleToday} className="mr-2 mt-2 sm:mt-0 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-200">
-                                Today
-                            </button>
-                        )} */}
-
-
                         </div>
                     </div>
 
@@ -376,7 +378,6 @@ export default function TotalProcedures() {
                                 </tbody>
                             </table>
                         </div>
-
                         {/* Responsive Pie Chart */}
                         <div className="rounded-xl"
                             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
