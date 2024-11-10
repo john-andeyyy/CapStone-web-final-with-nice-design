@@ -182,11 +182,16 @@ const NotificationBell = () => {
                                 {notifications.map((notification) => (
                                     <li
                                         key={notification._id}
-                                        className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary ${(Rolenotif === 'admin' ? !notification.adminisRead : !notification.DentistRead)
-                                            ? 'bg-[#69dcb4] font-medium bg-opacity-50'
-                                            : 'bg-[#69dcb4] bg-opacity-15'
-                                            }`}
-
+                                        className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary 
+                                            ${localrole === 'admin'
+                                                ? (!notification.adminisRead
+                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
+                                                    : 'bg-[#69dcb4] bg-opacity-15')
+                                                : (localrole === 'dentist' && !notification.DentistRead
+                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
+                                                    : 'bg-[#69dcb4] bg-opacity-15')
+                                            }
+`}
                                         onClick={() => handleNotificationClick(notification)}
                                     >
                                         <div className="flex items-center space-x-4">
