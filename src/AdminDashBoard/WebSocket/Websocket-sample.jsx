@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-const baseurl = 'http://localhost:3000';
+const baseurl = import.meta.env.VITE_BASEURL;
 const socket = io(baseurl); // 1st add
 
 const AnnouncementComponent = () => {

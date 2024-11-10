@@ -133,7 +133,7 @@ function AdminRoutes() {
         ''
       )}
       <div className="sticky top-0  z-10 bg-white">
-      {/* <div className=" fixed right-0 top-0 z-10 bg-white pr-10"> */}
+        {/* <div className=" fixed right-0 top-0 z-10 bg-white pr-10"> */}
 
         <Notification_bell />
       </div>
