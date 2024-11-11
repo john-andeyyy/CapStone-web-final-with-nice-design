@@ -19,7 +19,17 @@ const PatientProceduresDone = () => {
                 const response = await axios.get(`${import.meta.env.VITE_BASEURL}/Patient/auth/getAllPatients`, {
                     withCredentials: true,
                 });
-                setPatients(response.data);
+
+
+                const sortedPatients = response.data.sort((a, b) => {
+                    if (a.LastName < b.LastName) return -1; // If a.LastName is alphabetically before b.LastName
+                    if (a.LastName > b.LastName) return 1;  // If a.LastName is alphabetically after b.LastName
+                    return 0;  // If they are the same
+                });
+
+
+                setPatients(sortedPatients);
+
             } catch (error) {
                 console.error('Error fetching patients:', error);
                 setError('Failed to fetch patients.');
@@ -91,71 +101,60 @@ const PatientProceduresDone = () => {
     };
 
     const generatePDF = () => {
-        createPDF();
-
         Swal.fire({
             title: "PDF Generated!",
-            text: "Your PDF has been successfully generated.",
+            text: "Your report has been successfully generated.",
             icon: "success"
         });
+        createPDF();
     };
 
 
-    const createPDF = () => {
-        console.log("Generating PDF..."); // Debugging log
-        const doc = new jsPDF();
-        const themeColor = "#3EB489"; // Consistent theme color
+    const createPDF = async () => {
+        console.log("Generating PDF...");
+        console.log('Selected Patient ID:', selectedPatient.id);  // assuming selectedPatient.id contains the patient ID you want to use
 
-        // Title section
-        doc.setFontSize(20);
-        doc.setTextColor(0, 0, 0); // Black text for title
-        doc.text('Patient Procedures Report', 14, 20); // Title
+        try {
+            // Prepare the data to be sent in the POST request
+            const data = {
+                PatientId: selectedPatient.id,  // Use the selected patient ID here
+            };
 
-        if (selectedPatient) {
-            doc.setFontSize(16);
-            doc.text(`Procedures for ${selectedPatient.FirstName} ${selectedPatient.LastName}`, 14, 30);
-
-            const rows = Object.entries(proceduresCount).map(([procedureName, count]) => (
-                [procedureName, count]
-            ));
-
-            // Check if rows have data
-            console.log("Rows for PDF:", rows); // Debugging log
-            if (rows.length === 0) {
-                doc.text('No procedures found for this patient.', 14, 40);
-            } else {
-                // Add the table to the PDF
-                autoTable(doc, {
-                    head: [['Procedure Name', 'Count']],
-                    body: rows,
-                    startY: 40,
-                    theme: 'grid',
-                    headStyles: {
-                        fillColor: [22, 160, 133], // Header background color
-                        textColor: [255, 255, 255], // Header text color
-                        fontStyle: 'bold',
-                        fontSize: 12,
+            // Send the POST request to the backend to generate the PDF
+            const response = await axios.post(
+                `${import.meta.env.VITE_BASEURL}/generate-report-Patient_Procedures_done`,
+                data,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',  // Make sure you're sending JSON
                     },
-                    bodyStyles: {
-                        fontSize: 10,
-                    },
-                    alternateRowStyles: {
-                        fillColor: [240, 240, 240], // Alternate row color
-                    },
-                    tableLineColor: [0, 0, 0],
-                    tableLineWidth: 0.1,
-                    margin: { top: 10 },
-                });
+                    responseType: 'blob',  // Handle the response as a PDF (binary data)
+                    withCredentials: true  // Include credentials (cookies) with the request
+                }
+            );
 
-                // Save the PDF with the patient's name
-                doc.save(`${selectedPatient.FirstName}_${selectedPatient.LastName}_Procedures_Report.pdf`);
-            }
-        } else {
-            doc.setFontSize(14);
-            doc.text('No patient selected', 14, 40);
-            doc.save('Procedures_Report_No_Patient_Selected.pdf'); // Save a report indicating no patient was selected
+            console.log("PDF generated successfully.");
+
+            // Create a download link for the PDF
+            const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(pdfBlob);
+            link.download = 'Patient_Procedures_Report.pdf';  // Name of the PDF file to download
+            link.click();  // Trigger the download
+
+
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+
+            // Handle any errors that occur during the request
+            Swal.fire({
+                title: "Error",
+                text: "An error occurred while generating the PDF. Please try again.",
+                icon: "error"
+            });
         }
     };
+
 
     if (error) {
         return <div className="text-red-600">{error}</div>;
@@ -164,22 +163,24 @@ const PatientProceduresDone = () => {
     return (
 
         <div className="rounded-md"
-        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-        <div className="bg-gray-100 rounded-md">
+            style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+            <div className="bg-gray-100 rounded-md">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 ">
-                        <div className='flex items-center justify-start sm:items-start'>
-                            <ReportMenu />
-                        </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 ">
+                    <div className='flex items-center justify-start sm:items-start'>
+                        <ReportMenu />
+                    </div>
                     <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
                         <button
                             onClick={generatePDF}
-                            className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200 w-full sm:w-auto"
+                            className={`px-4 py-2 text-white rounded transition duration-200 w-full sm:w-auto ${!selectedPatient ? 'bg-red-500 hover:bg-red-600' : 'bg-[#3EB489] hover:bg-[#62A78E]'
+                                }`}
                             disabled={!selectedPatient} // Disable if no patient is selected
                         >
                             Generate PDF
                         </button>
                     </div>
+
                 </div>
 
 
@@ -219,20 +220,21 @@ const PatientProceduresDone = () => {
                             <label className="block mb-2 mt-2">
                                 Select Patient:
                                 <select
-                                    className="ml-2 border rounded px-2 py-1 mb-4"
+                                    className="ml-2 border rounded px-2 py-1 mb-4 max-h-40 overflow-y-auto"
                                     value={selectedPatient ? selectedPatient.id : ''}
                                     onChange={handlePatientChange}
                                 >
                                     <option value="">--Select a patient--</option>
                                     {patients.map(patient => (
                                         <option key={patient.id} value={patient.id}>
-                                            {`${patient.FirstName} ${patient.LastName}`}
+                                            {`${patient.LastName} ${patient.FirstName}`}
                                         </option>
                                     ))}
                                 </select>
                             </label>
                         </div>
                     </div>
+
 
                     {selectedPatient && (
                         <div>

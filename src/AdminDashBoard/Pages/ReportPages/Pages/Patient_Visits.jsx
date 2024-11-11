@@ -3,6 +3,7 @@ import axios from 'axios';
 import BarChart from '../../../Charts/BarChart';
 import ReportMenu from '../components/ReportMenu';
 import { PDFPatientVisit } from '../../../Component_Functions/PDFReport';
+import Swal from 'sweetalert2';
 
 export default function Patient_Visits() {
     const BASEURL = import.meta.env.VITE_BASEURL;
@@ -17,9 +18,9 @@ export default function Patient_Visits() {
         month: 0,
         year: 0,
     });
-    const [period, setPeriod] = useState('month');
+    const [period, setPeriod] = useState('today');
     const [filteredReportData, setFilteredReportData] = useState([]);
-    const [reportTitle, setReportTitle] = useState('Patient Visits Report'); // New state for the title
+    const [reportTitle, setReportTitle] = useState('Patient Visits Report');
 
     useEffect(() => {
         const fetchAppointments = async () => {
@@ -41,12 +42,11 @@ export default function Patient_Visits() {
         if (appointments.length > 0) {
             const uniqueYears = [...new Set(appointments.map(app => new Date(app.date).getFullYear()))];
             setYears(uniqueYears);
-            filterReportData(appointments); // Filter data based on the selected period
+            filterReportData(appointments);
         }
     }, [appointments, selectedYear, selectedMonth, period]);
 
     useEffect(() => {
-        // Calculate visit counts based on filtered data whenever it changes
         calculateVisitCounts(filteredReportData);
     }, [filteredReportData]);
 
@@ -79,7 +79,6 @@ export default function Patient_Visits() {
 
         setVisitCounts({ today: todayCount, week: weekCount, month: monthCount, year: yearCount });
     };
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [dateselected, setdateselected] = useState(null);
     const filterReportData = (appointments) => {
         const today = new Date();
@@ -104,8 +103,7 @@ export default function Patient_Visits() {
             }
 
             if (period === 'year') {
-                // Set dateselected to just the year.
-                setdateselected(selectedYear); // Store just the selected year.
+                setdateselected(selectedYear);
                 return appointmentDate >= startOfYear && appointmentDate <= new Date(selectedYear + 1, 0, 0);
             }
 
@@ -116,7 +114,6 @@ export default function Patient_Visits() {
             return false;
         });
 
-        console.log('Filtered Report Data:', filteredData); // Log filtered data
         setFilteredReportData(filteredData);
     };
 
@@ -125,26 +122,23 @@ export default function Patient_Visits() {
         const monthDays = new Date(selectedYear, selectedMonth + 1, 0).getDate();
         const startOfMonth = new Date(selectedYear, selectedMonth, 1);
         const endOfMonth = new Date(selectedYear, selectedMonth, monthDays);
-        const weekCounts = Math.ceil(monthDays / 7); // Calculate total weeks in the month
+        const weekCounts = Math.ceil(monthDays / 7);
 
         for (let week = 0; week < weekCounts; week++) {
             const weekStart = new Date(startOfMonth);
-            weekStart.setDate(weekStart.getDate() + week * 7); // Start of the week
+            weekStart.setDate(weekStart.getDate() + week * 7);
 
             const weekEnd = new Date(startOfMonth);
-            weekEnd.setDate(weekEnd.getDate() + (week + 1) * 7 - 1); // End of the week
+            weekEnd.setDate(weekEnd.getDate() + (week + 1) * 7 - 1);
 
-            // Ensure we don't exceed the month
             if (weekEnd > endOfMonth) {
-                weekEnd.setDate(monthDays); // Adjust to the last day of the month
+                weekEnd.setDate(monthDays);
             }
 
-            // Count appointments in the current week
             const weekVisits = appointments.filter(appointment => {
                 const appointmentDate = new Date(appointment.date);
                 return appointmentDate >= weekStart && appointmentDate <= weekEnd;
             }).length;
-            console.log('visitsByWeek', visitsByWeek)
             visitsByWeek.push(weekVisits);
         }
 
@@ -233,29 +227,80 @@ export default function Patient_Visits() {
         setReportTitle(titles[period]);
     }, [period, selectedYear, selectedMonth]);
 
+
+    const generatepdf = async () => {
+        Swal.fire({
+            title: "PDF Generated!",
+            text: "Your PDF has been successfully generated.",
+            icon: "success"
+        });
+        let filterData;
+
+        // Create filterData based on selected period
+        if (period === 'today') {
+            filterData = {
+                day: new Date().getDate(),
+                month: new Date().getMonth() + 1, // Convert to 1-based month
+                year: new Date().getFullYear()
+            };
+        } else if (period === 'month') {
+            filterData = {
+                month: selectedMonth + 1, // Convert to 1-based month
+                year: selectedYear
+            };
+        } else if (period === 'year') {
+            filterData = {
+                year: selectedYear
+            };
+        }
+
+        console.log("Report Filter:", filterData);
+
+        try {
+            // Send the filter data directly as JSON in the body of the request
+            const response = await axios.post(`${BASEURL}/generate-report-Patient_Visits`, filterData, {
+                headers: {
+                    'Content-Type': 'application/json',  // Set content type to JSON
+                },
+                responseType: 'blob',  // To handle the response as a PDF
+                withCredentials: true  // Ensure credentials (cookies) are sent with the request
+            });
+
+            // Create a download link for the PDF
+            const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(pdfBlob);
+            link.download = 'Patient_Visits_Report.pdf';
+            link.click();  // Trigger the download
+        } catch (error) {
+            console.error("Error generating report:", error);
+        }
+    };
+
+
+
+
     return (
 
         <div className="rounded-md"
             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
             <div className="bg-gray-100 rounded-md">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
-                <div className="flex items-center justify-start sm:items-start">
-                    <ReportMenu />
-                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+                    <div className="flex items-center justify-start sm:items-start">
+                        <ReportMenu />
+                    </div>
                     <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-0 mt-5 mr-5">
-                        <PDFPatientVisit
-                            appointments={reportData}
-                            title={
-                                dateselected
-                                    ? `Patient Visits in ${dateselected}` // Directly use the year value.
-                                    : `Patient Visits in ${selectedYear}` // Default to selected year if dateselected is null.
-                            }
-                        />
+                        <button
+                        onClick={generatepdf}
+                            className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200"
+                        >
+                            Generate PDF
+                        </button>
                     </div>
                 </div>
                 <div className=" rounded-lg shadow-md p-2">
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
-                    <div className='flex flex-col'>
+                        <div className='flex flex-col'>
                             <h2 className="text-2xl font-bold text-[#3EB489] ml-2">Patient Visits Report</h2>
                         </div>
 
@@ -269,31 +314,32 @@ export default function Patient_Visits() {
                                     onChange={(e) => setPeriod(e.target.value)}
                                     className="mt-1 block p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                                 >
-                                    <option value="month" >Select an option</option>
-                                    <option value="today">Today Visits</option>
-                                    <option value="week">This Week Visits</option>
-                                    <option value="year">This Year Visits</option>
+                                    <option value="today">Today </option>
+                                    <option value="month" >Month</option>
+                                    {/* <option value="week">This Week Visits</option> */}
+                                    <option value="year">Year Visits</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
 
-
                     <div className="flex justify-end space-x-5"> {/* Align everything to the right */}
 
-                        <input
-                            type="month"
-                            id="month"
-                            value={`${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}`} // Set the value to the selected year and month
-                            onChange={(e) => {
-                                const [year, month] = e.target.value.split('-');
-                                setSelectedYear(Number(year));
-                                setSelectedMonth(Number(month) - 1); // Convert month back to 0-indexed
-                            }}
-                            className="border rounded h-10 w-40 shadow-sm mt-8 p-2 focus:ring focus:ring-opacity-50" // Set fixed height and padding
-                        />
 
+                        {period === 'month' && (
+                            <input
+                                type="month"
+                                id="month"
+                                value={`${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}`}
+                                onChange={(e) => {
+                                    const [year, month] = e.target.value.split('-');
+                                    setSelectedYear(Number(year));
+                                    setSelectedMonth(Number(month) - 1); // Convert month back to 0-indexed
+                                }}
+                                className="border rounded h-10 w-40 shadow-sm mt-8 p-2 focus:ring focus:ring-opacity-50"
+                            />
+                        )}
                         {period === 'year' && (
                             <div className="py-3 flex items-center"> {/* Align items vertically */}
                                 <div className="w-40"> {/* Set width to match month input */}
@@ -311,36 +357,6 @@ export default function Patient_Visits() {
                                 </div>
                             </div>
                         )}
-
-
-
-
-
-
-
-
-
-                        {/* <button onClick={() => setPeriod('today')} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">
-                    Today Visits
-                </button>
-                <button onClick={() => setPeriod('week')} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200">
-                    This Week Visits
-                </button> */}
-                        {/* <button onClick={() => setPeriod('month')} className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition duration-200">
-                    This Month Visits
-                </button> */}
-
-
-                        {/* 
-                <button onClick={() => setPeriod('year')} className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition duration-200">
-                    This Year Visits
-                </button> */}
-
-
-
-
-
-
 
                     </div>
 
@@ -390,10 +406,10 @@ export default function Patient_Visits() {
                             <div className=''>
                                 {period === 'month' && (
                                     <>
-                                        {/* <h3 className="text-xl font-bold mb-4 text-green-500">Visits per Week in {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })}</h3>
+                                        <h3 className="text-xl font-bold mb-4 text-green-500">Visits per Week in {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })}</h3>
                                     <div className="mb-6">
                                         <BarChart chartData={getMonthChartData()} />
-                                    </div> */}
+                                    </div>
                                     </>
                                 )}
                                 {period === 'year' && (

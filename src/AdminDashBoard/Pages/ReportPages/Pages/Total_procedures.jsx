@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
 import PieChart from '../../../Charts/PieChart';
 import ReportMenu from '../components/ReportMenu';
 import Swal from 'sweetalert2';
@@ -120,73 +118,53 @@ export default function TotalProcedures() {
     };
 
     const createPDF = () => {
-        const doc = new jsPDF();
-        const themeColor = "#3EB489"; // Same theme color as generatePDF
-        const rowHeight = 10;
-        let y = 30;
-
-        // Title Section
-        doc.setFontSize(18);
-        doc.setTextColor(0, 0, 0); // Black text for title
-        doc.text('Total Procedures Report', 14, 16);
-
-        const formattedMonth = currentMonth.format('MMMM YYYY');
-        doc.setFontSize(12);
-        doc.setTextColor(100);
-        doc.text(`Month: ${formattedMonth}`, 14, 24);
-
-        // Line under the title
-        doc.setLineWidth(0.5);
-        doc.line(14, 26, 196, 26);
-
-        // Prepare data for the table
-        const data = [];
-        const selectedKey = isYearView ? currentYear : currentMonth.format('YYYY-MM');
-        if (procedureReport[selectedKey]) {
-            for (const procedureName in procedureReport[selectedKey]) {
-                data.push([procedureName, procedureReport[selectedKey][procedureName]]);
-            }
-        }
-
-        // Table Header
-        doc.setFillColor(themeColor); // Set fill color for header
-        doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
-        doc.setFontSize(10);
-        doc.setTextColor(255, 255, 255); // White text for header
-        doc.text("Procedure Name", 12, y + 7);
-        doc.text("Count", 132, y + 7); // Adjusted to maintain consistency
-
-        // Reset text color for rows
-        doc.setTextColor(0, 0, 0); // Black text
-        y += rowHeight; // Move to the first row
-
-        // Table rows with Zebra Striping
-        data.forEach((row, index) => {
-            // Alternate row color for zebra striping
-            if (index % 2 === 0) {
-                doc.setFillColor(240, 240, 240); // Light gray for even rows
-                doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
-            }
-
-            // Add data to the PDF
-            doc.text(row[0], 12, y + 7); // Procedure Name
-            doc.text(row[1].toString(), 132, y + 7); // Count
-
-            y += rowHeight; // Move to the next row
+        Swal.fire({
+            title: "PDF Generated!",
+            text: "Your PDF has been successfully generated.",
+            icon: "success"
         });
+        const year = selectedYear || currentYear;  
+        const month = selectedMonth || currentMonth.format('MM');  
 
-        // Add page numbers
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-            doc.setPage(i);
-            doc.setFontSize(10);
-            doc.setTextColor(150);
-            doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.getWidth() - 20, doc.internal.pageSize.getHeight() - 10);
+        console.log('year', year);
+        console.log('month', month);
+
+        const data = { year: year };
+
+        if (!isYearView && selectedMonth) {
+            data.month = parseInt(month); 
         }
 
-        // Save the PDF
-        doc.save(`Total_Procedures_${selectedKey}.pdf`);
+        axios
+            .post(`${BASEURL}/generate-report-proceduredone`, data, { 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                responseType: 'blob',  
+                withCredentials: true,
+            })
+            .then((response) => {
+                
+                const fileURL = URL.createObjectURL(response.data);
+
+                // Create a link element to trigger the download
+                const link = document.createElement('a');
+                link.href = fileURL;
+                link.download = `procedures_report_${year}_${month}.pdf`;
+                link.click(); 
+            })
+            .catch((error) => {
+                console.error('Error generating PDF:', error);
+                Swal.fire({
+                    title: "Error",
+                    text: "There was an error generating the PDF.",
+                    icon: "error",
+                });
+            });
     };
+
+
+
 
     const formattedMonth = currentMonth.format('MMMM YYYY');
     const currentReport = isYearView ? procedureReport[currentYear] || {} : procedureReport[currentMonth.format('YYYY-MM')] || {};
@@ -235,87 +213,87 @@ export default function TotalProcedures() {
         <div className="rounded-md"
             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
             <div className="bg-gray-100 rounded-md">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
-                <div className="flex items-center justify-start sm:items-start">
-                    <ReportMenu />
-                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+                    <div className="flex items-center justify-start sm:items-start">
+                        <ReportMenu />
+                    </div>
 
-                <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
-                    <button
-                        onClick={saveAsPDF}
-                        className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200 w-full sm:w-auto"
-                    >
-                        Generate PDF
-                    </button>
+                    <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
+                        <button
+                            onClick={saveAsPDF}
+                            className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200 w-full sm:w-auto"
+                        >
+                            Generate PDF
+                        </button>
+                    </div>
                 </div>
-            </div>
 
 
                 <div className=" rounded-lg shadow-md p-2">
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
-                    <div className='flex flex-col'>
-                        <h1 className="text-xl sm:text-2xl text-[#3EB489] font-bold p-2 text-center sm:text-left">
-                            Total Procedures Done {isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}
-                        </h1>
-                    </div>
+                        <div className='flex flex-col'>
+                            <h1 className="text-xl sm:text-2xl text-[#3EB489] font-bold p-2 text-center sm:text-left">
+                                Total Procedures Done {isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}
+                            </h1>
+                        </div>
 
-                    <div className="flex justify-center sm:justify-end items-center sm:items-start p-2">
-                        <div className="flex items-center">
-                            <label htmlFor="period-selector" className="block text-sm font-medium text-gray-700 mr-2">
-                                Select Frequency:
-                            </label>
-                            <select
-                                id="navigation-dropdown"
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    setSelectedFrequency(value);
-                                    if (value === 'year') {
-                                        setIsYearView(true);
-                                    } else if (value === 'month') {
-                                        setIsYearView(false);
-                                        setCurrentMonth(dayjs().month(selectedMonth - 1).year(currentYear));
-                                    } else if (value === 'prevMonth') {
-                                        handlePrevMonth();
-                                    } else if (value === 'nextMonth') {
-                                        handleNextMonth();
-                                    } else if (value === 'today' && (!isToday || isYearView)) {
-                                        handleToday();
-                                    }
-                                }}
-                                className="block p-2 border border-gray-400 rounded-md focus:outline-none transition max-w-full sm:max-w-xs"
-                            >
-                                <option value="">Select an option</option>
-                                <option value="year">View Year</option>
-                                <option value="month">Month</option>
-                            </select>
-                            {selectedFrequency === 'month' && (
+                        <div className="flex justify-center sm:justify-end items-center sm:items-start p-2">
+                            <div className="flex items-center">
+                                <label htmlFor="period-selector" className="block text-sm font-medium text-gray-700 mr-2">
+                                    Select Frequency:
+                                </label>
                                 <select
-                                    value={selectedMonth}
+                                    id="navigation-dropdown"
                                     onChange={(e) => {
-                                        const month = e.target.value;
-                                        setSelectedMonth(month);
-                                        setCurrentMonth(dayjs().month(month - 1).year(currentYear));
-                                        setIsYearView(false);
+                                        const value = e.target.value;
+                                        setSelectedFrequency(value);
+                                        if (value === 'year') {
+                                            setIsYearView(true);
+                                        } else if (value === 'month') {
+                                            setIsYearView(false);
+                                            setCurrentMonth(dayjs().month(selectedMonth - 1).year(currentYear));
+                                        } else if (value === 'prevMonth') {
+                                            handlePrevMonth();
+                                        } else if (value === 'nextMonth') {
+                                            handleNextMonth();
+                                        } else if (value === 'today' && (!isToday || isYearView)) {
+                                            handleToday();
+                                        }
                                     }}
-                                    className="mt-1 p-2 block border border-gray-300 rounded-md w-full sm:w-auto"
+                                    className="block p-2 border border-gray-400 rounded-md focus:outline-none transition max-w-full sm:max-w-xs"
                                 >
-                                    <option value="01">January</option>
-                                    <option value="02">February</option>
-                                    <option value="03">March</option>
-                                    <option value="04">April</option>
-                                    <option value="05">May</option>
-                                    <option value="06">June</option>
-                                    <option value="07">July</option>
-                                    <option value="08">August</option>
-                                    <option value="09">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
+                                    <option value="">Select an option</option>
+                                    <option value="year">View Year</option>
+                                    <option value="month">Month</option>
                                 </select>
-                            )}
+                                {selectedFrequency === 'month' && (
+                                    <select
+                                        value={selectedMonth}
+                                        onChange={(e) => {
+                                            const month = e.target.value;
+                                            setSelectedMonth(month);
+                                            setCurrentMonth(dayjs().month(month - 1).year(currentYear));
+                                            setIsYearView(false);
+                                        }}
+                                        className="mt-1 p-2 block border border-gray-300 rounded-md w-full sm:w-auto"
+                                    >
+                                        <option value="01">January</option>
+                                        <option value="02">February</option>
+                                        <option value="03">March</option>
+                                        <option value="04">April</option>
+                                        <option value="05">May</option>
+                                        <option value="06">June</option>
+                                        <option value="07">July</option>
+                                        <option value="08">August</option>
+                                        <option value="09">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                )}
+                            </div>
                         </div>
                     </div>
-</div>
 
 
 
