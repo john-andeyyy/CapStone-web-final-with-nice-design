@@ -141,7 +141,7 @@ const NotificationBell = () => {
     }, []);
 
     return (
-        <div className="relative flex justify-end items-center bg-[#EEFBF5]">
+        <div className="relative flex justify-end items-center ">
             <Settings />
             <button className="btn btn-ghost btn-circle relative" onClick={toggleDropdown}>
                 <div className="indicator" title='notification'>
@@ -181,19 +181,20 @@ const NotificationBell = () => {
                             <ul className="p-2 pr-0 pt-0">
                                 {notifications.map((notification) => (
                                     <li
-                                        key={notification._id}
-                                        className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary 
-                                            ${localrole === 'admin'
-                                                ? (!notification.adminisRead
-                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
-                                                    : 'bg-[#69dcb4] bg-opacity-15')
-                                                : (localrole === 'dentist' && !notification.DentistRead
-                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
-                                                    : 'bg-[#69dcb4] bg-opacity-15')
-                                            }
+                                    key={notification._id}
+                                    className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary 
+                                        ${localrole === 'admin'
+                                            ? (!notification.adminisRead
+                                                ? 'bg-[#69dcb4] font-medium bg-opacity-50'
+                                                : 'bg-[#69dcb4] bg-opacity-15')
+                                            : (localrole === 'dentist' && !notification.DentistRead
+                                                ? 'bg-[#69dcb4] font-medium bg-opacity-50'
+                                                : 'bg-[#69dcb4] bg-opacity-15')
+                                        }
 `}
-                                        onClick={() => handleNotificationClick(notification)}
-                                    >
+                                    onClick={() => handleNotificationClick(notification)}
+                                >
+
                                         <div className="flex items-center space-x-4">
                                             <span
                                                 className="material-symbols-outlined text-[#3EB489]"
@@ -205,6 +206,10 @@ const NotificationBell = () => {
                                             </span>
 
                                             <div className="flex flex-col space-y-1">
+                                                {/* <p className="text-sm">
+                                                    {notification.title ? "New appointment set" : (notification.user_Appointment_Title || notification.user_Appointment_message || "")}
+                                                </p> */}
+
                                                 <p className="text-sm">
                                                     {localrole === 'admin'
                                                         ? (notification.user_Appointment_Title || notification.user_Appointment_message || "")

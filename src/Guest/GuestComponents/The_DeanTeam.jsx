@@ -34,14 +34,17 @@ export default function TheDeanTeam() {
             <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div>
             {/* <h1 className="text-3xl font-bold mb-4 text-green-500 p-2">DenTeam:</h1> */}
             <div className='p-8'>
-                <div id="title" className='pb-7 text-center inline-block justify-center items-center '>
-                    <div className=" flex-1 rounded-md ml-10 mr-10 inline-block"
-                        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-                        <h1 className="text-5xl font-bold uppercase bg-accent p-2 rounded">
-                            tHE <span className='text-[#266D53]'>DENTEAM</span>
-                        </h1>
-                    </div>
+            <div id="title" className="flex justify-center pb-7">
+                <div
+                    className="rounded-md shadow-md mx-10"
+                    style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}
+                >
+                    <h1 className="text-5xl font-bold uppercase bg-accent p-2 rounded text-center">
+                    THE <span className="text-[#266D53]">DENTEAM</span>
+                    </h1>
                 </div>
+                </div>  
+
 
                 <div className=" p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {members.length > 0 ? (

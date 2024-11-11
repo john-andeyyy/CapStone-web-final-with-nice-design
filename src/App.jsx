@@ -282,7 +282,7 @@ function App() {
         // for admin only
         <div className="flex flex-col  md:flex-row ">
           <Sidebar />
-          <div className="flex-1 ml-0 md:ml-42 lg:ml-60 bg-[#eefbf5]">
+          <div className="flex-1 ml-0 md:ml-42 lg:ml-60 ">
             <AdminRoutes />
           </div>
         </div>

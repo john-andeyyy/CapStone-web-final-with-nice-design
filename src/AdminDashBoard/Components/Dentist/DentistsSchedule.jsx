@@ -158,102 +158,118 @@ const DentistSchedule = () => {
                 </button>
             )}
 
-            <div className="mb-4 space-y-3 mt-10">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-10">Appointment Schedule</h2>
+            <div className="mb-4 space-y-3 ">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-10 text-[#266D53]">Appointment Schedule</h2>
                 <h3 className="text-lg sm:text-xl font-bold">Dr. {dentistName}</h3>
             </div>
 
-            <div className="mb-4">
-                <label htmlFor="dateFilter" className="block sm:inline mr-2 font-semibold">Filter by:</label>
-                <select
-                    id="dateFilter"
-                    value={filter}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        setFilter(value);
-                        if (value !== 'customDate') {
-                            setShowCustomDatePicker(false);
-                        }
-                        if (value === '') {
-                            setSelectedYear('');
-                        }
-                    }}
-                    className="p-2 border rounded w-full sm:w-auto"
-                >
-                    <option value="Approved">Approved</option>
-                    <option value="completed">Completed</option>
-                    <option value="all">All</option>
-                    <option value="thisDay">This Day</option>
-                    <option value="thisWeek">This Week</option>
-                    <option value="thisMonth">This Month</option>
-                    <option value="year">By Year</option>
-                    <option value="customDate">Custom Date</option>
-                </select>
+            <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-4 mb-4">
+  
+  {/* Search by Patient Name */}
+  <div className="flex-1 mb-4 sm:mb-0">
+    {/* <label htmlFor="searchName" className="block sm:inline mr-2 font-semibold">Search Patient:</label> */}
+    <div className="relative flex-grow">
+    <input
+      type="text"
+      id="searchName"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      placeholder="Search patients..."
+      className="block pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+    />
+    <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
+        <span className="material-symbols-outlined">search</span>
+    </div>
+    </div>
+  </div>
 
-                {filter === 'year' && (
-                    <div className="mt-4 sm:mt-0 sm:ml-4 inline-block">
-                        <label htmlFor="year" className="mr-2 font-semibold">Select Year:</label>
-                        <select
-                            id="year"
-                            value={selectedYear}
-                            onChange={handleYearChange}
-                            className="p-2 border rounded w-full sm:w-auto"
-                        >
-                            <option value="">--Select Year--</option>
-                            {[...Array(101).keys()].map((i) => {
-                                const yearValue = new Date().getFullYear() - i;
-                                return (
-                                    <option key={yearValue} value={yearValue}>
-                                        {yearValue}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                )}
+  {/* Filter Section */}
+  <div className="flex-1 sm:flex sm:justify-end items-center space-y-4 sm:space-y-0">
+    <div className="sm:flex sm:items-center">
+      <label htmlFor="dateFilter" className="block sm:inline mr-2 font-semibold">Filter by:</label>
+      <select
+        id="dateFilter"
+        value={filter}
+        onChange={(e) => {
+          const value = e.target.value;
+          setFilter(value);
+          if (value !== 'customDate') {
+            setShowCustomDatePicker(false);
+          }
+          if (value === '') {
+            setSelectedYear('');
+          }
+        }}
+        className="p-2 border rounded w-full sm:w-auto"
+      >
+        <option value="Approved">Approved</option>
+        <option value="completed">Completed</option>
+        <option value="all">All</option>
+        <option value="thisDay">This Day</option>
+        <option value="thisWeek">This Week</option>
+        <option value="thisMonth">This Month</option>
+        <option value="year">By Year</option>
+        <option value="customDate">Custom Date</option>
+      </select>
+    </div>
 
-                {filter === 'customDate' && (
-                    <div className="mt-4">
-                        <button className="bg-blue-500 text-white p-2 rounded w-full sm:w-auto" onClick={toggleDatePicker}>
-                            Select Date
-                        </button>
+    {/* Year Filter */}
+    {filter === 'year' && (
+      <div className="mt-4 sm:mt-0 sm:ml-4 inline-block">
+        <label htmlFor="year" className="mr-2 font-semibold">Select Year:</label>
+        <select
+          id="year"
+          value={selectedYear}
+          onChange={handleYearChange}
+          className="p-2 border rounded w-full sm:w-auto"
+        >
+          <option value="">--Select Year--</option>
+          {[...Array(101).keys()].map((i) => {
+            const yearValue = new Date().getFullYear() - i;
+            return (
+              <option key={yearValue} value={yearValue}>
+                {yearValue}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+    )}
 
-                        {showCustomDatePicker && (
-                            <div className="mt-4">
-                                <label className="mr-2 font-semibold">Select Date Range:</label>
-                                <DatePicker
-                                    selected={customDateRange.start}
-                                    onChange={handleCustomDateChange}
-                                    startDate={customDateRange.start}
-                                    endDate={customDateRange.end}
-                                    selectsRange
-                                    inline
-                                    className="p-2 border rounded"
-                                    todayButton="Today"
-                                />
-                                {customDateRange.start && customDateRange.end && (
-                                    <div className="mt-2 text-sm text-gray-600">
-                                        Selected Range: {dayjs(customDateRange.start).format('MMM D, YYYY')} - {dayjs(customDateRange.end).format('MMM D, YYYY')}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                )}
+    {/* Custom Date Picker */}
+    {filter === 'customDate' && (
+      <div className="mt-4 relative">
+      <button
+        className="bg-blue-500 text-white p-2 ml-2 rounded w-full sm:w-auto"
+        onClick={toggleDatePicker}
+      >
+        Select Date
+      </button>
+    
+      {showCustomDatePicker && (
+        <div className="absolute z-10 mt-2 right-5 w-full sm:w-auto bg-white p-4 border rounded shadow-lg">
+          <label className="mr-2 font-semibold">Select Date Range:</label>
+          <DatePicker
+            selected={customDateRange.start}
+            onChange={handleCustomDateChange}
+            startDate={customDateRange.start}
+            endDate={customDateRange.end}
+            selectsRange
+            inline
+            className="p-2 border rounded"
+            todayButton="Today"
+          />
+          {customDateRange.start && customDateRange.end && (
+            <div className="mt-2 text-sm text-gray-600">
+              Selected Range: {dayjs(customDateRange.start).format('MMM D, YYYY')} - {dayjs(customDateRange.end).format('MMM D, YYYY')}
             </div>
-
-            {/* Search by Patient Name */}
-            <div className="mb-4">
-                <label htmlFor="searchName" className="block sm:inline mr-2 font-semibold">Search Patient:</label>
-                <input
-                    type="text"
-                    id="searchName"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Enter patient name"
-                    className="p-2 border rounded w-full sm:w-auto"
-                />
-            </div>
+          )}
+        </div>
+      )}
+    </div>
+    )}
+  </div>
+</div>
 
             {filteredAppointments.length ? (
                 <table className="w-full bg-gray-100 border border-black overflow-auto">

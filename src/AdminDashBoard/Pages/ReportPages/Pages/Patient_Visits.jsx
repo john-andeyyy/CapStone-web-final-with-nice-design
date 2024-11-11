@@ -238,12 +238,11 @@ export default function Patient_Visits() {
         <div className="rounded-md"
             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
             <div className="bg-gray-100 rounded-md">
-
-                <div className="grid grid-cols-2 ">
-                    <div className='flex items-center'>
-                        <ReportMenu />
-                    </div>
-                    <div className="flex justify-end items-start p-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+                <div className="flex items-center justify-start sm:items-start">
+                    <ReportMenu />
+                </div>
+                    <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-0 mt-5 mr-5">
                         <PDFPatientVisit
                             appointments={reportData}
                             title={
@@ -254,15 +253,15 @@ export default function Patient_Visits() {
                         />
                     </div>
                 </div>
-                <div className='p-2'>
-                    <div className='grid grid-cols-2'>
-                        <div className='flex flex-col'>
-                            <h2 className="text-2xl font-bold p-2 text-[#3EB489]">Patient Visits Report</h2>
+                <div className=" rounded-lg shadow-md p-2">
+                    <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
+                    <div className='flex flex-col'>
+                            <h2 className="text-2xl font-bold text-[#3EB489] ml-2">Patient Visits Report</h2>
                         </div>
 
                         <div className="flex justify-end items-start ml-auto"> {/* Added ml-auto for more right alignment */}
                             <div className="mb-4 flex items-center"> {/* Optional: Set max-width for the dropdown */}
-                                <label htmlFor="period-selector" className="block text-sm font-medium mr-2 text-gray-700">
+                                <label htmlFor="view-selector" className="block text-sm font-medium text-gray-700 mr-2">
                                     Select Visit Period:
                                 </label>
                                 <select
@@ -367,7 +366,7 @@ export default function Patient_Visits() {
                                                 <th className="py-2 px-4 border border-black text-center text-sm font-medium ">ID</th>
                                                 <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Name</th>
                                                 <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Last Visit</th>
-                                                <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Visit (Month Year)</th>
+                                                {/* <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Visit (Month Year)</th> */}
                                                 <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Total Visits</th>
                                             </tr>
                                         </thead>
@@ -377,7 +376,7 @@ export default function Patient_Visits() {
                                                     <td className="py-2 px-4 border border-black">{visit.id}</td>
                                                     <td className="py-2 px-4 border border-black">{visit.name}</td>
                                                     <td className="py-2 px-4 border border-black">{visit.lastVisit}</td>
-                                                    <td className="py-2 px-4 border border-black">{visit.monthYear}</td>
+                                                    {/* <td className="py-2 px-4 border border-black">{visit.monthYear}</td> */}
                                                     <td className="py-2 px-4 border border-black">{visit.totalVisits}</td>
                                                 </tr>
                                             ))}

@@ -225,7 +225,7 @@ const ProfilePage = () => {
 
     return (
         <div className="min-h-screen flex justify-center items-center p-6">
-            <div className=" p-8 rounded-lg shadow-lg w-full max-w-4xl bg-green-200 bg-opacity-50">
+            <div className=" p-8 rounded-lg shadow-lg w-full max-w-4xl bg-[#D9D9D9] bg-opacity-50 ">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-3xl font-bold text-[#266D53]">Profile Page</h1>
                     {/* <button

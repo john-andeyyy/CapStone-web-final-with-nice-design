@@ -379,6 +379,67 @@ export default function Appointments() {
 
 
 
+            <div className="grid grid-cols-2 gap-4">
+  {/* Appointment List */}
+  
+  {/* Date Picker Section - Aligned to Right */}
+  <div className="col-span-2 sm:col-span-1 sm:col-start-2 mb-8 flex justify-end items-center space-x-4">
+    
+    {/* Month Picker */}
+    {timeView === 'month' && (
+      <div className="flex items-center space-x-2">
+        <p className="mb-0">Select Month:</p>
+        <DatePicker
+          selected={selectedMonth}
+          onChange={(date) => setSelectedMonth(date)}
+          dateFormat="MMMM yyyy"
+          showMonthYearPicker
+          className="p-2 border rounded"
+        />
+      </div>
+    )}
+
+    {/* Day Picker */}
+    {timeView === 'day' && (
+      <div className="flex items-center space-x-2">
+        <p className="mb-0">Select Day:</p>
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date) => setSelectedDate(date)}
+          dateFormat="MMMM d, yyyy"
+          className="p-2 border rounded"
+          filterDate={date => {
+            const day = new Date();
+            return (viewType !== 'current' && viewType !== 'upcoming') || date >= day;
+          }}
+        />
+      </div>
+    )}
+
+    {/* Week Picker */}
+    {timeView === 'week' && (
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() - 7)))}
+          className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
+        >
+          Prev Week
+        </button>
+        <span className="p-2">
+          {new Date(selectedWeek.setDate(selectedWeek.getDate() - selectedWeek.getDay())).toDateString()} - {new Date(selectedWeek.setDate(selectedWeek.getDate() + 6)).toDateString()}
+        </span>
+        <button
+          onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() + 7)))}
+          className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
+        >
+          Next Week
+        </button>
+      </div>
+    )}
+  </div>
+</div>
+
+
             {/* Time View Selectors */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pb-2">
                 {['Pending', 'Approved', 'Completed', 'Missed', 'Rejected', 'Cancelled'].map(status => (
@@ -396,62 +457,6 @@ export default function Appointments() {
                         <p className="text-gray-700 font-medium ml-2">{status} </p>
                     </div>
                 ))}
-            </div>
-
-
-            <div className='grid grid-cols-2 gap-4'>
-                {/* Appointment List */}
-
-
-
-
-                {/* Date Picker Section */}
-                <div className="ml-auto mb-8 flex items-center">
-                    {/* Show label and picker based on timeView */}
-                    {timeView === 'month' && (
-                        <>
-                            <p className="mb-0 mr-2">Select Month:</p>
-                            <DatePicker
-                                selected={selectedMonth}
-                                onChange={(date) => setSelectedMonth(date)}
-                                dateFormat="MMMM yyyy"
-                                showMonthYearPicker
-                                className="p-2 border rounded"
-                            />
-                        </>
-                    )}
-
-                    {timeView === 'day' && (
-                        <>
-                            <p className="mb-0 mr-2">Select Day:</p>
-                            <DatePicker
-                                selected={selectedDate}
-                                onChange={(date) => setSelectedDate(date)}
-                                dateFormat="MMMM d, yyyy"
-                                className="p-2 border rounded"
-                                filterDate={date => {
-                                    const day = new Date();
-                                    return (viewType !== 'current' && viewType !== 'upcoming') || date >= day;
-                                }}
-                            />
-                        </>
-                    )}
-
-                    {/* Week Picker */}
-                    {timeView === 'week' && (
-                        <div className="mb-4">
-                            <button onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() - 7)))} className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white">
-                                Prev Week
-                            </button>
-                            <span className="p-2">
-                                {new Date(selectedWeek.setDate(selectedWeek.getDate() - selectedWeek.getDay())).toDateString()} - {new Date(selectedWeek.setDate(selectedWeek.getDate() + 6)).toDateString()}
-                            </span>
-                            <button onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() + 7)))} className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white">
-                                Next Week
-                            </button>
-                        </div>
-                    )}
-                </div>
             </div>
 
 

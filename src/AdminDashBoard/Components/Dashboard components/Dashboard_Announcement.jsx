@@ -66,18 +66,19 @@ export default function Announcement() {
             <div className='relative mb-4'>
                 <h1 className='flex items-center text-2xl font-semibold text-[#266D53]'>
                     <span className="material-symbols-outlined text-red-500 mr-1">
-                        campaign
+                    campaign
                     </span>
                     Announcements
                 </h1>
 
                 <button
-                    className='absolute top-0 right-0 font-semibold text-md'
+                    className='absolute top-0 right-0 font-semibold text-md sm:text-lg md:text-xl'
                     onClick={() => navigate('/AnnouncementPage')}
                 >
                     <span className="ml-1">See More</span>
                 </button>
             </div>
+
 
             <div className="border-2 bg-accent border-[#3EB489] rounded-lg max-h-72 overflow-y-auto p-5">
                 {loading ? (

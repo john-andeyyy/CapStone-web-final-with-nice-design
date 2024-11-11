@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ThemeController from '../GuestComponents/ThemeController';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useLocation} from 'react-router-dom';
 
 export default function GuestNavBar() {
 
@@ -43,6 +44,14 @@ export default function GuestNavBar() {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const Navbar = ({ isMenuOpen, toggleMenu }) => {
+        const location = useLocation();
+        const navigate = useNavigate();
+    }
+      
+        // Function to determine if the current route matches the button's route
+        const isActive = (path) => location.pathname === path;
+
     return (
         <div className="bg-[#3EB489] sticky top-0 z-50">
             <div className="navbar container mx-auto flex items-center justify-between flex-wrap">
@@ -54,24 +63,37 @@ export default function GuestNavBar() {
 
                 <div className="block lg:hidden">
                     <button onClick={toggleMenu} className="btn btn-ghost text-green-500">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}></path>
                         </svg>
                     </button>
                 </div>
                 <div className={`flex-none ${isMenuOpen ? 'block' : 'hidden'} lg:flex lg:items-center lg:w-auto w-full`}>
                     <ul className="menu menu-horizontal px-1 font-semibold space-x-3 lg:space-x-3 flex flex-col lg:flex-row">
-                        <li className="mb-2 md:mb-0">
-                            <button className="btn btn-ghost font-bold text-white text-xl" onClick={() => {navigate('/');toggleMenu()}}>HOME</button>
-                        </li>
-                        <li className="mb-2 md:mb-0">
-                            <button className="btn btn-ghost font-bold text-white text-xl" onClick={() => { navigate('/AllServices'); toggleMenu() }}>SERVICES</button>
-                        </li>
-                        <li className="mb-2 md:mb-0">
-                            <button className="btn btn-ghost font-bold text-white text-xl"
-                                onClick={() => { navigate('The_DeanTeam'); toggleMenu() }}
-                            >DEANTEAM </button>
-                        </li>
+                    <li className="mb-2 md:mb-0">
+          <button
+            className={`btn btn-ghost font-bold text-xl ${isActive('/') ? 'text-[#00000]' : 'text-white'}`}
+            onClick={() => { navigate('/'); toggleMenu(); }}
+          >
+            HOME
+          </button>
+        </li>
+        <li className="mb-2 md:mb-0">
+          <button
+            className={`btn btn-ghost font-bold text-xl ${isActive('/AllServices') ? 'text-[#00000]' : 'text-white'}`}
+            onClick={() => { navigate('/AllServices'); toggleMenu(); }}
+          >
+            SERVICES
+          </button>
+        </li>
+        <li className="mb-2 md:mb-0">
+          <button
+            className={`btn btn-ghost font-bold text-xl ${isActive('/The_DeanTeam') ? 'text-[#00000]' : 'text-white'}`}
+            onClick={() => { navigate('The_DeanTeam'); toggleMenu(); }}
+          >
+            DENTEAM
+          </button>
+        </li>
                         {/*                         
                         <li className="mb-2 md:mb-0">
                             <button className="btn btn-outline btn-success"

@@ -179,18 +179,18 @@ export default function Report_Monthly_Appointment() {
 
 
     return (
-        <div className="rounded-md"
-            style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-        <div className="bg-gray-100 rounded-md">
-
-        <div className="grid grid-cols-2 ">
-        {/* <div className="flex flex-col "> */}
-        <div className='flex items-center'>
-            <ReportMenu />
+        <div className="rounded-md" 
+        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+    <div className="bg-gray-100 rounded-md">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+            {/* ReportMenu Component */}
+            <div className="flex justify-center sm:justify-start items-start">
+                <ReportMenu />
             </div>
 
-            <div className="flex justify-end items-start p-5">
-            <PDFReport
+            {/* PDFReport Component */}
+                <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-0">
+                    <PDFReport
                         appointments={filteredAppointments}
                         month={
                             isToday
@@ -199,12 +199,16 @@ export default function Report_Monthly_Appointment() {
                         }
                         title="Monthly Appointments Report"
                     />
-            </div>
+                </div>
+        
+    
+
+        
             {/* </div> */}
             </div>
 
             <div className=" rounded-lg shadow-md p-2">
-            <div className='grid grid-cols-2'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
     <div className='flex flex-col'>
         <div>
             <h2 className="text-2xl font-bold text-[#3EB489] ml-2">Appointment Report</h2>

@@ -268,7 +268,11 @@ export default function Add_Procedure() {
         <div className='flex justify-between items-center '>
           <h1 className='text-2xl font-semibold l:text-sm'>Procedure List</h1>
           <div className='relative'>
-            <input
+
+          <button className='btn bg-[#4285F4] hover:bg-[#0C65F8] text-white  md:ml-auto' onClick={openAddModal}>
+            Create Procedure
+          </button>
+            {/* <input
               type='text'
               placeholder='Search procedures...'
               value={searchQuery}
@@ -277,33 +281,49 @@ export default function Add_Procedure() {
             />
             <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
               <span className="material-symbols-outlined">search</span>
-            </div>
+            </div> */}
 
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4 mb-4 py-5 md:flex md:gap-4 md:flex-row md:mb-0 ">
-          <button
-            className={`btn ${availabilityFilter === true ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400 '}`}
-            onClick={() => setAvailabilityFilter(true)}
-          >
-            Show Available
-          </button>
-          <button
-            className={`btn ${availabilityFilter === false ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400 '}`}
-            onClick={() => setAvailabilityFilter(false)}
-          >
-            Show Not Available
-          </button>
-          <button
-            className={`btn ${availabilityFilter === null ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400 '}`}
-            onClick={() => setAvailabilityFilter(null)}
-          >
-            Show All
-          </button>
-          <button className='btn bg-[#4285F4] hover:bg-[#0C65F8] text-white  md:ml-auto' onClick={openAddModal}>
-            Create Procedure
-          </button>
-        </div>
+        <div className="grid grid-cols-1 gap-4 mb-4 py-5 md:flex md:items-center md:justify-between">
+  
+  {/* Search Input */}
+  <div className="relative w-full md:w-auto">
+    <input
+      type="text"
+      placeholder="Search procedures..."
+      value={searchQuery}
+      onChange={handleSearchChange}
+      className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#3EB489]"
+    />
+    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500">
+      <span className="material-symbols-outlined">search</span>
+    </div>
+  </div>
+
+  {/* Filter Buttons */}
+  <div className="flex flex-col md:flex-row items-center md:space-x-4 space-y-2 md:space-y-0 md:ml-auto">
+    <button
+      className={`btn ${availabilityFilter === true ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400'}`}
+      onClick={() => setAvailabilityFilter(true)}
+    >
+      Show Available
+    </button>
+    <button
+      className={`btn ${availabilityFilter === false ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400'}`}
+      onClick={() => setAvailabilityFilter(false)}
+    >
+      Show Not Available
+    </button>
+    <button
+      className={`btn ${availabilityFilter === null ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400'}`}
+      onClick={() => setAvailabilityFilter(null)}
+    >
+      Show All
+    </button>
+  </div>
+</div>
+
 
         {/* table */}
         <ProcedureTable

@@ -244,15 +244,15 @@ const AppointmentsReport = () => {
             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
             <div className="bg-gray-100 rounded-md">
 
-                <div className="">
-                    <div className="grid grid-cols-2 ">
-                        <div className='flex items-center'>
+                {/* <div className=""> */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 ">
+                        <div className='flex items-center justify-start sm:items-start'>
                             <ReportMenu />
                         </div>
 
-                        <div className="flex justify-end items-start p-5">
+                        <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
                             <button
-                                className="mt-2 sm:mt-0 px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200"
+                                className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200 w-full sm:w-auto"
                                 onClick={generatePDF}
                             >
                                 Generate PDF
@@ -260,10 +260,10 @@ const AppointmentsReport = () => {
                         </div>
                     </div>
 
-                    <div className='p-2'>
-                        <div className='grid grid-cols-2'>
+                    <div className='rounded-lg shadow-md p-2'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
                             <div className='flex flex-col'>
-                                <h1 className="text-2xl font-bold text-[#3EB489] p-2">Income Report</h1>
+                                <h1 className="text-xl sm:text-2xl text-[#3EB489] font-bold p-2 text-center sm:text-left">Income Report</h1>
                             </div>
 
                             <div className="flex justify-end items-center"> {/* Center the items vertically */}
@@ -317,29 +317,29 @@ const AppointmentsReport = () => {
                         )}
                     </div> */}
                         {/* )} */}
-                        <div className="relative mb-4"> {/* Ensure this is the parent container with relative positioning */}
-                            {selectedReport === 'daily' && (
-                                <div className="absolute right-0 top-0 mb-4 flex items-center"> {/* Added absolute and right-0 to align in the top-right corner */}
-                                    <label htmlFor="date-picker" className="mr-2">Select Date:</label>
-                                    <input
-                                        type="date"
-                                        id="date-picker"
-                                        className="border rounded px-2 py-1"
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
-                                    />
-                                    {/* Today's Button */}
-                                    {selectedDate !== new Date().toISOString().split('T')[0] && (
-                                        <button
-                                            className="ml-4 bg-gray-500 text-white py-2 px-4 rounded"
-                                            onClick={handleTodayClick}
-                                        >
-                                            Today
-                                        </button>
-                                    )}
-                                </div>
-                            )}
-                        </div>
+                        <div className="relative mb-4">
+    {selectedReport === 'daily' && (
+        <div className="absolute right-0 top-0 mb-4 flex items-center space-x-2 sm:space-x-4">
+            <label htmlFor="date-picker" className="mr-2">Select Date:</label>
+            <input
+                type="date"
+                id="date-picker"
+                className="border rounded px-2 py-1"
+                value={selectedDate}
+                onChange={handleDateChange}
+            />
+            {/* Today's Button */}
+            {selectedDate !== new Date().toISOString().split('T')[0] && (
+                <button
+                    className="ml-4 bg-gray-500 text-white py-2 px-4 rounded"
+                    onClick={handleTodayClick}
+                >
+                    Today
+                </button>
+            )}
+        </div>
+    )}
+</div>
 
 
                         {/* Month Selector for Monthly and Yearly Reports */}
@@ -370,46 +370,47 @@ const AppointmentsReport = () => {
                     </div>
                 )} */}
 
-                        <div className="relative mb-4">
-                            {(selectedReport === 'monthly' || selectedReport === 'yearly') && (
-                                <div className="absolute right-0 top-0 mb-4 flex items-center">
-                                    <div className="flex items-center">
-                                        <label htmlFor="month-select" className="mr-2">Select Month:</label>
-                                        <select
-                                            id="month-select"
-                                            className="border rounded px-2 py-1 mr-2 "
-                                            value={selectedMonth}
-                                            onChange={handleMonthChange}
-                                        >
-                                            {[...Array(12)].map((_, index) => (
-                                                <option key={index} value={index + 1}>
-                                                    {new Date(0, index).toLocaleString('default', { month: 'long' })}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
+<div className="relative mb-4">
+    {(selectedReport === 'monthly' || selectedReport === 'yearly') && (
+        <div className="absolute right-0 top-0 mb-4 flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            {/* Month Selector */}
+            <div className="flex items-center space-x-2">
+                <label htmlFor="month-select" className="mr-2">Select Month:</label>
+                <select
+                    id="month-select"
+                    className="border rounded px-2 py-1 mr-2"
+                    value={selectedMonth}
+                    onChange={handleMonthChange}
+                >
+                    {[...Array(12)].map((_, index) => (
+                        <option key={index} value={index + 1}>
+                            {new Date(0, index).toLocaleString('default', { month: 'long' })}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
-                                    {/* Year Selector for Yearly Reports */}
-                                    {selectedReport === 'yearly' && (
-                                        <div className="flex items-center"> {/* Wrapper for Year Selector */}
-                                            <label htmlFor="year-select" className="mr-2">Select Year:</label>
-                                            <select
-                                                id="year-select"
-                                                className="border rounded px-2 py-1"
-                                                value={selectedYear}
-                                                onChange={handleYearChange}
-                                            >
-                                                {yearsAvailable.map(year => (
-                                                    <option key={year} value={year}>
-                                                        {year}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
+            {/* Year Selector for Yearly Reports */}
+            {selectedReport === 'yearly' && (
+                <div className="flex items-center">
+                    <label htmlFor="year-select" className="mr-2">Select Year:</label>
+                    <select
+                        id="year-select"
+                        className="border rounded px-2 py-1"
+                        value={selectedYear}
+                        onChange={handleYearChange}
+                    >
+                        {yearsAvailable.map(year => (
+                            <option key={year} value={year}>
+                                {year}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
+        </div>
+    )}
+</div>
 
 
                         {/* Display the selected report */}
@@ -499,7 +500,7 @@ const AppointmentsReport = () => {
 
 
                     </div>
-                </div>
+                {/* </div> */}
             </div>
         </div>
     );

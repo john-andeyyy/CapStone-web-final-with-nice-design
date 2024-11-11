@@ -250,7 +250,7 @@ export default function AppointmentDetails() {
             </div>
 
             <div className=''>
-                <div className="shadow-lg rounded-xl p-8 mb-8 space-y-6 bg-[#F5F5F5 ">
+                <div className="shadow-lg rounded-xl p-8 mb-8 space-y-6 bg-[#F5F5F5] ">
                     <div className="grid grid-cols-3 gap-6">
                         <div className="flex flex-col">
                             <p className="font-bold uppercase text-gray-700">Patient Name</p>

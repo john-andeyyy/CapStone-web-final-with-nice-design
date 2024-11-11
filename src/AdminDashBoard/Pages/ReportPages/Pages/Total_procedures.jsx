@@ -235,94 +235,88 @@ export default function TotalProcedures() {
         <div className="rounded-md"
             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
             <div className="bg-gray-100 rounded-md">
-                <div className="grid grid-cols-2 ">
-                    <div className="flex flex-col ">
-                        <div className='flex items-center'>
-                            <ReportMenu />
-                        </div>
-                    </div>
-
-                    <div className="flex justify-end items-start p-5">
-                        <button
-                            onClick={saveAsPDF}
-                            className="mt-2 sm:mt-0 px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200"
-                        >
-                            Generate PDF
-                        </button>
-                    </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+                <div className="flex items-center justify-start sm:items-start">
+                    <ReportMenu />
                 </div>
 
+                <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
+                    <button
+                        onClick={saveAsPDF}
+                        className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200 w-full sm:w-auto"
+                    >
+                        Generate PDF
+                    </button>
+                </div>
+            </div>
+
+
                 <div className=" rounded-lg shadow-md p-2">
-                    <div className='grid grid-cols-2'>
-                        <div className='flex flex-col'>
-                            <h1 className="text-2xl text-[#3EB489] font-bold p-2">
-                                Total Procedures Done {isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}
-                            </h1>
-                        </div>
-
-                        <div className="flex justify-end items-start p-2">
-                            <div className="flex items-center">
-                                <label htmlFor="period-selector" className="block text-sm mr-2 font-medium text-gray-700">
-                                    Select Frequency:
-                                </label>
-                                {/* <span className="mr-2 "> 
-                        Select Frequency:
-                        </span> */}
-                                <select
-                                    id="navigation-dropdown"
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        setSelectedFrequency(value);
-
-                                        if (value === 'year') {
-                                            setIsYearView(true);
-                                        } else if (value === 'month') {
-                                            setIsYearView(false);
-                                            setCurrentMonth(dayjs().month(selectedMonth - 1).year(currentYear));
-                                        } else if (value === 'prevMonth') {
-                                            handlePrevMonth();
-                                        } else if (value === 'nextMonth') {
-                                            handleNextMonth();
-                                        } else if (value === 'today' && (!isToday || isYearView)) {
-                                            handleToday();
-                                        }
-                                    }}
-                                    className="block p-2 border border-gray-400 rounded-md focus:outline-none transition max-w-xs"
-                                >
-                                    <option value="">Select an option</option>
-                                    <option value="year">View Year</option>
-                                    <option value="month">Month</option>
-                                </select>
-                                {selectedFrequency === 'month' && (
-                                    <select
-                                        value={selectedMonth}
-                                        onChange={(e) => {
-                                            const month = e.target.value;
-                                            setSelectedMonth(month);
-                                            setCurrentMonth(dayjs().month(month - 1).year(currentYear));
-                                            setIsYearView(false);
-                                        }}
-                                        className="mt-1 p-2 block border border-gray-300 rounded-md"
-                                    >
-                                        <option value="01">January</option>
-                                        <option value="02">February</option>
-                                        <option value="03">March</option>
-                                        <option value="04">April</option>
-                                        <option value="05">May</option>
-                                        <option value="06">June</option>
-                                        <option value="07">July</option>
-                                        <option value="08">August</option>
-                                        <option value="09">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
-                                    </select>
-                                )}
-                            </div>
-                        </div>
-
-
+                    <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
+                    <div className='flex flex-col'>
+                        <h1 className="text-xl sm:text-2xl text-[#3EB489] font-bold p-2 text-center sm:text-left">
+                            Total Procedures Done {isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}
+                        </h1>
                     </div>
+
+                    <div className="flex justify-center sm:justify-end items-center sm:items-start p-2">
+                        <div className="flex items-center">
+                            <label htmlFor="period-selector" className="block text-sm font-medium text-gray-700 mr-2">
+                                Select Frequency:
+                            </label>
+                            <select
+                                id="navigation-dropdown"
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setSelectedFrequency(value);
+                                    if (value === 'year') {
+                                        setIsYearView(true);
+                                    } else if (value === 'month') {
+                                        setIsYearView(false);
+                                        setCurrentMonth(dayjs().month(selectedMonth - 1).year(currentYear));
+                                    } else if (value === 'prevMonth') {
+                                        handlePrevMonth();
+                                    } else if (value === 'nextMonth') {
+                                        handleNextMonth();
+                                    } else if (value === 'today' && (!isToday || isYearView)) {
+                                        handleToday();
+                                    }
+                                }}
+                                className="block p-2 border border-gray-400 rounded-md focus:outline-none transition max-w-full sm:max-w-xs"
+                            >
+                                <option value="">Select an option</option>
+                                <option value="year">View Year</option>
+                                <option value="month">Month</option>
+                            </select>
+                            {selectedFrequency === 'month' && (
+                                <select
+                                    value={selectedMonth}
+                                    onChange={(e) => {
+                                        const month = e.target.value;
+                                        setSelectedMonth(month);
+                                        setCurrentMonth(dayjs().month(month - 1).year(currentYear));
+                                        setIsYearView(false);
+                                    }}
+                                    className="mt-1 p-2 block border border-gray-300 rounded-md w-full sm:w-auto"
+                                >
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            )}
+                        </div>
+                    </div>
+</div>
+
 
 
                     <div className="w-full pr-4 rounded-lg overflow-y-auto">

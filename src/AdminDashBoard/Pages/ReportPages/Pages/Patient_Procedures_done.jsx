@@ -164,17 +164,17 @@ const PatientProceduresDone = () => {
     return (
 
         <div className="rounded-md"
-            style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-            <div className="bg-gray-100 rounded-md">
+        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+        <div className="bg-gray-100 rounded-md">
 
-                <div className="grid grid-cols-2 ">
-                    <div className="flex flex-col ">
-                        <ReportMenu />
-                    </div>
-                    <div className="flex justify-end items-start p-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 ">
+                        <div className='flex items-center justify-start sm:items-start'>
+                            <ReportMenu />
+                        </div>
+                    <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
                         <button
                             onClick={generatePDF}
-                            className="bg-[#3EB489] hover:bg-[#62A78E] text-white rounded px-4 py-2"
+                            className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200 w-full sm:w-auto"
                             disabled={!selectedPatient} // Disable if no patient is selected
                         >
                             Generate PDF

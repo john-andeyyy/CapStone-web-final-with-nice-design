@@ -235,131 +235,145 @@ const DentistReport = () => {
         doc.save(`Dentist_Report_${filter}_${selectedDentistId}.pdf`);
     };
     return (
-        <div className="p-8 min-h-screen">
-            <div className="bg-white shadow-lg rounded-xl p-8 max-w-4xl mx-auto">
-                <h2 className="text-3xl font-bold mb-6 text-[#3EB489]">Dentist Report</h2>
+        <div className="rounded-md" style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+    <div className="bg-gray-100 rounded-md p-4 sm:p-6">
+        <div className="mb-6 mt-10">
+            <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+                <h2 className="text-3xl font-bold text-[#3EB489] text-center sm:text-left">Dentist Report</h2>
+                <div className="flex items-center gap-4">
+                    <label className="font-medium text-gray-700">Filter by:</label>
+                    <select
+                        value={filter}
+                        onChange={handleFilterChange}
+                        className="block p-2 border border-gray-400 rounded-md focus:outline-none transition w-full sm:w-auto max-w-xs"
+                    >
+                        <option value="today" className="capitalize">Today</option>
+                        <option value="month" className="capitalize">Month</option>
+                        <option value="year" className="capitalize">Year</option>
+                        <option value="summary" className="capitalize">Summary</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-                {/* Dentist Selection Dropdown */}
-                {localRole !== 'dentist' && (
-                    <div className="mb-6">
-                        <label className="block text-gray-700 font-medium mb-2">Select Dentist:</label>
+        {/* Dentist Selection Dropdown */}
+        {localRole !== 'dentist' && (
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
+            <div className="flex flex-col items-start w-full sm:w-auto space-y-2">
+                <span className="text-sm sm:text-base text-black">Select Dentist:</span>
+                <select
+                    value={selectedDentistId}
+                    onChange={handleDentistChange}
+                    className="block w-full sm:w-auto p-2 border-gray-300 rounded-md shadow-sm focus:border-[#3EB489] focus:ring-[#3EB489]"
+                >
+                    {dentists.map(dentist => (
+                        <option key={dentist._id} value={dentist._id}>
+                            {dentist.FirstName} {dentist.MiddleName} {dentist.LastName}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            
+            <div className="flex justify-end w-full sm:w-auto sm:ml-auto">
+                <button
+                    onClick={generatePDF}
+                    className="py-2 px-4 bg-[#3EB489] text-white rounded-md font-semibold w-full sm:w-auto"
+                >
+                    Generate PDF
+                </button>
+            </div>
+        </div>
+        
+        )}
+
+        {/* Filter Options */}
+        <div className="mb-6">
+            {filter === 'month' && (
+                <div className="flex flex-col sm:flex-row justify-end gap-4 mt-4">
+                    <div className="w-full sm:w-auto">
+                        <label className="block text-gray-700 font-medium">Month:</label>
                         <select
-                            value={selectedDentistId}
-                            onChange={handleDentistChange}
-                            className="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#3EB489] focus:ring-[#3EB489]"
+                            value={selectedMonth}
+                            onChange={handleMonthChange}
+                            className="mt-1 block w-full sm:w-auto p-2 border-gray-300 rounded-md shadow-sm focus:border-[#3EB489] focus:ring-[#3EB489]"
                         >
-                            {/* <option value="">-- Select Dentist --</option> */}
-                            {dentists.map(dentist => (
-                                <option key={dentist._id} value={dentist._id}>
-                                    {dentist.FirstName} {dentist.MiddleName} {dentist.LastName}
+                            {availableMonths.map(month => (
+                                <option key={month} value={month}>
+                                    {new Date(0, month - 1).toLocaleString('default', { month: 'long' })}
                                 </option>
                             ))}
                         </select>
                     </div>
-                )}
-
-                {/* Filter Options */}
-                <div className="mb-6">
-                    <h3 className="font-semibold text-xl mb-4 text-gray-700">Filter by:</h3>
-                    <div className="flex gap-6">
-                        {['today', 'month', 'year', 'summary'].map((value) => (
-                            <label key={value} className="inline-flex items-center gap-2 text-[#3EB489] font-medium">
-                                <input
-                                    type="radio"
-                                    value={value}
-                                    checked={filter === value}
-                                    onChange={handleFilterChange}
-                                    className="text-[#3EB489] focus:ring-[#3EB489]"
-                                />
-                                <span className="capitalize">{value}</span>
-                            </label>
-                        ))}
-                    </div>
-                </div>
-
-                {localStorage.getItem('Role') !== 'dentist' && (
-                    <div className="mt-6">
-                        <button
-                            onClick={generatePDF}
-                            className="py-2 px-4 bg-[#3EB489] text-white rounded-md font-semibold"
-                        >
-                            Download Report as PDF
-                        </button>
-                    </div>
-
-                )}
-                {/* Additional filter options for month/year */}
-                {filter === 'month' && (
-                    <div className="flex gap-4 mb-6">
-                        <div>
-                            <label className="block text-gray-700 font-medium">Year:</label>
-                            <select
-                                value={selectedYear}
-                                onChange={handleYearChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#3EB489] focus:ring-[#3EB489]"
-                            >
-                                {availableYears.map(year => (
-                                    <option key={year} value={year}>{year}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-gray-700 font-medium">Month:</label>
-                            <select
-                                value={selectedMonth}
-                                onChange={handleMonthChange}
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#3EB489] focus:ring-[#3EB489]"
-                            >
-                                {availableMonths.map(month => (
-                                    <option key={month} value={month}>
-                                        {new Date(0, month - 1).toLocaleString('default', { month: 'long' })}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                )}
-
-                {filter === 'year' && (
-                    <div className="mb-6">
+                    <div className="w-full sm:w-auto">
                         <label className="block text-gray-700 font-medium">Year:</label>
                         <select
                             value={selectedYear}
                             onChange={handleYearChange}
-                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#3EB489] focus:ring-[#3EB489]"
+                            className="mt-1 block w-full sm:w-auto p-2 border-gray-300 rounded-md shadow-sm focus:border-[#3EB489] focus:ring-[#3EB489]"
                         >
                             {availableYears.map(year => (
                                 <option key={year} value={year}>{year}</option>
                             ))}
                         </select>
                     </div>
-                )}
+                </div>
+            )}
 
-                {/* Procedures and Income Sections */}
-                <div className="mt-6">
-                    <h3 className="text-xl font-semibold text-[#3EB489]">Procedures Done</h3>
-                    {Object.keys(procedureCounts).length > 0 ? (
-                        <ul className="list-disc list-inside mt-3 text-gray-700">
-                            {Object.entries(procedureCounts).map(([name, count]) => (
-                                <li key={name} className="font-medium">{name}: {count}</li>
+            {filter === 'year' && (
+                <div className="flex justify-end mt-4">
+                    <div className="w-full sm:w-auto">
+                        <label className="block text-gray-700 font-medium">Year:</label>
+                        <select
+                            value={selectedYear}
+                            onChange={handleYearChange}
+                            className="mt-1 block w-full sm:w-auto p-2 border-gray-300 rounded-md shadow-sm focus:border-[#3EB489] focus:ring-[#3EB489]"
+                        >
+                            {availableYears.map(year => (
+                                <option key={year} value={year}>{year}</option>
                             ))}
-                        </ul>
-                    ) : (
-                        <p className="text-gray-500 mt-3">No procedures recorded.</p>
-                    )}
+                        </select>
+                    </div>
                 </div>
-
-                <div className="mt-8">
-                    <h3 className="text-xl font-semibold text-[#3EB489]">Income</h3>
-                    <p className="text-gray-700 font-medium mt-3">
-                        {filter === 'today' && `Today: ₱${income.today.toLocaleString()}`}
-                        {filter === 'month' && `This Month: ₱${income.month.toLocaleString()}`}
-                        {filter === 'year' && `This Year: ₱${income.year.toLocaleString()}`}
-                        {filter === 'summary' && `Total Income: ₱${income.summary.toLocaleString()}`}
-                    </p>
-                </div>
-            </div>
+            )}
         </div>
+
+        {/* Procedures and Income Sections */}
+        <div className="mt-10 p-4">
+            <h3 className="text-xl font-semibold text-center sm:text-left">Completed Procedures</h3>
+            {Object.keys(procedureCounts).length > 0 ? (
+                <table className="min-w-full mt-3 table-auto border-collapse">
+                    <thead className="bg-[#3EB489] text-white text-center">
+                        <tr>
+                            <th className="px-4 py-2 font-semibold border border-black">Procedure Name</th>
+                            <th className="px-4 py-2 font-semibold border border-black">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.entries(procedureCounts).map(([name, count]) => (
+                            <tr key={name}>
+                                <td className="px-4 py-2 border border-black">{name}</td>
+                                <td className="px-4 py-2 border border-black">{count}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p className="text-gray-500 mt-3 text-center">No procedures recorded.</p>
+            )}
+        </div>
+
+        <div className="mt-8 p-4">
+            <h3 className="text-xl font-semibold text-center sm:text-left">Income</h3>
+            <p className="text-gray-700 font-medium text-center mt-3">
+                {filter === 'today' && `Today: PHP ${income.today.toLocaleString()}`}
+                {filter === 'month' && `This Month: PHP ${income.month.toLocaleString()}`}
+                {filter === 'year' && `This Year: PHP ${income.year.toLocaleString()}`}
+                {filter === 'summary' && `Total Income: PHP ${income.summary.toLocaleString()}`}
+            </p>
+        </div>
+    </div>
+</div>
+
     );
 };
 

@@ -120,8 +120,8 @@ export default function AdminLogin({ login }) {
             <div className="absolute inset-0 bg-black opacity-50 -z-10"></div>
             <div className="flex items-center justify-center min-h-screen">
                 <div className="w-full max-w-sm bg-white rounded-lg shadow-lg p-6">
-                    <h2 className="text-2xl font-bold text-[#266D53] mb-4 text-center">Admin Login</h2>
-                    <p className="text-center text-gray-500 mb-4">For staff members of Alejendria's Dental Clinic</p>
+                    <h2 className="text-2xl font-bold text-[#266D53] mb-4 text-center">Login</h2>
+                    {/* <p className="text-center text-gray-500 mb-4">For staff members of Alejendria's Dental Clinic</p> */}
                     {error && <div className="text-center font-bold py-2 text-lg text-red-600">{error}</div>}
                     <form className="flex flex-col" onSubmit={handleSubmit}>
                         <label className="form-control w-full mb-4">
