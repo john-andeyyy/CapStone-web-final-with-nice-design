@@ -87,6 +87,7 @@ const NotificationBell = () => {
     };
 
     const handleNotificationClick = async (notification) => {
+
         if (localrole === 'dentist') {
             navigate(`appointment/${selectedNotification.appointmentStatus[0].appointment_id}`)
 
@@ -95,8 +96,12 @@ const NotificationBell = () => {
             if (!notification.adminisRead) {
                 await markAsRead(notification._id);
             }
+            const appointmentId = notification.appointmentStatus[0].appointment_id;
+            // console.log(appointmentId);
+            navigate(`appointment/${appointmentId}`)
+
             setSelectedNotification(notification);
-            setIsModalOpen(true);
+            // setIsModalOpen(true);
         }
     };
 
@@ -181,19 +186,19 @@ const NotificationBell = () => {
                             <ul className="p-2 pr-0 pt-0">
                                 {notifications.map((notification) => (
                                     <li
-                                    key={notification._id}
-                                    className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary 
+                                        key={notification._id}
+                                        className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary 
                                         ${localrole === 'admin'
-                                            ? (!notification.adminisRead
-                                                ? 'bg-[#69dcb4] font-medium bg-opacity-50'
-                                                : 'bg-[#69dcb4] bg-opacity-15')
-                                            : (localrole === 'dentist' && !notification.DentistRead
-                                                ? 'bg-[#69dcb4] font-medium bg-opacity-50'
-                                                : 'bg-[#69dcb4] bg-opacity-15')
-                                        }
+                                                ? (!notification.adminisRead
+                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
+                                                    : 'bg-[#69dcb4] bg-opacity-15')
+                                                : (localrole === 'dentist' && !notification.DentistRead
+                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
+                                                    : 'bg-[#69dcb4] bg-opacity-15')
+                                            }
 `}
-                                    onClick={() => handleNotificationClick(notification)}
-                                >
+                                        onClick={() => handleNotificationClick(notification)}
+                                    >
 
                                         <div className="flex items-center space-x-4">
                                             <span

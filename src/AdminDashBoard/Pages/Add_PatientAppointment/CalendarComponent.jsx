@@ -88,7 +88,7 @@ const CalendarComponent = () => {
     }, [selectedDate]);
 
 
-    const handleSelectDentist = (selecteddentistData) => {
+    const handleSelectDentist = async (selecteddentistData) => {
         if (selecteddentistData) {
             setSelectedDentist(selecteddentistData);
 
@@ -121,6 +121,7 @@ const CalendarComponent = () => {
                 return [...filteredEvents];
             });
         }
+        // await fetchEvents();
 
     };
 
@@ -186,13 +187,18 @@ const CalendarComponent = () => {
 
 
     const fetchAppointments = async () => {
-        // console.log('fetchAppointments start')
         try {
             const response = await axios.get(`${Baseurl}/Appointments/appointments/filter`);
             const appointmentsData = response.data;
 
+            // Filter appointments based on selected dentist, if any
             const filteredAppointments = appointmentsData.filter(
-                (data) => data.status === 'Completed' || data.status === 'Approved' || data.status === 'Pending'
+                (data) =>
+                    data.status === 'Completed' ||
+                    data.status === 'Approved' ||
+                    data.status === 'Pending'
+            ).filter(appointment =>
+                !selectedDentist || appointment.Dentist._id === selectedDentist._id
             );
 
             const mappedEvents = filteredAppointments.map((appointment) => {
@@ -219,16 +225,15 @@ const CalendarComponent = () => {
         }
     };
 
+
     const fetchEvents = async () => {
         const unavailableDates = await fetchUnavailableDates();
         const fetchedAppointments = await fetchAppointments();
         setAppointments(fetchedAppointments);
-        // console.log('setAppointments', fetchedAppointments)
         setEvents([...fetchedAppointments, ...unavailableDates]);
         setLoading(false);
     };
     useEffect(() => {
-
 
         fetchEvents();
     }, []);
@@ -239,11 +244,7 @@ const CalendarComponent = () => {
     const handleSelectSlot = (slotInfo) => {
         handleDateChange(slotInfo.start);
         setSelectedDate(slotInfo.start);
-        // console.log('slotInfo START', slotInfo.start);
-
         const selectedDate = slotInfo.start.toLocaleDateString('en-CA'); // YYYY-MM-DD format in local timezone
-        // console.log('selectedDate', selectedDate);
-
         const isDentistUnavailable = events.some((event) => {
             const eventStartDate = event.start.toLocaleDateString('en-CA');
             const eventEndDate = event.end.toLocaleDateString('en-CA');
@@ -255,7 +256,6 @@ const CalendarComponent = () => {
             );
         });
         setAllButtonsDisabled(isDentistUnavailable);
-        // console.log('isDentistUnavailable', isDentistUnavailable);
     };
 
     const handleSelectEvent = (event) => {
@@ -288,32 +288,18 @@ const CalendarComponent = () => {
 
     const handleSelectTimeSlot = (slot, date) => {
         setSelectedTimeSlot(slot);
-
-        // Calculate the end time of the selected appointment based on procedure duration
         const selectedStartTime = new Date(slot);
         const selectedEndTime = new Date(selectedStartTime);
         selectedEndTime.setMinutes(selectedStartTime.getMinutes() + SelectedProcedureDuration); // Add duration
 
-        let overlaptime = []
-
+        let overlaptime = [];
         // Check for overlapping appointments
         const overlappingAppointment = appointments.some(appointment => {
             const appointmentStartTime = new Date(appointment.start);
             const appointmentEndTime = new Date(appointment.end);
-
             // Check if the selected time slot overlaps with any existing appointment
             const isOverlap = selectedStartTime < appointmentEndTime && selectedEndTime > appointmentStartTime;
-
             // Log the overlapping appointment if there's a match
-            if (isOverlap) {
-                // console.log('Overlapping Appointment:', {
-                //     selectedStartTime,
-                //     selectedEndTime,
-                //     appointmentStartTime,
-                //     appointmentEndTime,
-                //     appointment // Optionally log the full appointment object
-                // });
-            }
             overlaptime.push({
                 selectedStartTime,
                 selectedEndTime,
@@ -321,56 +307,39 @@ const CalendarComponent = () => {
                 appointmentEndTime,
                 appointment
             });
-
-
             return isOverlap;
         });
 
         if (overlappingAppointment) {
-
-            // Alert user that the selected time slot overlaps with an existing appointment
             showToast('error', 'The selected time slot overlaps with an existing appointment.');
             return;
         }
 
-        console.log('overlaptime', overlaptime)
-        // Define state for missing fields
+        console.log('overlaptime', overlaptime);
 
-
-        // Array to store missing fields
+        // Validate missing fields
         const missingFields = [];
-
         if (!selectedPatient) {
             missingFields.push('Patient');
-            setMissingPatient(true); // Set to true if patient is missing
+            setMissingPatient(true);
         }
-
         if (!selectedDentist) {
             missingFields.push('Dentist');
-            setMissingDentist(true); // Set to true if dentist is missing
+            setMissingDentist(true);
         }
-
         if (!procedures.length) {
             missingFields.push('Procedures');
-            setMissingProcedures(true); // Set to true if procedures are missing
+            setMissingProcedures(true);
         }
-
-        // Optionally, you can display a message with missing fields
-        if (missingFields.length > 0) {
-            const errorMessage = `Missing fields: ${missingFields.join(', ')}`;
-            // showToast('error', errorMessage);
-        }
-
 
         if (!selectedDate) {
             missingFields.push('Date');
         }
-
         if (!slot) {
             missingFields.push('Time Slot');
         }
 
-        // If there are missing fields, show a specific alert
+        // If there are missing fields, show the error message
         if (missingFields.length) {
             const errormessage = `Please ensure the following fields are selected: ${missingFields.join(', ')}`;
             Swal.fire({
@@ -378,32 +347,37 @@ const CalendarComponent = () => {
                 text: errormessage,
                 icon: "error"
             });
-
-
-            // showToast('error', errormessage);
         } else {
+            // After validation, calculate the next available time slot based on the selected duration
+            const nextAvailableSlot = new Date(selectedEndTime); // Use the end time of the current appointment as the next available slot
+            // Check if the next slot exceeds the workday (e.g., 5 PM)
+            if (nextAvailableSlot.getHours() >= 17) {
+                showToast('error', 'The next available time slot is beyond working hours (after 5 PM).');
+                return;
+            }
+
+            // Optionally, disable the next available slot in the UI or pass it as a prop to the child component
+            console.log('Next available time slot:', nextAvailableSlot);
+
+            // Open the confirmation modal
             setConfirmModalOpen(true);
         }
     };
+
 
     const showLoading = () => {
         Swal.fire({
             title: 'Loading...',
             text: 'Please wait while we process your request.',
             icon: 'info',
-            allowOutsideClick: false, // Prevent closing the alert
+            allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(); // Show loading spinner
+                Swal.showLoading();
             }
         });
     };
-
-    // Hide loading and show success/error
     const hideLoading = (isSuccess) => {
-        // Close the loading SweetAlert
         Swal.close();
-
-        // Show success or error based on isSuccess
         Swal.fire({
             title: isSuccess ? 'Success!' : 'Error!',
             text: isSuccess ? 'Appointment successfully added.' : 'Something went wrong.',
@@ -411,27 +385,20 @@ const CalendarComponent = () => {
             confirmButtonText: 'OK'
         });
     };
-
     const [isLoading, setIsLoading] = useState(false);
-
     const handleConfirmAppointment = async (notes) => {
         if (!selectedPatient || !selectedDentist || !procedures.length || !selectedDate || !selectedTimeSlot) {
             const errormessage = `Please ensure all fields are selected`;
-            // showToast('error', errormessage);
             return;
         }
-
-        showLoading(); // Show loading SweetAlert
-        setIsLoading(true); // Set loading state to true
-
+        showLoading();
+        setIsLoading(true);
         const localDate = new Date(selectedDate);
         const selectedTime = new Date(selectedTimeSlot);
         localDate.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
         const totalDuration = procedures.reduce((sum, procedure) => sum + parseInt(procedure.Duration), 0);
-
         const endDate = new Date(localDate);
         endDate.setMinutes(endDate.getMinutes() + totalDuration);
-
         const appointmentData = {
             notes: notes,
             procedureIds: procedures.map(p => p._id),
@@ -442,34 +409,24 @@ const CalendarComponent = () => {
             Amount: 100,
             status: "Approved",
         };
-
         try {
             setConfirmModalOpen(false);
             const response = await axios.post(`${Baseurl}/Appointments/add/history/${selectedPatient._id}`, appointmentData, { withCredentials: true });
-
             setisSubmited(true);
-
             setTimeout(() => fetchEvents(), 200);
-
             setIsLoading(false);
             hideLoading(true);
         } catch (error) {
             setIsLoading(false);
             hideLoading(false);
             setConfirmModalOpen(true);
-
             console.error('Error adding appointment to history:', error);
         }
-
         setTimeout(() => setisSubmited(false), 1000);
     };
-
-
-
     return (
         <div className="p-4 mx-auto">
             <h1 className="text-[#3EB489] text-4xl font-bold">Create Appointment</h1>
-
             {loading ? (
                 <div className="flex justify-center items-center h-screen">
                     <span className="loading loading-spinner loading-lg"></span>
@@ -477,9 +434,6 @@ const CalendarComponent = () => {
             ) : (
                 <div className="  items-center justify-center">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-
-
                         <PatientSelector
                             onSelectPatient={handleSelectPatient}
                             isSubmited={isSubmited}
@@ -501,11 +455,7 @@ const CalendarComponent = () => {
                             />
                         </div>
                     </div>
-                    {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4"> {/* Set to 2 columns on large screens */}
-
-                        {/* Calendar section */}
-                        {/* <div className="lg:col-span-2 border border-green-500 rounded-md flex flex-col justify-between min-h-[500px]"> */}
                         <div className="border border-green-500 rounded-md flex flex-col justify-between min-h-[500px]">
                             <div>
                                 <CalendarView
@@ -521,12 +471,8 @@ const CalendarComponent = () => {
                                 />
                                 <Legend />
                             </div>
-
                         </div>
-                        {/* Time slots section */}
-                        {/* <div className="border border-green-500 rounded-md flex justify-center min-h-[500px] w-full"> */}
                         <div className="border border-green-500 rounded-md flex justify-center min-h-[500px] w-full">
-
                             <AvailableTimeSlots
                                 selectedDate={date}
                                 unavailableDates={unavailableDates}
@@ -536,11 +482,9 @@ const CalendarComponent = () => {
                                 allButtonsDisabled={allButtonsDisabled}
                                 isPast={isPast}
                                 SelectedProcedureDuration={SelectedProcedureDuration}
-
                             />
                         </div>
                     </div>
-
                 </div>
             )}
             {modalOpen && selectedEvent && (
@@ -559,7 +503,6 @@ const CalendarComponent = () => {
                 />
             )}
         </div>
-
     );
 };
 

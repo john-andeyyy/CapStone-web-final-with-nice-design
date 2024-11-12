@@ -86,16 +86,16 @@ const AvailableTimeSlots = ({
                             buttonClass = 'bg-gray-500 text-white'; // Gray for "Close"
                         } else if (isSlotInThePast) {
                             label = 'Past';
-                            buttonClass = 'bg-red-200 text-gray-500'; // Red for "Past"
+                            buttonClass = 'bg-red-200 text-gray-500 '; // Red for "Past"
                         } else if (isBooked) {
                             label = 'Reserved';
-                            buttonClass = 'bg-yellow-300 text-gray-800'; // Yellow for "Reserved"
+                            buttonClass = 'bg-yellow-300 text-gray-800 '; // Yellow for "Reserved"
                         } else if (isOverlapping) {
                             label = 'Overlap';
-                            buttonClass = 'bg-red-200 text-gray-500'; // Red for "Overlap"
+                            buttonClass = 'bg-red-200 text-gray-500 '; // Red for "Overlap"
                         } else if (isExceedingRemainingTime) {
                             label = 'Overtime';
-                            buttonClass = 'bg-red-200 text-gray-500'; // Red for "Overtime"
+                            buttonClass = 'bg-red-200 text-gray-500 '; // Red for "Overtime"
                         } else if (isDisabled) {
                             label = 'Not Available';
                             buttonClass = 'bg-red-200 text-gray-500'; // Default red for other disabled
