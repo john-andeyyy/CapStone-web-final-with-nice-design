@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 const Baseurl = import.meta.env.VITE_BASEURL;
 
-export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
+export default function ProceduresSelector({ onselectprocedures, isSubmited, missingProcedures, setMissingProcedures }) {
     const [procedurelist, setProcedureList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -12,6 +12,7 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [totalDuration, setTotalDuration] = useState(0);
     const [selectionError, setSelectionError] = useState('');
+    const [isValid, setisvalid] = useState(false);
 
     // Reset states when submitted
     useEffect(() => {
@@ -73,6 +74,9 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
                 return prevSelected;
             }
         });
+        setisvalid(true)
+
+        setMissingProcedures(false)
     };
 
     // Format duration for display
@@ -94,7 +98,9 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
     return (
         <div className='p-4'>
             <button
-                className="bg-[#3EB489] hover:bg-[#62A78E] text-white px-4 py-2 rounded"
+                className={`text-white px-4 py-2 rounded ${missingProcedures ? 'bg-red-500' : `bg-[#3EB489] hover:bg-[#62A78E] ${!isValid ? 'bg-opacity-70' : ''}`
+                    }`}
+
                 onClick={() => setIsModalOpen(true)}
             >
                 Select Procedures
@@ -171,6 +177,10 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited }) {
 
                         <div className="mt-4 text-sm font-medium text-gray-700">
                             <p>Total Duration: {formatDuration(totalDuration)}</p>
+                            <p className='flex items-center'><span className="material-symbols-outlined text-red-600">
+                                warning
+                            </span>
+                                Note! This is Estimated </p>
                         </div>
 
                         <div className="mt-6 flex justify-end space-x-2">

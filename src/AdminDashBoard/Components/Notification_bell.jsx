@@ -206,11 +206,11 @@ const NotificationBell = () => {
                                             </span>
 
                                             <div className="flex flex-col space-y-1">
-                                                {/* <p className="text-sm">
-                                                    {notification.title ? "New appointment set" : (notification.user_Appointment_Title || notification.user_Appointment_message || "")}
-                                                </p> */}
-
                                                 <p className="text-sm">
+                                                    {notification.title ? "New appointment set" : (notification.user_Appointment_Title || notification.user_Appointment_message || "")}
+                                                </p>
+
+                                                {/* <p className="text-sm">
                                                     {localrole === 'admin'
                                                         ? (notification.user_Appointment_Title || notification.user_Appointment_message || "")
                                                         : (localrole === 'dentist'
@@ -218,7 +218,7 @@ const NotificationBell = () => {
                                                             : "")
                                                     }
 
-                                                </p>
+                                                </p> */}
 
                                                 <p>
                                                     {notification.patientStatus[0]?.patient

@@ -188,26 +188,26 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     {isEditingTooth ? (
                         <form onSubmit={handleUpdateToothDetails} className="flex flex-col">
                             <div className="grid grid-cols-2 gap-2">
-                            <div className="mb-2">
-                                <label className="block">Tooth Name:</label>
-                                <input
-                                    type="text"
-                                    value={toothDetails.name}
-                                    onChange={(e) => setToothDetails({ ...toothDetails, name: e.target.value })}
-                                    className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-2">
-                                <label className="block">Status:</label>
-                                <input
-                                    type="text"
-                                    value={toothDetails.status}
-                                    onChange={(e) => setToothDetails({ ...toothDetails, status: e.target.value })}
-                                    className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    required
-                                />
-                            </div>
+                                <div className="mb-2">
+                                    <label className="block">Tooth Name:</label>
+                                    <input
+                                        type="text"
+                                        value={toothDetails.name}
+                                        onChange={(e) => setToothDetails({ ...toothDetails, name: e.target.value })}
+                                        className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-2">
+                                    <label className="block">Status:</label>
+                                    <input
+                                        type="text"
+                                        value={toothDetails.status}
+                                        onChange={(e) => setToothDetails({ ...toothDetails, status: e.target.value })}
+                                        className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        required
+                                    />
+                                </div>
                             </div>
                             <div className="flex justify-between">
                                 <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Save Changes</button>
@@ -222,22 +222,22 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     )}
                 </div>
 
-            <div className='grid grid-cols-2 mt-5'>
-                
-                <h2 className="text-xl font-bold">Notes:</h2>
-                 {/* Toggle button for adding a new note */}
-                 <button
+                <div className='grid grid-cols-2 mt-5'>
+
+                    <h2 className="text-xl font-bold">Notes:</h2>
+                    {/* Toggle button for adding a new note */}
+                    <button
                         onClick={() => setIsAddingNote(!isAddingNote)}
                         className={`px-4 py-2 rounded text-white transition ${isAddingNote ? 'bg-[#D9D9D9] hover:bg-[#ADAAAA]' : 'bg-[#3EB489] hover:bg-[#62A78E]'}`}
                     >
                         {isAddingNote ? 'Cancel' : 'Add New Note'}
                     </button>
-                
-            </div>
+
+                </div>
 
                 {/* Add New Note Section */}
                 <div className="flex items-center mb-4 w-full mt-5">
-                    {isAddingNote && <h1 className="text-xl font-bold mr-4">Create:</h1> }
+                    {isAddingNote && <h1 className="text-xl font-bold mr-4">Create:</h1>}
                     {/* Form for adding a new note */}
                     {isAddingNote && (
                         <form onSubmit={handleAddNote} className="flex flex-grow mr-4">
@@ -330,10 +330,10 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                             setNoteIndexToUpdate(index); // use index for updating specific note
                                             setUpdatedNote(note.text);   // Set updatedNote to note text only
                                         }} className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
-                                        title='edit'> <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span></button>
+                                            title='edit'> <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span></button>
                                         <button onClick={() => confirmDeleteNote(index)} className="flex flex-col items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm" title='delete'><span className="material-symbols-outlined">
-                                                delete
-                                            </span></button>
+                                            delete
+                                        </span></button>
                                     </div>
                                 </li>
                             ))

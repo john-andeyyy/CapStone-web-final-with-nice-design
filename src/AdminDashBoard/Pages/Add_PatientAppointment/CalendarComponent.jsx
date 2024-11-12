@@ -21,6 +21,8 @@ import './react-big-calendar.css'
 import AvailableTimeSlots from './Components/AvailableTimeSlots';
 import ConfirmAppointmentModal from './Components/ConfirmAppointmentModal ';
 import { showToast } from '../../Components/ToastNotification';
+import { m } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 const Baseurl = import.meta.env.VITE_BASEURL;
 const locales = {
@@ -69,7 +71,21 @@ const CalendarComponent = () => {
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
     const [isSubmited, setisSubmited] = useState(false);
+    const [SelectedProcedureDuration, setSelectedProcedureDuration] = useState();
+    const [isPast, setIsPast] = useState(false);
 
+    const [missingPatient, setMissingPatient] = useState(false);
+    const [missingDentist, setMissingDentist] = useState(false);
+    const [missingProcedures, setMissingProcedures] = useState(false);
+
+
+
+
+    useEffect(() => {
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        setIsPast(selectedDate < currentDate);
+    }, [selectedDate]);
 
 
     const handleSelectDentist = (selecteddentistData) => {
@@ -91,10 +107,8 @@ const CalendarComponent = () => {
                     month: 'long',
                     day: 'numeric'
                 })}`,
-
                 status: 'Dentist Not Available',
             }));
-
 
             setEvents((prevEvents) => {
                 const filteredEvents = prevEvents.filter(event => event.status !== 'Dentist Not Available');
@@ -104,7 +118,6 @@ const CalendarComponent = () => {
         } else {
             setEvents((prevEvents) => {
                 const filteredEvents = prevEvents.filter(event => event.status !== 'Dentist Not Available');
-
                 return [...filteredEvents];
             });
         }
@@ -122,9 +135,15 @@ const CalendarComponent = () => {
 
     };
     const handleSelectProcedures = (Procedures) => {
+        // setSelectedProcedureDuration
+
         if (Procedures) {
+            const totalDuration = procedures.reduce((sum, procedure) => sum + parseInt(procedure.Duration), 0);
+
             // console.log('selectedProcedures', Procedures)
+            setSelectedProcedureDuration(totalDuration)
             setProcedures(Procedures)
+
         } else {
             setselectedPatient('')
         }
@@ -155,6 +174,7 @@ const CalendarComponent = () => {
                     status: 'Clinic Closed',
                 };
             });
+
 
             setUnavailableDates(unavailableEvents);
             return unavailableEvents;
@@ -203,6 +223,7 @@ const CalendarComponent = () => {
         const unavailableDates = await fetchUnavailableDates();
         const fetchedAppointments = await fetchAppointments();
         setAppointments(fetchedAppointments);
+        // console.log('setAppointments', fetchedAppointments)
         setEvents([...fetchedAppointments, ...unavailableDates]);
         setLoading(false);
     };
@@ -218,10 +239,10 @@ const CalendarComponent = () => {
     const handleSelectSlot = (slotInfo) => {
         handleDateChange(slotInfo.start);
         setSelectedDate(slotInfo.start);
-        console.log('slotInfo START', slotInfo.start);
+        // console.log('slotInfo START', slotInfo.start);
 
         const selectedDate = slotInfo.start.toLocaleDateString('en-CA'); // YYYY-MM-DD format in local timezone
-        console.log('selectedDate', selectedDate);
+        // console.log('selectedDate', selectedDate);
 
         const isDentistUnavailable = events.some((event) => {
             const eventStartDate = event.start.toLocaleDateString('en-CA');
@@ -234,7 +255,7 @@ const CalendarComponent = () => {
             );
         });
         setAllButtonsDisabled(isDentistUnavailable);
-        console.log('isDentistUnavailable', isDentistUnavailable);
+        // console.log('isDentistUnavailable', isDentistUnavailable);
     };
 
     const handleSelectEvent = (event) => {
@@ -266,22 +287,80 @@ const CalendarComponent = () => {
     }, []);
 
     const handleSelectTimeSlot = (slot, date) => {
-        setSelectedTimeSlot(slot); // Set selected time slot
+        setSelectedTimeSlot(slot);
+
+        // Calculate the end time of the selected appointment based on procedure duration
+        const selectedStartTime = new Date(slot);
+        const selectedEndTime = new Date(selectedStartTime);
+        selectedEndTime.setMinutes(selectedStartTime.getMinutes() + SelectedProcedureDuration); // Add duration
+
+        let overlaptime = []
+
+        // Check for overlapping appointments
+        const overlappingAppointment = appointments.some(appointment => {
+            const appointmentStartTime = new Date(appointment.start);
+            const appointmentEndTime = new Date(appointment.end);
+
+            // Check if the selected time slot overlaps with any existing appointment
+            const isOverlap = selectedStartTime < appointmentEndTime && selectedEndTime > appointmentStartTime;
+
+            // Log the overlapping appointment if there's a match
+            if (isOverlap) {
+                // console.log('Overlapping Appointment:', {
+                //     selectedStartTime,
+                //     selectedEndTime,
+                //     appointmentStartTime,
+                //     appointmentEndTime,
+                //     appointment // Optionally log the full appointment object
+                // });
+            }
+            overlaptime.push({
+                selectedStartTime,
+                selectedEndTime,
+                appointmentStartTime,
+                appointmentEndTime,
+                appointment
+            });
+
+
+            return isOverlap;
+        });
+
+        if (overlappingAppointment) {
+
+            // Alert user that the selected time slot overlaps with an existing appointment
+            showToast('error', 'The selected time slot overlaps with an existing appointment.');
+            return;
+        }
+
+        console.log('overlaptime', overlaptime)
+        // Define state for missing fields
+
 
         // Array to store missing fields
         const missingFields = [];
 
         if (!selectedPatient) {
             missingFields.push('Patient');
+            setMissingPatient(true); // Set to true if patient is missing
         }
 
         if (!selectedDentist) {
             missingFields.push('Dentist');
+            setMissingDentist(true); // Set to true if dentist is missing
         }
 
         if (!procedures.length) {
             missingFields.push('Procedures');
+            setMissingProcedures(true); // Set to true if procedures are missing
         }
+
+        // Optionally, you can display a message with missing fields
+        if (missingFields.length > 0) {
+            const errorMessage = `Missing fields: ${missingFields.join(', ')}`;
+            // showToast('error', errorMessage);
+        }
+
 
         if (!selectedDate) {
             missingFields.push('Date');
@@ -293,31 +372,63 @@ const CalendarComponent = () => {
 
         // If there are missing fields, show a specific alert
         if (missingFields.length) {
-            const errormessage = `Please ensure the following fields are selected: ${missingFields.join(', ')}`
-            // alert(errormessage);
-            showToast('error', errormessage)
+            const errormessage = `Please ensure the following fields are selected: ${missingFields.join(', ')}`;
+            Swal.fire({
+                title: "Please Complete",
+                text: errormessage,
+                icon: "error"
+            });
+
+
+            // showToast('error', errormessage);
         } else {
-            setConfirmModalOpen(true); // Open confirmation modal if all fields are selected
+            setConfirmModalOpen(true);
         }
     };
 
+    const showLoading = () => {
+        Swal.fire({
+            title: 'Loading...',
+            text: 'Please wait while we process your request.',
+            icon: 'info',
+            allowOutsideClick: false, // Prevent closing the alert
+            didOpen: () => {
+                Swal.showLoading(); // Show loading spinner
+            }
+        });
+    };
 
+    // Hide loading and show success/error
+    const hideLoading = (isSuccess) => {
+        // Close the loading SweetAlert
+        Swal.close();
+
+        // Show success or error based on isSuccess
+        Swal.fire({
+            title: isSuccess ? 'Success!' : 'Error!',
+            text: isSuccess ? 'Appointment successfully added.' : 'Something went wrong.',
+            icon: isSuccess ? 'success' : 'error',
+            confirmButtonText: 'OK'
+        });
+    };
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleConfirmAppointment = async (notes) => {
         if (!selectedPatient || !selectedDentist || !procedures.length || !selectedDate || !selectedTimeSlot) {
             const errormessage = `Please ensure all fields are selected`;
-            showToast('error', errormessage);
+            // showToast('error', errormessage);
             return;
         }
+
+        showLoading(); // Show loading SweetAlert
+        setIsLoading(true); // Set loading state to true
 
         const localDate = new Date(selectedDate);
         const selectedTime = new Date(selectedTimeSlot);
         localDate.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
-
-        // Calculate total duration from selected procedures
         const totalDuration = procedures.reduce((sum, procedure) => sum + parseInt(procedure.Duration), 0);
 
-        // Set the end date by adding the total duration to the start time
         const endDate = new Date(localDate);
         endDate.setMinutes(endDate.getMinutes() + totalDuration);
 
@@ -333,19 +444,26 @@ const CalendarComponent = () => {
         };
 
         try {
-            const response = await axios.post(`${Baseurl}/Appointments/add/history/${selectedPatient._id}`, appointmentData, { withCredentials: true });
-            setisSubmited(true);
             setConfirmModalOpen(false);
+            const response = await axios.post(`${Baseurl}/Appointments/add/history/${selectedPatient._id}`, appointmentData, { withCredentials: true });
 
-            // Refetch events after a short delay to allow backend to save data
+            setisSubmited(true);
+
             setTimeout(() => fetchEvents(), 200);
 
+            setIsLoading(false);
+            hideLoading(true);
         } catch (error) {
+            setIsLoading(false);
+            hideLoading(false);
+            setConfirmModalOpen(true);
+
             console.error('Error adding appointment to history:', error);
         }
 
         setTimeout(() => setisSubmited(false), 1000);
     };
+
 
 
     return (
@@ -359,10 +477,28 @@ const CalendarComponent = () => {
             ) : (
                 <div className="  items-center justify-center">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <PatientSelector onSelectPatient={handleSelectPatient} isSubmited={isSubmited} />
+
+
+
+                        <PatientSelector
+                            onSelectPatient={handleSelectPatient}
+                            isSubmited={isSubmited}
+                            missingPatient={missingPatient}
+                            setMissingPatient={setMissingPatient}
+                        />
                         <div>
-                            <DentistSelector onSelectDentist={handleSelectDentist} isSubmited={isSubmited} />
-                            <ProceduresSelector onselectprocedures={handleSelectProcedures} isSubmited={isSubmited} />
+                            <DentistSelector
+                                onSelectDentist={handleSelectDentist}
+                                isSubmited={isSubmited}
+                                missingDentist={missingDentist}
+                                setMissingDentist={setMissingDentist}
+                            />
+                            <ProceduresSelector
+                                onselectprocedures={handleSelectProcedures}
+                                isSubmited={isSubmited}
+                                missingProcedures={missingProcedures}
+                                setMissingProcedures={setMissingProcedures}
+                            />
                         </div>
                     </div>
                     {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> */}
@@ -398,6 +534,9 @@ const CalendarComponent = () => {
                                 onSelectTimeSlot={handleSelectTimeSlot}
                                 // isDisabled={availableSlotsDisabled}
                                 allButtonsDisabled={allButtonsDisabled}
+                                isPast={isPast}
+                                SelectedProcedureDuration={SelectedProcedureDuration}
+
                             />
                         </div>
                     </div>

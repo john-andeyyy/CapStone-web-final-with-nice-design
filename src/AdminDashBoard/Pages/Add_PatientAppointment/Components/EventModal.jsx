@@ -44,21 +44,29 @@ const EventModal = ({ isOpen, event, closeModal }) => {
                         </div>
                     </div>
                     <div className="flex items-center text-lg text-gray-700">
-                        <AiOutlineUser className="mr-3 text-purple-600 text-2xl" />
-                        <div>
-                            <span className="font-medium">Dentist:</span> <br />
-                            {event?.dentist || 'Not assigned'}
-                        </div>
+                        {event?.title !== "Clinic Closed" && (
+                            <div>
+                                <AiOutlineUser className="mr-3 text-purple-600 text-2xl" />
+                                <div>
+                                    <span className="font-medium">Dentist:</span> <br />
+                                    {event?.dentist || 'Not assigned'}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 <div className="flex justify-between items-center">
-                    <Link
-                        to={`/appointment/${event.id}`}
-                        className="px-6 py-3 text-lg font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-                    >
-                        View Details
-                    </Link>
+
+                    {event?.title !== "Clinic Closed" && (
+                        <Link
+                            to={`/appointment/${event.id}`}
+                            className="px-6 py-3 text-lg font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                        >
+                            View Details
+                        </Link>
+                    )}
+
                     <button
                         className="px-6 py-3 text-lg font-medium bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
                         onClick={closeModal}

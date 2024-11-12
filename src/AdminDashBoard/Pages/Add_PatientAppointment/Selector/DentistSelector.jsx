@@ -3,10 +3,12 @@ import axios from 'axios';
 
 const Baseurl = import.meta.env.VITE_BASEURL;
 
-const DentistSelector = ({ onSelectDentist, isSubmited }) => {
+const DentistSelector = ({ onSelectDentist, isSubmited, missingDentist, setMissingDentist }) => {
     const [dentists, setDentists] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedDentist, setSelectedDentist] = useState('');
+    const [isValid, setisvalid] = useState(false);
+
 
     useEffect(() => {
         if (isSubmited) {
@@ -42,6 +44,8 @@ const DentistSelector = ({ onSelectDentist, isSubmited }) => {
         if (onSelectDentist) {
             onSelectDentist(dentistData);
         }
+        setisvalid(false)
+        setMissingDentist(false)
     };
 
     return (
@@ -52,15 +56,17 @@ const DentistSelector = ({ onSelectDentist, isSubmited }) => {
                 </div>
             ) : (
                 <div className="flex flex-col space-y-2">
-                    <label htmlFor="dentist" className="font-medium text-gray-700">Select Dentist</label>
+                    <label htmlFor="dentist" className="font-medium text-gray-700">Select Dentist
+                        <span className="text-red-500 text-xl">*</span>
+                    </label>
                     <select
                         id="dentist"
                         value={selectedDentist}
                         onChange={handleDentistChange}
-                        className="p-2 border border-gray-300 rounded-md"
+                        className={`p-2 border-2 rounded-md ${missingDentist ? 'border-red-500' : selectedDentist ? 'border-green-500' : 'border-gray-300'}`}
                     >
                         <option value="">-- Choose a Dentist --</option>
-                        {dentists.map((dentist) => (
+                        {dentists.map(dentist => (
                             <option key={dentist._id} value={dentist._id}>
                                 {`${dentist.FirstName} ${dentist.LastName}`}
                             </option>

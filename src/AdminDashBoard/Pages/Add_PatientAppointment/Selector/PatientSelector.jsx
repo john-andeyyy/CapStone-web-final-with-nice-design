@@ -3,16 +3,17 @@ import axios from 'axios';
 
 const Baseurl = import.meta.env.VITE_BASEURL;
 
-const PatientSelector = ({ onSelectPatient, isSubmited }) => {
-    const [patients, setPatients] = useState([]); 
-    const [loading, setLoading] = useState(true); 
-    const [selectedPatient, setSelectedPatient] = useState(''); 
+const PatientSelector = ({ onSelectPatient, isSubmited, missingPatient, setMissingPatient }) => {
+    const [patients, setPatients] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedPatient, setSelectedPatient] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [isValid, setisvalid] = useState(false);
 
     useEffect(() => {
         if (isSubmited) {
-            setSelectedPatient(''); 
+            setSelectedPatient('');
             onSelectPatient(null);
         }
     }, [isSubmited, selectedPatient]);
@@ -29,21 +30,21 @@ const PatientSelector = ({ onSelectPatient, isSubmited }) => {
     };
 
     useEffect(() => {
-        fetchPatients(); 
+        fetchPatients();
     }, []);
 
     const handlePatientChange = (e) => {
-        const selectedId = e.target.value; 
-        const patientData = patients.find(patient => patient._id === selectedId); 
+        const selectedId = e.target.value;
+        const patientData = patients.find(patient => patient._id === selectedId);
 
-        setSelectedPatient(selectedId); 
-
-        
+        setSelectedPatient(selectedId);
         onSelectPatient(patientData);
+        setMissingPatient(false)
+        setisvalid(true)
     };
 
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value); 
+        setSearchTerm(e.target.value);
     };
 
     const filteredPatients = patients.filter(patient =>
@@ -67,13 +68,19 @@ const PatientSelector = ({ onSelectPatient, isSubmited }) => {
                         placeholder="Search by name"
                         className="p-2 border border-gray-300 rounded-md"
                     />
-                    <label htmlFor="patient" className="font-medium text-gray-700">Select Patient</label>
+                    <label htmlFor="patient" className="font-medium text-gray-700">Select Patient
+                        <span className="text-red-500 text-xl">*</span>
+                    </label>
+
+
+
                     <select
                         id="patient"
                         value={selectedPatient}
                         onChange={handlePatientChange}
-                        className="p-2 border border-gray-300 rounded-md"
-                        aria-label="Choose a Patient" 
+                        className={`p-2 border-2 ${missingPatient ? 'border-red-500' : isValid ? 'border-green-500' : 'border-gray-300'
+                            } rounded-md`}
+                        aria-label="Choose a Patient"
                     >
                         <option value="" disabled>-- Choose a Patient --</option> {/* Disabled default option */}
                         {filteredPatients.length > 0 ? (
@@ -86,6 +93,7 @@ const PatientSelector = ({ onSelectPatient, isSubmited }) => {
                             <option value="" disabled>No patients found</option> // No patients message
                         )}
                     </select>
+
                 </div>
             )}
         </div>
