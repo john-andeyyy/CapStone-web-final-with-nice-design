@@ -48,7 +48,7 @@ const ProceduresTable = ({ appointment }) => {
 
     const handleSaveProcedures = async () => {
         console.log('Payload size (bytes):', JSON.stringify(addedProcedures).length);
-        window.location.reload();
+        // window.location.reload();
 
         try {
             const updatedProcedures = [...userProceduresList, ...addedProcedures];

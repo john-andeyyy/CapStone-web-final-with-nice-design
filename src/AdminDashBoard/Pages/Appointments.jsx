@@ -264,7 +264,7 @@ export default function Appointments() {
     };
 
     // const updateAppointmentStatus = async (app_id, newStatus) => {
-    const udpatestatus = async (app_id, newStatus, message = "") => {
+    const updateStatus = async (app_id, newStatus, message = "") => {
         const Rejectmsg = message
         try {
             if (newStatus === 'Approved') {
