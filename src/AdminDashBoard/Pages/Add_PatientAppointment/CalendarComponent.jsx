@@ -95,7 +95,7 @@ const CalendarComponent = () => {
                 : allAppointments;
 
 
-            
+
             const combinedEvents = [...filteredAppointments, ...unavailableEvents];
             setEvents(combinedEvents);
         } else {
@@ -199,7 +199,7 @@ const CalendarComponent = () => {
 
             // Set all appointments and update events directly
             // setAllAppointments(appointmentsData);  
-            setEvents(mappedEvents);           
+            setEvents(mappedEvents);
 
             return mappedEvents;
         } catch (error) {
@@ -208,11 +208,6 @@ const CalendarComponent = () => {
         }
     };
 
-
-
-    const fetchEvents = async () => {
-
-    };
     const FetchData = async () => {
         setLoading(true);
         const unavailableDates = await fetchUnavailableDates();
@@ -260,21 +255,20 @@ const CalendarComponent = () => {
         setSelectedEvent(null);
     };
 
+    const fetchEvents = async () => {
+        const unavailableDates = await fetchUnavailableDates();
+        const fetchedAppointments = await fetchAppointments();
+        setAppointments(fetchedAppointments);
+        setEvents([...fetchedAppointments, ...unavailableDates]);
+        setLoading(false);
+
+        // const isClosed = unavailableDates.some(unavailable =>
+        //     date >= new Date(unavailable.start) && date <= new Date(unavailable.end)
+        // );
+        // setAllButtonsDisabled(isClosed);
+
+    };
     useEffect(() => {
-        const fetchEvents = async () => {
-            const unavailableDates = await fetchUnavailableDates();
-            const fetchedAppointments = await fetchAppointments();
-            setAppointments(fetchedAppointments);
-            setEvents([...fetchedAppointments, ...unavailableDates]);
-            setLoading(false);
-
-            // const isClosed = unavailableDates.some(unavailable =>
-            //     date >= new Date(unavailable.start) && date <= new Date(unavailable.end)
-            // );
-            // setAllButtonsDisabled(isClosed);
-
-        };
-
         fetchEvents();
     }, []);
 
@@ -301,10 +295,10 @@ const CalendarComponent = () => {
             return isOverlap;
         });
 
-        if (overlappingAppointment) {
-            showToast('error', 'The selected time slot overlaps with an existing appointment.');
-            return;
-        }
+        // if (overlappingAppointment) {
+        //     showToast('error', 'The selected time slot overlaps with an existing appointment.');
+        //     return;
+        // }
 
         console.log('overlaptime', overlaptime);
 
@@ -338,10 +332,10 @@ const CalendarComponent = () => {
             });
         } else {
             const nextAvailableSlot = new Date(selectedEndTime);
-            if (nextAvailableSlot.getHours() >= 17) {
-                showToast('error', 'The next available time slot is beyond working hours (after 5 PM).');
-                return;
-            }
+            // if (nextAvailableSlot.getHours() >= 17) {
+            //     showToast('error', 'The next available time slot is beyond working hours (after 5 PM).');
+            //     return;
+            // }
             console.log('Next available time slot:', nextAvailableSlot);
             setConfirmModalOpen(true);
         }
@@ -355,7 +349,7 @@ const CalendarComponent = () => {
             didOpen: () => {
                 Swal.showLoading();
             }
-        });
+        })
     };
     const hideLoading = (isSuccess) => {
         Swal.close();
@@ -399,7 +393,7 @@ const CalendarComponent = () => {
             setIsLoading(false);
             hideLoading(true);
             FetchData()
-
+            fetchEvents()
         } catch (error) {
             setIsLoading(false);
             hideLoading(false);
@@ -452,6 +446,8 @@ const CalendarComponent = () => {
                                     handleSelectEvent={handleSelectEvent}
                                     eventStyleGetter={eventStyleGetter}
                                     dayPropGetter={(date) => dayPropGetter(date, events)}
+                                    selectedDate={selectedDate} // Pass selectedDate to CalendarView
+
                                 />
                                 <Legend />
                             </div>
@@ -460,8 +456,8 @@ const CalendarComponent = () => {
                             <AvailableTimeSlots
                                 selectedDate={date}
                                 unavailableDates={unavailableDates}
-                                    appointments={filteredAppointments}
-                                
+                                appointments={filteredAppointments}
+
                                 onSelectTimeSlot={handleSelectTimeSlot}
                                 // isDisabled={availableSlotsDisabled}
                                 allButtonsDisabled={allButtonsDisabled}

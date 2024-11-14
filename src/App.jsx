@@ -66,20 +66,28 @@ function AdminRoutes() {
 
 
   const handleLogout = () => {
+    Swal.fire({
+      title: 'Session Expired',
+      text: 'Please Login Again',
+      icon: 'info',
+    });
+
     axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
       .then((res) => {
         if (res.status === 200) {
           localStorage.clear();
-
-          navigate('/');
+          navigate('/AdminLogin');
           window.location.reload();
-          // navigate('/', { replace: true });
         }
       })
       .catch((error) => {
         console.log('Logout error:', error);
+        localStorage.clear(); 
+        navigate('/AdminLogin');
+        window.location.reload();
       });
   };
+
 
 
   const location = useLocation();
@@ -96,7 +104,7 @@ function AdminRoutes() {
     const expirationTime = lastActiveTime + timeout * 1000;
 
     if (new Date().getTime() >= expirationTime) {
-      console.log('1 hour has passed since your last activity.');
+      // console.log('1 hour has passed since your last activity.');
       setIsExpired(true);
       handleLogout()
     }

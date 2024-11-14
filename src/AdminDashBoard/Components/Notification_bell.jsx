@@ -47,25 +47,32 @@ const NotificationBell = () => {
     };
 
     useEffect(() => {
-        console.log('this is a notification bell')
+        console.log('this is a notification bell');
 
         fetchNotifications();
 
-        // Listen for new notifications via socket
-        Socket.on('new-admin-notification', addNotificationToUI);
+        Socket.on('new-admin-notification', NOTIFaddNotificationToUI);
+        Socket.on('new-admin-notification-cancel', RED_addNotificationToUI);
         Socket.on('disconnect', () => console.log('Disconnected from server'));
 
-        // Clean up socket event listeners on unmount
         return () => {
-            Socket.off('new-admin-notification', addNotificationToUI);
+            Socket.off('new-admin-notification', NOTIFaddNotificationToUI);
+            Socket.off('new-admin-notification-cancel', RED_addNotificationToUI);
+            Socket.off('disconnect', () => console.log('Disconnected from server'));
         };
-    }, [Baseurl]);
+    }, []);
 
-
-
-    const addNotificationToUI = (notification) => {
+    const NOTIFaddNotificationToUI = (notification) => {
         showToast('success', 'New Appointment sent');
+        add_to_current_notif(notification);
+    };
 
+    const RED_addNotificationToUI = (notification) => {
+        showToast('error', 'New Notification');
+        add_to_current_notif(notification);
+    };
+
+    const add_to_current_notif = (notification) => {
         setNotifications((prevNotifications) => {
             const updatedNotifications = [notification, ...prevNotifications];
             const unreadNotifications = updatedNotifications.filter(notif => !notif.adminisRead);
@@ -73,7 +80,6 @@ const NotificationBell = () => {
             return updatedNotifications;
         });
     };
-
 
 
     const toggleDropdown = () => {

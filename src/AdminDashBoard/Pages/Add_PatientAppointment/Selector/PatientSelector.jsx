@@ -21,13 +21,19 @@ const PatientSelector = ({ onSelectPatient, isSubmited, missingPatient, setMissi
     const fetchPatients = async () => {
         try {
             const response = await axios.get(`${Baseurl}/Patient/patientnameOnly`, { withCredentials: true });
-            setPatients(response.data);
+            const sortedPatients = response.data.sort((a, b) => {
+                if (a.LastName.toLowerCase() < b.LastName.toLowerCase()) return -1;
+                if (a.LastName.toLowerCase() > b.LastName.toLowerCase()) return 1;
+                return 0;
+            });
+            setPatients(sortedPatients);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching patients', error);
             setLoading(false);
         }
     };
+
 
     useEffect(() => {
         fetchPatients();
@@ -86,7 +92,10 @@ const PatientSelector = ({ onSelectPatient, isSubmited, missingPatient, setMissi
                         {filteredPatients.length > 0 ? (
                             filteredPatients.map((patient) => (
                                 <option key={patient._id} value={patient._id}>
-                                    {`${patient.FirstName} ${patient.LastName}`}
+                                    {`
+                                    ${patient.LastName}
+                                    ${patient.FirstName} 
+                                    `}
                                 </option>
                             ))
                         ) : (

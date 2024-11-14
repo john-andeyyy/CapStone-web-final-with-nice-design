@@ -21,7 +21,8 @@ export default function Appointments() {
 
     const [appointments, setAppointments] = useState([]);
     const [filteredAppointments, setFilteredAppointments] = useState([]);
-    const [selectedStatus, setSelectedStatus] = useState(['Pending', 'Approved']);
+    const [selectedStatus, setSelectedStatus] = useState('Pending');
+    // const [selectedStatus, setSelectedStatus] = useState(['Pending', 'Approved']); // radio
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [viewType, setViewType] = useState('current');
@@ -216,37 +217,55 @@ export default function Appointments() {
     };
 
     const updateAppointmentStatus = (app_id, newStatus) => {
-        // Swal.fire({
-        //     title: "PDF Generated!",
-        //     text: "Your PDF has been successfully generated.",
-        //     icon: "success"
-        // });
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: newStatus.toLowerCase() === "approved" ? "Approve" : "Reject"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                udpatestatus(app_id, newStatus);
+        // If the status is 'rejected', prompt for a message input
+        if (newStatus.toLowerCase() === 'rejected') {
+            Swal.fire({
+                input: "textarea",
+                inputLabel: "Reject reason",
+                inputPlaceholder: "Type your message here...",
+                inputAttributes: {
+                    "aria-label": "Type your message here"
+                },
+                showCancelButton: true
+            }).then((result) => {
+                // If the user enters a message
+                if (result.isConfirmed && result.value) {
+                    const text = result.value; // Store the message
+                    Swal.fire(text); // Show the message entered by the user
 
-                // Show a success message after confirmation
-                Swal.fire({
-                    title: `Appointment ${newStatus}`,
-                    text: `You have ${newStatus.toLowerCase()} the appointment`,
-                    icon: "success"
-                });
-            }
-        });
+                    // Proceed with updating the status
+                    udpatestatus(app_id, newStatus, text); // Pass the text with the status update
+                }
+            });
+        } else {
+            // For statuses other than 'rejected', just confirm the action
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: newStatus.toLowerCase() === "approved" ? "Approve" : "Reject"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, proceed with the status update
+                    updateStatus(app_id, newStatus);
 
-
+                    // Show a success message after confirmation
+                    Swal.fire({
+                        title: `Appointment ${newStatus}`,
+                        text: `You have ${newStatus.toLowerCase()} the appointment`,
+                        icon: "success"
+                    });
+                }
+            });
+        }
     };
 
     // const updateAppointmentStatus = async (app_id, newStatus) => {
-    const udpatestatus = async (app_id, newStatus) => {
+    const udpatestatus = async (app_id, newStatus, message = "") => {
+        const Rejectmsg = message
         try {
             if (newStatus === 'Approved') {
                 setLoadingApprove(prev => ({ ...prev, [app_id]: true }));
@@ -256,7 +275,10 @@ export default function Appointments() {
 
             const response = await axios.put(
                 `${BASEURL}/Appointments/admin/appointmentUpdate/${app_id}`,
-                { newStatus: newStatus },
+                {
+                    newStatus: newStatus,
+                    Rejectmsg
+                },
                 { withCredentials: true }
             );
 
@@ -380,68 +402,68 @@ export default function Appointments() {
 
 
             <div className="grid grid-cols-2 gap-4">
-  {/* Appointment List */}
-  
-  {/* Date Picker Section - Aligned to Right */}
-  <div className="col-span-2 sm:col-span-1 sm:col-start-2 mb-8 flex justify-end items-center space-x-4">
-    
-    {/* Month Picker */}
-    {timeView === 'month' && (
-      <div className="flex items-center space-x-2">
-        <p className="mb-0">Select Month:</p>
-        <DatePicker
-          selected={selectedMonth}
-          onChange={(date) => setSelectedMonth(date)}
-          dateFormat="MMMM yyyy"
-          showMonthYearPicker
-          className="p-2 border rounded"
-        />
-      </div>
-    )}
+                {/* Appointment List */}
 
-    {/* Day Picker */}
-    {timeView === 'day' && (
-      <div className="flex items-center space-x-2">
-        <p className="mb-0">Select Day:</p>
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)}
-          dateFormat="MMMM d, yyyy"
-          className="p-2 border rounded"
-          filterDate={date => {
-            const day = new Date();
-            return (viewType !== 'current' && viewType !== 'upcoming') || date >= day;
-          }}
-        />
-      </div>
-    )}
+                {/* Date Picker Section - Aligned to Right */}
+                <div className="col-span-2 sm:col-span-1 sm:col-start-2 mb-8 flex justify-end items-center space-x-4">
 
-    {/* Week Picker */}
-    {timeView === 'week' && (
-      <div className="flex items-center space-x-2">
-        <button
-          onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() - 7)))}
-          className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
-        >
-          Prev Week
-        </button>
-        <span className="p-2">
-          {new Date(selectedWeek.setDate(selectedWeek.getDate() - selectedWeek.getDay())).toDateString()} - {new Date(selectedWeek.setDate(selectedWeek.getDate() + 6)).toDateString()}
-        </span>
-        <button
-          onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() + 7)))}
-          className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
-        >
-          Next Week
-        </button>
-      </div>
-    )}
-  </div>
-</div>
+                    {/* Month Picker */}
+                    {timeView === 'month' && (
+                        <div className="flex items-center space-x-2">
+                            <p className="mb-0">Select Month:</p>
+                            <DatePicker
+                                selected={selectedMonth}
+                                onChange={(date) => setSelectedMonth(date)}
+                                dateFormat="MMMM yyyy"
+                                showMonthYearPicker
+                                className="p-2 border rounded"
+                            />
+                        </div>
+                    )}
+
+                    {/* Day Picker */}
+                    {timeView === 'day' && (
+                        <div className="flex items-center space-x-2">
+                            <p className="mb-0">Select Day:</p>
+                            <DatePicker
+                                selected={selectedDate}
+                                onChange={(date) => setSelectedDate(date)}
+                                dateFormat="MMMM d, yyyy"
+                                className="p-2 border rounded"
+                                filterDate={date => {
+                                    const day = new Date();
+                                    return (viewType !== 'current' && viewType !== 'upcoming') || date >= day;
+                                }}
+                            />
+                        </div>
+                    )}
+
+                    {/* Week Picker */}
+                    {timeView === 'week' && (
+                        <div className="flex items-center space-x-2">
+                            <button
+                                onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() - 7)))}
+                                className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
+                            >
+                                Prev Week
+                            </button>
+                            <span className="p-2">
+                                {new Date(selectedWeek.setDate(selectedWeek.getDate() - selectedWeek.getDay())).toDateString()} - {new Date(selectedWeek.setDate(selectedWeek.getDate() + 6)).toDateString()}
+                            </span>
+                            <button
+                                onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() + 7)))}
+                                className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
+                            >
+                                Next Week
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
 
 
             {/* Time View Selectors */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pb-2">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pb-2">
                 {['Pending', 'Approved', 'Completed', 'Missed', 'Rejected', 'Cancelled'].map(status => (
                     <div
                         key={status}
@@ -457,15 +479,33 @@ export default function Appointments() {
                         <p className="text-gray-700 font-medium ml-2">{status} </p>
                     </div>
                 ))}
+            </div> */}
+
+            <h2 className="text-xl font-semibold mb-4">Appointment Requests List</h2>
+
+            <div className="mb-4">
+                <select
+                    className="p-2 border rounded"
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                >
+                    <option value="">View All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Missed">Missed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
             </div>
 
 
             <div className="space-y-4">
                 {filteredAppointments.length === 0 ? (
                     <div className="text-center">
-                        {selectedStatus.map((status) => (
-                            <h1 key={status}>No {status} appointments</h1>
-                        ))}
+                        {/* {selectedStatus.map((status) => (
+                        ))} */}
+                        <h1>No appointments</h1>
                     </div>
                 ) : (
                     <div className="overflow-auto max-h-screen">

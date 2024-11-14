@@ -18,9 +18,7 @@ const AvailableTimeSlots = ({
         timeSlots.push(new Date(time));
     }
 
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Midnight for date comparison
-    const isPastDate = selectedDate < currentDate;
+    const now = new Date();
 
     const isOverlappingWithAppointments = (slot) => {
         const slotEndTime = new Date(slot.getTime() + SelectedProcedureDuration * 60000);
@@ -62,7 +60,7 @@ const AvailableTimeSlots = ({
                             return slot >= appointmentStart && slot < appointmentEnd;
                         });
 
-                        const isSlotInThePast = slot < currentDate;
+                        const isSlotInThePast = slot < now; // Now compares each slot with the exact current time
                         const isOverlapping = isOverlappingWithAppointments(slot);
                         const slotEndTime = new Date(slot.getTime() + SelectedProcedureDuration * 60000);
                         const isExceedingRemainingTime = slotEndTime > endOfDay;
@@ -72,7 +70,6 @@ const AvailableTimeSlots = ({
                             allButtonsDisabled ||
                             isUnavailable ||
                             isBooked ||
-                            isPastDate ||
                             isSlotInThePast ||
                             isOverlapping ||
                             isExceedingRemainingTime ||
@@ -83,10 +80,10 @@ const AvailableTimeSlots = ({
                         let buttonClass;
                         if (is5pmSlot) {
                             label = 'Close';
-                            buttonClass = 'bg-gray-500 text-white'; // Gray for "Close"
+                            buttonClass = 'bg-gray-500 text-white '; // Gray for "Close"
                         } else if (isSlotInThePast) {
                             label = 'Past';
-                            buttonClass = 'bg-red-200 text-gray-500 '; // Red for "Past"
+                            buttonClass = 'bg-red-200 text-gray-500'; // Red for "Past"
                         } else if (isBooked) {
                             label = 'Reserved';
                             buttonClass = 'bg-yellow-300 text-gray-800 '; // Yellow for "Reserved"
@@ -98,7 +95,7 @@ const AvailableTimeSlots = ({
                             buttonClass = 'bg-red-200 text-gray-500 '; // Red for "Overtime"
                         } else if (isDisabled) {
                             label = 'Not Available';
-                            buttonClass = 'bg-red-200 text-gray-500'; // Default red for other disabled
+                            buttonClass = 'bg-red-200 text-gray-500 '; // Default red for other disabled
                         } else {
                             label = 'Available';
                             buttonClass = 'bg-green-100 text-gray-800 hover:bg-green-300'; // Green for available
