@@ -118,13 +118,20 @@ export default function TotalProcedures() {
     };
 
     const createPDF = () => {
-        Swal.fire({
-            title: "PDF Generated!",
-            text: "Your PDF has been successfully generated.",
-            icon: "success"
+        // Show SweetAlert loading spinner
+        const swalLoading = Swal.fire({
+            title: 'Generating PDF...',
+            text: 'Please wait while we generate your report.',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading(); // Show the loading spinner
+            }
         });
-        const year = selectedYear || currentYear;  
-        const month = selectedMonth || currentMonth.format('MM');  
+
+        const year = selectedYear || currentYear;
+        const month = selectedMonth || currentMonth.format('MM');
 
         console.log('year', year);
         console.log('month', month);
@@ -132,29 +139,41 @@ export default function TotalProcedures() {
         const data = { year: year };
 
         if (!isYearView && selectedMonth) {
-            data.month = parseInt(month); 
+            data.month = parseInt(month);
         }
 
         axios
-            .post(`${BASEURL}/generate-report-proceduredone`, data, { 
+            .post(`${BASEURL}/generate-report-proceduredone`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                responseType: 'blob',  
+                responseType: 'blob',
                 withCredentials: true,
             })
             .then((response) => {
-                
                 const fileURL = URL.createObjectURL(response.data);
 
                 // Create a link element to trigger the download
                 const link = document.createElement('a');
                 link.href = fileURL;
                 link.download = `procedures_report_${year}_${month}.pdf`;
-                link.click(); 
+                link.click();
+
+                // Close the loading SweetAlert after file download
+                swalLoading.close();
+
+                Swal.fire({
+                    title: "PDF Generated!",
+                    text: "Your PDF has been successfully generated.",
+                    icon: "success"
+                });
             })
             .catch((error) => {
                 console.error('Error generating PDF:', error);
+
+                // Close the loading SweetAlert and show error message
+                swalLoading.close();
+
                 Swal.fire({
                     title: "Error",
                     text: "There was an error generating the PDF.",
@@ -162,6 +181,7 @@ export default function TotalProcedures() {
                 });
             });
     };
+
 
 
 

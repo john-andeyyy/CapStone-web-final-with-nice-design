@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 export default function AdminLogin({ login }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    
+
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -114,11 +114,12 @@ export default function AdminLogin({ login }) {
         };
     }, []);
 
-
+    const bg = '../../../public/page-turner1.png'
     return (
-        
+
+        <div className="bg-cover bg-center h-screen" style={{ backgroundImage: `url(${bg})` }}>
             <div className="flex items-center justify-center min-h-screen">
-                <div className="w-full max-w-sm bg-[#96D2D9] border border-[#012840] rounded-lg shadow-lg p-6">
+                <div className="w-full max-w-sm bg-[#96D2D9] border border-[#012840] rounded-lg shadow-lg p-6 bg-opacity-90">
                     <h2 className="text-2xl font-bold text-[#025373] mb-4 text-center">Login</h2>
                     {/* <p className="text-center text-gray-500 mb-4">For staff members of Alejendria's Dental Clinic</p> */}
                     {error && <div className="text-center font-bold py-2 text-lg text-red-600">{error}</div>}
@@ -162,6 +163,7 @@ export default function AdminLogin({ login }) {
                     </form>
                 </div>
             </div>
-    
+        </div>
+
     );
 }

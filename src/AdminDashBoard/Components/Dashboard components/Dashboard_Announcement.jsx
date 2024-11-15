@@ -50,7 +50,7 @@ export default function Announcement() {
 
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-secondary rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 max-h-[80vh] overflow-hidden">
+                <div className="bg-[#b3e9ff] rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 max-h-[80vh] overflow-hidden">
                     <div className="flex justify-between items-center p-4 border-b">
                         <h2 className="text-lg font-semibold">{title}</h2>
                         <button className="text-gray-600" onClick={onClose}>X</button>

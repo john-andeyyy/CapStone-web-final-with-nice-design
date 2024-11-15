@@ -153,15 +153,20 @@ export default function Report_Monthly_Appointment() {
 
 
     const createPDF = () => {
+        // Show loading sweet alert
         Swal.fire({
-            title: "PDF Generated!",
-            text: "Your PDF has been successfully generated.",
-            icon: "success"
+            title: 'Generating PDF...',
+            text: 'Please wait while the PDF is being generated.',
+            icon: 'info',
+            allowOutsideClick: false, // Prevent closing until process is done
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
-       
-        const year = selectedYear || new Date().getFullYear(); 
-        const monthNumber = month ? parseInt(month.split('-')[1]) : null;  
-        const day = isToday ? new Date().getDate() : null;  
+
+        const year = selectedYear || new Date().getFullYear();
+        const monthNumber = month ? parseInt(month.split('-')[1]) : null;
+        const day = isToday ? new Date().getDate() : null;
 
         const data = { year };
 
@@ -171,26 +176,32 @@ export default function Report_Monthly_Appointment() {
 
         if (isToday) {
             data.day = day;
-            data.month = new Date().getMonth() + 1; 
+            data.month = new Date().getMonth() + 1;
         }
-
-        // console.log('Data for PDF generation:', data);
 
         axios
             .post(`${BASEURL}/generate-report-Completed_and_Missed`, data, {
                 headers: { 'Content-Type': 'application/json' },
-                responseType: 'blob', 
+                responseType: 'blob',
                 withCredentials: true,
             })
             .then((response) => {
-                
+                // Hide loading and trigger success message
+                Swal.close();
                 const fileURL = URL.createObjectURL(response.data);
                 const link = document.createElement('a');
                 link.href = fileURL;
                 link.download = `completed_missed_report_${year}_${monthNumber || ''}_${day || ''}.pdf`;
                 link.click();
+                Swal.fire({
+                    title: "PDF Generated!",
+                    text: "Your PDF has been successfully generated.",
+                    icon: "success"
+                });
             })
             .catch((error) => {
+                // Hide loading and trigger error message
+                Swal.close();
                 console.error('Error generating PDF:', error);
                 Swal.fire({
                     title: "Error",
@@ -199,6 +210,7 @@ export default function Report_Monthly_Appointment() {
                 });
             });
     };
+
 
 
 
@@ -312,7 +324,7 @@ export default function Report_Monthly_Appointment() {
 
                                     </>
                                 )}
-                                
+
                             </div>
                         ) : (
                             <div className="w-40"> {/* Full width for year selector */}

@@ -89,12 +89,16 @@ const AppointmentsReport = () => {
 
 
     const createPDF = async () => {
-
         Swal.fire({
-            title: "PDF Generated!",
-            text: "Your PDF has been successfully generated.",
-            icon: "success"
+            title: 'Generating PDF...',
+            text: 'Please wait while the PDF is being generated.',
+            icon: 'info',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
+
         let filterData = {};
 
         if (selectedReport === 'daily') {
@@ -114,8 +118,6 @@ const AppointmentsReport = () => {
             };
         }
 
-        console.log('Generated Filter Data:', filterData);
-
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_BASEURL}/generate-report-Income_Report`,
@@ -129,27 +131,30 @@ const AppointmentsReport = () => {
                 }
             );
 
-            // Create a download link for the PDF
             const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(pdfBlob);
             link.download = 'Income_Report.pdf';
             link.click();
-        } catch (error) {
-            console.error("Error generating report:", error);
 
-            // Check if the error response contains a message
+            Swal.close();
+            Swal.fire({
+                title: "PDF Generated!",
+                text: "Your PDF has been successfully generated.",
+                icon: "success"
+            });
+        } catch (error) {
+            Swal.close();
             const errorMessage = error.response?.data?.message || "An unknown error occurred. Please try again later.";
 
-            // Show the error message in a SweetAlert modal
             Swal.fire({
                 title: "Error",
                 text: errorMessage,
                 icon: "error"
             });
         }
-
     };
+
 
 
     if (error) {

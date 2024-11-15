@@ -51,7 +51,7 @@ export default function MedicalRequests() {
   }, []);
 
   const addNotificationToUI = (requestdentalCerti) => {
-    showToast('success', 'New Appointment sent');
+    // showToast('success', 'New Appointment sent');
 
     setRequests((prevRequests) => [requestdentalCerti, ...prevRequests]);
   };
@@ -278,20 +278,28 @@ export default function MedicalRequests() {
 
 
   function downloadPatientMedicalCertificate(request) {
-    console.log('req', request)
-    const id = request.id
+    const id = request.id;
+
     Swal.fire({
       title: "Fetching Your Certificate",
       text: "We are retrieving your dental certificate. Please wait a moment.",
-      icon: "info"
-    }).then(() => {
-      axios.get(`${BASEURL}/admin/View-DentalCertificate/${id}`, {
-        responseType: 'arraybuffer',
-        withCredentials: true
-      }).then(response => {
+      icon: "info",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(); // Show loading spinner
+      }
+    });
+
+    axios.get(`${BASEURL}/admin/View-DentalCertificate/${id}`, {
+      responseType: 'arraybuffer',
+      withCredentials: true
+    })
+      .then(response => {
         const blob = new Blob([response.data], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
         const newTab = window.open(url, '_blank');
+
+        Swal.close(); // Close the loading SweetAlert
 
         if (!newTab) {
           Swal.fire({
@@ -301,16 +309,17 @@ export default function MedicalRequests() {
           });
         }
       })
-        .catch(error => {
-          console.error("Axios error:", error);
-          Swal.fire({
-            title: "Error!",
-            text: "An error occurred while fetching the certificate data.",
-            icon: "error"
-          });
+      .catch(error => {
+        console.error("Axios error:", error);
+        Swal.fire({
+          title: "Error!",
+          text: "An error occurred while fetching the certificate data.",
+          icon: "error"
         });
-    });
+      });
   }
+
+
   return (
     <div className="container mx-auto p-4 pt-0">
       <div className="p-4">

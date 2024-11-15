@@ -101,59 +101,65 @@ const PatientProceduresDone = () => {
     };
 
     const generatePDF = () => {
-        Swal.fire({
-            title: "PDF Generated!",
-            text: "Your report has been successfully generated.",
-            icon: "success"
-        });
         createPDF();
     };
 
 
     const createPDF = async () => {
-        console.log("Generating PDF...");
-        console.log('Selected Patient ID:', selectedPatient.id);  // assuming selectedPatient.id contains the patient ID you want to use
+        const swalLoading = Swal.fire({
+            title: 'Generating PDF...',
+            text: 'Please wait while we generate your report.',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
         try {
-            // Prepare the data to be sent in the POST request
             const data = {
-                PatientId: selectedPatient.id,  // Use the selected patient ID here
+                PatientId: selectedPatient.id,
             };
 
-            // Send the POST request to the backend to generate the PDF
             const response = await axios.post(
                 `${import.meta.env.VITE_BASEURL}/generate-report-Patient_Procedures_done`,
                 data,
                 {
                     headers: {
-                        'Content-Type': 'application/json',  // Make sure you're sending JSON
+                        'Content-Type': 'application/json',
                     },
-                    responseType: 'blob',  // Handle the response as a PDF (binary data)
-                    withCredentials: true  // Include credentials (cookies) with the request
+                    responseType: 'blob',
+                    withCredentials: true,
                 }
             );
 
-            console.log("PDF generated successfully.");
-
-            // Create a download link for the PDF
             const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(pdfBlob);
-            link.download = 'Patient_Procedures_Report.pdf';  // Name of the PDF file to download
-            link.click();  // Trigger the download
+            link.download = 'Patient_Procedures_Report.pdf';
+            link.click();
 
+            swalLoading.close();
 
-        } catch (error) {
-            console.error("Error generating PDF:", error);
-
-            // Handle any errors that occur during the request
             Swal.fire({
-                title: "Error",
-                text: "An error occurred while generating the PDF. Please try again.",
-                icon: "error"
+                title: 'PDF Generated!',
+                text: 'Your PDF has been successfully generated.',
+                icon: 'success',
+            });
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+
+            swalLoading.close();
+
+            Swal.fire({
+                title: 'Error',
+                text: 'An error occurred while generating the PDF. Please try again.',
+                icon: 'error',
             });
         }
     };
+
 
 
     if (error) {

@@ -230,22 +230,26 @@ export default function Patient_Visits() {
 
     const generatepdf = async () => {
         Swal.fire({
-            title: "PDF Generated!",
-            text: "Your PDF has been successfully generated.",
-            icon: "success"
+            title: 'Generating PDF...',
+            text: 'Please wait while the PDF is being generated.',
+            icon: 'info',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
+
         let filterData;
 
-        // Create filterData based on selected period
         if (period === 'today') {
             filterData = {
                 day: new Date().getDate(),
-                month: new Date().getMonth() + 1, // Convert to 1-based month
+                month: new Date().getMonth() + 1,
                 year: new Date().getFullYear()
             };
         } else if (period === 'month') {
             filterData = {
-                month: selectedMonth + 1, // Convert to 1-based month
+                month: selectedMonth + 1,
                 year: selectedYear
             };
         } else if (period === 'year') {
@@ -254,28 +258,38 @@ export default function Patient_Visits() {
             };
         }
 
-        console.log("Report Filter:", filterData);
-
         try {
-            // Send the filter data directly as JSON in the body of the request
             const response = await axios.post(`${BASEURL}/generate-report-Patient_Visits`, filterData, {
                 headers: {
-                    'Content-Type': 'application/json',  // Set content type to JSON
+                    'Content-Type': 'application/json',
                 },
-                responseType: 'blob',  // To handle the response as a PDF
-                withCredentials: true  // Ensure credentials (cookies) are sent with the request
+                responseType: 'blob',
+                withCredentials: true
             });
 
-            // Create a download link for the PDF
             const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(pdfBlob);
             link.download = 'Patient_Visits_Report.pdf';
-            link.click();  // Trigger the download
+            link.click();
+
+            Swal.close();
+            Swal.fire({
+                title: "PDF Generated!",
+                text: "Your PDF has been successfully generated.",
+                icon: "success"
+            });
         } catch (error) {
+            Swal.close();
             console.error("Error generating report:", error);
+            Swal.fire({
+                title: "Error",
+                text: "There was an error generating the PDF.",
+                icon: "error",
+            });
         }
     };
+
 
 
 
@@ -291,7 +305,7 @@ export default function Patient_Visits() {
                     </div>
                     <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-0 mt-5 mr-5">
                         <button
-                        onClick={generatepdf}
+                            onClick={generatepdf}
                             className="px-4 py-2 bg-[#3FA8BF] hover:bg-[#96D2D9] text-white rounded transition duration-200"
                         >
                             Generate PDF
@@ -407,9 +421,9 @@ export default function Patient_Visits() {
                                 {period === 'month' && (
                                     <>
                                         <h3 className="text-xl font-bold mb-4 text-black">Visits per Week in {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })}</h3>
-                                    <div className="mb-6">
-                                        <BarChart chartData={getMonthChartData()} />
-                                    </div>
+                                        <div className="mb-6">
+                                            <BarChart chartData={getMonthChartData()} />
+                                        </div>
                                     </>
                                 )}
                                 {period === 'year' && (

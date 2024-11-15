@@ -152,12 +152,11 @@ const DentistReport = () => {
             DentistId: selectedDentistId,
         };
 
-        // Set report data based on filter type
         if (filter === 'today') {
             reportData = {
                 ...reportData,
                 day: new Date().getDate(),
-                month: new Date().getMonth() + 1, // Get current month (1-12)
+                month: new Date().getMonth() + 1,
                 year: new Date().getFullYear(),
             };
         } else if (filter === 'month') {
@@ -177,11 +176,14 @@ const DentistReport = () => {
             };
         }
 
-        // console.log('Generated Report Data:', reportData);
         Swal.fire({
-            title: "PDF Generated!",
-            text: "Your report has been successfully generated.",
-            icon: "success"
+            title: 'Generating PDF...',
+            text: 'Please wait while the report is being generated.',
+            icon: 'info',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
 
         axios.post(`${BASEURL}/generate-report-Dentist_Procedures_done`, reportData, {
@@ -189,7 +191,6 @@ const DentistReport = () => {
             responseType: 'blob'
         })
             .then((response) => {
-
                 const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
                 const pdfUrl = URL.createObjectURL(pdfBlob);
                 const link = document.createElement('a');
@@ -197,24 +198,39 @@ const DentistReport = () => {
                 link.download = 'Dentist_Procedures_Report.pdf';
                 link.click();
                 URL.revokeObjectURL(pdfUrl);
+
+                Swal.close();
+                Swal.fire({
+                    title: "PDF Generated!",
+                    text: "Your report has been successfully generated.",
+                    icon: "success"
+                });
             })
             .catch((error) => {
+                Swal.close();
                 console.error('Error generating PDF:', error);
+
+                Swal.fire({
+                    title: "Error",
+                    text: "There was an error generating the PDF.",
+                    icon: "error"
+                });
             });
     };
 
 
+
     return (
         <div className="rounded-md bg-gray-100" style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-            <div className=" rounded-md p-4 sm:p-6">
+            <div className=" rounded-md sm:p-6">
                 <div className={`mb-6 ${localStorage.getItem('Role') === 'dentist' ? 'mt-10' : 'mt-0'}`}>
                     {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 "> */}
-                        {/* <div className='flex items-center justify-start sm:items-start'>
-                            <ReportMenu />
-                        </div> */}
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4  ">
+                        <ReportMenu />
                         <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
                             <button
-                                className={`px-4 py-2 text-white rounded transition duration-200 w-full sm:w-auto mt-4 
+                                className={`px-4 py-2 text-white rounded transition duration-200 w-full sm:w-auto 
                                     ${Object.keys(procedureCounts).length === 0 ?
                                         'bg-gray-400 cursor-not-allowed' :
                                         'bg-[#3FA8BF] hover:bg-[#96D2D9]'}`
@@ -226,6 +242,7 @@ const DentistReport = () => {
                             </button>
 
                         </div>
+                    </div>
                     {/* </div> */}
                     <h2 className="text-3xl font-bold text-[#025373] text-center sm:text-left lg:text-center">Dentist Report</h2>
 

@@ -27,7 +27,7 @@ export default function NotificationPage() {
         try {
             const response = await axios.get(`${Baseurl}/Notification/admin/getAllNotif`, { withCredentials: true });
             const adminNotifications = response.data
-            .filter(notification => notification.adminOnly === true);
+                .filter(notification => notification.adminOnly === true);
 
             setNotifications(adminNotifications.reverse());
         } catch (error) {
@@ -453,8 +453,8 @@ export default function NotificationPage() {
                                 {selectedNotification.user_Appointment_message ? 'New Appointment Request' : selectedNotification.title}
                             </h2>
                             <p className="text-sm">Date Created: {selectedNotification.createdAt}</p>
-    
-                      </div>
+
+                        </div>
                         <p>{selectedNotification.user_Appointment_message ? selectedNotification.user_Appointment_message : selectedNotification.message}</p>
 
                         <div className='pt-3'>
@@ -473,11 +473,11 @@ export default function NotificationPage() {
                         </div>
 
                         <button
-    onClick={resetEditForm}
-    className="bg-gray-400 hover:bg-gray-300 text-center flex justify-center items-center text-white px-4 py-2 rounded mt-4 transition duration-200"
->
-    Close
-</button>
+                            onClick={resetEditForm}
+                            className="bg-gray-400 hover:bg-gray-300 text-center flex justify-center items-center text-white px-4 py-2 rounded mt-4 transition duration-200"
+                        >
+                            Close
+                        </button>
 
                     </div>
                 </div>
