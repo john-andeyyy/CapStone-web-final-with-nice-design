@@ -31,7 +31,6 @@ export default function AppointmentDetails() {
     const [modalMessage, setModalMessage] = useState('');
     const [RequestToCancel, setRequestToCancel] = useState();
     const [modalAction, setModalAction] = useState(null);
-
     const [originalAppointment, setOriginalAppointment] = useState({});
 
     // Fetch appointment details from the API
@@ -373,7 +372,7 @@ export default function AppointmentDetails() {
 
 
                 </div>
-                <ProceduresTable appointment={appointment} />
+                <ProceduresTable appointment={appointment}  />
 
                 <div className="flex justify-center">
                     <button className='btn bg-[#025373] hover:bg-[#03738C] text-white'

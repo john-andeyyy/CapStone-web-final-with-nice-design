@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProceduresModal from './ProceduresModal';
+import Swal from 'sweetalert2';
 
 const ProceduresTable = ({ appointment }) => {
+    const calculateTotal = () => {
+        const existingTotal = userProceduresList.reduce((total, proc) => total + proc.Price, 0);
+        const addedTotal = addedProcedures.reduce((total, proc) => total + proc.Price, 0);
+        return existingTotal + addedTotal;
+    };
     const [userProceduresList, setUserProceduresList] = useState(appointment.procedures || []);
     const [allProcedures, setAllProcedures] = useState([]);
     const [addedProcedures, setAddedProcedures] = useState([]);
@@ -10,18 +16,11 @@ const ProceduresTable = ({ appointment }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedAmount, setEditedAmount] = useState(appointment.Amount || 0);
-    const [appointmentAmount, setappointmentAmount] = useState(appointment.Amount || 0);
-    
-    const [ModalOpen, setModalOpen] = useState(false);
-    const openModal = () => setModalOpen(true);
-    const closeModal = () => setModalOpen(false);
-    
+    const [totalAmount, setTotalAmount] = useState(calculateTotal());
 
     const fetchAllProcedures = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_BASEURL}/Procedure/show`, {
-                withCredentials: true,
-            });
+            const response = await axios.get(`${import.meta.env.VITE_BASEURL}/Procedure/show`, { withCredentials: true });
             setAllProcedures(response.data);
         } catch (error) {
             console.error('Error fetching procedures:', error);
@@ -37,136 +36,116 @@ const ProceduresTable = ({ appointment }) => {
         setEditedAmount(appointment.Amount || 0);
     }, [appointment]);
 
+    useEffect(() => {
+        setTotalAmount(calculateTotal());
+    }, [userProceduresList, addedProcedures, markedForRemoval]);
+
     const handleMarkForRemoval = (id) => {
-        setMarkedForRemoval(prev => [...prev, id]);
+        setMarkedForRemoval((prev) => [...prev, id]);
     };
 
     const handleRemoveProcedure = (id) => {
-        setAddedProcedures(prev => prev.filter(proc => proc._id !== id));
-        setMarkedForRemoval(prev => prev.filter(procId => procId !== id));
+        setAddedProcedures((prev) => prev.filter((proc) => proc._id !== id));
+        setMarkedForRemoval((prev) => prev.filter((procId) => procId !== id));
     };
 
     const handleSaveProcedures = async () => {
-        console.log('Payload size (bytes):', JSON.stringify(addedProcedures).length);
-        //window.location.reload();
-
         try {
-            const updatedProcedures = [...userProceduresList, ...addedProcedures];
+            const finalProcedures = [
+                ...userProceduresList,
+                ...addedProcedures
+            ].filter((proc) => !markedForRemoval.includes(proc._id));
 
-            const finalProcedures = updatedProcedures.filter(proc => !markedForRemoval.includes(proc._id));
-
-            console.log(finalProcedures);
             await axios.put(
                 `${import.meta.env.VITE_BASEURL}/Appointments/appointmentUpdate/${appointment._id}`,
-                {
-                    procedureIds: finalProcedures.map(proc => proc._id),
-                    Amount: calculateTotal()
-                },
+                { procedureIds: finalProcedures.map((proc) => proc._id), Amount: calculateTotal() },
                 { withCredentials: true }
             );
-            console.log('Procedures saved successfully');
 
             setUserProceduresList(finalProcedures);
-
             setAddedProcedures([]);
             setMarkedForRemoval([]);
+            console.log('Procedures saved successfully');
+
+            // SweetAlert success notification
+            Swal.fire({
+                icon: 'success',
+                title: 'Saved!',
+                text: 'Procedures saved successfully.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
         } catch (error) {
             console.error('Error saving procedures:', error);
+
+            // SweetAlert error notification
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An error occurred while saving procedures. Please try again.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'OK'
+            });
         }
     };
 
-    const calculateTotal = () => {
-        const existingProceduresTotal = userProceduresList.reduce((total, proc) => total + proc.Price, 0);
-        const addedProceduresTotal = addedProcedures.reduce((total, proc) => total + proc.Price, 0);
-        return existingProceduresTotal + addedProceduresTotal;
-    };
-    const [totoalamount, settoal] = useState(calculateTotal());
+
 
     const handleSelectProcedures = (selectedProcedures) => {
-        const newProcedures = selectedProcedures.filter(procedure => {
-            const isDuplicateInAppointment = userProceduresList.some(proc => proc._id === procedure._id);
-            const isDuplicateInAddedProcedures = addedProcedures.some(proc => proc._id === procedure._id);
-            return !isDuplicateInAppointment && !isDuplicateInAddedProcedures;
-        });
+        const newProcedures = selectedProcedures.filter(
+            (proc) =>
+                !userProceduresList.some((p) => p._id === proc._id) &&
+                !addedProcedures.some((p) => p._id === proc._id)
+        );
 
         if (newProcedures.length > 0) {
-            setAddedProcedures(prev => [...prev, ...newProcedures]);
+            setAddedProcedures((prev) => [...prev, ...newProcedures]);
         } else {
             console.log('No new procedures to add, all are duplicates');
         }
     };
 
-    const handleAmountChange = (e) => {
-        const value = e.target.value;
-        setEditedAmount(value ? parseFloat(value) : 0);
-    };
-
     const handleToggleEdit = () => {
-        setIsEditing((prev) => !prev); // Toggle editing state
-        if (isEditing) {
-            // Add logic here for saving changes, if needed
-            handleSaveProcedures()
-            console.log('Save changes');
-        } else {
-            console.log('Edit mode enabled');
-        }
+        setIsEditing((prev) => !prev);
+        if (isEditing) handleSaveProcedures();
     };
 
     const formattedAmount = new Intl.NumberFormat('en-PH', {
         style: 'currency',
         currency: 'PHP',
-    }).format(totoalamount);
-    
-    const formattedAmountapi = new Intl.NumberFormat('en-PH', {
-        style: 'currency',
-        currency: 'PHP',
-    }).format(totoalamount);
+    }).format(totalAmount);
 
     return (
         <div>
-
-            <div className='grid grid-cols-2 gap-4'>
-                <p className='text-xl'><strong>Procedures:</strong></p>
-
-                <div className='flex flex-col justify-end text-right'>
-                    <div>
-                        <button
-                            onClick={handleToggleEdit}
-                            className={`px-4 py-2 rounded ${isEditing ? 'bg-[#025373] hover:bg-[#03738C]' : 'bg-[#025373] hover:bg-[#03738C]'
-                                } text-white`}
-                        >
-                            {isEditing ? 'Save' : 'Edit'}
-                        </button>
-                    </div>
+            <div className="grid grid-cols-2 gap-4">
+                <p className="text-xl"><strong>Procedures:</strong></p>
+                <div className="flex justify-end">
+                    <button
+                        onClick={handleToggleEdit}
+                        className={`px-4 py-2 rounded bg-[#025373] hover:bg-[#03738C] text-white`}
+                    >
+                        {isEditing ? 'Save' : 'Edit'}
+                    </button>
                 </div>
             </div>
-            {userProceduresList && userProceduresList.length > 0 ? (
+
+            {userProceduresList.length > 0 ? (
                 <div className="overflow-y-auto max-h-72 my-4">
                     <table className="hover:bg-gray-100 min-w-full mb-4 table-fixed">
                         <thead>
                             <tr>
                                 <th className="px-4 py-2 text-center text-white w-1/2 sticky top-0 bg-[#012840]">Procedure Name</th>
                                 <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#012840]">Price</th>
-                                {isEditing && (
-                                    <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#012840]">Actions</th>
-                                )}
+                                {isEditing && <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#012840]">Actions</th>}
                             </tr>
                         </thead>
                         <tbody>
                             {userProceduresList.map((procedure) => (
-                                <tr
-                                    key={procedure._id}
-                                    className={markedForRemoval.includes(procedure._id) ? 'bg-red-200' : ''}
-                                >
+                                <tr key={procedure._id} className={markedForRemoval.includes(procedure._id) ? 'bg-red-200' : ''}>
                                     <td className="border px-4 py-2 truncate">{procedure.Procedure_name}</td>
-                                    <td className="border px-4 py-2 truncate">
-                                        {new Intl.NumberFormat('en-PH', {
-                                            style: 'currency',
-                                            currency: 'PHP'
-                                        }).format(procedure.Price)}
-                                    </td>
+                                    <td className="border px-4 py-2 truncate">{`₱ ${procedure.Price.toLocaleString('en-PH', { minimumFractionDigits: 2 })}`}</td>
                                     {isEditing && (
-                                        <td className="border px-4 py-2 flex justify-center">
+                                        <td className="border px-4 py-2 text-center">
                                             {markedForRemoval.includes(procedure._id) ? (
                                                 <button
                                                     className="text-red-500"
@@ -176,33 +155,24 @@ const ProceduresTable = ({ appointment }) => {
                                                     Remove
                                                 </button>
                                             ) : (
-
-                                                <div>
-
-                                                    <button
-                                                        className="flex items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm"
-                                                        onClick={() => handleMarkForRemoval(procedure._id)}
-                                                        aria-label={`Delete ${procedure.Procedure_name}`}
-                                                        title='Delete'
-                                                    >
-                                                        <span className="material-symbols-outlined">delete</span>
-                                                    </button>
-                                                </div>
-
-
+                                                <button
+                                                    className="text-red-500"
+                                                    onClick={() => handleMarkForRemoval(procedure._id)}
+                                                    aria-label={`Delete ${procedure.Procedure_name}`}
+                                                    title="Delete"
+                                                >
+                                                    <span className="material-symbols-outlined">delete</span>
+                                                </button>
                                             )}
                                         </td>
                                     )}
                                 </tr>
                             ))}
-
-                            {/* Added Procedures Rows */}
                             {addedProcedures.map((procedure) => (
                                 <tr key={procedure._id}>
                                     <td className="border px-4 py-2 truncate">{procedure.Procedure_name}</td>
                                     <td className="border px-4 py-2 truncate">{`PHP ${procedure.Price}`}</td>
-
-                                    <td className="border px-4 py-2">
+                                    <td className="border px-4 py-2 text-center">
                                         <button
                                             className="text-red-500"
                                             onClick={() => handleRemoveProcedure(procedure._id)}
@@ -221,38 +191,31 @@ const ProceduresTable = ({ appointment }) => {
             )}
 
             {isEditing && (
-                <div className='flex flex-row justify-between pb-4'>
-                    <div>
-                        <button
-                            className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
-                            onClick={() => setIsModalOpen(true)}
-                        >
-                            Add Procedures
-                        </button>
-                    </div>
-                    <div>
-                        <button
-                            className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-2 rounded"
-                            onClick={() => {
-                                setAddedProcedures([])
-                                setIsEditing(false)
-                                setMarkedForRemoval([])
-                            }}
-                        >
-                            Cancel Add Procedures
-                        </button>
-                    </div>
-
-
+                <div className="flex justify-between pb-4">
+                    <button
+                        className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        Add Procedures
+                    </button>
+                    <button
+                        className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-2 rounded"
+                        onClick={() => {
+                            setAddedProcedures([]);
+                            setIsEditing(false);
+                            setMarkedForRemoval([]);
+                        }}
+                    >
+                        Cancel Add Procedures
+                    </button>
                 </div>
-
             )}
 
             <div className="flex justify-between mt-4 space-x-1">
-                <p className="font-semibold ">Total of all procedures: </p>
+                <p className="font-semibold">Total of all procedures:</p>
                 <p className="font-semibold">{formattedAmount}</p>
             </div>
-            {/* Procedures Modal */}
+
             <ProceduresModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
