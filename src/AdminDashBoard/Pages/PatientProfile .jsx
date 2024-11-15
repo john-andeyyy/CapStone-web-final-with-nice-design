@@ -21,16 +21,16 @@ const PatientProfile = () => {
     const [fullPatient, setFullPatient] = useState(null); 
     const Baseurl = import.meta.env.VITE_BASEURL
     const requiredFields = [
-        'FirstName',
-        'LastName',
-        'MiddleName',
+        'First Name',
+        'Last Name',
+        'Middle Name',
         'Email',
         'Username',
         'Address',
         'PhoneNumber',
         'Zipcode',
         'age',
-        'CivilStatus',
+        'Civil Status',
         'Gender'
     ];
 
@@ -108,17 +108,17 @@ const PatientProfile = () => {
                 <div className='flex items-center'>
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center text-[#3EB489] hover:text-[#62A78E] font-semibold focus:outline-none"
+                        className="flex items-center text-[#025373] hover:text-[#03738C] font-semibold focus:outline-none"
                     >
                         <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
                         <p className='text-xl'>Go Back</p>
                     </button>
                 </div>
             </div>
-            <h1 className="mt-5 mb-5 text-2xl font-semibold py-4 lg:py-0">Patient Profile</h1>
-            <div className="shadow-md rounded-lg p-6 bg-[#F5F5F5]">
+            <h1 className="mt-5 mb-5 text-2xl font-bold py-4 lg:py-0">Patient Profile</h1>
+            <div className="shadow-md rounded-lg p-6 bg-[#96D2D9]">
                 <div className="flex justify-end">
-                    <button onClick={() => setIsModalOpen(true)} className="btn text-white bg-[#3EB489] hover:bg-[#62A78E]">
+                    <button onClick={() => setIsModalOpen(true)} className="btn text-white bg-[#025373] hover:bg-[#03738C]">
                         Full Details
                     </button>
                 </div>
@@ -135,7 +135,7 @@ const PatientProfile = () => {
                             type="text"
                             value={patient.FirstName || ""}
                             readOnly
-                            className="bg-[#D3CDCD] p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                            className="bg-gray-100 p-2 mt-1 block w-full rounded-md border-gray-300 shadow-md"
                         />
                     </div>
                     <div className="field">
@@ -144,7 +144,7 @@ const PatientProfile = () => {
                             type="text"
                             value={patient.LastName || ""}
                             readOnly
-                            className="bg-[#D3CDCD] p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                            className="bg-gray-100 p-2 mt-1 block w-full rounded-md border-gray-300 shadow-md"
                         />
                     </div>
                     <div className="field">
@@ -153,7 +153,7 @@ const PatientProfile = () => {
                             type="text"
                             value={patient.MiddleName || ""}
                             readOnly
-                            className="bg-[#D3CDCD] p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                            className="bg-black-100 p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                         />
                     </div>
                 </div>
@@ -164,7 +164,7 @@ const PatientProfile = () => {
                 onClick={() => {
                     navigate(`/Patient2d/${userIds}`);
                 }}
-                className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
+                className='pl-4 pr-4 pt-2 pb-2 bg-[#025373] hover:bg-[#03738C] rounded mt-4 font-semibold text-white'
             >Dental Records
             </button>
 
@@ -177,11 +177,11 @@ const PatientProfile = () => {
                 <div className="overflow-x-auto mt-2">
                     <div className="max-h-96 overflow-y-auto">
                         <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-primary text-white sticky top-0  border border-black">
+                            <thead className="bg-[#012840] text-white sticky top-0  border border-black text-center">
                                 <tr>
                                     <th
                                         scope="col"
-                                        className="px-2 py-3 text-left font-medium uppercase border border-black tracking-wider"
+                                        className="hidden md:table-cell text-center px-2 py-3 border border-black font-medium uppercase tracking-wider"
                                     >
                                         Date
                                     </th>
@@ -217,7 +217,7 @@ const PatientProfile = () => {
                                         <tr
                                             key={record._id}
                                             onClick={() => handleRowClick(record._id)}
-                                            className="border border-black cursor-pointer bg-gray-100 hover:bg-accent"
+                                            className="border border-black cursor-pointer bg-white hover:bg-gray-100"
                                         >
                                             <td className="px-2 py-4 whitespace-nowrap border border-black">
                                                 {new Date(record.date).toLocaleDateString('en-US', {
@@ -230,7 +230,7 @@ const PatientProfile = () => {
                                                 {formatProcedures(record.procedures)}
                                             </td>
                                             <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">
-                                                <span>₱</span>
+                                                <span>PHP </span>
                                                 {new Intl.NumberFormat('en-PH', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(record.Amount)}
                                             </td>
                                             <td className="hidden md:table-cell px-2 py-4 border border-black whitespace-nowrap">
@@ -257,7 +257,7 @@ const PatientProfile = () => {
 
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                    <div className=" bg-accent p-6 rounded-lg shadow-lg w-11/12 md:w-1/2">
+                    <div className=" bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/2">
                         <div className='flex justify-end'>
                             <button onClick={() => setIsModalOpen(false)} className="text-gary-500">
                                 <span className="material-symbols-outlined">
@@ -265,7 +265,7 @@ const PatientProfile = () => {
                                 </span>
                             </button>
                         </div>
-                        <h2 className="text-xl font-semibold mb-4 text-[#266D53] text-center ">Full Patient Details</h2>
+                        <h2 className="text-xl font-semibold mb-4 text-[#00000] text-center ">Full Patient Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {fullPatient && requiredFields.map((field) => (
                                 <div key={field} className="field">
@@ -274,7 +274,7 @@ const PatientProfile = () => {
                                         type="text"
                                         value={fullPatient[field] || ""}
                                         readOnly
-                                        className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        className="bg-gray-100 p-2 mt-1 block w-full rounded-md border-gray-300 shadow-md"
                                     />
                                 </div>
                             ))}

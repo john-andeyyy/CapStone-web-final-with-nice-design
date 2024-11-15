@@ -231,7 +231,7 @@ export default function NotificationPage() {
             <div className='flex space-x-5 pb-2'>
                 <button
                     onClick={() => setModalType('new')}
-                    className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded"
+                    className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
                 >
                     Send New Notification
                 </button>
@@ -252,7 +252,7 @@ export default function NotificationPage() {
                                     <li
                                         key={notif._id}
                                         className={`p-4 border rounded shadow-sm cursor-pointer text-black
-                                            flex flex-col justify-between ${notif.adminisRead ? 'border-gray-300 bg-white' : 'border-green-500 bg-green-200'
+                                            flex flex-col justify-between ${notif.adminisRead ? 'border-gray-300 bg-white' : 'border-gray-300 bg-[#96D2D9] hover:bg-gray-100'
                                             }`}
                                         onClick={() => viewNotificationDetails(notif, true)}
                                     >
@@ -283,8 +283,8 @@ export default function NotificationPage() {
             {/* New Notification Modal */}
             {modalType === 'new' && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className=" bg-[#C6E4DA] p-6 rounded shadow-lg max-w-md w-full">
-                        <h2 className="text-xl font-bold mb-4 text-[#266D53] text-center">Send New Notification</h2>
+                    <div className=" bg-white p-6 rounded shadow-lg max-w-md w-full">
+                        <h2 className="text-xl font-bold mb-4 text-center">Send New Notification</h2>
                         {error && <p className="text-red-500">{error}</p>}
                         <div className="space-y-4">
                             <input
@@ -385,13 +385,13 @@ export default function NotificationPage() {
                             <div className="flex justify-end space-x-4">
                                 <button
                                     onClick={sendNotification}
-                                    className={`px-4 py-2 rounded text-black ${isConfirmed ? 'bg-[#4285F4] hover:bg-[#0C65F8]' : 'bg-gray-400 cursor-not-allowed'}`}
+                                    className={`px-4 py-2 rounded text-white ${isConfirmed ? 'bg-[#025373] hover:bg-[#03738C]' : 'bg-gray-400 cursor-not-allowed'}`}
                                 >
                                     Send Notification
                                 </button>
                                 <button
                                     onClick={closeModal}
-                                    className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black px-4 py-2 rounded"
+                                    className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-2 rounded"
                                 >
                                     Cancel
                                 </button>
@@ -428,13 +428,13 @@ export default function NotificationPage() {
                             <div className="flex justify-end space-x-4">
                                 <button
                                     onClick={saveEdit}
-                                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                                    className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
                                 >
                                     Save
                                 </button>
                                 <button
                                     onClick={resetEditForm}
-                                    className="bg-error text-white px-4 py-2 rounded"
+                                    className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-2 rounded"
                                 >
                                     Cancel
                                 </button>
@@ -463,7 +463,7 @@ export default function NotificationPage() {
                                 <div className=" overflow-auto max-h-28">
                                     <ul className="list-disc list-inside">
                                         {selectedNotification.patientStatus.map((status, index) => (
-                                            <li key={index} className="">
+                                            <li key={index} className="ml-5">
                                                 {`${status.patient.LastName || 'No LastName'}, ${status.patient.FirstName || 'No FirstName'} ${status.patient.MiddleName ? status.patient.MiddleName[0] + '.' : ''}`}
                                             </li>
                                         ))}
@@ -473,11 +473,12 @@ export default function NotificationPage() {
                         </div>
 
                         <button
-                            onClick={resetEditForm}
-                            className="bg-error text-white px-4 py-2 rounded mt-4"
-                        >
-                            Close
-                        </button>
+    onClick={resetEditForm}
+    className="bg-gray-400 hover:bg-gray-300 text-center flex justify-center items-center text-white px-4 py-2 rounded mt-4 transition duration-200"
+>
+    Close
+</button>
+
                     </div>
                 </div>
             )}

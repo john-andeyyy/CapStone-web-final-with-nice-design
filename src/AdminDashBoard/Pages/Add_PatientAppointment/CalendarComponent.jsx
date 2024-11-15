@@ -404,7 +404,7 @@ const CalendarComponent = () => {
     };
     return (
         <div className="p-4 mx-auto">
-            <h1 className="text-[#3EB489] text-4xl font-bold">Create Appointment</h1>
+            <h1 className=" text-3xl font-bold">Create Appointment</h1>
             {loading ? (
                 <div className="flex justify-center items-center h-screen">
                     <span className="loading loading-spinner loading-lg"></span>
@@ -434,7 +434,7 @@ const CalendarComponent = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4"> {/* Set to 2 columns on large screens */}
-                        <div className="border border-green-500 rounded-md flex flex-col justify-between min-h-[500px]">
+                        <div className="border border-[#012840] rounded-md flex flex-col justify-between min-h-[500px]">
                             <div>
                                 <CalendarView
                                     events={events}
@@ -452,7 +452,7 @@ const CalendarComponent = () => {
                                 <Legend />
                             </div>
                         </div>
-                        <div className="border border-green-500 rounded-md flex justify-center min-h-[500px] w-full">
+                        <div className="border border-[#012840] rounded-md flex justify-center min-h-[500px] w-full">
                             <AvailableTimeSlots
                                 selectedDate={date}
                                 unavailableDates={unavailableDates}

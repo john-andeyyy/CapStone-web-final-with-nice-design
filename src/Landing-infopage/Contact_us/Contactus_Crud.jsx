@@ -146,10 +146,10 @@ export default function ContactusDisplay() {
         <div>
             <h1 className="text-3xl font-bold mb-4 text-black">Contact Information</h1>
 
-            <div className="max-w bg-[#F5F5F5] p-10 mx-auto shadow-md rounded-lg">
+            <div className="max-w bg-[#96D2D9] p-10 mx-auto shadow-md rounded-lg">
                 <div className="flex mb-4">
                     <div className="flex-1 pr-2">
-                        <h2 className="text-lg font-semibold">Current Logo.</h2>
+                        <h2 className="text-lg font-semibold">Current Logo:</h2>
                         <img
                             src={getProfileImage(contactInfo.logo)}
                             className="object-cover h-48 w-48"
@@ -157,7 +157,7 @@ export default function ContactusDisplay() {
                         />
                     </div>
                     <div className="flex-1 pl-2">
-                        <h2 className="text-lg font-semibold">New Logo Preview</h2>
+                        <h2 className="text-lg font-semibold">New Logo Preview:</h2>
                         {formData.logo ? (
                             <img
                                 src={getProfileImage(formData.logo)}
@@ -175,7 +175,7 @@ export default function ContactusDisplay() {
 
                 <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
                     <div className="mb-4 col-span-2">
-                        <label className="text-lg font-semibold" htmlFor="DentalName">Dental Name</label>
+                        <label className="text-lg font-semibold" htmlFor="DentalName">Dental Clinic</label>
                         <input
                             id="DentalName"
                             type="text"
@@ -183,7 +183,7 @@ export default function ContactusDisplay() {
                             value={formData.DentalName}
                             onChange={handleChange}
                             disabled={!isEditing}
-                            className="w-full p-2 border border-gray-300 rounded bg-[#D3CDCD]"
+                            className="bg-gray-100 shadow-md w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
                         />
 
                     </div>
@@ -197,7 +197,7 @@ export default function ContactusDisplay() {
                             value={formData.Address}
                             onChange={handleChange}
                             disabled={!isEditing}
-                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D3CDCD]"
+                            className="bg-gray-100 shadow-md w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
                         />
                     </div>
 
@@ -212,7 +212,7 @@ export default function ContactusDisplay() {
                             disabled={!isEditing}
                             maxLength={11}
                             placeholder="09..."
-                            className="w-full p-2 border border-gray-300 rounded bg-[#D3CDCD]"
+                            className="bg-gray-100 shadow-md w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
                         />
                     </div>
 
@@ -225,7 +225,7 @@ export default function ContactusDisplay() {
                             value={formData.Facebooklink}
                             onChange={handleChange}
                             disabled={!isEditing}
-                            className="w-full p-2 border border-gray-300 rounded bg-[#D3CDCD]"
+                            className="bg-gray-100 shadow-md w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
                         />
                     </div>
 
@@ -240,7 +240,7 @@ export default function ContactusDisplay() {
                             value={formData.WeekdaysTime}
                             onChange={handleChange}
                             disabled={!isEditing}
-                            className="w-full p-2 border border-gray-300 rounded bg-[#D3CDCD]"
+                            className="bg-gray-100 shadow-md w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
                         />
                     </div>
 
@@ -253,7 +253,7 @@ export default function ContactusDisplay() {
                             value={formData.WeekendsTime}
                             onChange={handleChange}
                             disabled={!isEditing}
-                            className="w-full p-2 border border-gray-300 rounded bg-[#D3CDCD]"
+                            className="bg-gray-100 shadow-md w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
                         />
                     </div>
 
@@ -266,7 +266,7 @@ export default function ContactusDisplay() {
                             value={formData.Email}
                             onChange={handleChange}
                             disabled={!isEditing}
-                            className="w-full p-2 border border-gray-300 rounded bg-[#D3CDCD]"
+                            className="bg-gray-100 shadow-md w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
                         />
                     </div>
 
@@ -279,7 +279,7 @@ export default function ContactusDisplay() {
                             accept="image/*"
                             onChange={handleChange}
                             disabled={!isEditing}
-                            className="w-full p-2 border border-gray-300 rounded bg-[#D3CDCD]"
+                            className="bg-gray-100 shadow-md w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
                         />
 
                     </div>
@@ -289,7 +289,7 @@ export default function ContactusDisplay() {
                         <button
                             type="button"
                             onClick={() => setIsEditing(!isEditing)}
-                            className={` px-4 bg-[#4285F4] hover:bg-[#0C65F8] text-black p-2 rounded ${isEditing ? 'hidden' : 'block'}`}
+                            className={` px-4 bg-[#025373] hover:bg-[#03738C] text-white p-2 rounded ${isEditing ? 'hidden' : 'block'}`}
                         >
                             Edit
                         </button>
@@ -298,7 +298,7 @@ export default function ContactusDisplay() {
                             <>
                                 <button
                                     type="submit"
-                                    className={`bg-[#4285F4] hover:bg-[#0C65F8] text-black p-2 rounded ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    className={`bg-[#4285F4] hover:bg-[#0C65F8] text-white p-2 rounded ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting ? 'Submitting...' : 'Submit'}
@@ -306,7 +306,7 @@ export default function ContactusDisplay() {
                                 <button
                                     type="button"
                                     onClick={handleCancel}
-                                    className=" text-black p-2 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA]"
+                                    className=" text-white p-2 rounded bg-[#ADAAAA] hover:bg-[#D9D9D9]"
                                 >
                                     Cancel
                                 </button>

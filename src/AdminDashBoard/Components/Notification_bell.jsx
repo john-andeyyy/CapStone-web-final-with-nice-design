@@ -155,7 +155,7 @@ const NotificationBell = () => {
         <div className="relative flex justify-end items-center ">
             <Settings />
             <button className="btn btn-ghost btn-circle relative" onClick={toggleDropdown}>
-                <div className="indicator" title='notification'>
+                <div className="indicator" title="notification">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -170,9 +170,12 @@ const NotificationBell = () => {
                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                         />
                     </svg>
-                    <span className="badge badge-xs badge-primary indicator-item">{unreadCount}</span>
+                    <span className="badge badge-xs indicator-item" style={{ backgroundColor: '#3FA8BF' }}>
+                        {unreadCount}
+                    </span>
                 </div>
             </button>
+
 
             {isOpen && (
                 <div ref={dropdownRef} className="absolute top-full right-0 mt-2 w-80 bg-neutral shadow-lg rounded-lg z-10 overflow-hidden">
@@ -193,14 +196,14 @@ const NotificationBell = () => {
                                 {notifications.map((notification) => (
                                     <li
                                         key={notification._id}
-                                        className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-secondary 
+                                        className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-gray-100 
                                         ${localrole === 'admin'
                                                 ? (!notification.adminisRead
-                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
-                                                    : 'bg-[#69dcb4] bg-opacity-15')
+                                                    ? 'bg-[#3FA8BF] font-medium bg-opacity-50'
+                                                    : 'bg-[#3FA8BF] bg-opacity-15')
                                                 : (localrole === 'dentist' && !notification.DentistRead
-                                                    ? 'bg-[#69dcb4] font-medium bg-opacity-50'
-                                                    : 'bg-[#69dcb4] bg-opacity-15')
+                                                    ? 'bg-[#3FA8BF] font-medium bg-opacity-50'
+                                                    : 'bg-[#3FA8BF] bg-opacity-15')
                                             }
 `}
                                         onClick={() => handleNotificationClick(notification)}
@@ -208,7 +211,7 @@ const NotificationBell = () => {
 
                                         <div className="flex items-center space-x-4">
                                             <span
-                                                className="material-symbols-outlined text-[#3EB489]"
+                                                className="material-symbols-outlined text-black"
                                                 style={{
                                                     fontVariationSettings: `'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24`
                                                 }}
@@ -267,7 +270,12 @@ const NotificationBell = () => {
                                     </button>
                                     <button className="bg-[#3EB489] hover:bg-[#3eb489b3] btn mt-4" onClick={() => {
                                         closeModal();
-                                        navigate(`appointment/${selectedNotification.appointmentStatus[0].appointment_id}`);
+                                        // navigate(`appointment/${selectedNotification.appointmentStatus[0].appointment_id}`);
+                                        if (selectedNotification.user_Appointment_Title === 'Dental Certificate Request') {
+                                            navigate(`Medical_requests`);
+                                        } else {
+                                            navigate(`appointment/${selectedNotification.appointmentStatus[0].appointment_id}`);
+                                        }
                                     }}>
                                         View
                                     </button>

@@ -62,7 +62,7 @@ export default function ParentModel2d() {
         <div className='flex items-center'>
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center text-[#3EB489] hover:text-[#62A78E] font-semibold focus:outline-none"
+            className="flex items-center text-[#025373] hover:text-[#03738C] font-semibold focus:outline-none"
           >
             <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
             <p className='text-xl'>Go Back</p>
@@ -70,12 +70,12 @@ export default function ParentModel2d() {
         </div>
       </div>
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-center text-[#266D53] flex-1">Dental Records</h1>
+          <h1 className="text-2xl font-bold text-center text-[#00000] flex-1">Dental Records</h1>
 
           {localStorage.getItem('Role') !== 'dentist' && (
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="bg-[#3EB489] hover:bg-[#62A78E] text-white px-4 py-2 rounded"
+              className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
             >
               Add Tooth
             </button>
@@ -88,7 +88,7 @@ export default function ParentModel2d() {
 
         <div className='mt-5'>
           {/* Upper Teeth Section */}
-          <h2 className="text-xl font-bold mb-2">Upper Teeth</h2>
+          <h2 className="text-xl font-bold mb-5">Upper Teeth</h2>
           <div className="flex justify-center space-x-1 flex-wrap mb-4">
             {teethData.Upper.length > 0 ? (
               teethData.Upper.map((tooth) => (
@@ -107,7 +107,7 @@ export default function ParentModel2d() {
           </div>
 
           {/* Lower Teeth Section */}
-          <h2 className="text-xl font-bold mb-2">Lower Teeth</h2>
+          <h2 className="text-xl font-bold mb-5">Lower Teeth</h2>
           <div className="flex justify-center space-x-1 flex-wrap mb-4">
             {teethData.Lower.length > 0 ? (
               teethData.Lower.map((tooth) => (

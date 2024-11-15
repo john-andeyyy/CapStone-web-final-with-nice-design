@@ -176,14 +176,14 @@ export default function Grouplist() {
             </div> */}
 
             <div className='flex justify-between items-center p-5'>
-        <h1 className='text-2xl font-semibold l:text-sm'>The DenTeam Members:</h1>
+        <h1 className='text-3xl font-bold l:text-sm'>The DenTeam Members:</h1>
         <div className='relative'>
           <input
             type='text'
             placeholder='Search members...'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className='block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+            className='bg-gray-100 shadow-md block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
           />
           <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
             <span className="material-symbols-outlined">search</span>
@@ -197,19 +197,19 @@ export default function Grouplist() {
             <div className="flex space-x-4 mb-8 ml-5">
                 <button
                     onClick={() => setViewMode('card')}
-                    className={`px-4 py-2 rounded-md ${viewMode === 'card' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                    className={`px-4 py-2 rounded-md ${viewMode === 'card' ? 'bg-[#025373] text-white' : 'bg-[#03738C] text-white '}`}
                 >
                     Card View
                 </button>
                 <button
                     onClick={() => setViewMode('table')}
-                    className={`px-4 py-2 rounded-md ${viewMode === 'table' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                    className={`px-4 py-2 rounded-md ${viewMode === 'table' ? 'bg-[#025373] text-white' : 'bg-[#03738C] text-white '}`}
                 >
                     Table View
                 </button>
                 <button
                     onClick={() => setIsAddGroupView(true)}
-                    className={`px-4 py-2 rounded-md ${IsAddGroupView ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                    className={`px-4 py-2 rounded-md ${IsAddGroupView ? 'bg-[#025373] text-white' : 'bg-[#03738C] text-white '}`}
                 >
                     Add Group View
                 </button>
@@ -223,16 +223,16 @@ export default function Grouplist() {
                     <table className="min-w-full border border-gray-300">
                         <thead className=" text-center text-white">
                             <tr>
-                                <th className="p-2 border border-black bg-[#3EB489] z-10">Name</th>
-                                <th className="p-2 border border-black bg-[#3EB489] z-10">Role</th>
-                                <th className="p-2 border border-black bg-[#3EB489] z-10">Contact Number</th>
-                                <th className="p-2 border border-black bg-[#3EB489] z-10 text-center">Actions</th>
+                                <th className="p-2 border border-black bg-[#012840] z-10">Name</th>
+                                <th className="p-2 border border-black bg-[#012840] z-10">Role</th>
+                                <th className="p-2 border border-black bg-[#012840] z-10">Contact Number</th>
+                                <th className="p-2 border border-black bg-[#012840] z-10 text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredMembers.length > 0 ? (
                                 filteredMembers.map(member => (
-                                    <tr key={member._id} className="bg-gray-100 hover:bg-accent">
+                                    <tr key={member._id} className="bg-white hover:bg-gray-100">
                                         <td className=" border border-black pl-10 " data-label="Name">{`${member.FirstName} ${member.LastName}`}</td>
                                         <td className="p-2 border border-black" data-label="Role">{member.Role}</td>
                                         <td className="p-2 border border-black" data-label="Contact Number">{member.ContactNumber}</td>
@@ -290,9 +290,9 @@ export default function Grouplist() {
                 <div className="max-w-7xl mx-auto p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {filteredMembers.length > 0 ? (
                         filteredMembers.map(member => (
-                            <div key={member._id} className="card card-compact bg-accent shadow-xl">
+                            <div key={member._id} className="card card-compact bg-[#96D2D9] shadow-xl">
                                 <div className='text-right pt-3 pr-3'>
-                                    <button onClick={() => handleEditClick(member)} className="text-blue-500">Edit</button>
+                                    <button onClick={() => handleEditClick(member)} className="text-blue-900">Edit</button>
                                 </div>
 
 
@@ -333,8 +333,8 @@ export default function Grouplist() {
             {/* Edit Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-                    <div className="bg-[#C6E4DA] p-8 rounded-lg shadow-2xl max-w-4xl w-full">
-                        <h2 className="text-3xl font-bold mb-6 text-[#266D53] text-center">Edit Member</h2>
+                    <div className="bg-[#ffffff] p-8 rounded-lg shadow-2xl max-w-4xl w-full">
+                        <h2 className="text-3xl font-bold mb-6 text-[#00000] text-center">Edit Member</h2>
                         <div className="mb-4 flex justify-center">
                             <img
                                 src={getProfileImage(formData.ProfilePicture)}
@@ -351,7 +351,7 @@ export default function Grouplist() {
                                         name="FirstName"
                                         value={formData.FirstName}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none transition duration-200"
+                                        className="bg-gray-100 shadow-md w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 outline-none transition duration-200"
                                         placeholder="Enter first name"
                                     />
                                 </div>
@@ -363,7 +363,7 @@ export default function Grouplist() {
                                         name="LastName"
                                         value={formData.LastName}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none transition duration-200"
+                                        className="bg-gray-100 shadow-md  w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 outline-none transition duration-200"
                                         placeholder="Enter last name"
                                     />
                                 </div>
@@ -375,7 +375,7 @@ export default function Grouplist() {
                                         name="MiddleName"
                                         value={formData.MiddleName}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none transition duration-200"
+                                        className="bg-gray-100 shadow-md  w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 outline-none transition duration-200"
                                         placeholder="Enter middle name"
                                     />
                                 </div>
@@ -387,7 +387,7 @@ export default function Grouplist() {
                                         name="ContactNumber"
                                         value={formData.ContactNumber}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none transition duration-200"
+                                        className="bg-gray-100 shadow-md  w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 outline-none transition duration-200"
                                         placeholder="Enter contact number"
                                     />
                                 </div>
@@ -399,7 +399,7 @@ export default function Grouplist() {
                                         name="Facebooklink"
                                         value={formData.Facebooklink}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none transition duration-200"
+                                        className="bg-gray-100 shadow-md  w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 outline-none transition duration-200"
                                         placeholder="Enter Facebook link"
                                     />
                                 </div>
@@ -411,7 +411,7 @@ export default function Grouplist() {
                                         accept="image/*"
                                         name="ProfilePicture"
                                         onChange={handleImageChange}
-                                        className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none transition duration-200"
+                                        className="bg-gray-100 shadow-md  w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 outline-none transition duration-200"
                                     />
                                 </div>
 
@@ -422,7 +422,7 @@ export default function Grouplist() {
                                         name="Role"
                                         value={formData.Role}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none transition duration-200"
+                                        className="bg-gray-100 shadow-md  w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 outline-none transition duration-200"
                                         placeholder="Enter role"
                                     />
                                 </div>
@@ -434,7 +434,7 @@ export default function Grouplist() {
                                         name="Email"
                                         value={formData.Email}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none transition duration-200"
+                                        className="bg-gray-100 shadow-md  w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 outline-none transition duration-200"
                                         placeholder="Enter email"
                                     />
                                 </div>
@@ -443,14 +443,14 @@ export default function Grouplist() {
                             <div className="flex justify-end space-x-4 mt-6">
                                 <button
                                     type="button"
-                                    className="px-6 py-3 bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black rounded-lg  transition duration-300 ease-in-out"
+                                    className="px-6 py-3 bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white rounded-lg  transition duration-300 ease-in-out"
                                     onClick={() => setIsModalOpen(false)}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-6 py-3  bg-[#4285F4] hover:bg-[#0C65F8] text-black rounded-lg  transition duration-300 ease-in-out"
+                                    className="px-6 py-3  bg-[#025373] hover:bg-[#03738C] text-white rounded-lg  transition duration-300 ease-in-out"
                                 >
                                     Save
                                 </button>
@@ -494,9 +494,9 @@ export default function Grouplist() {
 
             {isViewModalOpen && selectedMemberData && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-[#C6E4DA] p-8 rounded-md shadow-lg max-w-lg w-full">
+                    <div className="bg-[#ffffff] p-8 rounded-md shadow-lg max-w-lg w-full">
                     <div className="relative">
-                        <h2 className="text-xl text-[#266D53] text-center font-bold mb-4">
+                        <h2 className="text-xl text-[#00000] text-center font-bold mb-4">
                             Member Details
                         </h2>
                         

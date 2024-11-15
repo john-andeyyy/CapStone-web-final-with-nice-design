@@ -101,30 +101,41 @@ export default function Sidebar() {
 
     const handleLogout = () => {
         Swal.fire({
+            //background: '#96D2D9', // Set the background color
             title: 'Log Out Confirmation',
             text: "Are you sure you want to log out? This will end your current session.",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3EB489',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#025373',
+            cancelButtonColor: '#ADAAAA',
             confirmButtonText: 'Yes, log out!'
         }).then((result) => {
             if (result.isConfirmed) {
+                // Clear local storage and navigate
                 localStorage.clear();
                 navigate('/');
                 window.location.reload();
+    
+                // Send logout request to server
                 axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
                     .then((res) => {
                         if (res.status === 200) {
-
+                            console.log('Successfully logged out');
                         }
                     })
                     .catch((error) => {
-                        console.log('Logout error:', error);
+                        console.error('Logout error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'There was an issue logging out. Please try again.',
+                            icon: 'error',
+                            confirmButtonColor: '#025373'
+                        });
                     });
             }
         });
     };
+    
 
 
     return (
@@ -136,7 +147,7 @@ export default function Sidebar() {
                 {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
 
-            <div className={`fixed  h-screen w-60 bg-[#3EB489] p-4 flex flex-col justify-between transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+            <div className={`fixed  h-screen w-60 bg-[#032742] p-4 flex flex-col justify-between transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
                 <div>
                     {/* <div className="flex justify-between items-center pb-3"> */}
                     {/* <button className="" onClick={() => setIsModalOpen(true)}>
@@ -145,7 +156,7 @@ export default function Sidebar() {
 
 
                     <h2 className="text-xl uppercase font-serif font-bold mt-5 mb-5 text-center md:block">
-                        <span className='text-white'>{dentalname.DentalName}</span> <span className='text-black'>Clinic</span>
+                        <span className='text-white'>{dentalname.DentalName}</span> <span className='text-[#96D2D9]'>Clinic</span>
                     </h2>
                     <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
                         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
@@ -169,16 +180,16 @@ export default function Sidebar() {
 
                                 <div>
                                     {/* <h1 className='text-2xl text-red-500'>dentist view only <span>icon</span> </h1> */}
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistAppointment' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/DentistSchedule', 'DentistSchedule')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer mt-10 ${activeItem === 'DentistAppointment' ? 'bg-[#03738C] text-gray-800' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/DentistSchedule', 'DentistSchedule')}>
                                         <FaHome className="mr-3" />
                                         <span>My Appointments</span>
                                     </li>
 
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/patients', 'patients')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/patients', 'patients')}>
                                         <FaUser className="mr-3" />
                                         <span>My Patients</span>
                                     </li>
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistReport' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/DentistReport', 'DentistReport')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistReport' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/DentistReport', 'DentistReport')}>
                                         <FaUser className="mr-3" />
                                         <span>My Reports</span>
                                     </li>
@@ -198,14 +209,14 @@ export default function Sidebar() {
                                     {/* <h1>for admin only</h1> */}
 
 
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'general' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/dashboard', 'general')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'general' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/dashboard', 'general')}>
                                         <FaHome className="mr-3" />
                                         <span>General</span>
                                     </li>
 
                                     {/* Appointments Dropdown */}
                                     <li className="relative">
-                                        <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'appointments' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleAppointmentsDropdown}>
+                                        <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'appointments' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={toggleAppointmentsDropdown}>
                                             <FaCalendarAlt className="mr-3" />
                                             <span>Appointments</span>
                                             {isAppointmentsDropdownOpen ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
@@ -213,15 +224,15 @@ export default function Sidebar() {
 
                                         {isAppointmentsDropdownOpen && (
                                             <ul className="ml-8 mt-2 space-y-1">
-                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'appointmentList' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/appointments', 'appointmentList')}>
+                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'appointmentList' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/appointments', 'appointmentList')}>
                                                     <span className="material-symbols-outlined mr-2">event_available</span>
                                                     Appointments
                                                 </li>
-                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'calendar' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/CalendarComponent', 'calendar')}>
+                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'calendar' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/CalendarComponent', 'calendar')}>
                                                     <span className="material-symbols-outlined mr-2">calendar_month</span>
                                                     Calendar
                                                 </li>
-                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'Create-appointment' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Create-appointment', 'Create-appointment')}>
+                                                <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'Create-appointment' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/Create-appointment', 'Create-appointment')}>
                                                     <span className="material-symbols-outlined mr-2">calendar_month</span>
                                                     Create appointment
                                                 </li>
@@ -229,12 +240,12 @@ export default function Sidebar() {
                                         )}
                                     </li>
 
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/patients', 'patients')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/patients', 'patients')}>
                                         <FaUser className="mr-3" />
                                         <span>Patients</span>
                                     </li>
 
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}>
                                         <FaFileAlt className="mr-3" />
                                         <span>Dental Certificate Requests</span>
                                     </li>
@@ -262,14 +273,18 @@ export default function Sidebar() {
 
                                     {/* </li> */}
 
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'add-procedure' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Add_Procedure', 'add-procedure')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'add-procedure' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/Add_Procedure', 'add-procedure')}>
                                         <FaPlus className="mr-3" />
                                         <span> Services</span>
                                     </li>
 
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Dentist' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Dentist', 'Dentist')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Dentist' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/Dentist', 'Dentist')}>
                                         <span className="material-symbols-outlined mr-2">edit</span>
                                         <span>Dentist</span>
+                                    </li>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Reports' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/Total_procedures', 'Reports')}>
+                                        <FaFileAlt className="mr-3" />
+                                        <span>Reports</span>
                                     </li>
 
 

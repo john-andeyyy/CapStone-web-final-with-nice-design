@@ -221,7 +221,7 @@ export default function TotalProcedures() {
                     <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
                         <button
                             onClick={saveAsPDF}
-                            className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200 w-full sm:w-auto"
+                            className="px-4 py-2 bg-[#3FA8BF] hover:bg-[#96D2D9] text-white rounded transition duration-200 w-full sm:w-auto"
                         >
                             Generate PDF
                         </button>
@@ -232,7 +232,7 @@ export default function TotalProcedures() {
                 <div className=" rounded-lg shadow-md p-2">
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
                         <div className='flex flex-col'>
-                            <h1 className="text-xl sm:text-2xl text-[#3EB489] font-bold p-2 text-center sm:text-left">
+                            <h1 className="text-xl sm:text-2xl text-[#025373] font-bold p-2 text-center sm:text-left">
                                 Total Procedures Done {isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}
                             </h1>
                         </div>
@@ -260,7 +260,7 @@ export default function TotalProcedures() {
                                             handleToday();
                                         }
                                     }}
-                                    className="block p-2 border border-gray-400 rounded-md focus:outline-none transition max-w-full sm:max-w-xs"
+                                    className="block p-2 border bg-gray-100 border-gray-400 rounded-md focus:outline-none transition max-w-full sm:max-w-xs"
                                 >
                                     <option value="">Select an option</option>
                                     <option value="year">View Year</option>
@@ -275,7 +275,7 @@ export default function TotalProcedures() {
                                             setCurrentMonth(dayjs().month(month - 1).year(currentYear));
                                             setIsYearView(false);
                                         }}
-                                        className="mt-1 p-2 block border border-gray-300 rounded-md w-full sm:w-auto"
+                                        className="ml-2 p-2 block border border-gray-300 bg-gray-100 rounded-md w-full sm:w-auto"
                                     >
                                         <option value="01">January</option>
                                         <option value="02">February</option>
@@ -310,7 +310,7 @@ export default function TotalProcedures() {
                                             id="year-selector"
                                             value={selectedYear}
                                             onChange={(e) => setSelectedYear(Number(e.target.value))}
-                                            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+                                            className="mt-1 p-2 block w-full border bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                                         >
                                             <option value="">--Select Year--</option>
                                             {years.map((year) => (
@@ -329,7 +329,7 @@ export default function TotalProcedures() {
                         <div className="overflow-y-auto" style={{ maxHeight: '400px' }}>
                             <table className="min-w-full border">
                                 <thead>
-                                    <tr className='bg-primary text-white'>
+                                    <tr className='bg-[#012840] text-white'>
                                         <th className="py-2 px-4 border-b font-bold text-left border border-black ">Procedure Name</th>
                                         <th className="py-2 px-4 border-b font-bold text-left border border-black ">Count</th>
                                     </tr>
@@ -337,7 +337,7 @@ export default function TotalProcedures() {
                                 <tbody>
                                     {Object.keys(currentReport).length > 0 ? (
                                         Object.keys(currentReport).map(procedureName => (
-                                            <tr key={procedureName} className="hover:bg-accent bg-gray-100">
+                                            <tr key={procedureName} className="hover:bg-gray-100 bg-white">
                                                 <td className="py-2 px-4 border-b border border-black">{procedureName}</td>
                                                 <td className="py-2 px-4 border-b border border-black">{currentReport[procedureName]}</td>
                                             </tr>
@@ -353,7 +353,7 @@ export default function TotalProcedures() {
                         {/* Responsive Pie Chart */}
                         <div className="rounded-xl"
                             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-                            <div className="mt-4 sm:mt-0 bg-accent  py-3 rounded-xl">
+                            <div className="mt-4 sm:mt-0 bg-[#96D2D9]  py-3 rounded-xl">
                                 {Object.keys(currentReport).length > 0 ? (
                                     <PieChart labels={labels} datasets={datasets} title={`Total Procedures Done ${isYearView ? `in ${currentYear}` : `in ${formattedMonth}`}`} />
                                 ) : (

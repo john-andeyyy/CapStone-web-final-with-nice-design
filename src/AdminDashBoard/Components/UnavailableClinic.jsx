@@ -12,15 +12,15 @@ const Modal = ({ isOpen, onClose, onSubmit, editMessage, editFrom, editTo, setEd
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-            <div className="bg-accent p-4 rounded shadow-lg max-w-96">
-                <h2 className="text-xl font-bold mb-4 text-[#266D53] text-center">Edit Unavailable Time</h2>
-                <p className="text-sm text-gray-600">Currently selected: </p>
+            <div className="bg-white p-4 rounded shadow-lg max-w-96">
+                <h2 className="text-xl font-bold mb-4 text-center">Edit Unavailable Time</h2>
+                <p className="textxl text-gray-600">Currently selected: </p>
                 <p>From <span className='font-bold'>{formatDate(editFrom)}</span> to <span className='font-bold'>{formatDate(editTo)}</span></p>
 
                 <form onSubmit={onSubmit}>
                     <div className="flex flex-col space-y-4">
                         <div>
-                            <label htmlFor="editMessage" className="block mb-1 mt-2">Message:</label>
+                            <label htmlFor="editMessage" className="block mb-1 mt-2 font-semibold">Message:</label>
                             <input
                                 id="editMessage"
                                 type="text"
@@ -31,7 +31,7 @@ const Modal = ({ isOpen, onClose, onSubmit, editMessage, editFrom, editTo, setEd
                             />
                         </div>
                         <div>
-                            <label htmlFor="editFromDate" className="block mb-1">From:</label>
+                            <label htmlFor="editFromDate" className="block mb-1 font-semibold">From:</label>
                             <input
                                 id="editFromDate"
                                 type="date"
@@ -42,7 +42,7 @@ const Modal = ({ isOpen, onClose, onSubmit, editMessage, editFrom, editTo, setEd
                             />
                         </div>
                         <div>
-                            <label htmlFor="editToDate" className="block mb-1">To:</label>
+                            <label htmlFor="editToDate" className="block mb-1 font-semibold">To:</label>
                             <input
                                 id="editToDate"
                                 type="date"
@@ -52,11 +52,11 @@ const Modal = ({ isOpen, onClose, onSubmit, editMessage, editFrom, editTo, setEd
                                 required
                             />
                         </div>
-                        <div className="flex justify-between">
-                            <button type="submit" className="bg-[#4285F4] hover:bg-[#0C65F8] text-black px-4 py-1 rounded">
+                        <div className="flex justify-between gap-2">
+                            <button type="submit" className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-1 rounded">
                                 Update Unavailable Time
                             </button>
-                            <button type="button" onClick={onClose} className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black px-4 py-1 rounded">
+                            <button type="button" onClick={onClose} className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-1 rounded">
                                 Cancel
                             </button>
                         </div>
@@ -208,7 +208,7 @@ const UnavailableClinic = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">Manage Unavailable Times for Clinic</h2>
+            <h2 className="text-3xl font-bold mb-4">Manage Unavailable Times for Clinic</h2>
             {error && <p className="text-red-500">{error}</p>}
 
             {/* Filter Section */}
@@ -220,7 +220,7 @@ const UnavailableClinic = () => {
                             id="month-selector"
                             value={selectedMonth}
                             onChange={handleMonthChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                         >
                             <option value="">--Select Month--</option>
                             {months.map((month) => (
@@ -235,7 +235,7 @@ const UnavailableClinic = () => {
                             id="year-selector"
                             value={selectedYear}
                             onChange={(e) => setSelectedYear(Number(e.target.value))}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                         >
                             {years.map((year) => (
                                 <option key={year} value={year}>{year}</option>
@@ -285,7 +285,7 @@ const UnavailableClinic = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded">
+                        <button type="submit" className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-1 rounded">
                             Add Unavailable Time
                         </button>
                     </div>
@@ -299,23 +299,23 @@ const UnavailableClinic = () => {
                     <table className="w-full border-collapse border border-gray-300 ">
                         <thead>
                             <tr>
-                                <th className="text-white border border-black px-4 py-2 sticky top-0 bg-[#3EB489]">Message</th>
-                                <th className="text-white border border-black px-4 py-2 sticky top-0 bg-[#3EB489]">From</th>
-                                <th className="text-white border border-black px-4 py-2 sticky top-0 bg-[#3EB489]">To</th>
-                                <th className="text-white border border-black px-4 py-2 sticky top-0 bg-[#3EB489]">Actions</th>
+                                <th className="text-white border border-black px-4 py-2 sticky top-0 bg-[#012840]">Message</th>
+                                <th className="text-white border border-black px-4 py-2 sticky top-0 bg-[#012840]">From</th>
+                                <th className="text-white border border-black px-4 py-2 sticky top-0 bg-[#012840]">To</th>
+                                <th className="text-white border border-black px-4 py-2 sticky top-0 bg-[#012840]">Actions</th>
                             </tr>
 
                         </thead>
                         <tbody>
                             {filteredUnavailableList.map((item) => (
                                 <tr key={item._id}>
-                                    <td className="border border-black bg-gray-100  px-4 py-2">{item.Message}</td>
-                                    <td className="border border-black bg-gray-100 px-4 py-2">{formatDateTime(item.from)}</td>
-                                    <td className="border border-black bg-gray-100 px-4 py-2">{formatDateTime(item.to)}</td>
-                                    <td className="border border-gray-600 bg-gray-100 px-4 py-2 flex justify-center gap-2 ">
-                                        <button onClick={() => initiateEdit(item)} className=" flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm" title='edit'>
+                                    <td className="border border-black bg-white  px-4 py-2">{item.Message}</td>
+                                    <td className="border border-black bg-white px-4 py-2">{formatDateTime(item.from)}</td>
+                                    <td className="border border-black bg-whitepx-4 py-2">{formatDateTime(item.to)}</td>
+                                    <td className="border border-gray-600 bg-white px-4 py-2 flex justify-center gap-2 ">
+                                        <button onClick={() => initiateEdit(item)} className=" flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm" title='Edit'>
                                             <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span></button>
-                                        <button onClick={() => deleteUnavailableTime(item._id)} className="flex flex-col items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm" title='delete'>
+                                        <button onClick={() => deleteUnavailableTime(item._id)} className="flex flex-col items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm" title='Delete'>
                                             <span className="material-symbols-outlined">
                                                 delete
                                             </span>

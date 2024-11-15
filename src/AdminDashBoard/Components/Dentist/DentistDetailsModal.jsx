@@ -8,8 +8,8 @@ const DentistDetailsModal = ({ showModal, selectedDentist, setisEditmodal, setSh
     return (
         showModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-[#C6E4DA] rounded-lg p-6 w-11/12 max-w-lg">
-                    <h2 className="text-2xl mb-4 text-[#266D53] text-center">Dentist Details</h2>
+                <div className="bg-white rounded-lg p-6 w-11/12 max-w-lg">
+                    <h2 className="text-2xl mb-4  text-center">Dentist Details</h2>
 
                     {selectedDentist && (
                         <div className="flex flex-col items-center md:flex-row md:items-start">
@@ -36,7 +36,7 @@ const DentistDetailsModal = ({ showModal, selectedDentist, setisEditmodal, setSh
 
                     <div className="grid grid-cols-2 gap-4">
                         <button
-                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-white py-2 px-4 rounded"
+                            className="bg-[#025373] hover:bg-[#03738C] text-white py-2 px-4 rounded"
                             onClick={() => {
                                 setisEditmodal(true);
                                 setShowModal(false);
@@ -47,7 +47,7 @@ const DentistDetailsModal = ({ showModal, selectedDentist, setisEditmodal, setSh
 
                         <button
                             onClick={handleCloseModal}
-                            className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black py-2 px-4 rounded"
+                            className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white py-2 px-4 rounded"
                         >
                             Close
                         </button>

@@ -79,7 +79,7 @@ export default function Dashboard_Calendar() {
         return (
             <div className="day-view-container p-4 rounded-lg ">
                 <div className="flex justify-start mb-4">
-                    <button className="p-2 rounded-lg text-lg bg-[#3EB489]" onClick={() => setView('month')}>
+                    <button className="p-2 rounded-lg text-white bg-[#025373] hover:bg-[#03738C]" onClick={() => setView('month')}>
                         Month View
                     </button>
                 </div>
@@ -89,7 +89,7 @@ export default function Dashboard_Calendar() {
                     {dayEvents.length > 0 ? (
                         <table className="table-auto w-full text-lg border-separate border-spacing-y-2">
                             <thead>
-                                <tr className="bg-primary text-white">
+                                <tr className="bg-[#012840] text-white">
                                     <th className="p-3 text-left">No.</th>
                                     <th className="p-3 text-left">Event Title</th>
                                     <th className="p-3 text-left">Event Time</th>
@@ -101,7 +101,7 @@ export default function Dashboard_Calendar() {
                                     .map((event, index) => (
                                         <tr
                                             onClick={() => handleEventClick(event)}
-                                            key={index} className={`rounded-lg ${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'} hover:bg-[#3EB489] cursor-pointer `}>
+                                            key={index} className={`rounded-lg ${index % 2 === 0 ? 'bg-white' : 'bg-white'} hover:bg-gray-100 cursor-pointer `}>
                                             <td className="p-3 text-center font-medium">{event.id.slice(-3)}</td>
                                             <td className="p-3 font-semibold">{event.title}</td>
                                             <td className="p-3 text-center">
@@ -120,7 +120,7 @@ export default function Dashboard_Calendar() {
 
                 <Modal isOpen={isModalOpen} close={closeModal}>
                     <div className="flex justify-between items-center mb-4 border-b pb-2">
-                        <h3 className="text-lg font-semibold text-[#266D53] text-center">Event Details</h3>
+                        <h3 className="text-lg font-semibold text-[#000000] text-center">Event Details</h3>
                         <button
                             className="text-sm text-black hover:text-gray-700 transition-colors"
                             onClick={closeModal}
@@ -132,7 +132,7 @@ export default function Dashboard_Calendar() {
                     </div>
                     {selectedEvent && (
                         <div>
-                            <div className="grid grid-cols-2 gap-x-4 gap-y-3 py-4 text-sm text-gray-700">
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-3 py-4 text-sm text-black">
                                 <div>
                                     <p className="font-medium">Title</p>
                                     <p>{selectedEvent.title}</p>
@@ -163,7 +163,7 @@ export default function Dashboard_Calendar() {
                             </div>
                             <div className='text-right '>
                                 <button
-                                    className='bg-[#3EB489] hover:bg-[#62A78E] p-3 rounded-lg '
+                                    className='bg-[#025373] hover:bg-[#03738C] p-3 rounded-lg text-white '
                                     onClick={() => {
                                         closeModal()
                                         navigate(`/appointment/${selectedEvent.id}`)
@@ -248,7 +248,7 @@ export default function Dashboard_Calendar() {
     };
 
     return (
-        <div className="rounded-md bg-[#3EB489] p-5"
+        <div className=""
             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
             <div className="p-4 rounded-lg mt-5 text-center max-w-4xl mx-auto bg-neutral shadow-lg">
 
@@ -275,7 +275,7 @@ export default function Dashboard_Calendar() {
                 </div>
                 {view === 'day' && selectedDate && renderDayView()}
                 {view === 'year' && renderYearView()}
-                <p className='flex items-center text-[#3EB489] text-xl py-2'>
+                <p className='flex items-center text-[#03738C] text-xl py-2'>
                     {/* <span className='text-red-500'>Note:</span> */}
                     <span className="material-symbols-outlined text-red-500 mx-1 align-middle">
                         info

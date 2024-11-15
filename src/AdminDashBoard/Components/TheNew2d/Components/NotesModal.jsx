@@ -200,13 +200,25 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                 </div>
                                 <div className="mb-2">
                                     <label className="block">Status:</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         value={toothDetails.status}
                                         onChange={(e) => setToothDetails({ ...toothDetails, status: e.target.value })}
                                         className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                                         required
-                                    />
+                                    >
+                                        <option value="Healthy">Healthy</option>
+                                        <option value="Gingivitis">Gingivitis</option>
+                                        <option value="Periodontitis (mild)">Periodontitis (mild)</option>
+                                        <option value="Periodontitis (moderate)">Periodontitis (moderate)</option>
+                                        <option value="Periodontitis (severe)">Periodontitis (severe)</option>
+                                        <option value="Missing">Missing</option>
+                                        <option value="Implant">Implant</option>
+                                        <option value="Decay">Decay</option>
+                                        <option value="Restored">Restored</option>
+                                        <option value="Abscess">Abscess</option>
+                                        <option value="Bleeding on Probing">Bleeding on Probing</option>
+                                        <option value="Calculus Present">Calculus Present</option>
+                                    </select>
                                 </div>
                             </div>
                             <div className="flex justify-between">

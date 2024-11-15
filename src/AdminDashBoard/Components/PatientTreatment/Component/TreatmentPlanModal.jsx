@@ -54,7 +54,7 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75">
-            <div className="modal-box w-[90%] h-[90%] max-w-full flex flex-col relative p-5  bg-[#C6E4DA]  ">
+            <div className="modal-box w-[90%] h-[90%] max-w-full flex flex-col relative p-5  bg-[#ffffff]  ">
 
 {/* <div className='text-right'>
                     <button onClick={onClose}>X</button>
@@ -62,7 +62,7 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
 </div>                */}
 
  {!isAdding && (
-                    <h2 className="text-2xl font-bold mb-4 text-[#266D53] text-center">Treatment Plan</h2>
+                    <h2 className="text-2xl font-bold mb-4 text-[#00000] text-center">Treatment Plan</h2>
                 )}
 
                 <div className="flex-grow flex flex-col">
@@ -114,7 +114,7 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                             ) : (
                                 <div className="overflow-y-auto max-h-[65vh]">
                                     <table className="min-w-full border border-black bg-gray-100 text-white">
-                                        <thead className="sticky top-0 bg-[#3EB489]">
+                                        <thead className="sticky top-0 bg-[#012840]">
                                             <tr>
                                                 <th className="py-2 px-4 border border-black">Treatment Stage</th>
                                                 <th className="py-2 px-4 border border-black">Procedure</th>
@@ -162,9 +162,10 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                                                     <td className="py-2 px-4 border border-black bg-gray-100 text-black">
                                                         <button
                                                             onClick={() => handleEditClick(plan)}
-                                                            className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600"
+                                                            className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
                                                         >
-                                                            Edit
+                                                            <span className="material-symbols-outlined ml-1"
+                    >edit</span>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -183,13 +184,13 @@ const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
                     <div className="mt-4 flex justify-end space-x-2">
                         <button
                             onClick={() => setIsAdding(true)}
-                            className="text-black py-2 px-4 rounded bg-[#4285F4] hover:bg-[#0C65F8]"
+                            className="text-white py-2 px-4 rounded bg-[#025373] hover:bg-[#03738C]"
                         >
                             Add Treatment Plan
                         </button>
                         <button
                             onClick={onClose}
-                            className="text-black py-2 px-4 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA]"
+                            className="text-white py-2 px-4 rounded bg-[#ADAAAA] hover:bg-[#D9D9D9]"
                         >
                             Close
                         </button>

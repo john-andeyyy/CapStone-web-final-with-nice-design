@@ -10,9 +10,9 @@ const DentistTable = ({ loading, filteredDentists, handleRowClick, handle_availa
             <table className="min-w-full text-left text-xs sm:text-sm">
                 <thead>
                     <tr className="text-sm text-white bg-primary">
-                        <th className="py-3 px-2 sm:px-5 bg-[#3EB489] text-center border border-black">Name</th>
-                        <th className="py-3 px-2 sm:px-5 bg-[#3EB489] text-center border border-black">Available</th>
-                        <th className="py-3 px-2 sm:px-5 bg-[#3EB489] text-center border border-black">Actions</th>
+                        <th className="py-3 px-2 sm:px-5 bg-[#012840] text-center border border-black">Name</th>
+                        <th className="py-3 px-2 sm:px-5 bg-[#012840] text-center border border-black">Available</th>
+                        <th className="py-3 px-2 sm:px-5 bg-[#012840] text-center border border-black">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,9 +25,9 @@ const DentistTable = ({ loading, filteredDentists, handleRowClick, handle_availa
                     ) : filteredDentists.length > 0 ? (
                         filteredDentists.map((dentist) => (
                             <tr key={dentist._id} className="hover:bg-secondary border-b">
-                                <td className="py-2 sm:py-3 px-2 sm:px-5 bg-gray-100 border border-black">{`${dentist.FirstName} ${dentist.LastName}`}</td>
-                                <td className="py-2 sm:py-3 px-2 sm:px-5 bg-gray-100 border border-black">{dentist.isAvailable ? 'Yes' : 'No'}</td>
-                                <td className="py-2 sm:py-3 px-2 sm:px-5 space-x-1 sm:space-x-3 text-center bg-gray-100 border border-black">
+                                <td className="py-2 sm:py-3 px-2 sm:px-5 bg-white border border-black">{`${dentist.FirstName} ${dentist.LastName}`}</td>
+                                <td className="py-2 sm:py-3 px-2 sm:px-5 bg-white border border-black">{dentist.isAvailable ? 'Yes' : 'No'}</td>
+                                <td className="py-2 sm:py-3 px-2 sm:px-5 space-x-1 sm:space-x-3 text-center bg-white border border-black">
                                     <div className="flex-1 flex gap-1 sm:gap-2 justify-center">
                                         <button
                                             className="flex flex-col items-center justify-center w-8 sm:w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
@@ -73,7 +73,7 @@ const DentistTable = ({ loading, filteredDentists, handleRowClick, handle_availa
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-accent p-6 rounded shadow-md relative">
+                    <div className="bg-white p-6 rounded shadow-md relative">
                         <button onClick={closeModal} className="absolute top-4 right-4 text-white">
                             <span className="material-symbols-outlined text-gray-500">close</span>
                         </button>

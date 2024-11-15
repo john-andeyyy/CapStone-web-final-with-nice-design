@@ -100,8 +100,8 @@ export default function Add_Procedure() {
         text: `Do you want to make this procedure ${statusText}?`,
         icon: "question",
         showCancelButton: true,
-        confirmButtonColor: status ? "#4285F4" : "#0C65F8",
-        cancelButtonColor: "#d33",
+        confirmButtonColor: status ? "#025373" : "#03738C",
+        cancelButtonColor: "#ADAAAA",
         confirmButtonText: `Yes, mark as ${statusText}`
       });
 
@@ -266,10 +266,10 @@ export default function Add_Procedure() {
     <div className='container mx-auto text-sm lg:text-md mt-5'>
       <div>
         <div className='flex justify-between items-center '>
-          <h1 className='text-2xl font-semibold l:text-sm'>Procedure List</h1>
+          <h1 className='text-3xl font-bold l:text-sm'>Procedure List</h1>
           <div className='relative'>
 
-          <button className='btn bg-[#4285F4] hover:bg-[#0C65F8] text-white  md:ml-auto' onClick={openAddModal}>
+          <button className='btn bg-[#025373] hover:bg-[#03738C] text-white  md:ml-auto' onClick={openAddModal}>
             Create Procedure
           </button>
             {/* <input
@@ -304,19 +304,19 @@ export default function Add_Procedure() {
   {/* Filter Buttons */}
   <div className="flex flex-col md:flex-row items-center md:space-x-4 space-y-2 md:space-y-0 md:ml-auto">
     <button
-      className={`btn ${availabilityFilter === true ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400'}`}
+      className={`btn ${availabilityFilter === true ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
       onClick={() => setAvailabilityFilter(true)}
     >
       Show Available
     </button>
     <button
-      className={`btn ${availabilityFilter === false ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400'}`}
+      className={`btn ${availabilityFilter === false ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
       onClick={() => setAvailabilityFilter(false)}
     >
       Show Not Available
     </button>
     <button
-      className={`btn ${availabilityFilter === null ? 'bg-[#3EB489] hover:bg-[#62A78E] text-white' : 'bg-green-200 bg-opacity-50 hover:bg-green-400'}`}
+      className={`btn ${availabilityFilter === null ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
       onClick={() => setAvailabilityFilter(null)}
     >
       Show All

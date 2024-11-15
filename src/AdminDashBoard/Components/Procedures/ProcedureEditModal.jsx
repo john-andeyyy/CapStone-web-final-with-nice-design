@@ -28,12 +28,12 @@ const ProcedureEditModal = ({
             </div>
 
             <div className="text-black">
-                <h3 className="font-bold text-lg text-center text-[#266D53] mt-5 mb-5">Edit Procedure</h3>
+                <h3 className="font-bold text-lg text-center mt-5 mb-5">Edit Procedure</h3>
                 <form onSubmit={handleEditSubmit} className="flex flex-col">
                     {/* Upload Picture */}
                     <div className="flex flex-col">
                         <label className="label">
-                            <span className="label-text">Upload Picture</span>
+                            <span className="label-text font-semibold">Upload Picture</span>
                         </label>
                         <input
                             type="file"
@@ -48,7 +48,7 @@ const ProcedureEditModal = ({
                                     setImagePreview(null);
                                 }
                             }}
-                            className="border p-2 bg-white"
+                            className="border p-2 mb-2 bg-gray-100"
                         />
                         {imagePreview && (
                             <img
@@ -62,14 +62,14 @@ const ProcedureEditModal = ({
 
                     {/* Procedure Name */}
                     <div className="label">
-                        <span className="label-text">Procedure Name</span>
+                        <span className="label-text font-semibold">Procedure Name</span>
                     </div>
                     <input
                         type="text"
                         placeholder="Procedure Name"
                         value={procedure.Procedure_name}
                         onChange={(e) => setProcedure({ ...procedure, Procedure_name: e.target.value })}
-                        className="border p-2 bg-white"
+                        className="border p-2 mb-2 bg-gray-100"
                         required
                     />
 
@@ -77,7 +77,7 @@ const ProcedureEditModal = ({
                         {/* Duration Section */}
                         <div>
                             <label className="label">
-                                <span className="label-text">Estimated Duration</span>
+                                <span className="label-text font-semibold">Estimated Duration</span>
                             </label>
                             <div className="flex items-center gap-2">
                                 <input
@@ -90,7 +90,7 @@ const ProcedureEditModal = ({
                                             hours === '' ? (procedure.Duration % 60) : (hours * 60 + (procedure.Duration % 60));
                                         setProcedure({ ...procedure, Duration: totalMinutes });
                                     }}
-                                    className="border p-2 bg-white w-20"
+                                    className="border p-2 mb-2 bg-gray-100 w-20"
                                     min="0"
                                     required
                                 />
@@ -105,7 +105,7 @@ const ProcedureEditModal = ({
                                             Math.floor(procedure.Duration / 60) * 60 + (minutes || 0);
                                         setProcedure({ ...procedure, Duration: totalMinutes });
                                     }}
-                                    className="border p-2 bg-white w-20"
+                                    className="border p-2 mb-2 bg-gray-100 w-20"
                                     min="0"
                                     max="59"
                                     required
@@ -117,14 +117,14 @@ const ProcedureEditModal = ({
                         {/* Price Section */}
                         <div>
                             <label className="label">
-                                <span className="label-text">Price</span>
+                                <span className="label-text font-semibold">Price</span>
                             </label>
                             <input
                                 type="number"
                                 placeholder="Price"
                                 value={procedure.Price}
                                 onChange={(e) => setProcedure({ ...procedure, Price: e.target.value })}
-                                className="border p-2 bg-white w-full"
+                                className="border p-2 mb-2 bg-gray-100 w-full"
                                 required
                             />
                         </div>
@@ -132,18 +132,18 @@ const ProcedureEditModal = ({
 
                     {/* Description */}
                     <div className="label">
-                        <span className="label-text">Description</span>
+                        <span className="label-text font-semibold">Description</span>
                     </div>
                     <textarea
                         type="text"
                         value={procedure.Description}
                         readOnly
-                        className="border p-2 mb-2 bg-white max-h-40 min-h-28"
+                        className="border p-2 mb-2 bg-gray-100 max-h-40 min-h-28"
                     />
 
                     {/* Save Changes Button */}
                     <div className="modal-action justify-center items-center">
-                        <button type="submit" className="btn btn-success bg-blue-500 hover:bg-blue-500 text-white">
+                        <button type="submit" className="btn bg-[#025373] hover:bg-[#03738C] text-white">
                             Save Changes
                         </button>
                     </div>

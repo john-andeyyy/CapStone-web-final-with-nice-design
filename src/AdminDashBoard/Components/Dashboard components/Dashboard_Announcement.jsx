@@ -64,15 +64,15 @@ export default function Announcement() {
     return (
         <div className="p rounded-lg">
             <div className='relative mb-4'>
-                <h1 className='flex items-center text-2xl font-semibold text-[#266D53]'>
-                    <span className="material-symbols-outlined text-red-500 mr-1">
+                <h1 className='flex items-center text-2xl font-semibold text-white p-3'>
+                    {/* <span className="material-symbols-outlined text-red-500 mr-1">
                     campaign
-                    </span>
+                    </span> */}
                     Announcements
                 </h1>
 
                 <button
-                    className='absolute top-0 right-0 font-semibold text-md sm:text-lg md:text-xl'
+                    className='absolute top-0 right-0 font-semibold text-md sm:text-lg md:text-sm text-white'
                     onClick={() => navigate('/AnnouncementPage')}
                 >
                     <span className="ml-1">See More</span>
@@ -80,18 +80,18 @@ export default function Announcement() {
             </div>
 
 
-            <div className="border-2 bg-accent border-[#3EB489] rounded-lg max-h-72 overflow-y-auto p-5">
+            <div className="border-2 bg-white border-[#96D2D9] rounded-lg max-h-72 overflow-y-auto p-5">
                 {loading ? (
                     <p className="text-center py-4">Loading announcements...</p>
                 ) : announcements.length > 0 ? (
                     announcements.map((announcement) => (
-                        <div key={announcement._id} className="p-2 max-h-30 border-b border-white">
+                        <div key={announcement._id} className="p-2 max-h-30 border-b border-black">
                             <div className="flex justify-between items-center">
                                 <h2 className="flex items-center font-semibold text-sm">
                                     <span className="material-symbols-outlined mr-2 text-error">campaign</span>
                                     {announcement.Title}
                                 </h2>
-                                <button className="text-[#3EB489] cursor-pointer ml-2" onClick={() => openModal(announcement)}>
+                                <button className="text-[#3FA8BF] cursor-pointer ml-2" onClick={() => openModal(announcement)}>
                                     View
                                 </button>
                             </div>

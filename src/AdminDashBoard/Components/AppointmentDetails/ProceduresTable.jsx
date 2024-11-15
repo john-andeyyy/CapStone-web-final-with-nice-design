@@ -48,7 +48,7 @@ const ProceduresTable = ({ appointment }) => {
 
     const handleSaveProcedures = async () => {
         console.log('Payload size (bytes):', JSON.stringify(addedProcedures).length);
-        // window.location.reload();
+        //window.location.reload();
 
         try {
             const updatedProcedures = [...userProceduresList, ...addedProcedures];
@@ -132,7 +132,7 @@ const ProceduresTable = ({ appointment }) => {
                     <div>
                         <button
                             onClick={handleToggleEdit}
-                            className={`px-4 py-2 rounded ${isEditing ? 'bg-[#3EB489] hover:bg-[#62A78E]' : 'bg-[#4285F4] hover:bg-[#0C65F8]'
+                            className={`px-4 py-2 rounded ${isEditing ? 'bg-[#025373] hover:bg-[#03738C]' : 'bg-[#025373] hover:bg-[#03738C]'
                                 } text-white`}
                         >
                             {isEditing ? 'Save' : 'Edit'}
@@ -142,13 +142,13 @@ const ProceduresTable = ({ appointment }) => {
             </div>
             {userProceduresList && userProceduresList.length > 0 ? (
                 <div className="overflow-y-auto max-h-72 my-4">
-                    <table className="min-w-full mb-4 table-fixed">
+                    <table className="hover:bg-gray-100 min-w-full mb-4 table-fixed">
                         <thead>
                             <tr>
-                                <th className="px-4 py-2 text-center text-white w-1/2 sticky top-0 bg-[#3EB489]">Procedure Name</th>
-                                <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#3EB489]">Price</th>
+                                <th className="px-4 py-2 text-center text-white w-1/2 sticky top-0 bg-[#012840]">Procedure Name</th>
+                                <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#012840]">Price</th>
                                 {isEditing && (
-                                    <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#3EB489]">Actions</th>
+                                    <th className="px-4 py-2 text-center text-white w-1/4 sticky top-0 bg-[#012840]">Actions</th>
                                 )}
                             </tr>
                         </thead>
@@ -183,7 +183,7 @@ const ProceduresTable = ({ appointment }) => {
                                                         className="flex items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm"
                                                         onClick={() => handleMarkForRemoval(procedure._id)}
                                                         aria-label={`Delete ${procedure.Procedure_name}`}
-                                                        title='delete'
+                                                        title='Delete'
                                                     >
                                                         <span className="material-symbols-outlined">delete</span>
                                                     </button>
@@ -200,7 +200,7 @@ const ProceduresTable = ({ appointment }) => {
                             {addedProcedures.map((procedure) => (
                                 <tr key={procedure._id}>
                                     <td className="border px-4 py-2 truncate">{procedure.Procedure_name}</td>
-                                    <td className="border px-4 py-2 truncate">{`₱${procedure.Price}`}</td>
+                                    <td className="border px-4 py-2 truncate">{`PHP ${procedure.Price}`}</td>
 
                                     <td className="border px-4 py-2">
                                         <button
@@ -224,7 +224,7 @@ const ProceduresTable = ({ appointment }) => {
                 <div className='flex flex-row justify-between pb-4'>
                     <div>
                         <button
-                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded"
+                            className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
                             onClick={() => setIsModalOpen(true)}
                         >
                             Add Procedures
@@ -232,7 +232,7 @@ const ProceduresTable = ({ appointment }) => {
                     </div>
                     <div>
                         <button
-                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                            className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-2 rounded"
                             onClick={() => {
                                 setAddedProcedures([])
                                 setIsEditing(false)

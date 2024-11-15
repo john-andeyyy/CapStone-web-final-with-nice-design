@@ -19,7 +19,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
         <SemiFullModal isOpen={isOpen} onClose={onClose}>
             <div className="p-2">
                 <>
-                    <h2 className="text-lg font-bold text-[#266D53] text-center">Add New Tooth</h2>
+                    <h2 className="text-lg font-bold text-[#00000] text-center">Add New Tooth</h2>
                     <form onSubmit={handleSubmit}>
                     <div className=" gap-4 mb-4">
                         <div className="flex items-center space-x-4">
@@ -30,7 +30,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
-                                className="border rounded w-full py-2 px-3"
+                                className="bg-gray-100 shadow-md border rounded w-full py-2 px-3"
                             />
                             </div>
                             
@@ -41,7 +41,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                 value={status}
                                 onChange={(e) => setStatus(e.target.value)}
                                 required
-                                className="border rounded w-full py-2 px-3"
+                                className="bg-gray-100 shadow-md border rounded w-full py-2 px-3"
                             />
                         </div>
                     </div>
@@ -54,7 +54,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                             <select
                                 value={jaw}
                                 onChange={(e) => setJaw(e.target.value)}
-                                className="border rounded w-full py-2 px-3"
+                                className="bg-gray-100 shadow-md border rounded w-full py-2 px-3"
                             >
                                 <option value="Upper">Upper</option>
                                 <option value="Lower">Lower</option>
@@ -66,7 +66,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                             <select
                                 value={position}
                                 onChange={(e) => setPosition(e.target.value)}
-                                className="border rounded w-full py-2 px-3"
+                                className="bg-gray-100 shadow-md border rounded w-full py-2 px-3"
                             >
                                 <option value="first">First</option>
                                 <option value="last">Last</option>
@@ -77,11 +77,11 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
 
 
                         
-                        <div className="flex justify-center">
+                        <div className="flex justify-center mt-10">
                             {/* <button type="button" className="mr-2 text-gray-500" onClick={onClose}>
                                 Cancel
                             </button> */}
-                            <button type="submit" className="bg-[#4285F4] hover:bg-[#0C65F8] text-white py-2 px-4 rounded">
+                            <button type="submit" className="bg-[#025373] hover:bg-[#03738C] text-white py-2 px-4 rounded">
                                 Add Tooth
                             </button>
                         </div>

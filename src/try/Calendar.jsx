@@ -232,8 +232,8 @@ const CalendarComponent = () => {
     };
 
     return (
-        <div className="p-4 min-h-screen bg-accent bg-opacity-40">
-            <h1 className="text-2xl font-semibold mb-4 ">View Appointments</h1>
+        <div className="">
+            <h1 className="text-3xl font-bold mb-4 ">View Appointments</h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 pb-2">
                 {Object.keys(statusFilters).map((status) => (
@@ -254,7 +254,7 @@ const CalendarComponent = () => {
             </div>
 
 
-
+<div className='p-8 rounded-md min-h-screen bg-accent bg-opacity-40'>
             {loading ? (
                 <div className="flex justify-center items-center h-screen">
                     <span className="loading loading-spinner loading-lg"></span>
@@ -319,8 +319,9 @@ const CalendarComponent = () => {
                         </div>
                     </div>
                 </Modal>
+               
             )}
-        </div>
+        </div> </div>
 
 
     );

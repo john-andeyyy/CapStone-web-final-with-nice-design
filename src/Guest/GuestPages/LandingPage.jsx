@@ -61,12 +61,20 @@ export default function LandingPage() {
     };
 
     return (
-        <div className="relative pt-8">
-            <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50"></div>
+        <div className="relative">
+            {/* <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50"></div> */}
             <div className="relative min-h-screen">
+                <div className="block">
+                    <img 
+                        src="public/1w.jpg"  // If in 'public', use "/girl-smiling.jpg"; if in 'src', use import
+                        alt="1 w" 
+                        className="w-full h-auto"       // Adjust these classes as needed
+                    />
+                </div>
 
-                {/* 1st Hero Section */}
-                <section className="hero min-h-screen">
+
+                {/* 1st Hero Section 
+                {/* <section className="hero min-h-screen">
                     <div className="flex-1 rounded-md" style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
                         <div className="hero-content flex-col p-5 lg:p-10 rounded-xl bg-white lg:flex-row-reverse items-center justify-between w-full">
 
@@ -82,7 +90,7 @@ export default function LandingPage() {
                                 </h1>
 
                                 <h1 className="text-5xl sm:text-6xl font-bold pt-2">
-                                    {/* Dental <span className="text-[#266D53]">Clinic</span> */}
+                                    {/* Dental <span className="text-[#266D53]">Clinic</span> 
                                 </h1>
                                 <p className="py-6 text-lg sm:text-xl text-justify ml-2 lg:ml-10 mb-10">
                                     {otherLandingPages[0]?.description}
@@ -108,14 +116,55 @@ export default function LandingPage() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> */}
+
+<section className="hero min-h-screen flex flex-col lg:flex-row items-center lg:justify-between p-5 lg:p-10">
+    {/* Image Section */}
+    <div className="flex-1 max-w-md mb-10 lg:mb-0">
+        {otherLandingPages[0]?.Image ? (
+            <img
+                src={`data:image/jpeg;base64,${otherLandingPages[0].Image}`}
+                className="max-w-full rounded-lg shadow-2xl h-auto"
+                alt={otherLandingPages[0].Title}
+            />
+        ) : (
+            <div className="max-w-md rounded-lg shadow-2xl bg-gray-200 mx-auto lg:mx-0 h-64" />
+        )}
+    </div>
+
+    {/* Text Section */}
+    <div className="text-right flex-1">
+        <h1 className="text-5xl sm:text-6xl font-bold mt-5">
+            {otherLandingPages[0]?.Title.split(" ").map((word, index) => (
+                word === "Clinic" ? (
+                    <span key={index} className="text-[#025373]">{word}</span> // Green "Clinic"
+                ) : (
+                    <span key={index}>{word} </span> // Other words
+                )
+            ))}
+        </h1>
+
+        <p className="py-6 text-lg sm:text-xl text-justify ml-2 lg:ml-10 mb-10">
+            {otherLandingPages[0]?.description}
+        </p>
+        
+        <button
+            className="bg-[#025373] hover:bg-[#03738C] text-white btn mt-5"
+            onClick={scrollToHistory}
+        >
+            LEARN MORE
+        </button>
+    </div>
+</section>
+
+
 
 
 
 
                 <Tips />
 
-                {/* 2nd Hero Section */}
+                {/* 2nd Hero Section 
                 <div ref={historyRef}>
                     <section className="hero min-h-screen w-full">
                         <div className="text-right flex-1 rounded-md" style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
@@ -142,6 +191,38 @@ export default function LandingPage() {
                             </div>
                         </div>
                     </section>
+                </div>*/}
+
+
+<div ref={historyRef}>
+                <section className="hero min-h-screen w-full ">
+                    <div className="flex flex-col lg:flex-row-reverse items-center justify-between w-full p-10 bg-white rounded-md ">
+                        
+                        {/* Image Section */}
+                        <div className="flex-1 max-w-md mb-10 lg:mb-0">
+                            {heroLandingPage?.Image ? (
+                                <img
+                                    src={`data:image/jpeg;base64,${heroLandingPage.Image}`}
+                                    className="max-w-full rounded-lg shadow-2xl h-auto"
+                                    alt={heroLandingPage?.Title || "Hero Image"}
+                                />
+                            ) : (
+                                <div className="max-w-md rounded-lg shadow-2xl bg-gray-200 mx-auto lg:mx-0 h-64" />
+                            )}
+                        </div>
+
+                        {/* Text Section */}
+                        <div className="text-center lg:text-left flex-1">
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-serif mb-5 uppercase text-[#025373]">
+                                {heroLandingPage?.Title || "Alejandria's Dental"}
+                            </h1>
+                            <p className="py-6 text-lg sm:text-xl mx-5 text-justify">
+                                {heroLandingPage?.description || ''}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
                 </div>
 
             </div>

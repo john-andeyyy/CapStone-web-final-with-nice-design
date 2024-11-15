@@ -82,34 +82,52 @@ export default function MedicalRequests() {
       showBasedOnStatus(statusFilter)
     );
   });
+  const handleDeleteRequest = async (Rejectmsg, request) => {
 
-  const handleDeleteRequest = async (Rejectmsg) => {
-    if (true) {
-
-      setActionLoading(true);
-      try {
-        await axios.put(`${BASEURL}/SendDentalCertificate/${selectedRequest.id}`, {
-          Status: 'Rejected',
-          Rejectmsg
-        }, {
-          withCredentials: true
-        });
-
-        showToast('success', `You have rejected the Request!`);
-
-        setRequests(requests.filter((request) => request.id !== selectedRequest.id));
-        setDeleteConfirmation(false);
-        setSelectedRequest(null);
-      } catch (error) {
-        console.error('Error deleting request:', error);
-      } finally {
-        setActionLoading(false);
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait while we process your request.',
+      icon: 'info',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
       }
+    });
+    console.log('selectedRequest', selectedRequest)
+    setActionLoading(true);
+    try {
+      await axios.put(`${BASEURL}/SendDentalCertificate/${request.id}`, {
+        Status: 'Rejected',
+        Rejectmsg
+      }, {
+        withCredentials: true
+      });
+
+      Swal.fire({
+        title: "Rejected!",
+        text: 'Your request has been Rejected ',
+        icon: "success"
+      });
+      setRequests(requests.map((request) =>
+        request.id === selectedRequest.id ? { ...request, medcertiStatus: 'Rejected' } : request
+      ));
+
+      // showToast('success', `You have rejected the Request!`);
+
+      setRequests(requests.filter((request) => request.id !== selectedRequest.id));
+      setDeleteConfirmation(false);
+      setSelectedRequest(null);
+    } catch (error) {
+      console.error('Error deleting request:', error);
+    } finally {
+      setActionLoading(false);
     }
+
   };
 
   // Function to confirm deletion
-  const confirmDeleteRequest = () => {
+  const confirmDeleteRequest = (request) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -126,14 +144,7 @@ export default function MedicalRequests() {
       confirmButtonText: "Yes, Reject it!"
     }).then((result) => {
       if (result.isConfirmed && result.value) {
-        handleDeleteRequest(result.value);
-
-
-        Swal.fire({
-          title: "Rejected!",
-          text: result.value,
-          icon: "success"
-        });
+        handleDeleteRequest(result.value, request);
       } else if (result.isConfirmed && !result.value) {
         Swal.fire("Please provide a reason for rejection.");
       }
@@ -142,6 +153,16 @@ export default function MedicalRequests() {
 
   const handleArchiveRequest = async () => {
     console.error('selectedRequest', selectedRequest)
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait while we process your request.',
+      icon: 'info',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
     if (!selectedRequest) return;
     setActionLoading(true);
     try {
@@ -151,7 +172,13 @@ export default function MedicalRequests() {
         withCredentials: true
       });
 
-      showToast('success', `You have archived the Request!`);
+      // showToast('success', `You have archived the Request!`);
+
+      Swal.fire({
+        title: "Archived!",
+        text: "Your request has been archived.",
+        icon: "success"
+      });
 
       setRequests(requests.map((request) =>
         request.id === selectedRequest.id ? { ...request, medcertiStatus: 'Archive' } : request
@@ -178,11 +205,7 @@ export default function MedicalRequests() {
     }).then((result) => {
       if (result.isConfirmed) {
         handleArchiveRequest();
-        Swal.fire({
-          title: "Archived!",
-          text: "Your request has been archived.",
-          icon: "success"
-        });
+      
       }
     });
   };
@@ -201,12 +224,6 @@ export default function MedicalRequests() {
     }).then((result) => {
       if (result.isConfirmed) {
         onConfirmhandleAcceptRequest(request);
-
-        Swal.fire({
-          title: "Approved!",
-          text: "You Approved the Request.",
-          icon: "success"
-        });
       }
     });
   };
@@ -216,6 +233,16 @@ export default function MedicalRequests() {
     console.log('selectedRequest', selectedRequest)
 
     setActionLoading(true);
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait while we process your request.',
+      icon: 'info',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
     try {
       await axios.put(`${BASEURL}/SendDentalCertificate/${selectedRequest.id}`, {
         Status: 'Approved'
@@ -223,8 +250,15 @@ export default function MedicalRequests() {
         withCredentials: true
       });
 
-      showToast('success', `You have approved the Request!`);
+      // showToast('success', `You have approved the Request!`);
 
+      Swal.fire({
+        title: "Approved!",
+        text: "You Approved the Request.",
+        icon: "success"
+      });
+
+      
       setRequests(requests.map((request) =>
         request.id === selectedRequest.id ? { ...request, medcertiStatus: 'Accepted' } : request
       ));
@@ -279,186 +313,186 @@ export default function MedicalRequests() {
   }
   return (
     <div className="container mx-auto p-4 pt-0">
-  <div className="p-4">
-    {/* Status Dropdown and Search Bar */}
-    <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 space-y-4 lg:space-y-0">
-      <h1 className="text-2xl font-semibold">Dental Certificate Requests</h1>
-    </div>
+      <div className="p-4">
+        {/* Status Dropdown and Search Bar */}
+        <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 space-y-4 lg:space-y-0">
+          <h1 className="text-3xl font-bold mb-10">Dental Certificate Requests</h1>
+        </div>
 
-    {/* Filter by Status */}
-    <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 space-y-4 sm:space-y-0">
-      <div className="relative w-full lg:w-auto">
-        <input
-          type="text"
-          placeholder="Search patients..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#3EB489]"
-        />
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500">
-          <span className="material-symbols-outlined">search</span>
+        {/* Filter by Status */}
+        <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 space-y-4 sm:space-y-0">
+          <div className="relative w-full lg:w-auto">
+            <input
+              type="text"
+              placeholder="Search patients..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="block w-full pl-10 bg-gray-100 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#3EB489]"
+            />
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500">
+              <span className="material-symbols-outlined">search</span>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2 ml-0 sm:ml-4">
+            <label htmlFor="status" className="font-semibold">Filter by Status:</label>
+            <select
+              id="status"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="p-2 border border-gray-300 bg-gray-100 rounded-md"
+            >
+              <option value="Approved">Approved</option>
+              <option value="Pending">Pending</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Archive">Archive</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div className="flex items-center space-x-2 ml-0 sm:ml-4">
-        <label htmlFor="status" className="font-semibold">Filter by Status:</label>
-        <select
-          id="status"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
-        >
-          <option value="Approved">Approved</option>
-          <option value="Pending">Pending</option>
-          <option value="Rejected">Rejected</option>
-          <option value="Archive">Archive (delete)</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  {/* Request List */}
-  <div className="p-2 overflow-x-auto">
-    <table className="w-full table-auto bg-gray-100 text-black border border-black">
-      <thead>
-        <tr className="bg-[#3EB489] border border-black">
-          <th className="p-2 font-bold border border-black text-white">Name</th>
-          <th className="p-2 font-bold border border-black text-white hidden sm:table-cell">Date</th>
-          <th className="p-2 font-bold border border-black text-white hidden md:table-cell">Procedure</th>
-          <th className="p-2 font-bold border border-black text-white">Status</th>
-          <th className="p-2 font-bold text-center border border-black text-white hidden lg:table-cell">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {loading ? (
-          <tr className="border border-black">
-            <td colSpan={5} className="text-center py-20 border border-black">
-              <span className="loading loading-spinner loading-lg"></span>
-            </td>
-          </tr>
-        ) : (
-          <>
-            {filteredRequests.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="p-4 text-center font-bold border border-black">
-                  No requests found.
+      {/* Request List */}
+      <div className="p-2 overflow-x-auto">
+        <table className="w-full table-auto bg-white text-black border border-black">
+          <thead>
+            <tr className="bg-[#012840] border border-black">
+              <th className="p-2 font-bold border border-black text-white">Name</th>
+              <th className="p-2 font-bold border border-black text-white hidden sm:table-cell">Date</th>
+              <th className="p-2 font-bold border border-black text-white hidden md:table-cell">Procedure</th>
+              <th className="p-2 font-bold border border-black text-white">Status</th>
+              <th className="p-2 font-bold text-center border border-black text-white hidden lg:table-cell">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr className="border border-black">
+                <td colSpan={5} className="text-center py-20 border border-black">
+                  <span className="loading loading-spinner loading-lg"></span>
                 </td>
               </tr>
             ) : (
-              filteredRequests.map((request) => (
-                <tr key={request.id} className="bg-gray-100 cursor-pointer border border-black">
-                  {/* Patient's Name */}
-                  <td className="p-2 border border-black whitespace-nowrap">{request.patient.FirstName} {request.patient.LastName}</td>
-
-                  {/* Request Date */}
-                  <td className="p-2 border border-black hidden sm:table-cell">
-                    {new Date(request.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
-                  </td>
-
-                  {/* Procedures */}
-                  <td className="p-2 border border-black hidden md:table-cell">
-                    {request.procedures.length > 2
-                      ? `${request.procedures.slice(0, 2).map(proc => proc.name).join(', ')} ...`
-                      : request.procedures.map(proc => proc.name).join(', ')
-                    }
-                  </td>
-
-                  {/* Status */}
-                  <td className={`p-2 border border-black ${request.medcertiStatus === 'Pending' ? 'text-green-500' : ''}`}>
-                    {request.medcertiStatus}
-                  </td>
-
-                  {/* Actions */}
-                  {statusFilter === 'Approved' && (
-                    <td className="text-center p-2 border border-black hidden lg:table-cell">
-                      <button
-                        className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
-                        onClick={() => navigate(`/appointment/${request.id}`)}
-                        title="view"
-                      >
-                        <span className="material-symbols-outlined">visibility</span>
-                      </button>
+              <>
+                {filteredRequests.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-4 text-center font-bold border border-black">
+                      No requests found.
                     </td>
-                  )}
+                  </tr>
+                ) : (
+                  filteredRequests.map((request) => (
+                    <tr key={request.id} className="bg-white cursor-pointer border border-black">
+                      {/* Patient's Name */}
+                      <td className="p-2 border border-black whitespace-nowrap">{request.patient.FirstName} {request.patient.LastName}</td>
 
-                  {statusFilter !== 'Approved' && statusFilter !== 'All' && (
-                    <td className="text-center p-2 border border-black hidden lg:table-cell">
-                      <div className="flex justify-center space-x-2">
-                        {/* View Button */}
-                        <button
-                          className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
-                          onClick={() => navigate(`/appointment/${request.id}`)}
-                          title="view"
-                        >
-                          <span className="material-symbols-outlined">visibility</span>
-                        </button>
+                      {/* Request Date */}
+                      <td className="p-2 border border-black hidden sm:table-cell">
+                        {new Date(request.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </td>
 
-                        {/* Approve Button */}
-                        {request.medcertiStatus !== 'Approved' && (
+                      {/* Procedures */}
+                      <td className="p-2 border border-black hidden md:table-cell">
+                        {request.procedures.length > 2
+                          ? `${request.procedures.slice(0, 2).map(proc => proc.name).join(', ')} ...`
+                          : request.procedures.map(proc => proc.name).join(', ')
+                        }
+                      </td>
+
+                      {/* Status */}
+                      <td className={`p-2 border border-black ${request.medcertiStatus === 'Pending' ? 'text-green-500' : ''}`}>
+                        {request.medcertiStatus}
+                      </td>
+
+                      {/* Actions */}
+                      {statusFilter === 'Approved' && (
+                        <td className="text-center p-2 border border-black hidden lg:table-cell">
                           <button
-                            className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
-                            onClick={() => {
-                              setSelectedRequest(request);
-                              handleAcceptRequest(request);
-                            }}
-                            title="approve"
+                            className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
+                            onClick={() => navigate(`/appointment/${request.id}`)}
+                            title="view"
                           >
-                            <span className="material-symbols-outlined">check_circle</span>
+                            <span className="material-symbols-outlined">visibility</span>
                           </button>
-                        )}
+                        </td>
+                      )}
 
-                        {/* Reject Button */}
-                        {request.medcertiStatus !== 'Approved' && request.medcertiStatus !== 'Rejected' && (
-                          <button
-                            className="flex items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm"
-                            onClick={() => {
-                              setSelectedRequest(request);
-                              confirmDeleteRequest();
-                            }}
-                            title="reject"
-                          >
-                            <span className="material-symbols-outlined">cancel</span>
-                          </button>
-                        )}
+                      {statusFilter !== 'Approved' && statusFilter !== 'All' && (
+                        <td className="text-center p-2 border border-black hidden lg:table-cell">
+                          <div className="flex justify-center space-x-2">
+                            {/* View Button */}
+                            <button
+                              className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
+                              onClick={() => navigate(`/appointment/${request.id}`)}
+                              title="view"
+                            >
+                              <span className="material-symbols-outlined">visibility</span>
+                            </button>
 
-                        {/* Archive Button */}
-                        {request.medcertiStatus !== 'Approved' && request.medcertiStatus !== 'Archive' && (
-                          <button
-                            className="flex items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
-                            onClick={() => {
-                              setSelectedRequest(request);
-                              confirmArchiveRequest();
-                            }}
-                            title="archive"
-                          >
-                            <span className="material-symbols-outlined">archive</span>
-                          </button>
-                        )}
+                            {/* Approve Button */}
+                            {request.medcertiStatus !== 'Approved' && (
+                              <button
+                                className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
+                                onClick={() => {
+                                  setSelectedRequest(request);
+                                  handleAcceptRequest(request);
+                                }}
+                                title="approve"
+                              >
+                                <span className="material-symbols-outlined">check_circle</span>
+                              </button>
+                            )}
 
-                        {/* Download Button */}
-                        <button
-                          className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
-                          onClick={() => downloadPatientMedicalCertificate(request)}
-                          title="download"
-                        >
-                          <span className="material-symbols-outlined">download</span>
-                        </button>
-                      </div>
-                    </td>
-                  )}
-                </tr>
-              ))
+                            {/* Reject Button */}
+                            {request.medcertiStatus !== 'Approved' && request.medcertiStatus !== 'Rejected' && (
+                              <button
+                                className="flex items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm"
+                                onClick={() => {
+                                  setSelectedRequest(request);
+                                  confirmDeleteRequest(request);
+                                }}
+                                title="reject"
+                              >
+                                <span className="material-symbols-outlined">cancel</span>
+                              </button>
+                            )}
+
+                            {/* Archive Button */}
+                            {request.medcertiStatus !== 'Approved' && request.medcertiStatus !== 'Archive' && (
+                              <button
+                                className="flex items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
+                                onClick={() => {
+                                  setSelectedRequest(request);
+                                  confirmArchiveRequest();
+                                }}
+                                title="archive"
+                              >
+                                <span className="material-symbols-outlined">archive</span>
+                              </button>
+                            )}
+
+                            {/* Download Button */}
+                            <button
+                              className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
+                              onClick={() => downloadPatientMedicalCertificate(request)}
+                              title="download"
+                            >
+                              <span className="material-symbols-outlined">download</span>
+                            </button>
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  ))
+                )}
+              </>
             )}
-          </>
-        )}
-      </tbody>
-    </table>
-  </div>
-</div>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
 
   );

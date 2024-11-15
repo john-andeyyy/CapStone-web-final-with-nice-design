@@ -215,7 +215,7 @@ export default function Report_Monthly_Appointment() {
                     <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-0">
                         <button
                             onClick={createPDF}
-                            className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200"
+                            className="px-4 py-2 bg-[#3FA8BF] hover:bg-[#96D2D9] text-white rounded transition duration-200"
                         >
                             Generate PDF
                         </button>
@@ -226,7 +226,7 @@ export default function Report_Monthly_Appointment() {
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
                         <div className='flex flex-col'>
                             <div>
-                                <h2 className="text-2xl font-bold text-[#3EB489] ml-2">Appointment Report</h2>
+                                <h2 className="text-2xl font-bold text-[#025373] ml-2">Appointment Report</h2>
                                 <h1 className="text-1xl pb-7 ml-2">
                                     {new Date().toLocaleString('default', { month: 'long' })} {new Date().getDate()}, {new Date().getFullYear()}
                                 </h1>
@@ -263,7 +263,7 @@ export default function Report_Monthly_Appointment() {
                             </select>
                         </div>
                     </div>
-                    <div className="pb-7 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-3">
+                    <div className="pb-7 flex flex-col sm:flex-row items-center space-y-4 justify-end sm:space-y-0 sm:space-x-3">
                         {!viewingYearly ? (
                             <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 items-center">
                                 {!isToday ? (
@@ -286,7 +286,7 @@ export default function Report_Monthly_Appointment() {
                                                         .slice(0, 7)
                                                 )
                                             }
-                                            className="w-full sm:w-auto px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200"
+                                            className="w-full sm:w-auto px-4 py-2 bg-[#025373] hover:bg-[#03738C] text-white rounded transition duration-200"
                                             aria-label="Previous Month"
                                         >
                                             Previous Month
@@ -301,7 +301,7 @@ export default function Report_Monthly_Appointment() {
                                                         .slice(0, 7)
                                                 )
                                             }
-                                            className="w-full sm:w-auto px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded  transition duration-200"
+                                            className="w-full sm:w-auto px-4 py-2 bg-[#025373] hover:bg-[#03738C] text-white rounded  transition duration-200"
                                             aria-label="Next Month"
                                         >
                                             Next Month
@@ -360,9 +360,9 @@ export default function Report_Monthly_Appointment() {
                                     <table className="min-w-full  border border-black text-black mt-2 text-sm sm:text-base">
                                         <thead>
                                             <tr>
-                                                <th className="border bg-[#3EB489] border-black p-2 text-white text-center">Patient Name</th>
-                                                <th className="border bg-[#3EB489] border-black p-2 text-white text-center">Status</th>
-                                                <th className="border bg-[#3EB489] border-black p-2 text-white text-center">Date</th>
+                                                <th className="border bg-[#012840] border-black p-2 text-white text-center">Patient Name</th>
+                                                <th className="border bg-[#012840] border-black p-2 text-white text-center">Status</th>
+                                                <th className="border bg-[#012840] border-black p-2 text-white text-center">Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>

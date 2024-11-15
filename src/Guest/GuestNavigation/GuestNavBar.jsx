@@ -53,7 +53,7 @@ export default function GuestNavBar() {
         const isActive = (path) => location.pathname === path;
 
     return (
-        <div className="bg-[#3EB489] sticky top-0 z-50">
+        <div className="bg-[#012840] sticky top-0 z-50">
             <div className="navbar container mx-auto flex items-center justify-between flex-wrap">
                 <div className="flex-1">
                     <img src={logo} alt="" className='h-12' />
@@ -72,7 +72,7 @@ export default function GuestNavBar() {
                     <ul className="menu menu-horizontal px-1 font-semibold space-x-3 lg:space-x-3 flex flex-col lg:flex-row">
                     <li className="mb-2 md:mb-0">
           <button
-            className={`btn btn-ghost font-bold text-xl ${isActive('/') ? 'text-[#00000]' : 'text-white'}`}
+            className={`btn btn-ghost font-bold text-xl  hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/') ? 'text-[#96D2D9]' : 'text-white'}`}
             onClick={() => { navigate('/'); toggleMenu(); }}
           >
             HOME
@@ -80,7 +80,7 @@ export default function GuestNavBar() {
         </li>
         <li className="mb-2 md:mb-0">
           <button
-            className={`btn btn-ghost font-bold text-xl ${isActive('/AllServices') ? 'text-[#00000]' : 'text-white'}`}
+            className={`btn btn-ghost font-bold text-xl hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/AllServices') ? 'text-[#96D2D9]' : 'text-white'}`}
             onClick={() => { navigate('/AllServices'); toggleMenu(); }}
           >
             SERVICES
@@ -88,7 +88,7 @@ export default function GuestNavBar() {
         </li>
         <li className="mb-2 md:mb-0">
           <button
-            className={`btn btn-ghost font-bold text-xl ${isActive('/The_DeanTeam') ? 'text-[#00000]' : 'text-white'}`}
+            className={`btn btn-ghost font-bold text-xl hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/The_DeanTeam') ? 'text-[#96D2D9]' : 'text-white'}`}
             onClick={() => { navigate('The_DeanTeam'); toggleMenu(); }}
           >
             DENTEAM
@@ -108,7 +108,7 @@ export default function GuestNavBar() {
                         </li> */}
 
                         <li className="mb-2 md:mb-0">
-                            <button className="btn btn-ghost font-bold text-[#266D53] bg-[#C6E4DA] text-xl"
+                            <button className="btn btn-ghost font-bold text-[#012840] bg-[#96D2D9] hover:bg-white text-xl"
                                 onClick={() => {
                                     navigate('AdminLogin')
                                     toggleMenu()

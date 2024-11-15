@@ -15,7 +15,7 @@ const ProcedureTable = ({
     return (
         <div className="text-sm overflow-auto max-h-[74vh] bg-gray-100">
             <table className="w-full border border-gray-500">
-                <thead className="bg-[#3EB489] text-sm">
+                <thead className="bg-[#012840] text-sm">
                     <tr>
                         <th className="border border-gray-500 p-2 text-white">Procedure Name</th>
                         <th className="border border-gray-500 p-2 text-white hidden lg:table-cell">Estimated Duration</th>

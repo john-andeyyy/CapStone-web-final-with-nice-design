@@ -12,7 +12,7 @@ const ProcedureAddModal = ({
 }) => {
     return (
         <Modal isOpen={isOpen} close={closeModal}>
-            <h3 className="font-bold text-lg text-[#266D53] text-center">Add New Procedure</h3>
+            <h3 className="font-bold text-lg text-center">Add New Procedure</h3>
             <form onSubmit={handleAddSubmit} className="flex flex-col">
                 {/* Procedure Name */}
                 <div className="label">
@@ -23,7 +23,7 @@ const ProcedureAddModal = ({
                     placeholder="Procedure Name"
                     value={newProcedure.Procedure_name}
                     onChange={(e) => setNewProcedure({ ...newProcedure, Procedure_name: e.target.value })}
-                    className="border p-2 bg-white"
+                    className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500"
                     required
                 />
 
@@ -46,7 +46,7 @@ const ProcedureAddModal = ({
                                         : hours * 60 + (newProcedure.Duration % 60);
                                     setNewProcedure({ ...newProcedure, Duration: totalMinutes });
                                 }}
-                                className="border p-2 bg-white w-20"
+                                className="border p-2 w-20  p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500"
                                 min="0"
                                 required
                             />
@@ -64,7 +64,7 @@ const ProcedureAddModal = ({
                                         (minutes === '' ? 0 : minutes);
                                     setNewProcedure({ ...newProcedure, Duration: totalMinutes });
                                 }}
-                                className="border p-2 bg-white w-20"
+                                className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 p-2 w-20"
                                 min="0"
                                 max="59"
                                 required
@@ -85,7 +85,7 @@ const ProcedureAddModal = ({
                                 placeholder="Price"
                                 value={newProcedure.Price}
                                 onChange={(e) => setNewProcedure({ ...newProcedure, Price: e.target.value })}
-                                className="border p-2 bg-white pl-8" // Add padding left to avoid overlap with the peso sign
+                                className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 p-2  pl-8 " // Add padding left to avoid overlap with the peso sign
                                 required
                             />
                         </div>
@@ -102,7 +102,7 @@ const ProcedureAddModal = ({
                     placeholder="Description"
                     value={newProcedure.Description}
                     onChange={(e) => setNewProcedure({ ...newProcedure, Description: e.target.value })}
-                    className="border p-2 mb-2 bg-white"
+                    className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 p-2 mb-2 "
                     required
                 />
 
@@ -127,7 +127,7 @@ const ProcedureAddModal = ({
                                 setImagePreview(null); 
                             }
                         }}
-                        className="border p-2 mb-2 bg-white"
+                        className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 p-2 mb-2 "
                     />
                 </div>
 
@@ -143,12 +143,12 @@ const ProcedureAddModal = ({
 
                 {/* Modal Actions */}
                 <div className="modal-action">
-                    <button type="submit" className="btn bg-[#4285F4] hover:bg-[#0C65F8] text-black">
+                    <button type="submit" className="btn bg-[#025373] hover:bg-[#03738C] text-white">
                         Add Procedure
                     </button>
                     <button
                         type="button"
-                        className="btn bg-[#D9D9D9] hover:bg-[#ADAAAA]"
+                        className="btn bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white"
                         onClick={() => {
                             closeModal();
                             setImagePreview(null);

@@ -250,7 +250,7 @@ export default function Dentist() {
     };
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-4 text-center">Dentist List</h1>
+            <h1 className="text-3xl font-bold mb-10">Dentist List</h1>
             {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
             <div className="flex justify-between mb-4 ">
@@ -262,7 +262,7 @@ export default function Dentist() {
                                 placeholder="Search Dentist"
                                 value={filterText}
                                 onChange={(e) => setFilterText(e.target.value)}
-                                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                                className="block w-full bg-gray-100 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                             />
                             <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
                                 <span className="material-symbols-outlined">search</span>
@@ -275,7 +275,7 @@ export default function Dentist() {
                         <select
                             value={availabilityFilter}
                             onChange={(e) => setAvailabilityFilter(e.target.value)}
-                            className="p- rounded-lg border w-full lg:w-auto"
+                            className="p-2 rounded-lg bg-gray-100 border w-full lg:w-auto"
                         >
                             <option value="all">All</option>
                             <option value="available">Available</option>
@@ -284,7 +284,7 @@ export default function Dentist() {
                     </div>
                 </div>
 
-                <button className="bg-[#3EB489] hover:bg-[#62A78E] py-2 px-4 rounded-lg text-white" onClick={handleAddDentist}>
+                <button className="bg-[#025373] hover:bg-[#03738C] py-2 px-4 rounded-lg text-white" onClick={handleAddDentist}>
                     Add Dentist
                 </button>
             </div>

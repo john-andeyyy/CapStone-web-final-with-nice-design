@@ -11,7 +11,7 @@ function Announcement_Notification() {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-4">
+            <h1 className="text-3xl font-bold mb-4">
                 {showAnnouncement ? 'Announcements' : 'Notifications'}
             </h1>
             <div className="flex flex-col items-end ">
@@ -20,7 +20,7 @@ function Announcement_Notification() {
                     <button
                         onClick={handleToggle}
                         // className={`px-4 py-2 mx-2 text-white rounded ${showAnnouncement ? 'bg-blue-500' : 'bg-green-500'
-                        className={`px-4 py-2 mx-2 text-white rounded ${showAnnouncement ? 'bg-bg-[#3EB489] hover:bg-[#62A78E]' : 'bg-[#3EB489] hover:bg-[#62A78E]'
+                        className={`px-4 py-2 mx-2 text-white rounded ${showAnnouncement ? 'bg-[#3FA8BF] hover:bg-[#96D2D9]' : 'bg-[#3FA8BF] hover:bg-[#96D2D9]'
                             } hover:opacity-80 transition`}
                     >
                         {showAnnouncement ? 'Send Notifications' : 'Send Announcements'}

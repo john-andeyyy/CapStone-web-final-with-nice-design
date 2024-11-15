@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import Reat, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MediumModal from '../../../ComponentModal/SemiFullModal';
 import { DentistList, ProcedureList } from '../../../Data/DataList';
@@ -93,7 +93,7 @@ export default function SetAppointment({ userIds }) {
         <div className=''>
             {localStorage.getItem('Role') !== 'dentist' && (
                 <button
-                    className="btn text-xl font-semibold bg-[#3EB489] hover:bg-[#62A78E] text-white px-5 py-2 rounded-lg shadow-md transition duration-300"
+                    className="btn text-l bg-[#025373] hover:bg-[#03738C] text-white px-5 py-2 rounded-lg shadow-md transition duration-300"
                     onClick={() => setOpenFullModal(true)}
                 >
                     Add Record
@@ -108,14 +108,14 @@ export default function SetAppointment({ userIds }) {
             }}>
 
                 <div className='py-10'>
-                    <h3 className="text-xl font-bold text-[#266D53] text-center mb-6">Set Appointment</h3>
+                    <h3 className="text-xl font-bold text-[#00000] text-center mb-6">Set Appointment</h3>
 
                     <div className="space-y-4 ">
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm mb-1">Select Dentist</label>
+                                <label className="font-bold text-black block text-sm mb-1">Select Dentist</label>
                                 <select
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    className="bg-gray-100 shadow-md w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     value={selectedDentist}
                                     onChange={(e) => setSelectedDentist(e.target.value)}
                                 >
@@ -128,18 +128,18 @@ export default function SetAppointment({ userIds }) {
                                 </select>
 
                                 <div>
-                                    <label className="block text-sm mt-5">Total Amount</label>
+                                    <label className="font-bold text-black block text-sm mt-5">Total Amount</label>
                                     <input
                                         type="number"
                                         value={amount}
                                         readOnly
-                                        className="w-full border border-gray-300 rounded-lg p-2 bg-gray-100"
+                                        className="bg-gray-100 shadow-md w-full border border-gray-300 rounded-lg p-2 bg-gray-100"
                                         placeholder="Auto-calculated"
                                     />
                                 </div>
                             </div>
-                            <div className="border-2 border-green-400 rounded-lg p-4">
-                                <label className="block text-sm mb-1">Select Procedures</label>
+                            <div className="border-2 border-[#03738C] rounded-lg p-4">
+                                <label className="font-bold block text-sm mb-1">Select Procedures</label>
                                 <div className="border border-gray-300 rounded-lg p-2 max-h-40 overflow-auto">
                                     {procedureList.map((procedure) => (
                                         <div key={procedure._id} className="flex items-center mb-2">
@@ -159,12 +159,12 @@ export default function SetAppointment({ userIds }) {
                         </div>
 
                         <div className="flex items-center">
-                            <label className="block text-sm mr-2">Add Notes?</label>
+                            <label className="font-bold block text-sm mr-2">Add Notes?</label>
                             <input
                                 type="checkbox"
                                 checked={isNotesVisible}
                                 onChange={() => setIsNotesVisible(!isNotesVisible)}
-                                className="focus:ring-blue-400"
+                                className="bg-gray-100 shadow-md focus:ring-blue-400"
                             />
                         </div>
 
@@ -183,32 +183,32 @@ export default function SetAppointment({ userIds }) {
 
                         <div className="grid grid-cols-3 gap-4">
                             <div>
-                                <label className="block text-sm mb-1">Date</label>
+                                <label className="font-bold block text-sm mb-1">Date</label>
                                 <input
                                     type="date"
                                     value={date}
                                     onChange={(e) => setDate(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    className="bg-gray-100 shadow-md w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm mb-1">Start Time</label>
+                                <label className="font-bold block text-sm mb-1">Start Time</label>
                                 <input
                                     type="time"
                                     value={startTime}
                                     onChange={(e) => setStartTime(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    className="bg-gray-100 shadow-md w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm mb-1">End Time</label>
+                                <label className="font-bold block text-sm mb-1">End Time</label>
                                 <input
                                     type="time"
                                     value={endTime}
                                     onChange={(e) => setEndTime(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    className="bg-gray-100 shadow-md w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 />
                             </div>
                         </div>
@@ -221,7 +221,7 @@ export default function SetAppointment({ userIds }) {
 
                     <div className='flex justify-center items-center'>
                         <button
-                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-white py-2 rounded-lg mt-6 px-8 transition duration-200"
+                            className="bg-[#025373] hover:bg-[#03738C] text-white py-2 rounded-lg mt-6 px-8 transition duration-200"
                             onClick={handleSubmit}
                             disabled={loading}
                         >

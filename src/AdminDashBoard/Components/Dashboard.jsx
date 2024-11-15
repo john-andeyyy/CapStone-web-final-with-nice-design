@@ -40,7 +40,7 @@ export default function Dashboard() {
                 <div className="flex justify-end">
                     <button
                         onClick={() => navigate('/Total_procedures')}
-                        className='bg-[#3EB489] hover:bg-[#62A78E] h-12 rounded-xl text-xl font-semibold text-white transition duration-300 p-2 flex items-center justify-center space-x-2'
+                        className='bg-[#025373] hover:bg-[#03738C] h-12 rounded-xl text-xl font-semibold text-white transition duration-300 p-2 flex items-center justify-center space-x-2'
                     >
                         <span className="material-symbols-outlined">
                             summarize
@@ -56,18 +56,18 @@ export default function Dashboard() {
                 {/* Left Column */}
                 <div className="flex flex-col col-span-1 lg:col-span-1 ">
                     {/* Announcement Section */}
-                    <div className="w-full p-2 border border-primary rounded-lg mb-4 bg-green-200 bg-opacity-50">
+                    <div className="w-full p-2 border border-[#96D2D9] rounded-lg mb-4 bg-[#012840]">
                         <Dashboard_Announcement />
                     </div>
 
                     {/* Tips Section */}
-                    <div className="w-full p-4 border border-primary rounded-lg bg-green-200 bg-opacity-50">
+                    <div className="w-full p-4 border border-primary rounded-lg bg-[#012840]">
                         <DashboardTips />
                     </div>
                 </div>
 
                 {/* Right Column - Full Height Calendar */}
-                <div className="w-full p-4 border border-primary bg-green-200 bg-opacity-50 rounded-lg col-span-1 lg:col-span-2">
+                <div className="w-full p-4 border border-primary bg-[#012840] rounded-lg col-span-1 lg:col-span-2">
                     {/* <div className="w-full p-4 border border-primary bg-green-200 bg-opacity-50 rounded-lg col-span-1 lg:col-span-2"> */}
                     <Dashboard_Calendar />
                     <span className="
@@ -82,7 +82,7 @@ export default function Dashboard() {
     mt-5
     font-serif
     font-semibold
-    text-[#3EB489]
+    text-white
 ">
                         Calendar
                     </span>

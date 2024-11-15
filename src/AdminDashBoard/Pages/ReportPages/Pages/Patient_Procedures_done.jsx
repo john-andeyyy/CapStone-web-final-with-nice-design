@@ -173,7 +173,7 @@ const PatientProceduresDone = () => {
                     <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
                         <button
                             onClick={generatePDF}
-                            className={`px-4 py-2 text-white rounded transition duration-200 w-full sm:w-auto ${!selectedPatient ? 'bg-red-500 hover:bg-red-600' : 'bg-[#3EB489] hover:bg-[#62A78E]'
+                            className={`px-4 py-2 text-white rounded transition duration-200 w-full sm:w-auto ${!selectedPatient ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#3FA8BF] hover:bg-[#96D2D9]'
                                 }`}
                             disabled={!selectedPatient} // Disable if no patient is selected
                         >
@@ -186,7 +186,7 @@ const PatientProceduresDone = () => {
 
                 <div className="rounded-lg shadow-md p-2">
                     <div className='flex flex-col lg:flex-row justify-between items-center mb-4'>
-                        <h1 className="text-2xl font-bold text-[#3EB489] p-2">Patient Procedures Done</h1>
+                        <h1 className="text-2xl font-bold text-[#025373] p-2">Patient Procedures Done</h1>
                         <div className="relative">
                             <input
                                 type="text"
@@ -220,7 +220,7 @@ const PatientProceduresDone = () => {
                             <label className="block mb-2 mt-2">
                                 Select Patient:
                                 <select
-                                    className="ml-2 border rounded px-2 py-1 mb-4 max-h-40 overflow-y-auto"
+                                    className="ml-2 border bg-gray-100 rounded px-2 py-1 mb-4 max-h-40 overflow-y-auto"
                                     value={selectedPatient ? selectedPatient.id : ''}
                                     onChange={handlePatientChange}
                                 >
@@ -241,7 +241,7 @@ const PatientProceduresDone = () => {
                             <h2 className="text-xl font-bold mb-2">{`Procedures for ${selectedPatient.FirstName} ${selectedPatient.LastName}`}</h2>
                             <table className="min-w-full border border-black bg-white">
                                 <thead>
-                                    <tr className="bg-[#3EB489] text-white">
+                                    <tr className="bg-[#012840] text-white">
                                         <th className="border border-black px-4 py-2">Procedure Name</th>
                                         <th className="border border-black px-4 py-2">Count</th>
                                     </tr>

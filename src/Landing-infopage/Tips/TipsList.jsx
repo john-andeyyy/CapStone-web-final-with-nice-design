@@ -90,7 +90,7 @@ const TipsList = () => {
 
     return (
         <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4 text-center">Tips List</h1>
+            <h1 className="text-3xl font-bold mb-4">Tips List</h1>
 
             <div className="flex justify-between mb-4">
                 <input
@@ -98,10 +98,10 @@ const TipsList = () => {
                     placeholder="Search tips..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="border border-gray-300 rounded-lg py-2 px-4 w-full max-w-xs"
+                    className="bg-gray-100 border border-gray-300 rounded-lg py-2 px-4 w-full max-w-xs"
                 />
                 <button
-                    className="bg-[#3EB489] hover:bg-[#62A78E] text-white font-semibold py-2 px-4 rounded shadow-lg ml-2"
+                    className="bg-[#025373] hover:bg-[#03738C] text-white font-semibold py-2 px-4 rounded shadow-lg ml-2"
                     onClick={() => setShowCreateModal(true)}
                 >
                     Create New Tip
@@ -110,13 +110,13 @@ const TipsList = () => {
 
             <div className="mb-4 space-x-2">
                 <button
-                    className={`ml-2 ${!isCardView ? "bg-blue-500" : "bg-blue-300"} text-white py-2 px-4 rounded`}
+                    className={`ml-2 ${!isCardView ? "bg-[#025373]" : "bg-[#03738C]"} text-white py-2 px-4 rounded`}
                     onClick={() => setIsCardView(false)}
                 >
                     Table View
                 </button>
                 <button
-                    className={`mr-2 ${isCardView ? "bg-blue-500" : "bg-blue-300"} text-white py-2 px-4 rounded`}
+                    className={`mr-2 ${isCardView ? "bg-[#025373]" : "bg-[#03738C]"} text-white py-2 px-4 rounded`}
                     onClick={() => setIsCardView(true)}
                 >
                     Card View
@@ -124,7 +124,7 @@ const TipsList = () => {
             </div>
 
             {filteredTips.length === 0 ? (
-                <div className="text-center text-gray-500 font-semibold text-xl">
+                <div className="text-center text-gray-500 font-semibold text-xl shadow-md">
                     No tips available.
                 </div>
             ) : isCardView ? (
@@ -143,10 +143,10 @@ const TipsList = () => {
                                     />
                                 </div>
 
-                                <p className="text-[#266D53] font-semibold uppercase">Title:</p>
-                                <h2 className="pl-5 font-bold text-lg sm:text-xl mb-2">{tip.Title}</h2>
+                                <p className="text-[#03738C] font-semibold">Title:</p>
+                                <h2 className="pl-5 font-bold text-lg sm:text-l mb-5">{tip.Title}</h2>
 
-                                <p className="text-[#266D53] font-semibold uppercase">Description:</p>
+                                <p className="text-[#03738C] font-semibold">Description:</p>
                                 <div className="max-h-20 sm:max-h-24 overflow-auto mb-4">
                                     <p className="pl-5  text-sm sm:text-base">{tip.Description}</p>
                                 </div>
@@ -155,14 +155,14 @@ const TipsList = () => {
                             {/* Update and Delete Buttons */}
                             <div className="flex space-x-2 mt-auto">
                                 <button
-                                    className="w-full bg-[#4285F4] hover:bg-[#0C65F8] text-black font-semibold py-1 sm:py-2 px-2 sm:px-4 rounded text-sm sm:text-base"
+                                    className="w-full bg-[#025373] hover:bg-[#03738C] text-white py-1 sm:py-2 px-2 sm:px-4 rounded text-sm sm:text-base"
                                     onClick={() => handleUpdateClick(tip)}
                                 >
                                     Update Tip
                                 </button>
 
                                 <button
-                                    className="w-full bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black font-semibold py-1 sm:py-2 px-2 sm:px-4 rounded text-sm sm:text-base"
+                                    className="w-full bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white py-1 sm:py-2 px-2 sm:px-4 rounded text-sm sm:text-base"
                                     onClick={() => handleDeleteClick(tip)}
                                 >
                                     Delete Tip
@@ -176,11 +176,11 @@ const TipsList = () => {
                 <table className="min-w-full border-collapse border border-black">
                     <thead>
                         <tr className="bg-green-400 text-white">
-                            <th className="border border-black text-center px-4 py-2  w-[10%] text-xs bg-[#3EB489]">ID</th>
-                            <th className="border border-black text-center px-4 py-2  bg-[#3EB489]">Image</th>
-                            <th className="border border-black text-center px-4 py-2  max-w-[150px] bg-[#3EB489]">Title</th>
-                            <th className="border border-black text-center px-4 py-2  max-w-[250px] bg-[#3EB489]">Description</th>
-                            <th className="border border-black text-center px-4 py-2  bg-[#3EB489]">Actions</th>
+                            <th className="border border-black text-center px-4 py-2  w-[10%] text-xs bg-[#012840]">ID</th>
+                            <th className="border border-black text-center px-4 py-2  bg-[#012840]">Image</th>
+                            <th className="border border-black text-center px-4 py-2  max-w-[150px] bg-[#012840]">Title</th>
+                            <th className="border border-black text-center px-4 py-2  max-w-[250px] bg-[#012840]">Description</th>
+                            <th className="border border-black text-center px-4 py-2  bg-[#012840]">Actions</th>
                         </tr>
                     </thead>
                     <tbody>

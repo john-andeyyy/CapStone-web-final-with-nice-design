@@ -292,7 +292,7 @@ export default function Patient_Visits() {
                     <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-0 mt-5 mr-5">
                         <button
                         onClick={generatepdf}
-                            className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200"
+                            className="px-4 py-2 bg-[#3FA8BF] hover:bg-[#96D2D9] text-white rounded transition duration-200"
                         >
                             Generate PDF
                         </button>
@@ -301,7 +301,7 @@ export default function Patient_Visits() {
                 <div className=" rounded-lg shadow-md p-2">
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
                         <div className='flex flex-col'>
-                            <h2 className="text-2xl font-bold text-[#3EB489] ml-2">Patient Visits Report</h2>
+                            <h2 className="text-2xl font-bold text-[#025373] ml-2">Patient Visits Report</h2>
                         </div>
 
                         <div className="flex justify-end items-start ml-auto"> {/* Added ml-auto for more right alignment */}
@@ -363,7 +363,7 @@ export default function Patient_Visits() {
 
                     <p className="text-xl font-bold mb-4 ">{reportTitle}</p>
 
-                    <div className="p-4 my-5 bg-[#3EB489] rounded-md shadow-md text-center">
+                    <div className="p-4 my-5 bg-[#012840] rounded-md shadow-md text-center">
                         <p className="text-white text-lg font-semibold">
                             Total Visits: <strong>{visitCounts[period]}</strong>
                         </p>
@@ -378,7 +378,7 @@ export default function Patient_Visits() {
                                 {reportData.length > 0 ? (
                                     <table className="min-w-full divide-y divide-gray-200">
                                         <thead>
-                                            <tr className='bg-[#3EB489] text-white'>
+                                            <tr className='bg-[#012840] text-white'>
                                                 <th className="py-2 px-4 border border-black text-center text-sm font-medium ">ID</th>
                                                 <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Name</th>
                                                 <th className="py-2 px-4 border border-black text-center text-sm font-medium ">Last Visit</th>
@@ -406,7 +406,7 @@ export default function Patient_Visits() {
                             <div className=''>
                                 {period === 'month' && (
                                     <>
-                                        <h3 className="text-xl font-bold mb-4 text-green-500">Visits per Week in {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })}</h3>
+                                        <h3 className="text-xl font-bold mb-4 text-black">Visits per Week in {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })}</h3>
                                     <div className="mb-6">
                                         <BarChart chartData={getMonthChartData()} />
                                     </div>
@@ -414,7 +414,7 @@ export default function Patient_Visits() {
                                 )}
                                 {period === 'year' && (
                                     <>
-                                        <h3 className="text-xl font-bold mb-4 text-[#3EB489]">Visits per Month in {selectedYear}</h3>
+                                        <h3 className="text-xl font-bold mb-4 text-black">Visits per Month in {selectedYear}</h3>
                                         <div className="mb-6 ">
                                             <BarChart chartData={getYearChartData()} />
                                         </div>

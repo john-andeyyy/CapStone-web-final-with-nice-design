@@ -290,53 +290,51 @@ export default function Patients_List() {
                 </div>
             ) : (
                 <>
-                    <div className="flex flex-col lg:flex-row justify-between items-center pb-5">
+                    <div className="flex mt-10 flex-col lg:flex-row justify-between items-center pb-5">
                         <div className="flex justify-between items-center">
-                            <h1 className="text-2xl font-semibold pb-2">Patients List</h1>
+                            <h1 className="text-3xl font-semibold pb-2">Patients List</h1>
                             <button onClick={fetch_patient} className="p-2">
                                 <span className="material-symbols-outlined">refresh</span>
                             </button>
                         </div>
+
+                        {/* Action Buttons */}
+                <div className="flex space-x-2 sm:space-x-4">
+                    {localStorage.getItem('Role') !== 'dentist' && (
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
+                        >
+                            Add Patient
+                        </button>
+                    )}
+
+                    <button
+                        onClick={generatePDF}
+                        className="p-2 text-white bg-[#3FA8BF] hover:bg-[#96D2D9] rounded w-full sm:w-auto"
+                    >
+                        Generate PDF
+                    </button>
+                </div>
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
     {/* Search Input */}
-    <div className="relative flex-grow">
+    <div className="relative flex-grow mt-8 ">
         <input
             type="text"
             placeholder="Search patients..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="block pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-64"
+            className="block pl-10 pr-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-64"
         />
         <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
             <span className="material-symbols-outlined">search</span>
         </div>
     </div>
 
-    {/* Action Buttons */}
-    <div className="flex space-x-2 sm:space-x-4">
-        {localStorage.getItem('Role') !== 'dentist' && (
-            <button
-                onClick={() => setIsModalOpen(true)}
-                className="p-2 text-white bg-[#4285F4] hover:bg-[#0C65F8] rounded w-full sm:w-auto"
-            >
-                Add Patient
-            </button>
-        )}
-
-        <button
-            onClick={generatePDF}
-            className="p-2 text-white bg-[#3EB489] hover:bg-[#62A78E] rounded w-full sm:w-auto"
-        >
-            Generate PDF
-        </button>
-    </div>
-</div>
-
-
-                    {/* Filter Section */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 py-4 gap-2 ">
+ {/* Filter Section */}
+                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 py-4 gap-2 ">
                         {[
                             { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
                             { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
@@ -356,12 +354,40 @@ export default function Patients_List() {
                                 <p className="text-gray-700 font-medium ml-2">{label}</p>
                             </div>
                         ))}
+                    </div>     */}
+
+                    <div className="flex flex-col space-y-2 py-4">
+                        <label htmlFor="patient-filter" className="font-medium text-gray-700">Filter Patients</label>
+                        
+                        <select
+                            id="patient-filter"
+                            onChange={(e) => handleFilterChange(e.target.value)}
+                            className="p-2 border border-gray-300 bg-gray-100 rounded-md"
+                        >
+                            <option value="">-- Choose Filter --</option>
+                            {[
+                                { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
+                                { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
+                                { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
+                            ].map(({ label, filterName }) => (
+                                <option key={filterName} value={filterName}>
+                                    {label}
+                                </option>
+                            ))}
+                        </select>
                     </div>
+</div>
+
+
+                   
+
+
+
 
                     {/* Patients Table */}
-                    <div className="overflow-x-auto max-h-[34rem">
+                    <div className="overflow-x-auto max-h-[34rem]">
                         <table className="table-auto w-full border-collapse">
-                            <thead className="bg-[#3EB489] text-white sticky top-0 z-1">
+                            <thead className="bg-[#012840] text-white sticky top-0 z-1">
                                 <tr>
                                     <th className="p-2 text-center border border-black">No.</th>
                                     <th className="p-2 text-center border border-black">Last Name</th>
@@ -376,13 +402,13 @@ export default function Patients_List() {
                                     activePatients.length > 0 &&
                                     activePatients.map((patient) => (
                                         <tr key={patient.id} className="border-b">
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.id}</td>
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.LastName}</td>
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.FirstName}</td>
-                                            <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">
+                                            <td className="p-2 bg-white border border-black">{patient.id}</td>
+                                            <td className="p-2 bg-white border border-black">{patient.LastName}</td>
+                                            <td className="p-2 bg-white border border-black">{patient.FirstName}</td>
+                                            <td className="p-2 bg-white border border-black hidden md:table-cell">
                                                 {patient.MiddleName || 'N/A'}
                                             </td>
-                                            <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">
+                                            <td className="p-2 bg-white border border-black hidden md:table-cell">
                                                 {patient.LatestAppointment
                                                     ? new Date(patient.LatestAppointment.date).toLocaleDateString('en-US', {
                                                         year: 'numeric',
@@ -391,7 +417,7 @@ export default function Patients_List() {
                                                     })
                                                     : <span className="text-red-600">Processing</span>}
                                             </td>
-                                            <td className="p-2 text-center bg-gray-100 border border-black">
+                                            <td className="p-2 text-center bg-white border border-black">
                                                 <div className="flex space-x-2 justify-center">
                                                     <button
                                                         className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
@@ -426,13 +452,13 @@ export default function Patients_List() {
                                     archivedPatients.length > 0 &&
                                     archivedPatients.map((patient) => (
                                         <tr key={patient.id} className="border-b">
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.id}</td>
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.LastName}</td>
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.FirstName}</td>
-                                            <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">
+                                            <td className="p-2 bg-white border border-black">{patient.id}</td>
+                                            <td className="p-2 bg-white border border-black">{patient.LastName}</td>
+                                            <td className="p-2 bg-white border border-black">{patient.FirstName}</td>
+                                            <td className="p-2 bg-white border border-black hidden md:table-cell">
                                                 {patient.MiddleName || 'N/A'}
                                             </td>
-                                            <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">
+                                            <td className="p-2 bg-white border border-black hidden md:table-cell">
                                                 {patient.LatestAppointment
                                                     ? new Date(patient.LatestAppointment.date).toLocaleDateString('en-US', {
                                                         year: 'numeric',
@@ -441,9 +467,9 @@ export default function Patients_List() {
                                                     })
                                                     : <span className="text-red-600">Processing</span>}
                                             </td>
-                                            <td className="p-2 text-center bg-gray-100 border border-black">
+                                            <td className="p-2 text-center bg-white border border-black">
                                                 <div className="flex space-x-2 justify-center">
-                                                    <td className="p-2 text-center bg-gray-100 border border-black">
+                                                    <td className="p-2 text-center bg-white border border-black">
                                                         <div className="flex space-x-2 justify-center">
                                                             <button
                                                                 className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
@@ -480,16 +506,16 @@ export default function Patients_List() {
                                     noRecordPatients.length > 0 &&
                                     noRecordPatients.map((patient) => (
                                         <tr key={patient.id} className="border-b">
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.id}</td>
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.LastName}</td>
-                                            <td className="p-2 bg-gray-100 border border-black">{patient.FirstName}</td>
-                                            <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">
+                                            <td className="p-2 bg-white border border-black">{patient.id}</td>
+                                            <td className="p-2 bg-white border border-black">{patient.LastName}</td>
+                                            <td className="p-2 bg-white border border-black">{patient.FirstName}</td>
+                                            <td className="p-2 bg-white border border-black hidden md:table-cell">
                                                 {patient.MiddleName || 'N/A'}
                                             </td>
-                                            <td className="p-2 bg-gray-100 border border-black hidden md:table-cell">
+                                            <td className="p-2 bg-white border border-black hidden md:table-cell">
                                                 <span className="text-red-600">Processing</span>
                                             </td>
-                                            <td className="p-2 text-center bg-gray-100 border border-black">
+                                            <td className="p-2 text-center bg-white border border-black">
                                                 <div className="flex space-x-2 justify-center">
                                                     <button
                                                         className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"

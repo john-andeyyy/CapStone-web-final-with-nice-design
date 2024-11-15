@@ -94,7 +94,7 @@ export default function AnnouncementPage() {
                     </button>
                 </div>
 
-                <h3 className="font-bold text-lg md:text-xl lg:text-2xl text-[#266D53] text-center mt-5">
+                <h3 className="font-bold text-lg md:text-xl lg:text-2xl text-center mt-5">
                     {selectedAnnouncement.Title}
                 </h3>
                 <p className="mt-2 text-sm md:text-base">{selectedAnnouncement.Message}</p>
@@ -104,7 +104,7 @@ export default function AnnouncementPage() {
             </>
         ) : (
             <>
-                <h3 className="text-[#266D53] text-center mb-5 font-bold text-lg md:text-xl">Send Announcement!</h3>
+                <h3 className=" text-center mb-5 font-bold text-lg md:text-xl">Send Announcement!</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="mb-4">
                         <label className="block mb-2 font-semibold">Title:</label>
@@ -114,7 +114,7 @@ export default function AnnouncementPage() {
                             value={formData.Title}
                             onChange={handleChange}
                             required
-                            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                             placeholder="Enter announcement title"
                         />
                     </div>
@@ -126,7 +126,7 @@ export default function AnnouncementPage() {
                             value={formData.Message}
                             onChange={handleChange}
                             required
-                            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none"
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                             placeholder="Enter announcement message"
                         ></textarea>
                     </div>
@@ -146,7 +146,7 @@ export default function AnnouncementPage() {
                     <div className="flex justify-end space-x-3">
                         <button
                             type="submit"
-                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-black px-4 py-2 rounded"
+                            className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
                         >
                             Send Announcement
                         </button>
@@ -154,10 +154,12 @@ export default function AnnouncementPage() {
                         <button
                             type="button"
                             onClick={closeAnnouncementModal}
-                            className="text-black px-4 py-2 rounded bg-[#D9D9D9] hover:bg-[#ADAAAA]"
+                            className="text-white px-4 py-2 rounded bg-[#ADAAAA] hover:bg-[#D9D9D9]"
                         >
                             Close
                         </button>
+
+                        
                     </div>
                 </form>
             </>
@@ -165,10 +167,10 @@ export default function AnnouncementPage() {
     </Modal>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-        <h2 className="text-xl font-semibold">Announcements</h2>
+        <h2 className="text-3xl font-bold">Announcements</h2>
         <div className="flex justify-end">
             <button
-                className="btn text-white px-2 py-1 rounded bg-[#3EB489] hover:bg-[#62A78E]"
+                className="btn text-white px-2 py-1 rounded bg-[#025373] hover:bg-[#03738C]"
                 onClick={() => setShowModal(true)}
             >
                 Send New Announcement
@@ -186,7 +188,7 @@ export default function AnnouncementPage() {
                 announcements.map(announcement => (
                     <div
                         key={announcement._id}
-                        className="border p-4 rounded-lg cursor-pointer bg-[#C6E4DA] hover:bg-gray-100"
+                        className="border p-4 rounded-lg cursor-pointer bg-[#96D2D9] hover:bg-gray-100"
                         onClick={() => openAnnouncementModal(announcement)}
                     >
                         <h3 className="font-semibold text-black text-sm md:text-base lg:text-lg">
@@ -204,7 +206,7 @@ export default function AnnouncementPage() {
                                         e.stopPropagation();
                                         toggleAnnouncementExpand(announcement._id);
                                     }}
-                                    className="text-blue-500 cursor-pointer"
+                                    className="text-black font-semibold cursor-pointer"
                                 >
                                     {expandedAnnouncement === announcement._id ? ' Hide' : ' See more'}
                                 </span>

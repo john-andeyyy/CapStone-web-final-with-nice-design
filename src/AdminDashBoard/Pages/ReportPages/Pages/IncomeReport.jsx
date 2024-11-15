@@ -169,7 +169,7 @@ const AppointmentsReport = () => {
 
                     <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
                         <button
-                            className="px-4 py-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded transition duration-200 w-full sm:w-auto"
+                            className="px-4 py-2 bg-[#3FA8BF] hover:bg-[#96D2D9] text-white rounded transition duration-200 w-full sm:w-auto"
                             onClick={generatePDF}
                         >
                             Generate PDF
@@ -180,7 +180,7 @@ const AppointmentsReport = () => {
                 <div className='rounded-lg shadow-md p-2'>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4'>
                         <div className='flex flex-col'>
-                            <h1 className="text-xl sm:text-2xl text-[#3EB489] font-bold p-2 text-center sm:text-left">Income Report</h1>
+                            <h1 className="text-xl sm:text-2xl text-[#025373] font-bold p-2 text-center sm:text-left">Income Report</h1>
                         </div>
 
                         <div className="flex justify-end items-center"> {/* Center the items vertically */}
@@ -191,7 +191,7 @@ const AppointmentsReport = () => {
                                 <select
                                     id="report-selector"
                                     onChange={(e) => handleReportChange(e.target.value)}
-                                    className="mt-1 block p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+                                    className="mt-1 block p-2 border border-gray-300 bg-gray-100 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                                 >
                                     <option value="" disabled>Select a report type</option>
                                     <option value="daily">Daily Report</option>
@@ -308,7 +308,7 @@ const AppointmentsReport = () => {
                             <h2 className="text-xl font-semibold mb-2">Daily Report for {format(new Date(selectedDate), 'MMM dd yyyy')}</h2>
                             <table className="min-w-full border border-black">
                                 <thead>
-                                    <tr className="bg-[#3EB489] text-white">
+                                    <tr className="bg-[#012840] text-white">
                                         <th className="border border-black px-4 py-2">Date</th>
                                         <th className="border border-black px-4 py-2">Amount</th>
                                     </tr>
@@ -335,7 +335,7 @@ const AppointmentsReport = () => {
                             <h2 className="text-xl font-semibold mb-2">Monthly Report for {format(new Date(new Date().getFullYear(), selectedMonth - 1), 'MMMM')}</h2>
                             <table className="min-w-full border border-black">
                                 <thead>
-                                    <tr className="bg-[#3EB489]">
+                                    <tr className="bg-[#012840]">
                                         <th className="border px-4 py-2 text-white  border-black">Month</th>
                                         <th className="border px-4 py-2 text-white  border-black">Amount</th>
                                     </tr>
@@ -362,7 +362,7 @@ const AppointmentsReport = () => {
                             <h2 className="text-xl font-semibold mb-2">Yearly Report for {selectedYear}</h2>
                             <table className="min-w-full border border-black">
                                 <thead>
-                                    <tr className="bg-[#3EB489]">
+                                    <tr className="bg-[#012840]">
                                         <th className="border  border-black  px-4 py-2 text-white text-center">Year</th>
                                         <th className="border  border-black px-4 py-2 text-white text-center">Total Amount</th>
                                     </tr>
@@ -376,7 +376,7 @@ const AppointmentsReport = () => {
                                     </tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr className="bg-[#3EB489]">
+                                    <tr className="bg-[#012840]">
                                         <td className="border border-black px-4 py-2 font-bold text-white text-center">Total</td>
                                         <td className="border border-black px-4 py-2 text-white font-bold">
                                             ₱{reportData.yearly[selectedYear] || 0}

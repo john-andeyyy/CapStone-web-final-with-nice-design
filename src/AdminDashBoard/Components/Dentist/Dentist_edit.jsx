@@ -125,8 +125,8 @@ console.log(response.data)
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-[#C6E4DA] rounded-lg shadow-lg p-6">
-                <h2 className="text-lg font-semibold mb-4 text-[#266D53] text-center">Edit Dentist Information</h2>
+            <div className="bg-white rounded-lg shadow-lg p-6">
+                <h2 className="text-lg font-semibold mb-4 text-center">Edit Dentist Information</h2>
                 <div className="mb-4 flex justify-center items-center relative">
                     <img
                         src={profileImage}
@@ -154,7 +154,7 @@ console.log(response.data)
                 <form onSubmit={handleSubmit}>
                     <div className='grid grid-cols-3 gap-3'>
                         <div>
-                            <label className="block mb-1">First Name</label>
+                            <label className="block mb-1 font-semibold">First Name</label>
                             <input
                                 type="text"
                                 name="FirstName"
@@ -162,11 +162,11 @@ console.log(response.data)
                                 onChange={handleChange}
                                 placeholder="First Name"
                                 required
-                                className="border border-gray-300 rounded-md p-2 w-full"
+                                className="border border-gray-300 bg-gray-100 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
                             />
                         </div>
                         <div>
-                            <label className="block mb-1">Last Name</label>
+                            <label className="block mb-1 font-semibold">Last Name</label>
                             <input
                                 type="text"
                                 name="LastName"
@@ -174,22 +174,22 @@ console.log(response.data)
                                 onChange={handleChange}
                                 placeholder="Last Name"
                                 required
-                                className="border border-gray-300 rounded-md p-2 w-full"
+                                className="border border-gray-300 rounded-md p-2 w-full bg-gray-100 focus:outline-none focus:border-blue-500"
                             />
                         </div>
                         <div>
-                            <label className="block mb-1">Middle Name</label>
+                            <label className="block mb-1 font-semibold">Middle Name</label>
                             <input
                                 type="text"
                                 name="MiddleName"
                                 value={dentistData.MiddleName}
                                 onChange={handleChange}
                                 placeholder="Middle Name"
-                                className="border border-gray-300 rounded-md p-2 w-full"
+                                className="border border-gray-300 rounded-md p-2 w-full bg-gray-100 focus:outline-none focus:border-blue-500"
                             />
                         </div>
                         <div>
-                            <label className="block mb-1">Contact Number</label>
+                            <label className="block mb-1 font-semibold">Contact Number</label>
                             <input
                                 type="text"  // Use text type to handle custom validation
                                 name="ContactNumber"
@@ -199,28 +199,28 @@ console.log(response.data)
                                 required
                                 maxLength={11}  // Maximum of 11 characters (digits)
                                 pattern="\d{11}" // Only allows 11 digits
-                                className="border border-gray-300 rounded-md p-2 w-full"
+                                className="border border-gray-300 rounded-md p-2 w-full bg-gray-100 focus:outline-none focus:border-blue-500"
                             />
                         </div>
 
                         <div>
-                            <label className="block mb-1">Address</label>
+                            <label className="block mb-1 font-semibold">Address</label>
                             <input
                                 type="text"
                                 name="Address"
                                 value={dentistData.Address}
                                 onChange={handleChange}
                                 placeholder="Address"
-                                className="border border-gray-300 rounded-md p-2 w-full"
+                                className="border border-gray-300 rounded-md p-2 w-full bg-gray-100 focus:outline-none focus:border-blue-500"
                             />
                         </div>
                         <div>
-                            <label className="block mb-1">Gender</label>
+                            <label className="block mb-1 font-semibold">Gender</label>
                             <select
                                 name="Gender"
                                 value={dentistData.Gender}
                                 onChange={handleChange}
-                                className="border border-gray-300 rounded-md p-2  w-full"
+                                className="border border-gray-300 rounded-md p-2  w-full bg-gray-100 focus:outline-none focus:border-blue-500"
                                 required
                             >
                                 <option value="">Select gender</option>
@@ -237,20 +237,20 @@ console.log(response.data)
                             </select>
                         </div>
                         <div>
-                            <label className="block mb-1">License No.</label>
+                            <label className="block mb-1 font-semibold">License No.</label>
                             <input
                                 type="text"
                                 name="LicenseNo"
                                 value={dentistData.LicenseNo}
                                 onChange={handleChange}
                                 placeholder="License No."
-                                className="border border-gray-300 rounded-md p-2 mb-4 w-full"
+                                className="border border-gray-300 rounded-md p-2 mb-4 w-full bg-gray-100 focus:outline-none focus:border-blue-500"
                             />
                         </div>
                     </div>
-                    <div className="flex justify-between">
-                        <button type="submit" className="bg-[#4285F4] hover:bg-[#0C65F8] text-black rounded-md px-4 py-2">Update</button>
-                        <button type="button" onClick={onClose} className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black rounded-md px-4 py-2">Cancel</button>
+                    <div className="flex justify-center gap-4">
+                        <button type="submit" className="bg-[#025373] hover:bg-[#03738C] text-white rounded-md px-4 py-2">Update</button>
+                        <button type="button" onClick={onClose} className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white rounded-md px-4 py-2">Cancel</button>
                     </div>
                 </form>
             </div>

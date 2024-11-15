@@ -35,20 +35,20 @@ const CreateTipModal = ({ onClose, onCreate }) => {
     };
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-[#C6E4DA] p-6 rounded shadow-lg w-1/3">
-                <h2 className="font-bold text-lg mb-4 text-[#266D53] text-center">Create New Tip</h2>
+            <div className="bg-[#ffffff] p-6 rounded shadow-lg w-1/3">
+                <h2 className="font-bold text-lg mb-4 text-[#00000] text-center">Create New Tip</h2>
                 <input
                     type="text"
                     placeholder="Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="border p-2 w-full mb-4"
+                    className="bg-gray-100 border p-2 w-full mb-4 rounded-md shadow-md"
                 />
                 <textarea
                     placeholder="Description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="border p-2 w-full mb-4"
+                    className="bg-gray-100 border p-2 w-full mb-4 rounded-md shadow-md"
                 />
 
                 <div className='mb-2'>
@@ -63,14 +63,14 @@ const CreateTipModal = ({ onClose, onCreate }) => {
 
                 <div className="flex justify-between">
                     <button
-                        className="bg-[#4285F4] hover:bg-[#0C65F8] text-black p-2 rounded"
+                        className="bg-[#025373] hover:bg-[#3FA8BF] text-white p-2 rounded"
                         onClick={handleSubmit}
                     >
                         Create
                     </button>
 
                     <button
-                        className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black p-2 rounded"
+                        className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white p-2 rounded"
                         onClick={onClose}
                     >
                         Cancel

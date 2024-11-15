@@ -35,7 +35,7 @@ export default function Footer() {
     };
 
     return (
-        <footer className="bg-[#3EB489] rounded-lg border-t border-white ">
+        <footer className="bg-[#012840] rounded-lg border-t border-white ">
             <div className="max-w-7xl mx-auto p-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start">
                     {/* Logo and Clinic Name */}
@@ -45,7 +45,7 @@ export default function Footer() {
                         ) : (
                             <div className="text-2xl font-bold mb-2">LOGO</div>
                         )}
-                        <div className="text-lg font-bold capitalize">{clinicDetails.DentalName}</div>
+                        <div className="text-lg text-center font-bold capitalize">{clinicDetails.DentalName}</div>
                     </div>
 
                     {/* Clinic Contact Information */}
@@ -62,7 +62,7 @@ export default function Footer() {
                             <span className="ml-2">{clinicDetails.ContactNumber}</span>
                         </div>
                         <div className="mt-1 flex items-center">
-                            <span className="material-symbols-outlined text-black mr-1">mail</span>
+                            <span className="material-symbols-outlined text-green-500 mr-1">mail</span>
                             <span className="font-semibold">Email:</span>
                             <span className="ml-2">{clinicDetails.Email}</span>
                         </div>

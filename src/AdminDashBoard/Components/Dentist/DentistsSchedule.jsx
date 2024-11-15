@@ -159,7 +159,7 @@ const DentistSchedule = () => {
             )}
 
             <div className="mb-4 space-y-3 ">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-10 text-[#266D53]">Appointment Schedule</h2>
+                <h2 className="text-xl sm:text-3xl font-bold mb-4 sm:mb-10">Appointment Schedule</h2>
                 <h3 className="text-lg sm:text-xl font-bold">Dr. {dentistName}</h3>
             </div>
 
@@ -200,7 +200,7 @@ const DentistSchedule = () => {
             setSelectedYear('');
           }
         }}
-        className="p-2 border rounded w-full sm:w-auto"
+        className="p-2 border bg-gray-100 rounded w-full sm:w-auto"
       >
         <option value="Approved">Approved</option>
         <option value="completed">Completed</option>
@@ -272,9 +272,9 @@ const DentistSchedule = () => {
 </div>
 
             {filteredAppointments.length ? (
-                <table className="w-full bg-gray-100 border border-black overflow-auto">
+                <table className="w-full bg-white border border-black overflow-auto">
                     <thead>
-                        <tr className="bg-primary text-white text-sm sm:text-base">
+                        <tr className="bg-[#012840] text-white text-sm sm:text-base">
                             <th className="py-2 px-2 sm:px-4 border border-black">Date</th>
                             <th className="py-2 px-2 sm:px-4 border border-black">Start</th>
                             <th className="py-2 px-2 sm:px-4 border border-black">Patient Name</th>
@@ -285,7 +285,7 @@ const DentistSchedule = () => {
                         {filteredAppointments.map((appointment) => (
                             <tr
                                 key={appointment._id}
-                                className="hover:bg-accent border border-black cursor-pointer text-sm sm:text-base"
+                                className="hover:bg-gray-100 border border-black cursor-pointer text-sm sm:text-base"
                                 onClick={() => handleRowClick(appointment)}
                             >
                                 <td className="py-2 px-2 sm:px-4 border border-black">

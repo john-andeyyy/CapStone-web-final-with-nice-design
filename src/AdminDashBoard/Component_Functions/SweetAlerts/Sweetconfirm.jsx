@@ -6,8 +6,8 @@ export default function Sweetconfirm({
     text = "You won't be able to revert this!", // Default text
     confirmButtonText = "Yes, confirm it!", // Default confirm button text
     cancelButtonText = "Cancel", // Default cancel button text
-    confirmButtonColor = "#3085d6", // Default confirm button color
-    cancelButtonColor = "#d33", // Default cancel button color
+    confirmButtonColor = "#025373", // Default confirm button color
+    cancelButtonColor = "#ADAAAA", // Default cancel button color
     icon = "warning", // Default icon type
     onConfirm, // Function to call on confirmation
 }) {

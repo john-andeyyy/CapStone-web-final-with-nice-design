@@ -354,10 +354,19 @@ export default function Appointments() {
     };
 
 
+    const checkOverlap = (appointment, allAppointments) => {
+        return allAppointments.some(otherAppointment =>
+            otherAppointment.id !== appointment.id && // Ignore self
+            appointment.start < otherAppointment.end &&
+            appointment.end > otherAppointment.start
+        );
+    };
+
+
     return (
 
         <div className=''>
-            <h1 className="text-3xl font-bold mb-4">Appointment Requests</h1>
+            <h1 className="text-3xl font-bold ">Appointment Requests</h1>
             <div className="text-gray-600 mb-8">{formattedDate}</div>
 
 
@@ -367,7 +376,7 @@ export default function Appointments() {
                     <div className="flex space-x-2">
                         <button
                             onClick={() => setViewType('current')}
-                            className={`p-2 text-sm sm:text-base ${viewType === 'current' ? 'rounded bg-[#62A78E] text-white' : 'bg-[#3EB489]'} transition`}
+                            className={`p-2 text-sm sm:text-base ${viewType === 'current' ? 'rounded bg-[#025373] text-white' : 'bg-[#3FA8BF]'} transition`}
                         >
                             Current & Upcoming
                         </button>
@@ -376,7 +385,7 @@ export default function Appointments() {
                                 setViewType('all');
                                 setTimeView('');
                             }}
-                            className={`p-2 text-sm sm:text-base ${viewType === 'all' ? 'rounded bg-[#62A78E] text-white' : 'bg-[#3EB489]'} transition`}
+                            className={`p-2 text-sm sm:text-base ${viewType === 'all' ? 'rounded bg-[#025373] text-white' : 'bg-[#3FA8BF]'} transition`}
                         >
                             All Appointments
                         </button>
@@ -443,7 +452,7 @@ export default function Appointments() {
                         <div className="flex items-center space-x-2">
                             <button
                                 onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() - 7)))}
-                                className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
+                                className="p-2 bg-[#025373] hover:bg-[#03738C] text-white rounded"
                             >
                                 Prev Week
                             </button>
@@ -452,7 +461,7 @@ export default function Appointments() {
                             </span>
                             <button
                                 onClick={() => setSelectedWeek(new Date(selectedWeek.setDate(selectedWeek.getDate() + 7)))}
-                                className="p-2 bg-[#3EB489] hover:bg-[#62A78E] text-white rounded"
+                                className="p-2 bg-[#025373] hover:bg-[#03738C] text-white rounded"
                             >
                                 Next Week
                             </button>
@@ -481,11 +490,11 @@ export default function Appointments() {
                 ))}
             </div> */}
 
-            <h2 className="text-xl font-semibold mb-4">Appointment Requests List</h2>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Appointment Requests List</h2>
 
-            <div className="mb-4">
                 <select
-                    className="p-2 border rounded"
+                    className="p-2 border rounded bg-gray-100"
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
                 >
@@ -498,6 +507,7 @@ export default function Appointments() {
                     <option value="Cancelled">Cancelled</option>
                 </select>
             </div>
+
 
 
             <div className="space-y-4">
@@ -518,7 +528,10 @@ export default function Appointments() {
                             }
 
                             const { text: relativeTime, color: relativeColor } = getRelativeTime(appointmentDateTime);
-                            const isApproveDisabled = disabledStatuses.includes(appointment.status) || appointmentDateTime < currentDate;
+                            const isApproveDisabled =
+                                disabledStatuses.includes(appointment.status) ||
+                                appointmentDateTime < currentDate ||
+                                checkOverlap(appointment, filteredAppointments);
                             const isDeclineDisabled = appointment.status !== "Pending" || appointmentDateTime < currentDate;
 
                             return (

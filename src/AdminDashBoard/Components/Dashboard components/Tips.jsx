@@ -52,10 +52,10 @@ export default function DashboardTips() {
     }
 
     return (
-        <div className=" flex-1 rounded-md ml-10 mr-10"
-            style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-            <div className="bg-white rounded-md p-5">
-                <h2 className="text-5xl font-bold  text-[#266D53] ">
+        // <div className=" flex-1 rounded-md ml-10 mr-10"
+            // style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+            <div className="bg-gray-200 rounded-md p-5">
+                <h2 className="text-5xl font-bold  text-[#012840] ">
                     Tips from Al Dente
                 </h2>
 
@@ -63,7 +63,7 @@ export default function DashboardTips() {
                     {tips.map((tip) => (
                         <div
                             key={tip._id}
-                            className="border border-primary mb-5 bg-accent rounded-lg p-4 shadow-md hover:shadow-lg transition overflow-hidden"
+                            className="border border-[#012840] mb-5 bg-[#96D2D9] rounded-lg p-4 shadow-md hover:shadow-lg transition overflow-hidden"
                         >
                             <div className="flex justify-center mb-4">
                                 <img
@@ -79,6 +79,6 @@ export default function DashboardTips() {
                     ))}
                 </div>
         </div>
-    </div>
+    // </div>
     );
 }

@@ -225,9 +225,9 @@ const ProfilePage = () => {
 
     return (
         <div className="min-h-screen flex justify-center items-center p-6">
-            <div className=" p-8 rounded-lg shadow-lg w-full max-w-4xl bg-[#D9D9D9] bg-opacity-50 ">
+            <div className=" p-8 rounded-lg shadow-lg w-full max-w-4xl bg-[#3FA8BF] bg-opacity-50 ">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold text-[#266D53]">Profile Page</h1>
+                    <h1 className="text-3xl font-bold text-[#012840]">Profile Page</h1>
                     {/* <button
                         className={`text-white px-4 py-2 rounded-md 
                             ${isEditable ? 'bg-[#3EB489] hover:bg-[#62A78E]' : 'bg-[#3EB489] hover:bg-[#62A78E]'}`}
@@ -268,7 +268,7 @@ const ProfilePage = () => {
                                     name="FirstName"
                                     value={profile.FirstName}
                                     onChange={handleChange}
-                                    className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                    className="mt-1 p-2 w-full border rounded-md bg-[#ffffff]"
                                     readOnly={!isEditable}
                                 />
                             </div>
@@ -280,7 +280,7 @@ const ProfilePage = () => {
                                     name="LastName"
                                     value={profile.LastName}
                                     onChange={handleChange}
-                                    className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                    className="mt-1 p-2 w-full border rounded-md bg-[#ffffff]"
                                     readOnly={!isEditable}
                                 />
                             </div>
@@ -294,7 +294,7 @@ const ProfilePage = () => {
                                     name="MiddleName"
                                     value={profile.MiddleName}
                                     onChange={handleChange}
-                                    className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                    className="mt-1 p-2 w-full border rounded-md bg-[#ffffff]"
                                     readOnly={!isEditable}
                                 />
                             </div>
@@ -303,7 +303,7 @@ const ProfilePage = () => {
                                 <label className="block font-bold uppercase">
                                     Email:
                                     {isEditable && (
-                                        <span className="ml-4 text-[#4285F4] hover:text-[#0C65F8] cursor-pointer"
+                                        <span className="ml-4 text-[#025373] hover:text-[#03738C] cursor-pointer"
                                             onClick={() => setShowEmailModal(true)} // Open email modal
                                         >
                                             change
@@ -315,7 +315,7 @@ const ProfilePage = () => {
                                     name="Email"
                                     value={profile.Email}
                                     onChange={handleChange}
-                                    className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                    className="mt-1 p-2 w-full border rounded-md bg-[#ffffff]"
                                     readOnly
                                 />
                             </div>
@@ -329,7 +329,7 @@ const ProfilePage = () => {
                                     name="contactNumber"
                                     value={profile.contactNumber}
                                     onChange={handleChange}
-                                    className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                    className="mt-1 p-2 w-full border rounded-md bg-[#ffffff]"
                                     readOnly={!isEditable}
                                     placeholder="09XXXXXXXXX"
                                     pattern="09[0-9]{9}" // Ensures "09" followed by exactly 9 digits
@@ -346,7 +346,7 @@ const ProfilePage = () => {
                                     name="Username"
                                     value={profile.Username}
                                     onChange={handleChange}
-                                    className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                    className="mt-1 p-2 w-full border rounded-md bg-[#ffffff]"
                                     readOnly={!isEditable}
                                 />
                             </div>
@@ -363,7 +363,7 @@ const ProfilePage = () => {
                                         name="LicenseNo"
                                         value={profile.LicenseNo}
                                         onChange={handleChange}
-                                        className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                        className="mt-1 p-2 w-full border rounded-md bg-[#ffffff]"
                                         readOnly={!isEditable}
                                         required
                                     />
@@ -377,7 +377,7 @@ const ProfilePage = () => {
                                         name="Address"
                                         value={profile.Address}
                                         onChange={handleChange}
-                                        className="mt-1 p-2 w-full border rounded-md bg-[#D3CDCD]"
+                                        className="mt-1 p-2 w-full border rounded-md bg-[#ffffff]"
                                         readOnly={!isEditable}
                                     />
                                 </div>
@@ -391,7 +391,7 @@ const ProfilePage = () => {
                     <div className=" w-full">
                         <div className="flex justify-between items-center">
                             <button className={`mt-8 text-white px-4 py-2 rounded-md 
-                                            ${isEditable ? 'bg-red-500 hover:bg-red-600' : 'bg-[#4285F4] hover:bg-[#0C65F8]'}`}
+                                            ${isEditable ? 'bg-[#ADAAAA] hover:bg-[#D9D9D9]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
                                 onClick={handleEditToggle}
                             >
                                 {isEditable ? 'Cancel' : 'Edit Profile'}
@@ -401,7 +401,7 @@ const ProfilePage = () => {
                                 {/* Render Change Password button only when in Edit mode */}
                                 {isEditable && (
                                     <button
-                                        className="mt-4 bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded-md"
+                                        className="mt-4 bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded-md"
                                         onClick={() => setShowPasswordModal(true)} // Open change password modal
                                     >
                                         Change Password
@@ -428,29 +428,29 @@ const ProfilePage = () => {
             {/* Email change modal */}
             {showEmailModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-[#C6E4DA] p-6 md:p-8 rounded-lg shadow-lg w-[90%] max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto h-auto">
-                        <h2 className="text-xl md:text-2xl font-bold mb-6 text-[#266D53] text-center">Change Email</h2>
+                    <div className="bg-[#ffffff] p-6 md:p-8 rounded-lg shadow-lg w-[90%] max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto h-auto">
+                        <h2 className="text-xl md:text-2xl font-bold mb-6 text-[#012840] text-center">Change Email</h2>
                         <form onSubmit={handleEmailChange} className="space-y-4">
                             <div>
-                                <label className="block font-medium text-[#266D53]" htmlFor="newEmail">New Email:</label>
+                                <label className="block font-medium text-[#00000]" htmlFor="newEmail">New Email:</label>
                                 <input
                                     type="email"
                                     id="newEmail"
                                     value={newEmail}
                                     onChange={(e) => setNewEmail(e.target.value)}
-                                    className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
+                                    className="bg-gray-100 mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
                                     required
                                     aria-label="Enter new email"
                                 />
                             </div>
                             <div>
-                                <label className="block font-medium text-[#266D53]" htmlFor="currentPassword">Current Password:</label>
+                                <label className="block font-medium text-[#00000]" htmlFor="currentPassword">Current Password:</label>
                                 <input
                                     type="password"
                                     id="currentPassword"
                                     value={currentpassword}
                                     onChange={(e) => setcurrentpassword(e.target.value)}
-                                    className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
+                                    className="bg-gray-100 mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
                                     required
                                     aria-label="Enter current password"
                                 />
@@ -458,14 +458,14 @@ const ProfilePage = () => {
                             <div className="flex justify-center mt-8 gap-4">
                                 <button
                                     type="submit"
-                                    className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4285F4]"
+                                    className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4285F4]"
                                     disabled={loading}
                                 >
                                     {loading ? 'Loading...' : 'Change Email'}
                                 </button>
                                 <button
                                     type="button"
-                                    className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-gray-700 px-4 py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
+                                    className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
                                     onClick={() => setShowEmailModal(false)}
                                     aria-label="Cancel email change"
                                 >
@@ -481,44 +481,44 @@ const ProfilePage = () => {
             {/* Change Password modal */}
             {showPasswordModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-[#C6E4DA] p-6 md:p-8 rounded-lg shadow-lg w-[90%] max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto">
-                        <h2 className="text-xl md:text-2xl font-bold mb-6 text-[#266D53] text-center">Change Password</h2>
+                    <div className="bg-[#ffffff] p-6 md:p-8 rounded-lg shadow-lg w-[90%] max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto">
+                        <h2 className="text-xl md:text-2xl font-bold mb-6 text-[#012840] text-center">Change Password</h2>
                         <form onSubmit={handlePasswordChange} className="space-y-4">
                             <div>
-                                <label className="block font-medium text-[#266D53]" htmlFor="currentPassword">Current Password:</label>
+                                <label className="block font-medium text-[#00000]" htmlFor="currentPassword">Current Password:</label>
                                 <input
                                     type="password"
                                     id="currentPassword"
                                     name="currentPassword"
                                     value={passwords.currentPassword}
                                     onChange={handlePasswordInputChange}
-                                    className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
+                                    className="bg-gray-100 mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
                                     required
                                     aria-label="Enter current password"
                                 />
                             </div>
                             <div>
-                                <label className="block font-medium text-[#266D53]" htmlFor="newPassword">New Password:</label>
+                                <label className="block font-medium text-[#00000]" htmlFor="newPassword">New Password:</label>
                                 <input
                                     type="password"
                                     id="newPassword"
                                     name="newPassword"
                                     value={passwords.newPassword}
                                     onChange={handlePasswordInputChange}
-                                    className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
+                                    className="bg-gray-100 mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
                                     required
                                     aria-label="Enter new password"
                                 />
                             </div>
                             <div>
-                                <label className="block font-medium text-[#266D53]" htmlFor="confirmNewPassword">Confirm New Password:</label>
+                                <label className="block font-medium text-[#00000]" htmlFor="confirmNewPassword">Confirm New Password:</label>
                                 <input
                                     type="password"
                                     id="confirmNewPassword"
                                     name="confirmNewPassword"
                                     value={passwords.confirmNewPassword}
                                     onChange={handlePasswordInputChange}
-                                    className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
+                                    className="bg-gray-100 mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4]"
                                     required
                                     aria-label="Confirm new password"
                                 />
@@ -526,13 +526,13 @@ const ProfilePage = () => {
                             <div className="flex justify-center mt-8 gap-4">
                                 <button
                                     type="submit"
-                                    className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4285F4]"
+                                    className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4285F4]"
                                 >
                                     Change Password
                                 </button>
                                 <button
                                     type="button"
-                                    className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-gray-700 px-4 py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
+                                    className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
                                     onClick={() => setShowPasswordModal(false)}
                                     aria-label="Cancel password change"
                                 >

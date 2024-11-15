@@ -7,8 +7,8 @@ const Modal = ({ isOpen, onClose, onSubmit, editFrom, editTo, setEditFrom, setEd
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-[#C6E4DA] p-4 rounded shadow-lg">
-                <h2 className="text-xl font-bold mb-4 text-[#266D53] text-center">Edit Unavailable Time</h2>
+            <div className="bg-white p-4 rounded shadow-lg">
+                <h2 className="text-xl font-bold mb-4  text-center">Edit Unavailable Time</h2>
                 <form onSubmit={onSubmit}>
                     <div className="flex flex-col space-y-4 mt-5">
 
@@ -38,10 +38,10 @@ const Modal = ({ isOpen, onClose, onSubmit, editFrom, editTo, setEditFrom, setEd
 
                         </div>
                         <div className="flex justify-between gap-4">
-                            <button type="submit" className="bg-[#4285F4] hover:bg-[#0C65F8] text-black px-4 py-1 rounded">
+                            <button type="submit" className="bg-[#025373] hover:bg-[#03738C]C65F8] text-white px-4 py-1 rounded">
                                 Update Unavailable Time
                             </button>
-                            <button type="button" onClick={onClose} className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black px-4 py-1 rounded">
+                            <button type="button" onClick={onClose} className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white px-4 py-1 rounded">
                                 Cancel
                             </button>
                         </div>
@@ -156,7 +156,7 @@ const UnavailableDentist = ({ dentistId }) => {
 
     return (
         <div className="p-4">
-            <h2 className="text-xl font-bold mb-4 text-[#266D53] text-center">Manage Unavailable Times for Dentist</h2>
+            <h2 className="text-xl font-bold mb-4 text-center">Manage Unavailable Times for Dentist</h2>
             {error && <p className="text-red-500">{error}</p>}
 
             {/* Form for adding unavailable times */}
@@ -185,7 +185,7 @@ const UnavailableDentist = ({ dentistId }) => {
                         />
                     </div>
 
-                    <button type="submit" className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-1 mt-5 rounded">
+                    <button type="submit" className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-1 mt-5 rounded">
                         Add Unavailable Time
                     </button>
                 </div>
@@ -197,10 +197,10 @@ const UnavailableDentist = ({ dentistId }) => {
                 <table className="min-w-full  border border-gray-500">
                     <thead>
                         <tr>
-                            <th className="border px-4 py-2 bg-[#3EB489] text-white text-center">ID</th>
-                            <th className="border px-4 py-2 bg-[#3EB489] text-white text-center">From</th>
-                            <th className="border px-4 py-2 bg-[#3EB489] text-white text-center">To</th>
-                            <th className="border px-4 py-2 bg-[#3EB489] text-white text-center">Actions</th>
+                            <th className="border px-4 py-2 bg-[#012840] text-white text-center">ID</th>
+                            <th className="border px-4 py-2 bg-[#012840] text-white text-center">From</th>
+                            <th className="border px-4 py-2 bg-[#012840] text-white text-center">To</th>
+                            <th className="border px-4 py-2 bg-[#012840] text-white text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -218,7 +218,7 @@ const UnavailableDentist = ({ dentistId }) => {
                                             <button
                                                 className="text-black-500 flex flex-col items-center justify-center w-10 bg-gray-200 hover:text-black-600 transition rounded-lg shadow-sm"
                                                 onClick={() => initiateEdit(item)}
-                                                title='edit'
+                                                title='Edit'
                                             >
                                                 <span className="material-symbols-outlined">edit</span>
                                             </button>
@@ -230,7 +230,7 @@ const UnavailableDentist = ({ dentistId }) => {
                                             <button
                                                 className="text-red-500 flex flex-col items-center justify-center w-10 bg-red-100 hover:text-red-600 transition rounded-lg shadow-sm"
                                                 onClick={() => deleteUnavailableTime(item._id)}
-                                                title='delete'
+                                                title='Delete'
                                             >
                                                 <span className="material-symbols-outlined">delete</span>
                                             </button>

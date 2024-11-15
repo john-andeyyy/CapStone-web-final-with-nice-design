@@ -236,7 +236,7 @@ export default function AppointmentDetails() {
                 <div className='flex items-center'>
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center text-[#3EB489] hover:text-[#62A78E] mb-3 font-semibold focus:outline-none"
+                        className="flex items-center text-[#025373] hover:text-[#03738C] mb-3 font-semibold focus:outline-none"
                     >
                         <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
                         <p className='text-xl'>Go Back</p>
@@ -245,23 +245,23 @@ export default function AppointmentDetails() {
             </div>
 
             <div className='flex justify-between items-end p-4  '>
-                <h1 className="text-2xl font-semibold text-gray-800">Appointment Details</h1>
+                <h1 className="text-3xl font-bold">Appointment Details</h1>
 
             </div>
 
             <div className=''>
-                <div className="shadow-lg rounded-xl p-8 mb-8 space-y-6 bg-[#F5F5F5] ">
+                <div className="shadow-lg rounded-xl p-8 mb-8 space-y-6 bg-[#96D2D9] ">
                     <div className="grid grid-cols-3 gap-6">
                         <div className="flex flex-col">
-                            <p className="font-bold uppercase text-gray-700">Patient Name</p>
-                            <div className="bg-[#D3CDCD] p-3 rounded-lg shadow-md">
+                            <p className="font-bold uppercase ">Patient Name</p>
+                            <div className="bg-[#ffffff] p-3 rounded-lg shadow-md">
                                 {appointment.patient?.FirstName || 'N/A'} {appointment.patient?.LastName || 'N/A'}
                             </div>
                         </div>
 
                         <div className="flex flex-col">
-                            <p className="font-bold uppercase text-gray-700">Date</p>
-                            <div className="bg-[#D3CDCD] p-3 rounded-lg shadow-md">
+                            <p className="font-bold uppercase ">Date</p>
+                            <div className="bg-[#ffffff] p-3 rounded-lg shadow-md">
                                 {new Date(appointment.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                             </div>
                         </div>
@@ -272,7 +272,7 @@ export default function AppointmentDetails() {
                                     <p className="font-bold uppercase text-gray-700">Status</p>
 
                                     <button
-                                        className={` text-[#4285F4] hover:text-[#0C65F8] transition-colors duration-300 ml-3 ${editStatus ? 'text-red-500 hover:text-red-600' : 'text-[#4285F4] hover:text-[#0C65F8]'}`}
+                                        className={`text-[#4285F4] hover:text-[#0C65F8] transition-colors duration-300 ml-3 ${editStatus ? 'text-red-500 hover:text-red-600' : 'text-[#025373] hover:text-[#03738C]'}`}
                                         onClick={() => (editStatus ? handleCancelEdit() : seteditStatus(true))}
                                     >
                                         {editStatus ? 'Cancel Edit' : 'Edit Status'}
@@ -280,7 +280,7 @@ export default function AppointmentDetails() {
 
                                     {editStatus && (
                                         <button
-                                            className="ml-5 text-green-500  hover:text-green-600 transition"
+                                            className="ml-5 text-[#089000]  hover:text-dark-green-600 transition"
                                             onClick={handleUpdate}>
                                             Save Changes
                                         </button>
@@ -288,7 +288,7 @@ export default function AppointmentDetails() {
                                 </div>
                             </div>
 
-                            <div className="flex  items-center space-x-4 bg-[#D3CDCD] p-3 rounded-lg shadow-md">
+                            <div className="flex  items-center space-x-4 bg-[#ffffff] p-3 rounded-lg shadow-md">
                                 {!editStatus ? (
                                     <span className={`${appointment.Status === 'Cancelled' ? 'text-red-500' : 'text-[#266D53]'} font-bold`}>
                                         {appointment.Status}
@@ -315,21 +315,21 @@ export default function AppointmentDetails() {
                     <div className="grid grid-cols-3 gap-4">
                         <div className="flex flex-col">
                             <p className="font-bold uppercase">Dentist</p>
-                            <div className="bg-[#D3CDCD] p-2 rounded">
+                            <div className="bg-[#ffffff] p-3 rounded shadow-md">
                                 {`${appointment.Dentist.FirstName} ${appointment.Dentist.MiddleName ? `${appointment.Dentist.MiddleName} ` : ''}${appointment.Dentist.LastName}`}
                             </div>
                         </div>
 
                         <div className="flex flex-col">
                             <p className="font-bold uppercase">Start</p>
-                            <div className="bg-[#D3CDCD] p-2 rounded">
+                            <div className="bg-[#ffffff] p-3 rounded shadow-md">
                                 {new Date(appointment.Start).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                             </div>
                         </div>
 
                         <div className="flex flex-col">
                             <p className="font-bold uppercase">End</p>
-                            <div className="bg-[#D3CDCD] p-2 rounded">
+                            <div className="bg-[#ffffff] p-3 rounded shadow-md">
                                 {new Date(appointment.End).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
 
                             </div>
@@ -340,7 +340,7 @@ export default function AppointmentDetails() {
                     <div className="grid grid-cols-3 gap-4">
                         <div className="flex flex-col">
                             <p className="font-bold uppercase">Notes</p>
-                            <div className="bg-[#D3CDCD] p-2 rounded">
+                            <div className="bg-[#ffffff] p-3 rounded shadow-md">
                                 {appointment.notes || 'N/A'}
                             </div>
                         </div>
@@ -348,7 +348,7 @@ export default function AppointmentDetails() {
                             {appointment.Rejectmsg && (
                                 <div>
                                     <p className="font-bold uppercase">Reject message for certificate</p>
-                                    <div className="bg-[#D3CDCD] p-2 rounded">
+                                    <div className="bg-[#ffffff] p-3 rounded">
                                         {appointment.Rejectmsg || 'N/A'}
                                     </div>
                                 </div>
@@ -376,7 +376,7 @@ export default function AppointmentDetails() {
                 <ProceduresTable appointment={appointment} />
 
                 <div className="flex justify-center">
-                    <button className='btn bg-[#3EB489] hover:bg-[#62A78E] text-black'
+                    <button className='btn bg-[#025373] hover:bg-[#03738C] text-white'
                         onClick={() => toggleImages()}>
                         <span className="material-symbols-outlined">
                             {showimage ? 'visibility' : 'visibility_off'}
@@ -389,7 +389,7 @@ export default function AppointmentDetails() {
                     <div>
                         <div className='flex space-x-3'>
                             <button
-                                className={`p-3 w-32 ${isEditing ? 'bg-[#D9D9D9] hover:bg-[#ADAAAA]' : 'bg-[#3EB489] hover:bg-[#62A78E]'} text-black rounded-lg hover:${isEditing ? 'bg-[#D9D9D9] hover:bg-[#ADAAAA]' : 'bg-[#4285F4] hover:bg-[#0C65F8]'} transition`}
+                                className={`p-3 w-32 ${isEditing ? 'text-white bg-[#ADAAAA] hover:bg-[#D9D9D9]' : 'tex-white bg-[#025373] hover:bg-[#03738C]'} text-white rounded-lg hover:${isEditing ? 'bg-[#ADAAAA] hover:bg-[#D9D9D9]' : 'bg-[#025373] hover:bg-[#03738C]'} transition`}
                                 onClick={() => isEditing ? handleCancelEdit() : setIsEditing(true)}>
                                 {isEditing ? 'Cancel Edit' : 'Edit'}
                             </button>
@@ -397,7 +397,7 @@ export default function AppointmentDetails() {
                                 {isEditing && (
                                     <div className="">
                                         <button
-                                            className="p-3 bg-[#4285F4] hover:bg-[#0C65F8] text-black rounded-lg transition"
+                                            className="p-3 bg-[#025373] hover:bg-[#03738C] text-white rounded-lg transition"
                                             onClick={handleUpdate}>
                                             Save Changes
                                         </button>
@@ -484,7 +484,7 @@ export default function AppointmentDetails() {
                     onClick={() => {
                         navigate(`/Patient2d/${userid}`);
                     }}
-                    className='pl-4 pr-4 pt-2 pb-2 bg-[#3EB489] hover:bg-[#62A78E] rounded mt-4 font-semibold text-white'
+                    className='pl-4 pr-4 pt-2 pb-2 bg-[#025373] hover:bg-[#03738C] rounded mt-4 font-semibold text-white'
                 >Dental Record
 
                 </button>
@@ -501,17 +501,17 @@ export default function AppointmentDetails() {
             {/* Confirmation Modal */}
             {showModal && (
                 <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-60 z-50 flex justify-center items-center">
-                    <div className="bg-accent p-6 rounded-lg shadow-lg w-80">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-80">
                         <p className="mb-4">{modalMessage}</p>
                         <div className="flex justify-end space-x-4">
                             <button
-                                className="px-4 py-2 text-black rounded-lg bg-[#4285F4] hover:bg-[#0C65F8]"
+                                className="px-4 py-2 text-white rounded-lg bg-[#025373] hover:bg-[#03738C]"
                                 onClick={handleModalConfirm}
                             >
                                 Yes
                             </button>
                             <button
-                                className="px-4 py-2 text-black rounded-lg bg-[#D9D9D9] hover:bg-[#ADAAAA]"
+                                className="px-4 py-2 text-white rounded-lg bg-[#ADAAAA] hover:bg-[#D9D9D9]"
                                 onClick={handleModalCancel}
                             >
                                 No
@@ -526,13 +526,13 @@ export default function AppointmentDetails() {
                         <p>Are you sure you want to mark this appointment as {appointment.isfullypaid ? 'Not Paid' : 'Paid'}?</p>
                         <div className="flex justify-end space-x-4 mt-4">
                             <button
-                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                                className="px-4 py-2 text-white rounded-lg bg-[#025373] hover:bg-[#03738C]"
                                 onClick={handlePaymentStatusUpdate}
                             >
                                 Yes
                             </button>
                             <button
-                                className="px-4 py-2 text-black bg-gray-300 rounded-lg hover:bg-gray-400"
+                                className="px-4 py-2 text-white rounded-lg bg-[#ADAAAA] hover:bg-[#D9D9D9]"
                                 onClick={handleClosePaymentModal}
                             >
                                 No

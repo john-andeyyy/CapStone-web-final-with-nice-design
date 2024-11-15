@@ -89,8 +89,8 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-[#C6E4DA] p-6 rounded-lg shadow-lg w-11/12 max-w-4xl">
-                <h2 className="text-2xl font-bold mb-6 text-[#266D53] text-center">Add New Patient</h2>
+            <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-4xl">
+                <h2 className="text-2xl font-bold mb-6 text-black text-center">Add New Patient</h2>
                 <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {/* Fields in a 3-column layout */}
                     <div className="grid grid-cols-3 gap-4 lg:col-span-4">
@@ -112,8 +112,8 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                             }
                                         }}
                                         onBlur={formik.handleBlur}
-                                        className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-4 rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition duration-200`}
-                                        placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1')}`}
+                                        className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                        placeholder={`Enter${key.replace(/([A-Z])/g, ' $1')}`}
                                     />
                                 ) : (
                                     <input
@@ -122,8 +122,8 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                         value={formik.values[key]}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-4 rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition duration-200`}
-                                        placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1')}`}
+                                        className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                        placeholder={`Enter${key.replace(/([A-Z])/g, ' $1')}`}
                                     />
                                 )}
                                 {formik.touched[key] && formik.errors[key] && (
@@ -142,7 +142,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 value={formik.values.Gender}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                className={`border ${formik.touched.Gender && formik.errors.Gender ? 'border-red-500' : 'border-gray-300'} p-4 rounded-md`}
+                                className={`border ${formik.touched.Gender && formik.errors.Gender ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md`}
                             >
                                 <option value="" label="Select gender" />
                                 <option value="Male">Male</option>
@@ -162,7 +162,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 value={formik.values.Age}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                className={`border ${formik.touched.Age && formik.errors.Age ? 'border-red-500' : 'border-gray-300'} p-4 rounded-md`}
+                                className={`border ${formik.touched.Age && formik.errors.Age ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                             />
                             {formik.touched.Age && formik.errors.Age && (
                                 <span className="text-red-500 text-sm">{formik.errors.Age}</span>
@@ -177,7 +177,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 value={formik.values.Zipcode}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                className={`border ${formik.touched.Zipcode && formik.errors.Zipcode ? 'border-red-500' : 'border-gray-300'} p-4 rounded-md`}
+                                className={`border ${formik.touched.Zipcode && formik.errors.Zipcode ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                             />
                             {formik.touched.Zipcode && formik.errors.Zipcode && (
                                 <span className="text-red-500 text-sm">{formik.errors.Zipcode}</span>
@@ -191,7 +191,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 value={formik.values.CivilStatus}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                className={`border ${formik.touched.CivilStatus && formik.errors.CivilStatus ? 'border-red-500' : 'border-gray-300'} p-4 rounded-md`}
+                                className={`border ${formik.touched.CivilStatus && formik.errors.CivilStatus ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md`}
                             >
                                 <option value="" label="Select Civil Status" />
                                 <option value="Single">Single</option>
@@ -220,10 +220,10 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                     </div>
 
                     <div className="flex flex-col  md:col-span-2 lg:col-span-4">
-                        <div className="flex justify-between flex-wrap">
+                        <div className="flex justify-center items-center flex-wrap">
                             <button
                                 type="submit"
-                                className="bg-[#4285F4] hover:bg-[#0C65F8] text-white p-4 rounded-md transition duration-200 w-full md:w-auto"
+                                className="bg-[#025373] hover:bg-[#03738C] text-white p-2 rounded-md transition duration-200 w-full md:w-auto"
                                 disabled={isLoading}  
                             >
                                 {isLoading ? (
@@ -235,14 +235,14 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                             <button
                                 type="button"
                                 onClick={handleCancel}
-                                className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-gray-800 p-4 rounded-md transition duration-200 w-full md:w-auto mt-2 md:mt-0 md:ml-2"
+                                className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white p-2 rounded-md transition duration-200 w-full md:w-auto mt-2 md:mt-0 md:ml-2"
                             >
                                 Cancel
                             </button>
                         </div>
                     </div>
                 </form>
-                <p className="text-red-600 text-center mt-4">
+                <p className="text-red-600 text-left mt-4">
                     Note: The username is  <strong>First Name</strong> of the user in all uppercase letters.
                     <br />
                     The password is <strong>Last Name</strong> of the user in all in all uppercase letters.

@@ -86,8 +86,8 @@ export default function AddGroupMemberModal({ isOpen, onClose, memberlist, addto
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
-      <div className="relative p-5 border max-w-4xl shadow-lg rounded-md bg-[#C6E4DA]">
-        <h1 className="text-2xl font-bold mb-6 text-[#266D53] text-center">Add Group Member</h1>
+      <div className="relative p-5 border max-w-4xl shadow-lg rounded-md bg-[#ffffff]">
+        <h1 className="text-2xl font-bold mb-6 text-[#00000] text-center">Add Group Member</h1>
         <div className="flex justify-center">
           {previewImage && (
             <div className="mt-2">
@@ -103,41 +103,41 @@ export default function AddGroupMemberModal({ isOpen, onClose, memberlist, addto
           {/* Form fields */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">First Name:</label>
+              <label className="block text-sm font-medium text-black">First Name:</label>
               <input
                 type="text"
                 name="FirstName"
                 value={formData.FirstName}
                 onChange={handleChange}
                 required
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="bg-gray-100 shadow-md mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Last Name:</label>
+              <label className="block text-sm font-medium text-black">Last Name:</label>
               <input
                 type="text"
                 name="LastName"
                 value={formData.LastName}
                 onChange={handleChange}
                 required
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="bg-gray-100 shadow-md mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Middle Name:</label>
+              <label className="block text-sm font-medium text-black">Middle Name:</label>
               <input
                 type="text"
                 name="MiddleName"
                 value={formData.MiddleName}
                 onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="bg-gray-100 shadow-md mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Contact Number:</label>
+              <label className="block text-sm font-medium text-black">Contact Number:</label>
               <input
                 type="tel"
                 name="ContactNumber"
@@ -151,66 +151,67 @@ export default function AddGroupMemberModal({ isOpen, onClose, memberlist, addto
                 maxLength={11}
                 pattern="\d{11}"
                 title="Please enter a valid 11-digit contact number"
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="bg-gray-100 shadow-md mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Facebook Link:</label>
+              <label className="block text-sm font-medium text-black">Facebook Link:</label>
               <input
                 type="url"
                 name="Facebooklink"
                 value={formData.Facebooklink}
                 onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="bg-gray-100 shadow-md mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Profile Picture:</label>
+              <label className="block text-sm font-medium text-black">Profile Picture:</label>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="bg-gray-100 shadow-md mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Role:</label>
+              <label className="block text-sm font-medium text-black">Role:</label>
               <input
                 type="text"
                 name="Role"
                 value={formData.Role}
                 onChange={handleChange}
                 required
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="bg-gray-100 shadow-md mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Email:</label>
+              <label className="block text-sm font-medium text-black">Email:</label>
               <input
                 type="email"
                 name="Email"
                 value={formData.Email}
                 onChange={handleChange}
                 required
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="bg-gray-100 shadow-md mt-1 p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
           </div>
           <div className="flex justify-end">
             <button
-              type="button"
-              onClick={onClose}
-              className="bg-[#D9D9D9] hover:bg-[#ADAAAA] text-black font-semibold py-2 px-4 rounded-md mr-2">
-              Cancel
-            </button>
-            <button
               type="submit"
-              className=" text-black font-semibold py-2 px-4 rounded-md bg-[#4285F4] hover:bg-[#0C65F8]"
+              className=" text-white font-semibold py-2 px-4 rounded-md bg-[#025373] hover:bg-[#03738C] mr-2"
             >
               Add Member
             </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white font-semibold py-2 px-4 rounded-md mr-2">
+              Cancel
+            </button>
+            
           </div>
         </form>
       </div>

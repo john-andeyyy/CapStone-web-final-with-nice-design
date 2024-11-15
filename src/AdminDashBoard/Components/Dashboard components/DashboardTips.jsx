@@ -53,19 +53,20 @@ export default function DashboardTips() {
     return (
         <div>
             <div className="flex justify-between items-center mb-4">
-                <h2 className="pl-4 text-2xl font-semibold text-[#266D53]">Tips</h2>
-                <p className="flex items-center cursor-pointer "
+                <h2 className="pl-4 text-2xl font-semibold text-white">Tips</h2>
+                <p className="flex items-center cursor-pointer text-white"
+                    title='Edit'
                     onClick={() => {
                         navigate('/TipsList')
                     }}>
-                    Edit
-                    <span className="material-symbols-outlined ml-1"
+                
+                    <span className="material-symbols-outlined ml-1 text-white"
                     >edit</span>
                 </p>
             </div>
             <div className="grid grid-cols-1  sm:grid-cols-2 gap-4">
                 {randomTips.map(tip => (
-                    <div key={tip._id} className="border bg-accent border-primary rounded-lg p-4 shadow-md hover:shadow-lg transition max-h-full overflow-hidden">
+                    <div key={tip._id} className="border bg-white border-primary rounded-lg p-4 shadow-md hover:shadow-lg transition max-h-full overflow-hidden">
 
                         <div className='flex justify-center'>
                             <img

@@ -208,16 +208,16 @@ const DentistReport = () => {
         <div className="rounded-md bg-gray-100" style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
             <div className=" rounded-md p-4 sm:p-6">
                 <div className={`mb-6 ${localStorage.getItem('Role') === 'dentist' ? 'mt-10' : 'mt-0'}`}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
-                        <div className='flex items-center justify-start sm:items-start'>
+                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 "> */}
+                        {/* <div className='flex items-center justify-start sm:items-start'>
                             <ReportMenu />
-                        </div>
+                        </div> */}
                         <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
                             <button
                                 className={`px-4 py-2 text-white rounded transition duration-200 w-full sm:w-auto mt-4 
                                     ${Object.keys(procedureCounts).length === 0 ?
-                                        'bg-red-500 hover:bg-red-600 cursor-not-allowed' :
-                                        'bg-[#3EB489] hover:bg-[#62A78E]'}`
+                                        'bg-gray-400 cursor-not-allowed' :
+                                        'bg-[#3FA8BF] hover:bg-[#96D2D9]'}`
                                 }
                                 onClick={generatePDF}
                                 disabled={Object.keys(procedureCounts).length === 0}
@@ -226,8 +226,8 @@ const DentistReport = () => {
                             </button>
 
                         </div>
-                    </div>
-                    <h2 className="text-3xl font-bold text-[#3EB489] text-center sm:text-left lg:text-center">Dentist Report</h2>
+                    {/* </div> */}
+                    <h2 className="text-3xl font-bold text-[#025373] text-center sm:text-left lg:text-center">Dentist Report</h2>
 
                 </div>
                 <div className='flex justify-between '>
@@ -319,7 +319,7 @@ const DentistReport = () => {
                     <h3 className="text-xl font-semibold text-center sm:text-left">Completed Procedures</h3>
                     {Object.keys(procedureCounts).length > 0 ? (
                         <table className="min-w-full mt-3 table-auto border-collapse">
-                            <thead className="bg-[#3EB489] text-white text-center">
+                            <thead className="bg-[#012840] text-white text-center">
                                 <tr>
                                     <th className="px-4 py-2 font-semibold border border-black">Procedure Name</th>
                                     <th className="px-4 py-2 font-semibold border border-black">Count</th>

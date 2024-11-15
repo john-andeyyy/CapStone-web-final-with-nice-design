@@ -98,7 +98,8 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited, mis
     return (
         <div className='p-4'>
             <button
-                className={`text-white px-4 py-2 rounded ${missingProcedures ? 'bg-red-500' : `bg-[#3EB489] hover:bg-[#62A78E] ${!isValid ? 'bg-opacity-70' : ''}`
+                className={`text-white px-4 py-2 rounded ${missingProcedures ? 'bg-red-500' : `bg-[#025373] hover:bg-[#03738C]
+ ${!isValid ? 'bg-opacity-100' : ''}`
                     }`}
 
                 onClick={() => setIsModalOpen(true)}

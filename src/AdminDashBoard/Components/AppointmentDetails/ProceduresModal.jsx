@@ -37,7 +37,7 @@ const ProceduresModal = ({ isOpen, onClose, allProcedures, onSelectProcedures, a
     return (
         isOpen && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="bg-accent rounded p-6 w-3/4 max-w-xl">
+                <div className="bg-white rounded p-6 w-3/4 max-w-xl">
                     <h2 className="text-lg font-semibold mb-2">Select Procedures</h2>
                     <input
                         type="text"
@@ -69,12 +69,12 @@ const ProceduresModal = ({ isOpen, onClose, allProcedures, onSelectProcedures, a
                     </ul>
                     <div className="flex justify-center gap-4 mt-4">
                         <button
-                            className="bg-[#4285F4] hover:bg-[#0C65F8] text-white px-4 py-2 rounded"
+                            className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
                             onClick={handleConfirmSelection}
                         >
                             Confirm
                         </button>
-                        <button className="bg-[#D9D9D9] hover:bg-[#ADAAAA] px-4 py-2 rounded" onClick={onClose}>
+                        <button className="bg-[#ADAAAA] hover:bg-[#D9D9D9] px-4 py-2 rounded text-white" onClick={onClose}>
                             Cancel
                         </button>
                         
