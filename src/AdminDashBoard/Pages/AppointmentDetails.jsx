@@ -289,14 +289,15 @@ export default function AppointmentDetails() {
                             <div className='grid grid-cols-1 gap-2'>
                                 <div className='flex flex-cols'>
                                     <p className="font-bold uppercase text-gray-700">Status</p>
+                                    {localStorage.getItem('Role') !== 'dentist' && (
 
-                                    <button
-                                        className={`text-[#4285F4] hover:text-[#0C65F8] transition-colors duration-300 ml-3 ${editStatus ? 'text-red-500 hover:text-red-600' : 'text-[#025373] hover:text-[#03738C]'}`}
-                                        onClick={() => (editStatus ? handleCancelEdit() : seteditStatus(true))}
-                                    >
-                                        {editStatus ? 'Cancel Edit' : 'Edit Status'}
-                                    </button>
-
+                                        <button
+                                            className={`text-[#4285F4] hover:text-[#0C65F8] transition-colors duration-300 ml-3 ${editStatus ? 'text-red-500 hover:text-red-600' : 'text-[#025373] hover:text-[#03738C]'}`}
+                                            onClick={() => (editStatus ? handleCancelEdit() : seteditStatus(true))}
+                                        >
+                                            {editStatus ? 'Cancel Edit' : 'Edit Status'}
+                                        </button>
+                                    )}
                                     {editStatus && (
                                         <button
                                             className="ml-5 text-[#089000]  hover:text-dark-green-600 transition"
@@ -363,16 +364,19 @@ export default function AppointmentDetails() {
                                 {appointment.notes || 'N/A'}
                             </div>
                         </div>
-                        <div className="flex flex-col">
-                            {appointment.Rejectmsg && (
-                                <div>
-                                    <p className="font-bold uppercase">Reject message for certificate</p>
-                                    <div className="bg-[#ffffff] p-3 rounded">
-                                        {appointment.Rejectmsg || 'N/A'}
+
+                        {localStorage.getItem('Role') !== 'dentist' && (
+                            <div className="flex flex-col">
+                                {appointment.Rejectmsg && (
+                                    <div>
+                                        <p className="font-bold uppercase">Reject message for certificate</p>
+                                        <div className="bg-[#ffffff] p-3 rounded">
+                                            {appointment.Rejectmsg || 'N/A'}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
+                                )}
+                            </div>
+                        )}
 
                         <div className="flex flex-col ">
                             {RequestToCancel && (
@@ -407,11 +411,13 @@ export default function AppointmentDetails() {
                 {showimage && (
                     <div>
                         <div className='flex space-x-3'>
-                            <button
-                                className={`p-3 w-32 ${isEditing ? 'text-white bg-[#ADAAAA] hover:bg-[#D9D9D9]' : 'tex-white bg-[#025373] hover:bg-[#03738C]'} text-white rounded-lg hover:${isEditing ? 'bg-[#ADAAAA] hover:bg-[#D9D9D9]' : 'bg-[#025373] hover:bg-[#03738C]'} transition`}
-                                onClick={() => isEditing ? handleCancelEdit() : setIsEditing(true)}>
-                                {isEditing ? 'Cancel Edit' : 'Edit'}
-                            </button>
+                            {localStorage.getItem('Role') !== 'dentist' && (
+                                <button
+                                    className={`p-3 w-32 ${isEditing ? 'text-white bg-[#ADAAAA] hover:bg-[#D9D9D9]' : 'tex-white bg-[#025373] hover:bg-[#03738C]'} text-white rounded-lg hover:${isEditing ? 'bg-[#ADAAAA] hover:bg-[#D9D9D9]' : 'bg-[#025373] hover:bg-[#03738C]'} transition`}
+                                    onClick={() => isEditing ? handleCancelEdit() : setIsEditing(true)}>
+                                    {isEditing ? 'Cancel Edit' : 'Edit'}
+                                </button>
+                            )}
                             <div className="flex space-x-3">
                                 {isEditing && (
                                     <div className="">

@@ -115,7 +115,7 @@ export default function Sidebar() {
                 localStorage.clear();
                 navigate('/');
                 window.location.reload();
-    
+
                 // Send logout request to server
                 axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
                     .then((res) => {
@@ -135,7 +135,7 @@ export default function Sidebar() {
             }
         });
     };
-    
+
 
 
     return (
@@ -185,20 +185,20 @@ export default function Sidebar() {
                                         <span>My Appointments</span>
                                     </li>
 
-                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/patients', 'patients')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistPatient' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/DentistPatient', 'DentistPatient')}>
                                         <FaUser className="mr-3" />
-                                        <span>My Patients</span>
+                                        <span>Dentist's Patients</span>
                                     </li>
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistReport' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/DentistReport', 'DentistReport')}>
                                         <FaUser className="mr-3" />
                                         <span>My Reports</span>
                                     </li>
-                                    {/* <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'DentistPatient' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/DentistPatient', 'DentistPatient')}>
-                                        <FaUser className="mr-3" />
-                                        <span>Dentist's Patients</span>
-                                    </li> */}
-                                </div>
 
+                                    <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'patients' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/patients', 'patients')}>
+                                        <FaUser className="mr-3" />
+                                        <span>Patients List</span>
+                                    </li>
+                                </div>
 
 
                             )}
@@ -279,7 +279,7 @@ export default function Sidebar() {
                                     </li>
 
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Dentist' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/Dentist', 'Dentist')}>
-                                        <span className="material-symbols-outlined mr-2">edit</span>
+                                        <FaUser className="mr-3" />
                                         <span>Dentist</span>
                                     </li>
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Reports' ? 'bg-[#03738C] text-white' : 'hover:bg-[#03738C]'}`} onClick={() => handleNavigate('/Total_procedures', 'Reports')}>

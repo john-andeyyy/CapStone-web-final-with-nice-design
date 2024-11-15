@@ -36,7 +36,7 @@ export default function DentistPatient() {
 
                 <div className="overflow-x-auto">
                     <table className="min-w-full table-auto">
-                        <thead className="bg-[#3EB489] text-white">
+                        <thead className="bg-[#012840] text-white">
                             <tr>
                                 <th className="px-4 py-2 text-left">Last Name</th>
                                 <th className="px-4 py-2 text-left">First Name</th>
@@ -54,7 +54,7 @@ export default function DentistPatient() {
                                         <div className="flex space-x-2 sm:space-x-4 justify-center flex-wrap">
                                             {/* View Patient Profile Button */}
                                             <button
-                                                className="flex items-center justify-center w-10 sm:w-12 bg-[#3EB489] text-white hover:bg-[#2e9e70] transition duration-200 rounded-lg shadow-md py-2"
+                                                className="flex items-center justify-center w-10 sm:w-12  text-[#03738C]  transition duration-200 rounded-lg shadow-md py-2"
                                                 onClick={() => navigate(`/PatientProfile/${appointment.patient._id}`)}
                                                 title="View Patient Profile"
                                             >
@@ -64,7 +64,7 @@ export default function DentistPatient() {
                                             {/* Tooth History Button */}
                                             <button
                                                 onClick={() => navigate(`/Patient2d/${appointment.patient._id}`)}
-                                                className="flex items-center justify-center w-10 sm:w-12 bg-[#F1F5F9] text-[#3EB489] hover:bg-[#e0f3e3] transition duration-200 rounded-lg shadow-md py-2"
+                                                className="flex items-center justify-center w-10 sm:w-12 bg-[#F1F5F9] text-[#03738C] transition duration-200 rounded-lg shadow-md py-2"
                                                 title="Tooth History"
                                             >
                                                 <span className="material-symbols-outlined">dentistry</span>

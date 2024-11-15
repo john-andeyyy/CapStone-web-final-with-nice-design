@@ -11,11 +11,11 @@ const ProceduresTable = ({ appointment }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedAmount, setEditedAmount] = useState(appointment.Amount || 0);
     const [appointmentAmount, setappointmentAmount] = useState(appointment.Amount || 0);
-    
+
     const [ModalOpen, setModalOpen] = useState(false);
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
-    
+
 
     const fetchAllProcedures = async () => {
         try {
@@ -116,7 +116,7 @@ const ProceduresTable = ({ appointment }) => {
         style: 'currency',
         currency: 'PHP',
     }).format(totoalamount);
-    
+
     const formattedAmountapi = new Intl.NumberFormat('en-PH', {
         style: 'currency',
         currency: 'PHP',
@@ -130,13 +130,20 @@ const ProceduresTable = ({ appointment }) => {
 
                 <div className='flex flex-col justify-end text-right'>
                     <div>
-                        <button
-                            onClick={handleToggleEdit}
-                            className={`px-4 py-2 rounded ${isEditing ? 'bg-[#025373] hover:bg-[#03738C]' : 'bg-[#025373] hover:bg-[#03738C]'
-                                } text-white`}
-                        >
-                            {isEditing ? 'Save' : 'Edit'}
-                        </button>
+
+                        {localStorage.getItem('Role') !== 'dentist' && (
+                            <button
+                                onClick={handleToggleEdit}
+                                className={`px-4 py-2 rounded ${isEditing ? 'bg-[#025373] hover:bg-[#03738C]' : 'bg-[#025373] hover:bg-[#03738C]'
+                                    } text-white`}
+                            >
+                                {isEditing ? 'Save' : 'Edit'}
+                            </button>
+
+                        )}
+
+
+
                     </div>
                 </div>
             </div>

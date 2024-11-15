@@ -267,17 +267,27 @@ const PatientProfile = () => {
                         </div>
                         <h2 className="text-xl font-semibold mb-4 text-[#00000] text-center ">Full Patient Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {fullPatient && requiredFields.map((field) => (
-                                <div key={field} className="field">
-                                    <label className="block text-sm font-medium capitalize">{field}</label>
-                                    <input
-                                        type="text"
-                                        value={fullPatient[field] || ""}
-                                        readOnly
-                                        className="bg-gray-100 p-2 mt-1 block w-full rounded-md border-gray-300 shadow-md"
-                                    />
-                                </div>
-                            ))}
+                            {fullPatient &&
+                                requiredFields.map((field) => {
+                                    // Normalize the field to match object keys (remove spaces)
+                                    const normalizedField = field.replace(/\s+/g, ""); // Removes spaces
+
+                                    return (
+                                        <div key={field} className="field">
+                                            {console.log("field", field)}
+                                            <label className="block text-sm font-medium capitalize">
+                                                {field}
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={fullPatient[normalizedField] || "..."}
+                                                readOnly
+                                                className="bg-gray-100 p-2 mt-1 block w-full rounded-md border-gray-300 shadow-md"
+                                            />
+                                        </div>
+                                    );
+                                })}
+
                         </div>
 
                     </div>

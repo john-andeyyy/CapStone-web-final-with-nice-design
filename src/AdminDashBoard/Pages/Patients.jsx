@@ -60,115 +60,53 @@ export default function Patients_List() {
             console.error("Error fetching clinic data:", error);
         }
     };
+    const [filter, setfilter] = useState('all')
 
-    const createPDF = () => {
-        fetchclinicdata();
 
-        const doc = new jsPDF();
-        const themeColor = "#3EB489";
-        const rowHeight = 10;
-        let y = 30; // Starting position for clinic info
+    const createPDF = async () => {
+        console.log('filter', filter)
+        Swal.fire({
+            title: "Generating PDF...",
+            text: "Please wait while your PDF is being generated.",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading(); // Show loading spinner
+            },
+        });
+        try {
+            const filterOption = { filter: filter };
 
-        // Header - Clinic Logo and Dental Name
-        doc.setFillColor(themeColor);
-        doc.rect(0, 0, doc.internal.pageSize.getWidth(), 20, "F");
-
-        // Clinic Logo and Dental Name
-        const clinic = clinicDataRef.current;
-        if (clinic) {
-            doc.setFontSize(16);
-            doc.setTextColor(255, 255, 255);
-
-            // Add Clinic Logo (if available)
-            if (clinic.logo) {
-                const logoHeight = 15; // Adjust based on your logo's height
-                const logoWidth = 15; // Adjust based on your logo's width
-                const logoX = 10; // X position
-                const logoY = 3;  // Y position
-                doc.addImage(clinic.logo, 'PNG', logoX, logoY, logoWidth, logoHeight); // Add logo image at the top left corner
-            }
-
-            // Dental Name
-            const textX = clinic.logo ? 30 : 10; // Position text depending on the logo presence
-            doc.text(clinic.DentalName, textX, 12); // Display the dental name beside the logo
-        }
-
-        // Patient List Title
-        y = 40; // Adjusting y position for patient list title
-        doc.setFontSize(14);
-        doc.setTextColor(0, 0, 0);
-        doc.text("Patient List", 10, y);
-
-        // Table Header - Patient Data
-        y += 10; // Move down for table headers
-        doc.setFillColor(themeColor);
-        doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
-        doc.setFontSize(10);
-        doc.setTextColor(255, 255, 255);
-        doc.text("No.", 12, y + 7);
-        doc.text("ID", 22, y + 7);
-        doc.text("Last Name", 42, y + 7);
-        doc.text("First Name", 82, y + 7);
-        doc.text("Middle Name", 122, y + 7);
-        doc.text("Last Visit", 162, y + 7);
-
-        doc.setTextColor(0, 0, 0);
-        y += rowHeight;
-
-        // Patients Data (filteredPatients should be available in your code)
-        filteredPatients.forEach((patient, index) => {
-            const rowNumber = index + 1;
-
-            if (index % 2 === 0) {
-                doc.setFillColor(240, 240, 240);
-                doc.rect(10, y, doc.internal.pageSize.getWidth() - 20, rowHeight, "F");
-            }
-
-            doc.text(rowNumber.toString(), 12, y + 7);
-            doc.text(patient.id.toString(), 22, y + 7);
-            doc.text(patient.LastName, 42, y + 7);
-            doc.text(patient.FirstName, 82, y + 7);
-            doc.text(patient.MiddleName ? patient.MiddleName : "N/A", 122, y + 7);
-            doc.text(
-                patient.LatestAppointment
-                    ? new Date(patient.LatestAppointment.date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                    })
-                    : "Processing",
-                162,
-                y + 7
+            const response = await axios.post(
+                `${import.meta.env.VITE_BASEURL}/generate-report-GeneratePatientList`,
+                filterOption,
+                {
+                    responseType: "blob",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                }
             );
 
-            y += rowHeight;
-        });
-
-        // Footer - Clinic Info (Contact Number, Address, Email, Weekdays and Weekends Time)
-        const pageHeight = doc.internal.pageSize.getHeight();
-        const footerHeight = 25; // Adjust footer height to accommodate clinic info
-        doc.setFillColor(themeColor);
-        doc.rect(0, pageHeight - footerHeight, doc.internal.pageSize.getWidth(), footerHeight, "F");
-        doc.setFontSize(10);
-        doc.setTextColor(255, 255, 255);
-
-        // Contact Info in Footer
-        if (clinic) {
-            const clinicInfo = [
-                `Contact Number: ${clinic.ContactNumber}`,
-                `Address: ${clinic.Address}`,
-                `Email: ${clinic.Email}`,
-                `Operating Hours: ${clinic.WeekdaysTime} / ${clinic.WeekendsTime}` // Combine weekdays and weekends time into one line
-            ];
-
-            clinicInfo.forEach((info, index) => {
-                const offsetY = 5 + (index * 6);  // Increased spacing for footer text
-                doc.text(info, 10, pageHeight - footerHeight + offsetY);
+            Swal.fire({
+                title: "PDF Generated!",
+                text: "Your PDF has been successfully generated.",
+                icon: "success"
             });
-        }
+            // Create a URL for the blob
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "PatientList.pdf"); // Set the file name
+            document.body.appendChild(link);
+            link.click();
 
-        // Save the PDF
-        doc.save("Patients_List.pdf");
+            // Clean up
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        }
     };
 
 
@@ -223,11 +161,7 @@ export default function Patients_List() {
 
     const generatePDF = () => {
         createPDF();
-        Swal.fire({
-            title: "PDF Generated!",
-            text: "Your PDF has been successfully generated.",
-            icon: "success"
-        });
+
     };
 
     const [isModaltreatment, setIsModaltreatment] = useState(false);
@@ -235,7 +169,20 @@ export default function Patients_List() {
     const handleOpenModaltreatmen = () => setIsModaltreatment(true);
     const handleCloseModaltreatmen = () => setIsModaltreatment(false);
 
+
     const handleFilterChange = (filterName) => {
+        console.log('filterName', filterName)
+        if (filterName === "showActive") {
+            setfilter("active");
+        } else if (filterName === "showArchived") {
+            setfilter("archived");
+        } else if (filterName === "showNoRecord") {
+            setfilter("processing");
+        } else {
+            setfilter("all");
+        }
+
+
         setFilters((prevFilters) => {
             const newFilters = {
                 ...prevFilters,
@@ -283,58 +230,58 @@ export default function Patients_List() {
 
 
     return (
-        <div className={`container mx-auto p-4 min-h-screen ${localStorage.getItem('Role') === 'dentist' ? 'pt-10' : 'pt-0'}`}>
+        <div className={`container mx-auto p-4 min-h-screen ${localStorage.getItem('Role') !== 'dentist' ? 'pt-0' : 'pt-10'}`}>
             {loading ? (
                 <div className="flex justify-center items-center h-screen">
                     <span className="loading loading-spinner loading-lg"></span>
                 </div>
             ) : (
                 <>
-                    <div className="flex mt-10 flex-col lg:flex-row justify-between items-center pb-5">
+                    <div className="flex mt-10 flex-col lg:flex-row justify-between items-center ">
                         <div className="flex justify-between items-center">
-                            <h1 className="text-3xl font-semibold pb-2">Patients List</h1>
+                            <h1 className="text-3xl font-semibold ">Patients List</h1>
                             <button onClick={fetch_patient} className="p-2">
                                 <span className="material-symbols-outlined">refresh</span>
                             </button>
                         </div>
 
                         {/* Action Buttons */}
-                <div className="flex space-x-2 sm:space-x-4">
-                    {localStorage.getItem('Role') !== 'dentist' && (
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
-                        >
-                            Add Patient
-                        </button>
-                    )}
+                        {localStorage.getItem('Role') !== 'dentist' && (
+                            <div className="flex space-x-2 sm:space-x-4">
+                                <button
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
+                                >
+                                    Add Patient
+                                </button>
 
-                    <button
-                        onClick={generatePDF}
-                        className="p-2 text-white bg-[#3FA8BF] hover:bg-[#96D2D9] rounded w-full sm:w-auto"
-                    >
-                        Generate PDF
-                    </button>
-                </div>
+                                <button
+                                    onClick={generatePDF}
+                                    className="p-2 text-white bg-[#3FA8BF] hover:bg-[#96D2D9] rounded w-full sm:w-auto"
+                                >
+                                    Generate PDF
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-    {/* Search Input */}
-    <div className="relative flex-grow mt-8 ">
-        <input
-            type="text"
-            placeholder="Search patients..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="block pl-10 pr-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-64"
-        />
-        <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
-            <span className="material-symbols-outlined">search</span>
-        </div>
-    </div>
+                        {/* Search Input */}
+                        <div className="relative flex-grow mt-8 ">
+                            <input
+                                type="text"
+                                placeholder="Search patients..."
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                className="block pl-10 pr-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-64"
+                            />
+                            <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
+                                <span className="material-symbols-outlined">search</span>
+                            </div>
+                        </div>
 
- {/* Filter Section */}
-                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 py-4 gap-2 ">
+                        {/* Filter Section */}
+                        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 py-4 gap-2 ">
                         {[
                             { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
                             { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
@@ -356,33 +303,27 @@ export default function Patients_List() {
                         ))}
                     </div>     */}
 
-                    <div className="flex flex-col space-y-2 py-4">
-                        <label htmlFor="patient-filter" className="font-medium text-gray-700">Filter Patients</label>
-                        
-                        <select
-                            id="patient-filter"
-                            onChange={(e) => handleFilterChange(e.target.value)}
-                            className="p-2 border border-gray-300 bg-gray-100 rounded-md"
-                        >
-                            <option value="">-- Choose Filter --</option>
-                            {[
-                                { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
-                                { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
-                                { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
-                            ].map(({ label, filterName }) => (
-                                <option key={filterName} value={filterName}>
-                                    {label}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="flex flex-col space-y-2 py-4">
+                            <label htmlFor="patient-filter" className="font-medium text-gray-700">Filter Patients</label>
+
+                            <select
+                                id="patient-filter"
+                                onChange={(e) => handleFilterChange(e.target.value)}
+                                className="p-2 border border-gray-300 bg-gray-100 rounded-md"
+                            >
+                                <option value="">-- Choose Filter --</option>
+                                {[
+                                    { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
+                                    { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
+                                    { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
+                                ].map(({ label, filterName }) => (
+                                    <option key={filterName} value={filterName}>
+                                        {label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
-</div>
-
-
-                   
-
-
-
 
                     {/* Patients Table */}
                     <div className="overflow-x-auto max-h-[34rem]">
