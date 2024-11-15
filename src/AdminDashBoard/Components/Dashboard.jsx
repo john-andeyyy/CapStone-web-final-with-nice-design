@@ -37,7 +37,7 @@ export default function Dashboard() {
                         <div className="text-gray-600">{formattedDate}</div>
                     </header>
                 </div>
-                <div className="flex justify-end">
+                {/* <div className="flex justify-end">
                     <button
                         onClick={() => navigate('/Total_procedures')}
                         className='bg-[#025373] hover:bg-[#03738C] h-12 rounded-xl text-xl font-semibold text-white transition duration-300 p-2 flex items-center justify-center space-x-2'
@@ -47,7 +47,7 @@ export default function Dashboard() {
                         </span>
                         <span>Report Overview</span>
                     </button>
-                </div>
+                </div> */}
             </div>
 
 

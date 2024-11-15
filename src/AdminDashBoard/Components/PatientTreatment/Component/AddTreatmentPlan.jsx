@@ -1,205 +1,191 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AddTreatmentPlan from './AddTreatmentPlan';
-import EditTreatmentPlan from './EditTreatmentPlan';
-
 const BASEURL = import.meta.env.VITE_BASEURL;
 
-const TreatmentPlanModal = ({ patientId, isOpen, onClose }) => {
-    const [treatmentPlans, setTreatmentPlans] = useState([]);
-    const [isAdding, setIsAdding] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [currentPlan, setCurrentPlan] = useState(null);
-    const [noRecords, setNoRecords] = useState(false);
+export default function AddTreatmentPlan({ patientId, onAdd, onCancel }) {
+    const [newPlan, setNewPlan] = useState({
+        patient: patientId,
+        TreatmentStage: '',
+        ProcedureList: [{ Procedure: '' }],
+        EstimatedCost: 0,
+        Status: 'Pending',
+        scheduleOn: '',
+    });
+    const [procedures, setProcedures] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
-        if (isOpen) {
-            const fetchTreatmentPlans = async () => {
-                try {
-                    const response = await axios.get(`${BASEURL}/treatmentplan/treatmentplans/patient/${patientId}`);
-                    if (response.status === 200) {
-                        setTreatmentPlans(response.data.reverse());
-                        setNoRecords(false);
-                    } else if (response.status === 404) {
-                        setNoRecords(true);
-                        setTreatmentPlans([]);
-                    }
-                } catch (error) {
-                    setNoRecords(true);
-                    setTreatmentPlans([]);
-                }
-            };
+        const fetchProcedures = async () => {
+            try {
+                const response = await axios.get(`${BASEURL}/Procedure/names`);
+                setProcedures(response.data);
+            } catch (error) {
+                console.error("Error fetching procedures:", error);
+            }
+        };
 
-            fetchTreatmentPlans();
+        fetchProcedures();
+    }, []);
+
+    useEffect(() => {
+        // Calculate total Estimated Cost
+        const totalCost = newPlan.ProcedureList.reduce((total, procedure) => {
+            const proc = procedures.find(p => p._id === procedure.Procedure);
+            return proc ? total + proc.Price : total;
+        }, 0);
+        setNewPlan(prev => ({ ...prev, EstimatedCost: totalCost }));
+    }, [newPlan.ProcedureList, procedures]);
+
+    const validateForm = () => {
+        const { TreatmentStage, ProcedureList, EstimatedCost, scheduleOn } = newPlan;
+        return TreatmentStage && ProcedureList.every(proc => proc.Procedure) && EstimatedCost > 0 && scheduleOn;
+    };
+
+    const handleAddPlan = async () => {
+        setErrorMessage('');
+        setSuccessMessage('');
+
+        if (!validateForm()) {
+            setErrorMessage("Please fill all required fields.");
+            return;
         }
-    }, [isOpen, patientId]);
 
-    const updateStatus = async (planId, nextStatus) => {
         try {
-            await axios.put(`${BASEURL}/treatmentplan/status/${planId}`, { Status: nextStatus });
-            const response = await axios.get(`${BASEURL}/treatmentplan/treatmentplans/patient/${patientId}`);
-            setTreatmentPlans(response.data.reverse());
-            setNoRecords(false);
+            const response = await axios.post(`${BASEURL}/treatmentplan/treatmentplans`, newPlan);
+            if (response.status === 201) {
+                onAdd();
+                setSuccessMessage("Treatment plan added successfully!");
+                setNewPlan({
+                    patient: patientId,
+                    TreatmentStage: '',
+                    ProcedureList: [{ Procedure: '' }],
+                    EstimatedCost: 0,
+                    Status: 'Pending',
+                    scheduleOn: ''
+                });
+                onCancel();
+            }
         } catch (error) {
-            console.error("Error updating treatment plan status:", error);
+            console.error("Error adding treatment plan:", error);
         }
     };
 
-    const handleEditClick = (plan) => {
-        setCurrentPlan(plan);
-        setIsEditing(true);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setNewPlan((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
-    if (!isOpen) return null;
+    const handleProcedureChange = (e, index) => {
+        const { value } = e.target;
+        const updatedProcedures = [...newPlan.ProcedureList];
+        const selectedProcedure = procedures.find(proc => proc.Procedure_name === value);
+        updatedProcedures[index] = { Procedure: selectedProcedure ? selectedProcedure._id : '' };
+        setNewPlan((prev) => ({
+            ...prev,
+            ProcedureList: updatedProcedures,
+        }));
+    };
+
+    const addProcedureField = () => {
+        setNewPlan((prev) => ({
+            ...prev,
+            ProcedureList: [...prev.ProcedureList, { Procedure: '' }],
+        }));
+    };
+
+    const selectedProcedureIds = newPlan.ProcedureList.map(proc => proc.Procedure);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75">
-            <div className="modal-box w-[90%] h-[90%] max-w-full flex flex-col relative p-5  bg-[#ffffff]  ">
+        <div className="flex flex-col">
+            <h2 className="text-2xl font-bold mb-6 text-[#00000] text-center">Add Treatment Plan</h2>
 
-{/* <div className='text-right'>
-                    <button onClick={onClose}>X</button>
-    
-</div>                */}
+            {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+            {successMessage && <div className="text-black mb-4 text-center text-xl font-bold">{successMessage}</div>}
 
- {!isAdding && (
-                    <h2 className="text-2xl font-bold mb-4 text-[#00000] text-center">Treatment Plan</h2>
-                )}
+        <div className='grid grid-cols-2'>
+           
+            <div className="mb-4 mr-4">
+                <label className="block text-black">Treatment Stage</label>
+                <input
+                    type="text"
+                    name="TreatmentStage"
+                    value={newPlan.TreatmentStage}
+                    onChange={handleChange}
+                    className="bg-gray-100 border rounded w-full py-2 px-3 shadow-md"
+                    required
+                />
+            </div>
 
-                <div className="flex-grow flex flex-col">
-                    {isAdding ? (
-                        <AddTreatmentPlan
-                            patientId={patientId}
-                            onAdd={() => {
-                                const fetchTreatmentPlans = async () => {
-                                    try {
-                                        const response = await axios.get(`${BASEURL}/treatmentplan/treatmentplans/patient/${patientId}`);
-                                        setTreatmentPlans(response.data.reverse());
-                                        setNoRecords(false);
-                                    } catch (error) {
-                                        console.error("Error fetching treatment plans:", error);
-                                        setNoRecords(true);
-                                    }
-                                };
-                                fetchTreatmentPlans();
-                            }}
-                            onCancel={() => setIsAdding(false)}
-                        />
-                    ) : isEditing && currentPlan ? (
-                        <EditTreatmentPlan
-                            plan={currentPlan}
-                            onSave={() => {
-                                const fetchTreatmentPlans = async () => {
-                                    try {
-                                        const response = await axios.get(`${BASEURL}/treatmentplan/treatmentplans/patient/${patientId}`);
-                                        setTreatmentPlans(response.data.reverse());
-                                        setNoRecords(false);
-                                    } catch (error) {
-                                        console.error("Error fetching treatment plans:", error);
-                                        setNoRecords(true);
-                                    }
-                                };
-                                fetchTreatmentPlans();
-                                setIsEditing(false);
-                                setCurrentPlan(null);
-                            }}
-                            onCancel={() => {
-                                setIsEditing(false);
-                                setCurrentPlan(null);
-                            }}
-                        />
-                    ) : (
-                        <div className="flex-grow">
-                            {noRecords ? (
-                                <p className="text-center text-red-500">No treatment plans found.</p>
-                            ) : (
-                                <div className="overflow-y-auto max-h-[65vh]">
-                                    <table className="min-w-full border border-black bg-gray-100 text-white">
-                                        <thead className="sticky top-0 bg-[#012840]">
-                                            <tr>
-                                                <th className="py-2 px-4 border border-black">Treatment Stage</th>
-                                                <th className="py-2 px-4 border border-black">Procedure</th>
-                                                <th className="py-2 px-4 border border-black">Estimated Cost</th>
-                                                <th className="py-2 px-4 border border-black">Date Recommended</th>
-                                                <th className="py-2 px-4 border border-black">Status</th>
-                                                <th className="py-2 px-4 border border-black">Update Status</th>
-                                                <th className="py-2 px-4 border border-black">Edit</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {treatmentPlans.map((plan) => (
-                                                <tr key={plan._id} className={plan.Status === 'Completed' ? 'bg-green-200 bg-opacity-50' : ''}>
-                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{plan.TreatmentStage}</td>
-                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{plan.ProcedureList.map((item) => item.Procedure.Procedure_name).join(', ')}</td>
-                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{plan.EstimatedCost.toLocaleString('en-US', { style: 'currency', currency: 'PHP' })}</td>
-                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{new Date(plan.scheduleOn).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })}</td>
-                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">{plan.Status}</td>
-                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">
-                                                        {plan.Status === 'Completed' ? (
-                                                            <span className="text-green-700 font-semibold">Completed</span>
-                                                        ) : plan.Status === 'Missed' ? (
-                                                            <span className="text-red-500 font-semibold">Missed</span>
-                                                        ) : (
-                                                            <div className="flex space-x-2">
-                                                                {plan.Status === 'Pending' && (
-                                                                    <>
-                                                                        <button
-                                                                            onClick={() => updateStatus(plan._id, 'Completed')}
-                                                                            className="py-1 px-3 text-sm rounded text-white bg-[#4285F4] hover:bg-[#0C65F8]"
-                                                                        >
-                                                                            Completed
-                                                                        </button>
-                                                                        <button
-                                                                            onClick={() => updateStatus(plan._id, 'Missed')}
-                                                                            className="py-1 px-3 text-sm rounded bg-red-500 text-white hover:bg-red-600"
-                                                                        >
-                                                                            Missed
-                                                                        </button>
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </td>
-                                                    <td className="py-2 px-4 border border-black bg-gray-100 text-black">
-                                                        <button
-                                                            onClick={() => handleEditClick(plan)}
-                                                            className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
-                                                        >
-                                                            <span className="material-symbols-outlined ml-1"
-                    >edit</span>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
-                        </div>
-                    )}
+            {newPlan.ProcedureList.map((procedure, index) => (
+                <div key={index} className="mb-4">
+                    <label className="block text-black">Procedure</label>
+                    <select
+                        value={procedure.Procedure ? procedures.find(proc => proc._id === procedure.Procedure)?.Procedure_name : ''}
+                        onChange={(e) => handleProcedureChange(e, index)}
+                        className="bg-gray-100 border rounded w-full py-2 px-3 shadow-md"
+                        required
+                    >
+                        <option value="">Select a procedure</option>
+                        {procedures.map((proc) => (
+                            <option key={proc._id} value={proc.Procedure_name} disabled={selectedProcedureIds.includes(proc._id) && procedure.Procedure !== proc._id}>
+                                {proc.Procedure_name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            ))}
+            <div>
+                <button onClick={addProcedureField} className="bg-[#025373] text-white py-2 px-4 rounded hover:bg-[#03738C] mb-4">
+                    Add Procedure
+                </button>
+            </div>
+        
+        </div>
+
+            <div className='grid grid-cols-2 gap-4'>
+                <div className="mb-4">
+                    <label className="block text-black" htmlFor="EstimatedCost">Estimated Cost</label>
+                    <input
+                        type="number"
+                        id="EstimatedCost"
+                        name="EstimatedCost"
+                        value={newPlan.EstimatedCost}
+                        onChange={handleChange}
+                        className="bg-gray-100 border rounded w-full py-2 px-3 shadow-md"
+                        required
+                        min="0"
+                    />
                 </div>
 
-                {!isAdding && (<div>
-
-                    {/* Buttons fixed at the bottom */}
-                    <div className="mt-4 flex justify-end space-x-2">
-                        <button
-                            onClick={() => setIsAdding(true)}
-                            className="text-white py-2 px-4 rounded bg-[#025373] hover:bg-[#03738C]"
-                        >
-                            Add Treatment Plan
-                        </button>
-                        <button
-                            onClick={onClose}
-                            className="text-white py-2 px-4 rounded bg-[#ADAAAA] hover:bg-[#D9D9D9]"
-                        >
-                            Close
-                        </button>
-                    </div>
+                <div className="mb-4">
+                    <label className="block text-black" htmlFor="scheduleOn">Set Recomended Schedule</label>
+                    <input
+                        type="date"
+                        id="scheduleOn"
+                        name="scheduleOn"
+                        value={newPlan.scheduleOn ? newPlan.scheduleOn.split('T')[0] : ''}
+                        onChange={handleChange}
+                        className="bg-gray-100 border rounded w-full py-2 px-3 shadow-md"
+                        required
+                    />
                 </div>
-                )}
+            </div>
+
+            <div className="mt-auto flex justify-end space-x-2">
+                <button onClick={handleAddPlan} className="bg-[#025373] hover:bg-[#03738C] text-white py-2 px-4 rounded">
+                    Add Plan
+                </button>
+                <button
+                    onClick={onCancel}
+                    className="text-white py-2 px-4 rounded bg-[#ADAAAA] hover:bg-[#D9D9D9]"
+                >
+                    Cancel
+                </button>
             </div>
         </div>
     );
-};
-
-export default TreatmentPlanModal;
+}

@@ -72,28 +72,28 @@ export default function Forget_pass() {
 
     return (
         <div className="relative min-h-screen">
-              <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div>
+              {/* <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div> */}
               <div className="flex-1 rounded-md"
                         style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
         <div className="flex items-center justify-center min-h-screen">
-            <div className="bg-white rounded-lg shadow-lg p-8 w-96">
-                <h2 className="text-2xl font-bold text-[#266D53] text-center mb-4">Reset Password</h2>
+            <div className="bg-[#96D2D9] rounded-lg shadow-lg p-8 w-96">
+                <h2 className="text-2xl font-bold text-[#025373] text-center mb-4">Reset Password</h2>
                 {message && <p className="text-center text-blue-500 mb-4">{message}</p>}
 
                 {step === 1 && (
                     <form onSubmit={handleRequestPasswordReset}>
-                        <label className="block text-green-600 mb-2">Email</label>
+                        <label className="block text-[#012840] mb-2">Email</label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your email"
                             required
                         />
                         <button
                             type="submit"
-                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#3EB489] hover:bg-[#62A78E]'}`}
+                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
                             disabled={loading}
                         >
                             {loading ? 'Sending...' : 'Request Password Reset'}
@@ -103,18 +103,18 @@ export default function Forget_pass() {
 
                 {step === 2 && (
                     <form onSubmit={handleVerifyOtp}>
-                        <label className="block text-green-600 mb-2">Enter OTP</label>
+                        <label className="block text-[#025373] mb-2">Enter OTP</label>
                         <input
                             type="number"
                             value={otp}
                             onChange={(e) => setOtp(e.target.value)}
-                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter OTP sent to your email"
                             required
                         />
                         <button
                             type="submit"
-                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'}`}
+                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
                             disabled={loading}
                         >
                             {loading ? 'Verifying...' : 'Verify OTP'}
@@ -124,18 +124,18 @@ export default function Forget_pass() {
 
                 {step === 3 && (
                     <form onSubmit={handleResetPassword}>
-                        <label className="block text-green-600 mb-2">New Password</label>
+                        <label className="block text-[#025373] mb-2">New Password</label>
                         <input
                             type="password"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your new password"
                             required
                         />
                         <button
                             type="submit"
-                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'}`}
+                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
                             disabled={loading}
                         >
                             {loading ? 'Resetting...' : 'Reset Password'}
@@ -144,7 +144,7 @@ export default function Forget_pass() {
                 )}
 
                 <div className="mt-4 text-center">
-                    <Link to={`/AdminLogin`} className="text-green-600 hover:text-green-700 transition duration-150">
+                    <Link to={`/AdminLogin`} className="text-[#025373] hover:text-[#03738C] transition duration-150">
                         Back to Login
                     </Link>
                 </div>

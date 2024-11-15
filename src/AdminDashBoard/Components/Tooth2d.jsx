@@ -425,7 +425,7 @@ const Tooth2d = ({ userIds }) => {
                                                     <button
                                                         className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
                                                         onClick={() => handleEditNote(note, index)}
-                                                        title='edit'
+                                                        title='Edit'
                                                     >
                                                         <span className="material-symbols-outlined">edit</span>
                                                     </button>

@@ -45,14 +45,14 @@ const ProcedureTable = ({
                                 <button
                                     className="flex flex-col items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
                                     onClick={() => openViewModal(procedure, 'View')}
-                                    title="view"
+                                    title="View"
                                 >
                                     <span className="material-symbols-outlined">visibility</span>
                                 </button>
                                 <button
                                     className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
                                     onClick={() => openEditModal(procedure, 'Edit')}
-                                    title="edit"
+                                    title="Edit"
                                 >
                                     <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span>
                                 </button>

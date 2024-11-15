@@ -27,9 +27,9 @@ const EditTreatmentPlan = ({ plan, onSave, onCancel }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75">
-            <div className="modal-box  flex flex-col relative p-5  bg-[#C6E4DA]  ">
+            <div className="modal-box  flex flex-col relative p-5  bg-[#ffffff]  ">
         {/* <div className="p-4  bg-[#C6E4DA]  rounded shadow-lg"> */}
-            <h3 className="text-2xl text-[#266D53] text-center font-bold mb-10">Edit Treatment Plan</h3>
+            <h3 className="text-2xl text-[#00000] text-center font-bold mb-10">Edit Treatment Plan</h3>
             <div className='grid grid-cols-2 gap-4'>
                 <div className="mb-4">
                     <label className="block font-semibold">Treatment Stage</label>
@@ -37,7 +37,7 @@ const EditTreatmentPlan = ({ plan, onSave, onCancel }) => {
                         type="text"
                         value={treatmentStage}
                         onChange={(e) => setTreatmentStage(e.target.value)}
-                        className="w-full p-2 border rounded"
+                        className="bg-gray-100 shadow-md w-full p-2 border rounded"
                     />
                 </div>
                 <div className="mb-4">
@@ -46,7 +46,7 @@ const EditTreatmentPlan = ({ plan, onSave, onCancel }) => {
                         type="number"
                         value={estimatedCost}
                         onChange={(e) => setEstimatedCost(Number(e.target.value))}
-                        className="w-full p-2 border rounded"
+                        className="bg-gray-100 shadow-md w-full p-2 border rounded"
                     />
                 </div>
             </div>
@@ -57,7 +57,7 @@ const EditTreatmentPlan = ({ plan, onSave, onCancel }) => {
                     <select
                         value={status}
                         onChange={(e) => setStatus(e.target.value)}
-                        className="w-full p-2 border rounded"
+                        className="bg-gray-100 shadow-md w-full p-2 border rounded"
                     >
                         <option value="Pending">Pending</option>
                         <option value="Completed">Completed</option>
@@ -70,14 +70,14 @@ const EditTreatmentPlan = ({ plan, onSave, onCancel }) => {
                         type="date"
                         value={new Date(scheduleOn).toISOString().split('T')[0]}
                         onChange={(e) => setScheduleOn(new Date(e.target.value).toISOString())}
-                        className="w-full p-2 border rounded"
+                        className="bg-gray-100 shadow-md w-full p-2 border rounded"
                     />
                 </div>
             </div>
             <div className="flex justify-center items-center">
                 <button
                     onClick={handleSave}
-                    className="bg-[#4285F4] hover:bg-[#0C65F8] text-white py-2 px-4 rounded mr-2"
+                    className="bg-[#025373] hover:bg-[#03738C] text-white py-2 px-4 rounded mr-2"
                 >
                     Save
                 </button>

@@ -570,7 +570,7 @@ export default function Appointments() {
                                             onClick={() => updateAppointmentStatus(appointment.id, 'Approved')}
                                             disabled={isApproveDisabled || loadingApprove[appointment.id]} // Disable when approving
                                             className={`p-2 px-3 rounded-2xl ${isApproveDisabled || loadingApprove[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-green-200 text-green-700 hover:text-green-900 transition rounded-lg shadow-sm"}`}
-                                            title='approve'
+                                            title='Approve'
                                         >
                                             {loadingApprove[appointment.id] ? (
                                                 <span className="loading loading-spinner"></span> // Show spinner when approving
@@ -583,7 +583,7 @@ export default function Appointments() {
                                             onClick={() => updateAppointmentStatus(appointment.id, 'Rejected')}
                                             disabled={isDeclineDisabled || loadingReject[appointment.id]} // Disable when rejecting
                                             className={`p-2 px-3 rounded-2xl ${isDeclineDisabled || loadingReject[appointment.id] ? "bg-gray-400 cursor-not-allowed" : "flex flex-col items-center justify-center bg-red-200 text-red-700 hover:text-red-900 transition rounded-lg shadow-sm"}`}
-                                            title='cancel'
+                                            title='Cancel'
                                         >
                                             {loadingReject[appointment.id] ? (
                                                 <span className="loading loading-spinner"></span> // Show spinner when rejecting
@@ -594,7 +594,7 @@ export default function Appointments() {
 
 
                                         <Link to={`/appointment/${appointment.id}`} className="flex flex-col  items-center p-2 px-3  justify-center bg-blue-200 text-blue-700 hover:text-blue-900 transition rounded-lg shadow-sm"
-                                            title='view'>
+                                            title='View'>
                                             <span className="material-symbols-outlined text-2xl">
                                                 visibility
                                             </span>

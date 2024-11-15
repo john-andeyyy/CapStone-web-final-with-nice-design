@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import SemiFullModal from '../../../../ComponentModal/MediumModal';
 import Modal90 from '../../../../ComponentModal/Modal90';
+import Swal from 'sweetalert2';
 
-const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId, toothId, jaw, onRefresh }) => {
+const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId, toothId, jaw, onRefresh, selectedTooth }) => {
     const [notelist, setNotelist] = useState(notes);
     const [newNote, setNewNote] = useState('');
     const [noteIndexToUpdate, setNoteIndexToUpdate] = useState(null);
     const [updatedNote, setUpdatedNote] = useState('');
-    const [toothDetails, setToothDetails] = useState({ name: toothName, status: toothStatus });
+    const [toothDetails, setToothDetails] = useState({ name: toothName, status: toothStatus, toothType: selectedTooth.toothType });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -17,6 +18,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
     const [teethname, setteethname] = useState(toothName);
     const [showDeleteToothConfirmation, setShowDeleteToothConfirmation] = useState(false);
     const [showDeleteNoteConfirmation, setShowDeleteNoteConfirmation] = useState({ show: false, index: null });
+    const [toothType, setToothType] = useState(selectedTooth.toothType);
 
     const Baseurl = import.meta.env.VITE_BASEURL;
 
@@ -65,6 +67,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                 jaw,
                 noteIndex: noteIndexToUpdate,
                 updatedNote,
+
             });
             setUpdatedNote('');
             setNotelist({ note: response.data.note }); // Update notelist from response
@@ -116,7 +119,20 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
 
 
     const confirmDeleteTooth = () => {
-        setShowDeleteToothConfirmation(true);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete this tooth? This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleDeleteTooth();
+            }
+        });
     };
 
     const handleDeleteTooth = async () => {
@@ -130,6 +146,13 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                 },
             });
             setSuccessMessage(`${toothDetails.name} deleted successfully.`);
+
+            Swal.fire(
+                'Deleted!',
+                'The tooth has been deleted.',
+                'success'
+            );
+
             onClose();
             await onRefresh();
         } catch (error) {
@@ -153,14 +176,17 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                 jaw,
                 name: toothDetails.name,
                 status: toothDetails.status,
+                toothType
             });
             setteethname(response.data.name);
+            console.log('response.data.name', response.data)
             setToothDetails({
                 name: response.data.name,
                 status: response.data.status,
+                toothType: response.data.toothType
+
             });
 
-            setSuccessMessage(`${response.data.name} details updated successfully!`);
             setIsEditingTooth(false);
             await onRefresh();
         } catch (error) {
@@ -172,8 +198,13 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
     };
 
     return (
-        <Modal90 isOpen={isOpen} onClose={onClose}>
-            <div>
+        <SemiFullModal
+            isOpen={isOpen}
+            onClose={onClose}
+            w={'50%'}
+            h={'80%'}
+        >
+            <div className=''>
                 <div className='text-center text-lg font-semibold '>
                     {loading && <div className="spinner">Loading...</div>}
                     {error && <div className="text-red-500 mb-2">{error}</div>}
@@ -220,6 +251,20 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                         <option value="Calculus Present">Calculus Present</option>
                                     </select>
                                 </div>
+                                <div className="flex flex-col w-1/2">
+                                    <div className="flex flex-col ">
+                                        <label className="block text-sm mb-1">Tooth Type:</label>
+                                        <select
+                                            value={toothType}
+                                            onChange={(e) => setToothType(e.target.value)}
+                                            className="bg-gray-100 shadow-md border rounded w-full py-2 px-3"
+                                            required
+                                        >
+                                            <option value="Permanent">Permanent</option>
+                                            <option value="Temporary">Temporary</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div className="flex justify-between">
                                 <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Save Changes</button>
@@ -227,12 +272,16 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                             </div>
                         </form>
                     ) : (
-                        <div className="flex items-center mt-10">
-                            <span className="mr-4">Status: <span className='text-xl font-bold capitalize'>{toothDetails.status}</span></span>
-                            <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline">Edit</button>
+                        <div className=" mt-10">
+                            <div className='flex'>
+                                <p className="mr-4">Status: <span className='text-xl font-bold capitalize'>{toothDetails.status}</span></p>
+                                <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline">Edit</button>
+                            </div>
+                                <p className="mr-4">Tooth Type: <span className='text-xl font-bold capitalize'>{toothDetails.toothType}</span></p>
                         </div>
                     )}
                 </div>
+
 
                 <div className='grid grid-cols-2 mt-5'>
 
@@ -279,10 +328,9 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                         {isAddingNote ? 'Cancel' : 'Add New Note'}
                     </button> */}
 
-                    {/* Uncomment to add delete functionality */}
-                    {/* <button onClick={confirmDeleteTooth} className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
-        Delete Tooth
-    </button> */}
+
+
+
                 </div>
 
 
@@ -342,7 +390,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                             setNoteIndexToUpdate(index); // use index for updating specific note
                                             setUpdatedNote(note.text);   // Set updatedNote to note text only
                                         }} className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
-                                            title='edit'> <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span></button>
+                                            title='Edit'> <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span></button>
                                         <button onClick={() => confirmDeleteNote(index)} className="flex flex-col items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm" title='delete'><span className="material-symbols-outlined">
                                             delete
                                         </span></button>
@@ -356,22 +404,23 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
 
                 </div>
 
-
-
+                {localStorage.getItem('Role') !== 'dentist' && (
+                    <div className="absolute bottom-4 right-4 flex flex-col items-end">
+                        <button
+                            onClick={confirmDeleteTooth}
+                            className={`px-4 py-2 rounded transition ${localStorage.getItem('Role') === 'admin' ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-gray-400 text-gray-200 cursor-not-allowed'}`}
+                            disabled={localStorage.getItem('Role') !== 'admin'}
+                        >
+                            Delete Tooth
+                            <p className="text-sm font-semibold text-white">Admin only</p>
+                        </button>
+                    </div>
+                )}
 
             </div>
 
 
-            {/* Delete Tooth Confirmation Prompt */}
-            {showDeleteToothConfirmation && (
-                <div className="text-center mb-4">
-                    <p>Are you sure you want to delete this tooth?</p>
-                    <div className="flex justify-center mt-2">
-                        <button onClick={handleDeleteTooth} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Confirm</button>
-                        <button onClick={() => setShowDeleteToothConfirmation(false)} className="ml-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Cancel</button>
-                    </div>
-                </div>
-            )}
+
 
             {/* Delete Note Confirmation Prompt */}
             {showDeleteNoteConfirmation.show && (
@@ -385,7 +434,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
             )}
 
 
-        </Modal90>
+        </SemiFullModal>
     );
 };
 

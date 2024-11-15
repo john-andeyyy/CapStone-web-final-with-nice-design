@@ -32,14 +32,14 @@ const DentistTable = ({ loading, filteredDentists, handleRowClick, handle_availa
                                         <button
                                             className="flex flex-col items-center justify-center w-8 sm:w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
                                             onClick={() => handleRowClick(dentist)}
-                                            title="view"
+                                            title="View"
                                         >
                                             <span className="material-symbols-outlined">visibility</span>
                                         </button>
                                         <button
                                             className={`flex items-center ${dentist.isAvailable ? 'text-green-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-green-100 transition rounded-lg shadow-sm' : 'text-red-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-red-100 transition rounded-lg shadow-sm'}`}
                                             onClick={() => handle_availability(dentist)}
-                                            title={dentist.isAvailable ? 'to unavailable' : 'to available'}
+                                            title={dentist.isAvailable ? 'To Unavailable' : 'To Available'}
                                         >
                                             <span className="material-symbols-outlined">
                                                 {dentist.isAvailable ? 'check_circle' : 'do_not_disturb_on'}
@@ -55,7 +55,7 @@ const DentistTable = ({ loading, filteredDentists, handleRowClick, handle_availa
                                         <button
                                             className="text-gray-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-gray-200 hover:text-gray-600 transition rounded-lg shadow-sm"
                                             onClick={() => openModal(dentist._id)}
-                                            title="manage availability"
+                                            title="Manage Availability"
                                         >
                                             <span className="material-symbols-outlined">manage_accounts</span>
                                         </button>

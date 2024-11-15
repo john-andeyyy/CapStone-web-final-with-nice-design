@@ -207,7 +207,7 @@ const TipsList = () => {
                                         <button
                                             className="bg-blue-100 hover:text-blue-600 text-blue-500 font-semibold py-2 px-4 rounded"
                                             onClick={() => handleViewClick(tip)}
-                                            title='view'
+                                            title='View'
                                         >
                                             <span className="material-symbols-outlined">
                                                 visibility
@@ -216,7 +216,7 @@ const TipsList = () => {
                                         <button
                                             className="bg-gray-200 hover:text-gray-600 text-gray font-semibold py-2 px-4 rounded "
                                             onClick={() => handleUpdateClick(tip)}
-                                            title='edit'
+                                            title='Edit'
                                         >
                                             <span className="material-symbols-outlined">
                                                 edit
@@ -225,7 +225,7 @@ const TipsList = () => {
                                         <button
                                             className="bg-red-100 hover:text-red-600 text-red-500 font-semibold py-2 px-4 rounded"
                                             onClick={() => handleDeleteClick(tip)}
-                                            title='delete'
+                                            title='Delete'
                                         >
                                             <span className="material-symbols-outlined">
                                                 delete

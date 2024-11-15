@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ProceduresTable from '../Components/AppointmentDetails/ProceduresTable';
 import Tooth2d from '../Components/Tooth2d';
 import ThemeController from '../../Guest/GuestComponents/ThemeController';
+import Swal from 'sweetalert2';
 
 
 
@@ -31,6 +32,7 @@ export default function AppointmentDetails() {
     const [modalMessage, setModalMessage] = useState('');
     const [RequestToCancel, setRequestToCancel] = useState();
     const [modalAction, setModalAction] = useState(null);
+
     const [originalAppointment, setOriginalAppointment] = useState({});
 
     // Fetch appointment details from the API
@@ -124,12 +126,12 @@ export default function AppointmentDetails() {
         }
     };
 
+
     const handleUpdate = () => {
-        //setLoading(true);
         seteditStatus(false);
 
         const formData = new FormData();
-        if (files.Before) formData.append('Before', files.Before); // Ensure file exists before appending
+        if (files.Before) formData.append('Before', files.Before);
         if (files.After) formData.append('After', files.After);
         if (files.Xray) formData.append('Xray', files.Xray);
 
@@ -138,27 +140,45 @@ export default function AppointmentDetails() {
         formData.append('Status', statusUpdate || '');
         formData.append('Amount', editedAppointment.Amount || '');
 
+        // Show loading spinner
+        Swal.fire({
+            title: 'Updating Appointment...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         axios.put(`${import.meta.env.VITE_BASEURL}/Appointments/appointmentUpdate/${id}`,
             formData,
             { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
         )
             .then(response => {
-                // setAppointment(response.data); // Assuming response contains the updated appointment data
-                seteditStatus(false)
+                seteditStatus(false);
                 setIsEditing(false);
-                // setIsEditingNotes(false);
                 setFiles({ Before: null, After: null, Xray: null });
                 setPreviewImages({ Before: null, After: null, Xray: null });
-                showToast('success', 'Updated Successfully');
+
+                // Close loading spinner and show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Updated Successfully',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
 
                 getdata();
             })
             .catch(error => {
-                // Log the error to understand what went wrong
-                console.error('Error updating appointment:', error.response ? error.response.data : error.message);
-                alert('Error updating appointment: ' + (error.response ? error.response.data.message : error.message));
+                // Close loading spinner and show error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error updating appointment',
+                    text: error.response ? error.response.data.message : error.message
+                });
             });
     };
+
 
 
     const handleCancelEdit = () => {
@@ -372,7 +392,7 @@ export default function AppointmentDetails() {
 
 
                 </div>
-                <ProceduresTable appointment={appointment}  />
+                <ProceduresTable appointment={appointment} />
 
                 <div className="flex justify-center">
                     <button className='btn bg-[#025373] hover:bg-[#03738C] text-white'

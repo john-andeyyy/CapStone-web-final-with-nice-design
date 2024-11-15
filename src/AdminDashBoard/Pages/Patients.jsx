@@ -440,7 +440,7 @@ export default function Patients_List() {
                                                         onClick={() => navigate(`/Patient2d/${patient.id}`)}
 
                                                         className="flex items-center justify-center w-10 bg-white text-gray-600 hover:text-black transition rounded-lg shadow-sm"
-                                                        title="tooth history"
+                                                        title="Tooth History"
                                                     >
                                                         <span className="material-symbols-outlined">dentistry</span>
                                                     </button>
@@ -492,7 +492,7 @@ export default function Patients_List() {
                                                                 onClick={() => navigate(`/Patient2d/${patient.id}`)}
 
                                                                 className="flex items-center justify-center w-10 bg-white text-gray-600 hover:text-black transition rounded-lg shadow-sm"
-                                                                title="tooth history"
+                                                                title="Tooth History"
                                                             >
                                                                 <span className="material-symbols-outlined">dentistry</span>
                                                             </button>
@@ -538,7 +538,7 @@ export default function Patients_List() {
                                                         onClick={() => navigate(`/Patient2d/${patient.id}`)}
 
                                                         className="flex items-center justify-center w-10 bg-white text-gray-600 hover:text-black transition rounded-lg shadow-sm"
-                                                        title="tooth history"
+                                                        title="Tooth History"
                                                     >
                                                         <span className="material-symbols-outlined">dentistry</span>
                                                     </button>

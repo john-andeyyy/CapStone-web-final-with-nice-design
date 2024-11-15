@@ -31,16 +31,16 @@ export default function TheDeanTeam() {
 
     return (
         <div className="relative min-h-screen">
-            <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div>
+            {/* <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div> */}
             {/* <h1 className="text-3xl font-bold mb-4 text-green-500 p-2">DenTeam:</h1> */}
             <div className='p-8'>
             <div id="title" className="flex justify-center pb-7">
                 <div
-                    className="rounded-md shadow-md mx-10"
-                    style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}
+                    // className="rounded-md shadow-md mx-10"
+                    // style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}
                 >
-                    <h1 className="text-5xl font-bold uppercase bg-accent p-2 rounded text-center">
-                    THE <span className="text-[#266D53]">DENTEAM</span>
+                    <h1 className="text-5xl font-bold uppercase p-2 text-center">
+                    THE <span className="text-[#025373]">DENTEAM</span>
                     </h1>
                 </div>
                 </div>  
@@ -49,7 +49,7 @@ export default function TheDeanTeam() {
                 <div className=" p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {members.length > 0 ? (
                         members.map(member => (
-                            <div key={member._id} className="card card-compact bg-white shadow-xl">
+                            <div key={member._id} className="card card-compact bg-[#96D2D9] border border-[#012840] shadow-xl">
                                 <figure>
                                     <img
                                         src={getProfileImage(member.ProfilePicture)} // Handle base64 image
@@ -59,7 +59,7 @@ export default function TheDeanTeam() {
                                 </figure>
                                 <div className="card-body">
                                     <div className='flex justify-center items-center'>
-                                        <h1 className="card-title text-[#266D53] text-center">{`${member.FirstName} ${member.LastName}`}</h1>
+                                        <h1 className="card-title text-[#025373] text-center">{`${member.FirstName} ${member.LastName}`}</h1>
                                     </div>
                                     <div className="flex items-center">
                                         <h4 className='font-bold mr-2'>Role:</h4>
@@ -72,10 +72,10 @@ export default function TheDeanTeam() {
                                     </div>
 
                                     <div className='flex space-x-5'>
-                                        <a href={member.Facebooklink} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                                        <a href={member.Facebooklink} target="_blank" rel="noopener noreferrer" className="text-[#025373]">
                                             Facebook Profile
                                         </a>
-                                        <a href={member.Email} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                                        <a href={member.Email} target="_blank" rel="noopener noreferrer" className="text-[#025373]">
                                             Email
                                         </a>
                                     </div>

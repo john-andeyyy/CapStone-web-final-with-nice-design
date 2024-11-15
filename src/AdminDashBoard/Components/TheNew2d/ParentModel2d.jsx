@@ -4,6 +4,7 @@ import NotesModal from './Components/NotesModal';
 import AddToothModal from './Components/AddToothModal';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function ParentModel2d() {
   // const userid = 'Patient017';
@@ -47,11 +48,27 @@ export default function ParentModel2d() {
   const addTooth = async (newTooth) => {
     try {
       await axios.post(`${Baseurl}/tooth2dmodel/add-tooth`, newTooth);
-      fetchData(); // Refresh the teeth data after adding
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Tooth Added!',
+        text: 'The tooth was successfully added.',
+        confirmButtonText: 'OK',
+      });
+
+      fetchData();
     } catch (error) {
       console.error('Error adding tooth:', error);
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'There was an error adding the tooth. Please try again.',
+        confirmButtonText: 'OK',
+      });
     }
   };
+
 
   return (
     <div className=" rounded-md"
@@ -138,6 +155,7 @@ export default function ParentModel2d() {
             toothId={selectedTooth._id}
             jaw={selectedTooth.jaw}
             onRefresh={fetchData}
+            selectedTooth={selectedTooth}
           />
         )}
 

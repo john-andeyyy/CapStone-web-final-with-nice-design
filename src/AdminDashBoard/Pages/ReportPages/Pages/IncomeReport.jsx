@@ -371,7 +371,7 @@ const AppointmentsReport = () => {
                                     <tr key={selectedYear} className="bg-white hover:text-black">
                                         <td className="border border-black  px-4 py-2">{selectedYear}</td>
                                         <td className="border border-black  px-4 py-2">
-                                            ₱{reportData.yearly[selectedYear] || 0}
+                                            PHP {reportData.yearly[selectedYear] || 0}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -379,7 +379,7 @@ const AppointmentsReport = () => {
                                     <tr className="bg-[#012840]">
                                         <td className="border border-black px-4 py-2 font-bold text-white text-center">Total</td>
                                         <td className="border border-black px-4 py-2 text-white font-bold">
-                                            ₱{reportData.yearly[selectedYear] || 0}
+                                            PHP {reportData.yearly[selectedYear] || 0}
                                         </td>
                                     </tr>
                                 </tfoot>

@@ -412,7 +412,7 @@ export default function MedicalRequests() {
                           <button
                             className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
                             onClick={() => navigate(`/appointment/${request.id}`)}
-                            title="view"
+                            title="View"
                           >
                             <span className="material-symbols-outlined">visibility</span>
                           </button>
@@ -426,7 +426,7 @@ export default function MedicalRequests() {
                             <button
                               className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
                               onClick={() => navigate(`/appointment/${request.id}`)}
-                              title="view"
+                              title="View"
                             >
                               <span className="material-symbols-outlined">visibility</span>
                             </button>
@@ -439,7 +439,7 @@ export default function MedicalRequests() {
                                   setSelectedRequest(request);
                                   handleAcceptRequest(request);
                                 }}
-                                title="approve"
+                                title="Approve"
                               >
                                 <span className="material-symbols-outlined">check_circle</span>
                               </button>
@@ -453,7 +453,7 @@ export default function MedicalRequests() {
                                   setSelectedRequest(request);
                                   confirmDeleteRequest(request);
                                 }}
-                                title="reject"
+                                title="Reject"
                               >
                                 <span className="material-symbols-outlined">cancel</span>
                               </button>
@@ -467,7 +467,7 @@ export default function MedicalRequests() {
                                   setSelectedRequest(request);
                                   confirmArchiveRequest();
                                 }}
-                                title="archive"
+                                title="Archive"
                               >
                                 <span className="material-symbols-outlined">archive</span>
                               </button>
@@ -477,7 +477,7 @@ export default function MedicalRequests() {
                             <button
                               className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
                               onClick={() => downloadPatientMedicalCertificate(request)}
-                              title="download"
+                              title="Download"
                             >
                               <span className="material-symbols-outlined">download</span>
                             </button>

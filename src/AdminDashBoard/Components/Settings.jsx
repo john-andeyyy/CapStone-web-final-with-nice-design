@@ -41,7 +41,7 @@ const Setthings = () => {
                 <button
                     onClick={() => setSettingsIsOpen(!settingsIsOpen)} 
                     className="text-xl font-semibold text-black btn-ghost btn-circle relative"
-                    title="settings"
+                    title="Settings"
                 >
                     <span className="material-symbols-outlined">settings</span>
                 </button>

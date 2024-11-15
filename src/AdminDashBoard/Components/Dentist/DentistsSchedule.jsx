@@ -151,7 +151,7 @@ const DentistSchedule = () => {
             {localStorage.getItem('Role') !== 'dentist' && (
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center text-[#3EB489] hover:text-[#62A78E] mb-3 font-semibold focus:outline-none"
+                    className="flex items-center text-[#025373] hover:text-[#03738C] font-semibold focus:outline-none mb-10"
                 >
                     <span className="material-symbols-outlined text-2xl mr-2">arrow_back</span>
                     <p className="text-lg sm:text-xl">Go Back</p>
