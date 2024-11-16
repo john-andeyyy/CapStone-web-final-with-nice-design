@@ -12,7 +12,9 @@ const AvailableTimeSlots = ({
     const [showPM, setShowPM] = useState(false); // PM slots hidden by default
 
     const getEndTime = (date) => {
-        return date.getDay() === 0 ? 17 : 20; // Sunday -> 5 PM, Mon-Sat -> 8 PM
+        const day = date.getDay(); // Get the day of the week (0 = Sunday, 6 = Saturday)
+
+        return day === 0 || day === 6 ? 17 : 20; // Saturday and Sunday -> 5 PM, Mon-Fri -> 8 PM
     };
 
     const endtime = getEndTime(new Date(selectedDate));
