@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const TreatmentPlanForm = ({ treatmentPlanId }) => {
-    const [patient, setPatient] = useState('Patient017');
+    const [patient, setPatient] = useState('');
     const [treatmentStage, setTreatmentStage] = useState('Initial');
     const [procedureList, setProcedureList] = useState([{ Procedure: '66d6c49b0cb91bf3b8c15a53' }]);
     const [estimatedCost, setEstimatedCost] = useState(1200);

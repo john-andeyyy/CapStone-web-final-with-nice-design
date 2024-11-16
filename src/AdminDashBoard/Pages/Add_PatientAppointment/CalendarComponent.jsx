@@ -449,6 +449,7 @@ const CalendarComponent = () => {
                                     selectedDate={selectedDate} // Pass selectedDate to CalendarView
 
                                 />
+                                <p className='px-5'>Please note that the appointment will automatically be moved 2 days from now at midnight.</p>
                                 <Legend />
                             </div>
                         </div>
@@ -457,13 +458,36 @@ const CalendarComponent = () => {
                                 selectedDate={date}
                                 unavailableDates={unavailableDates}
                                 appointments={filteredAppointments}
-
                                 onSelectTimeSlot={handleSelectTimeSlot}
                                 // isDisabled={availableSlotsDisabled}
                                 allButtonsDisabled={allButtonsDisabled}
                                 isPast={isPast}
                                 SelectedProcedureDuration={SelectedProcedureDuration}
                             />
+                            {/* {selectedDentist ? (
+                                <AvailableTimeSlots
+                                    selectedDate={date}
+                                    unavailableDates={unavailableDates}
+                                    appointments={filteredAppointments}
+                                    onSelectTimeSlot={handleSelectTimeSlot}
+                                    // isDisabled={availableSlotsDisabled}
+                                    allButtonsDisabled={allButtonsDisabled}
+                                    isPast={isPast}
+                                    SelectedProcedureDuration={SelectedProcedureDuration}
+                                />
+
+                            ) : (
+                                <div className="flex items-center justify-center min-h-screen">
+                                    <div className="bg-blue-100 p-6 rounded-md shadow-lg text-center">
+                                        <p className="text-lg font-semibold text-gray-800">
+                                            Select Dentist first
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            )} */}
+
                         </div>
                     </div>
                 </div>

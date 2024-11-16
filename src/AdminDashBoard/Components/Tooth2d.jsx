@@ -6,7 +6,7 @@ import MedicalHistoryUpdate from './MedicalHistory/MedicalHistoryUpdate';
 
 const Tooth2d = ({ userIds }) => {
     const Baseurl = import.meta.env.VITE_BASEURL
-    const userId = 'Patient017'
+    const userId = userIds ||'Patient017'
     // const userId = userIds
     const [userid, setuserId] = useState(userIds);
     const [notes, setNotes] = useState({});

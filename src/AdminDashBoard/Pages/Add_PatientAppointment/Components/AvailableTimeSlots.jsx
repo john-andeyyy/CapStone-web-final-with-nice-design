@@ -8,14 +8,29 @@ const AvailableTimeSlots = ({
     allButtonsDisabled,
     SelectedProcedureDuration,
 }) => {
-    const timeSlots = [];
+    const [showAM, setShowAM] = useState(true); // AM slots visible by default
+    const [showPM, setShowPM] = useState(false); // PM slots hidden by default
+
+    const getEndTime = (date) => {
+        return date.getDay() === 0 ? 17 : 20; // Sunday -> 5 PM, Mon-Sat -> 8 PM
+    };
+
+    const endtime = getEndTime(new Date(selectedDate));
+    const timeSlotsAM = [];
+    const timeSlotsPM = [];
     const startOfDay = new Date(selectedDate);
     startOfDay.setHours(8, 0, 0);
     const endOfDay = new Date(selectedDate);
-    endOfDay.setHours(17, 0, 0); // 5 PM as the end of the workday
+    endOfDay.setHours(endtime, 0, 0);
 
+    // Generate time slots, excluding 12:00 PM to 1:00 PM
     for (let time = new Date(startOfDay); time <= endOfDay; time.setMinutes(time.getMinutes() + 15)) {
-        timeSlots.push(new Date(time));
+        if (time.getHours() === 12) continue; // Skip 12:00 PM to 12:59 PM
+        if (time.getHours() < 12) {
+            timeSlotsAM.push(new Date(time)); // AM slots
+        } else {
+            timeSlotsPM.push(new Date(time)); // PM slots
+        }
     }
 
     const now = new Date();
@@ -46,74 +61,159 @@ const AvailableTimeSlots = ({
                 </div>
             </div>
 
+            {/* Toggle AM/PM Section */}
+            <div className="flex justify-center gap-4 mb-6">
+                <button
+                    onClick={() => {
+                        setShowAM(true); // Show AM
+                        setShowPM(false); // Hide PM
+                    }}
+                    className={`px-4 py-2 ${showAM ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                >
+                    AM
+                </button>
+                <button
+                    onClick={() => {
+                        setShowAM(false); // Hide AM
+                        setShowPM(true); // Show PM
+                    }}
+                    className={`px-4 py-2 ${showPM ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                >
+                    PM
+                </button>
+            </div>
+
             <div className="w-full">
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-                    {timeSlots.map((slot, index) => {
-                        const isUnavailable = unavailableDates.some(
-                            (unavailable) =>
-                                slot >= new Date(unavailable.start) && slot < new Date(unavailable.end)
-                        );
+                {/* AM Section */}
+                {showAM && (
+                    <div className="mb-6">
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                            {timeSlotsAM.map((slot, index) => {
+                                const isUnavailable = unavailableDates.some(
+                                    (unavailable) => slot >= new Date(unavailable.start) && slot < new Date(unavailable.end)
+                                );
 
-                        const isBooked = appointments.some((appointment) => {
-                            const appointmentStart = new Date(appointment.start);
-                            const appointmentEnd = new Date(appointment.end);
-                            return slot >= appointmentStart && slot < appointmentEnd;
-                        });
+                                const isBooked = appointments.some((appointment) => {
+                                    const appointmentStart = new Date(appointment.start);
+                                    const appointmentEnd = new Date(appointment.end);
+                                    return slot >= appointmentStart && slot < appointmentEnd;
+                                });
 
-                        const isSlotInThePast = slot < now; // Now compares each slot with the exact current time
-                        const isOverlapping = isOverlappingWithAppointments(slot);
-                        const slotEndTime = new Date(slot.getTime() + SelectedProcedureDuration * 60000);
-                        const isExceedingRemainingTime = slotEndTime > endOfDay;
+                                const isSlotInThePast = slot < now && !isBooked && !isUnavailable;
+                                const isOverlapping = isOverlappingWithAppointments(slot);
+                                const slotEndTime = new Date(slot.getTime() + SelectedProcedureDuration * 60000);
+                                const isExceedingAMLimit = slotEndTime > new Date(selectedDate).setHours(12, 0, 0);
+                                const isExceedingRemainingTime = slotEndTime > endOfDay;
 
-                        const is5pmSlot = slot.getHours() === 17 && slot.getMinutes() === 0;
-                        const isDisabled =
-                            allButtonsDisabled ||
-                            isUnavailable ||
-                            isBooked ||
-                            isSlotInThePast ||
-                            isOverlapping ||
-                            isExceedingRemainingTime ||
-                            is5pmSlot;
+                                const isDisabled =
+                                    allButtonsDisabled ||
+                                    isUnavailable ||
+                                    isBooked ||
+                                    isSlotInThePast ||
+                                    isOverlapping ||
+                                    isExceedingRemainingTime ||
+                                    isExceedingAMLimit;
 
-                        // Set label and color based on disable reasons
-                        let label;
-                        let buttonClass;
-                        if (is5pmSlot) {
-                            label = 'Close';
-                            buttonClass = 'bg-gray-500 text-white '; // Gray for "Close"
-                        } else if (isSlotInThePast) {
-                            label = 'Past';
-                            buttonClass = 'bg-red-200 text-gray-500'; // Red for "Past"
-                        } else if (isBooked) {
-                            label = 'Reserved';
-                            buttonClass = 'bg-yellow-300 text-gray-800 '; // Yellow for "Reserved"
-                        } else if (isOverlapping) {
-                            label = 'Overlap';
-                            buttonClass = 'bg-red-200 text-gray-500 '; // Red for "Overlap"
-                        } else if (isExceedingRemainingTime) {
-                            label = 'Overtime';
-                            buttonClass = 'bg-red-200 text-gray-500 '; // Red for "Overtime"
-                        } else if (isDisabled) {
-                            label = 'Not Available';
-                            buttonClass = 'bg-red-200 text-gray-500 '; // Default red for other disabled
-                        } else {
-                            label = 'Available';
-                            buttonClass = 'bg-green-100 text-gray-800 hover:bg-green-300'; // Green for available
-                        }
+                                let label;
+                                let buttonClass;
+                                if (isSlotInThePast) {
+                                    label = 'Past';
+                                    buttonClass = 'bg-red-200 text-gray-500';
+                                } else if (isBooked) {
+                                    label = 'Reserved';
+                                    buttonClass = 'bg-yellow-300 text-gray-800';
+                                } else if (isOverlapping) {
+                                    label = 'Overlap';
+                                    buttonClass = 'bg-red-200 text-gray-500';
+                                } else if (isExceedingAMLimit) {
+                                    label = 'Exceeds AM';
+                                    buttonClass = 'bg-red-200 text-gray-500';
+                                } else if (isDisabled) {
+                                    label = 'Not Available';
+                                    buttonClass = 'bg-red-200 text-gray-500';
+                                } else {
+                                    label = 'Available';
+                                    buttonClass = 'bg-green-100 text-gray-800 hover:bg-green-300';
+                                }
 
-                        return (
-                            <button
-                                key={index}
-                                onClick={() => !isDisabled && onSelectTimeSlot(slot, selectedDate)}
-                                className={`py-3 rounded-md text-sm w-full text-center ${buttonClass}`}
-                                disabled={isDisabled}
-                            >
-                                {slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} <br />
-                                {label}
-                            </button>
-                        );
-                    })}
-                </div>
+                                return (
+                                    <button
+                                        key={index}
+                                        onClick={() => !isDisabled && onSelectTimeSlot(slot, selectedDate)}
+                                        className={`py-3 rounded-md text-sm w-full text-center ${buttonClass}`}
+                                        disabled={isDisabled}
+                                    >
+                                        {slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} <br />
+                                        {label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
+                {/* PM Section */}
+                {showPM && (
+                    <div>
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                            {timeSlotsPM.map((slot, index) => {
+                                const isUnavailable = unavailableDates.some(
+                                    (unavailable) => slot >= new Date(unavailable.start) && slot < new Date(unavailable.end)
+                                );
+
+                                const isBooked = appointments.some((appointment) => {
+                                    const appointmentStart = new Date(appointment.start);
+                                    const appointmentEnd = new Date(appointment.end);
+                                    return slot >= appointmentStart && slot < appointmentEnd;
+                                });
+
+                                const isSlotInThePast = slot < now && !isBooked && !isUnavailable;
+                                const isOverlapping = isOverlappingWithAppointments(slot);
+                                const slotEndTime = new Date(slot.getTime() + SelectedProcedureDuration * 60000);
+                                const isExceedingRemainingTime = slotEndTime > endOfDay;
+
+                                const isDisabled =
+                                    allButtonsDisabled ||
+                                    isUnavailable ||
+                                    isBooked ||
+                                    isSlotInThePast ||
+                                    isOverlapping ||
+                                    isExceedingRemainingTime;
+
+                                let label;
+                                let buttonClass;
+                                if (isSlotInThePast) {
+                                    label = 'Past';
+                                    buttonClass = 'bg-red-200 text-gray-500';
+                                } else if (isBooked) {
+                                    label = 'Reserved';
+                                    buttonClass = 'bg-yellow-300 text-gray-800';
+                                } else if (isOverlapping) {
+                                    label = 'Overlap';
+                                    buttonClass = 'bg-red-200 text-gray-500';
+                                } else if (isDisabled) {
+                                    label = 'Not Available';
+                                    buttonClass = 'bg-red-200 text-gray-500';
+                                } else {
+                                    label = 'Available';
+                                    buttonClass = 'bg-green-100 text-gray-800 hover:bg-green-300';
+                                }
+
+                                return (
+                                    <button
+                                        key={index}
+                                        onClick={() => !isDisabled && onSelectTimeSlot(slot, selectedDate)}
+                                        className={`py-3 rounded-md text-sm w-full text-center ${buttonClass}`}
+                                        disabled={isDisabled}
+                                    >
+                                        {slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} <br />
+                                        {label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
