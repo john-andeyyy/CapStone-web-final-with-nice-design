@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ThemeController from '../GuestComponents/ThemeController';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function GuestNavBar() {
 
@@ -48,9 +48,9 @@ export default function GuestNavBar() {
         const location = useLocation();
         const navigate = useNavigate();
     }
-      
-        // Function to determine if the current route matches the button's route
-        const isActive = (path) => location.pathname === path;
+
+    // Function to determine if the current route matches the button's route
+    const isActive = (path) => location.pathname === path;
 
     return (
         <div className="bg-[#012840] sticky top-0 z-50">
@@ -70,30 +70,30 @@ export default function GuestNavBar() {
                 </div>
                 <div className={`flex-none ${isMenuOpen ? 'block' : 'hidden'} lg:flex lg:items-center lg:w-auto w-full`}>
                     <ul className="menu menu-horizontal px-1 font-semibold space-x-3 lg:space-x-3 flex flex-col lg:flex-row">
-                    <li className="mb-2 md:mb-0">
-          <button
-            className={`btn btn-ghost font-bold text-xl  hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/') ? 'text-[#96D2D9]' : 'text-white'}`}
-            onClick={() => { navigate('/'); toggleMenu(); }}
-          >
-            HOME
-          </button>
-        </li>
-        <li className="mb-2 md:mb-0">
-          <button
-            className={`btn btn-ghost font-bold text-xl hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/AllServices') ? 'text-[#96D2D9]' : 'text-white'}`}
-            onClick={() => { navigate('/AllServices'); toggleMenu(); }}
-          >
-            SERVICES
-          </button>
-        </li>
-        <li className="mb-2 md:mb-0">
-          <button
-            className={`btn btn-ghost font-bold text-xl hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/The_DeanTeam') ? 'text-[#96D2D9]' : 'text-white'}`}
-            onClick={() => { navigate('The_DeanTeam'); toggleMenu(); }}
-          >
-            DENTEAM
-          </button>
-        </li>
+                        <li className="mb-2 md:mb-0">
+                            <button
+                                className={`btn btn-ghost font-bold text-xl  hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/') ? 'text-[#96D2D9]' : 'text-white'}`}
+                                onClick={() => { navigate('/'); toggleMenu(); }}
+                            >
+                                HOME
+                            </button>
+                        </li>
+                        <li className="mb-2 md:mb-0">
+                            <button
+                                className={`btn btn-ghost font-bold text-xl hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/AllServices') ? 'text-[#96D2D9]' : 'text-white'}`}
+                                onClick={() => { navigate('/AllServices'); toggleMenu(); }}
+                            >
+                                SERVICES
+                            </button>
+                        </li>
+                        <li className="mb-2 md:mb-0">
+                            <button
+                                className={`btn btn-ghost font-bold text-xl hover:bg-[#96D2D9] hover:text-[#012840] ${isActive('/The_DeanTeam') ? 'text-[#96D2D9]' : 'text-white'}`}
+                                onClick={() => { navigate('The_DeanTeam'); toggleMenu(); }}
+                            >
+                                DENTEAM
+                            </button>
+                        </li>
                         {/*                         
                         <li className="mb-2 md:mb-0">
                             <button className="btn btn-outline btn-success"

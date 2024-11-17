@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { fetchPatients } from '../Fetchs/patient/patient_account';
 import AddPatientModal from './Components/AddPatientModal';
@@ -9,12 +9,13 @@ import Swal from 'sweetalert2';
 
 export default function Patients_List() {
     const navigate = useNavigate();
+    const location = useLocation()
     const Roletype = localStorage.getItem('Role')
     const [loading, setLoading] = useState(true);
     const [patientsInfo, setPatientsInfo] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selecteduser, setSelectedUser] = useState('');
-    const [sortAscending, setSortAscending] = useState(true);
+    const [filter, setfilter] = useState('all')
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [filters, setFilters] = useState({
         showActive: true,
@@ -34,7 +35,13 @@ export default function Patients_List() {
 
     useEffect(() => {
         fetch_patient();
+
     }, []);
+    useEffect(() => {
+        if (location.pathname === '/patients-manage') {
+            console.log('Current URL:', location.pathname);
+        }
+    }, [location]);
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -43,26 +50,6 @@ export default function Patients_List() {
     const handlePatientAdded = () => {
         fetch_patient();
     };
-
-    const clinicDataRef = useRef(null);
-
-    const fetchclinicdata = async () => {
-        try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_BASEURL}/Contactus/contactus`,
-                {
-                    withCredentials: true
-                }
-            );
-            const data = response.data[0];
-            clinicDataRef.current = data;
-        } catch (error) {
-            console.error("Error fetching clinic data:", error);
-        }
-    };
-    const [filter, setfilter] = useState('all')
-
-
     const createPDF = async () => {
         console.log('filter', filter)
         Swal.fire({
@@ -70,7 +57,7 @@ export default function Patients_List() {
             text: "Please wait while your PDF is being generated.",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(); // Show loading spinner
+                Swal.showLoading();
             },
         });
         try {
@@ -97,7 +84,7 @@ export default function Patients_List() {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", "PatientList.pdf"); // Set the file name
+            link.setAttribute("download", "PatientList.pdf");
             document.body.appendChild(link);
             link.click();
 
@@ -108,20 +95,6 @@ export default function Patients_List() {
             console.error("Error generating PDF:", error);
         }
     };
-
-
-    const handleSort = () => {
-        const sortedPatients = [...patientsInfo].sort((a, b) => {
-            const lastNameA = a.LastName.toLowerCase();
-            const lastNameB = b.LastName.toLowerCase();
-            return sortAscending
-                ? lastNameA.localeCompare(lastNameB)
-                : lastNameB.localeCompare(lastNameA);
-        });
-        setPatientsInfo(sortedPatients);
-        setSortAscending(!sortAscending);
-    };
-
     // Helper function to determine if the patient's last visit is older than 3 months
     const isArchived = (latestAppointmentDate) => {
         const now = new Date();
@@ -135,7 +108,6 @@ export default function Patients_List() {
         return !latestAppointmentDate;
     };
 
-    // Filter patients based on search query and whether they are active, archived, or have no record
     const filteredPatients = patientsInfo.filter((patient) => {
         const fullName = `${patient.FirstName} ${patient.LastName} ${patient.MiddleName} ${patient.id}`.toLowerCase();
         const matchesSearch = fullName.includes(searchQuery.toLowerCase());
@@ -154,77 +126,33 @@ export default function Patients_List() {
         );
     });
 
-    // Separate active, archived, and no-record patients
     const activePatients = filteredPatients.filter(patient => !hasNoRecord(patient.LatestAppointment?.date) && !isArchived(patient.LatestAppointment?.date));
     const archivedPatients = filteredPatients.filter(patient => !hasNoRecord(patient.LatestAppointment?.date) && isArchived(patient.LatestAppointment?.date));
     const noRecordPatients = filteredPatients.filter(patient => hasNoRecord(patient.LatestAppointment?.date));
 
     const generatePDF = () => {
         createPDF();
-
     };
-
     const [isModaltreatment, setIsModaltreatment] = useState(false);
 
     const handleOpenModaltreatmen = () => setIsModaltreatment(true);
     const handleCloseModaltreatmen = () => setIsModaltreatment(false);
 
-
     const handleFilterChange = (filterName) => {
-        console.log('filterName', filterName)
-        if (filterName === "showActive") {
-            setfilter("active");
-        } else if (filterName === "showArchived") {
-            setfilter("archived");
-        } else if (filterName === "showNoRecord") {
-            setfilter("processing");
+        if (filterName.toLowerCase() === "all") {
+            setFilters({
+                showActive: true,
+                showArchived: true,
+                showNoRecord: true,
+            });
+            setfilter("");
         } else {
-            setfilter("all");
-        }
-
-
-        setFilters((prevFilters) => {
-            const newFilters = {
-                ...prevFilters,
-                [filterName]: !prevFilters[filterName],
-            };
-
-            // Check if all filters are false, and if so, set them all to true
-            if (!newFilters.showActive && !newFilters.showArchived && !newFilters.showNoRecord) {
-                return {
-                    showActive: true,
-                    showArchived: true,
-                    showNoRecord: true,
-                };
-            }
-
-            return newFilters;
-        });
-    };
-
-
-    const getBackgroundColor = (status) => {
-        switch (status) {
-            case 'Active Patients (Within 3 months)':
-                return 'bg-green-200 bg-opacity-50';
-            case 'Archived Patients (Older than 3 months)':
-                return 'bg-yellow-200 bg-opacity-50';
-            case 'Processing (No last visit)':
-                return 'bg-red-200 bg-opacity-50';
-            default:
-                return 'bg-gray-200'; // Default color
-        }
-    };
-    const getIconColor = (status) => {
-        switch (status) {
-            case 'Active Patients (Within 3 months)':
-                return '#28A745';
-            case 'Archived Patients (Older than 3 months)':
-                return '#FFC107';
-            case 'Processing (No last visit)':
-                return '#DC3545';
-            default:
-                return '#000000'; // Default black icon
+            setFilters((prevFilters) => ({
+                showActive: filterName === "showActive",
+                showArchived: filterName === "showArchived",
+                showNoRecord: filterName === "showNoRecord",
+            }));
+            setfilter(filterName);
         }
     };
 
@@ -265,65 +193,42 @@ export default function Patients_List() {
                         )}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                        {/* Search Input */}
-                        <div className="relative flex-grow mt-8 ">
-                            <input
-                                type="text"
-                                placeholder="Search patients..."
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                                className="block pl-10 pr-4 py-2 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-64"
-                            />
-                            <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
-                                <span className="material-symbols-outlined">search</span>
+                        <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                            {/* Search Input */}
+                            <div className="relative flex-grow mt-8">
+                                <input
+                                    type="text"
+                                    placeholder="Search by First, Last, or Middle Name"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                    className="block pl-10 pr-4 py-3 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-96"  
+                                />
+                                <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
+                                    <span className="material-symbols-outlined">search</span>
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Filter Section */}
-                        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 py-4 gap-2 ">
-                        {[
-                            { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
-                            { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
-                            { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
-                        ].map(({ label, filterName }) => (
-                            <div
-                                key={filterName}
-                                className={`flex items-center cursor-pointer p-2 rounded-md ${getBackgroundColor(label)} hover:bg-opacity-75 transition duration-200`}
-                                onClick={() => handleFilterChange(filterName)}
-                            >
-                                <span
-                                    className="material-symbols-outlined text-2xl"
-                                    style={{ color: getIconColor(label) }}
+                            <div className="flex flex-col space-y-2 py-4">
+                                <label htmlFor="patient-filter" className="font-medium text-gray-700">Filter Patients</label>
+
+                                <select
+                                    id="patient-filter"
+                                    onChange={(e) => handleFilterChange(e.target.value)}
+                                    className="p-2 border border-gray-300 bg-gray-100 rounded-md"
                                 >
-                                    {filters[filterName] ? 'radio_button_checked' : 'radio_button_unchecked'}
-                                </span>
-                                <p className="text-gray-700 font-medium ml-2">{label}</p>
+                                    {/* <option value="all">All Patient</option> */}
+                                    {[
+                                        { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
+                                        { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
+                                        { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
+                                    ].map(({ label, filterName }) => (
+                                        <option key={filterName} value={filterName}>
+                                            {label}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
-                        ))}
-                    </div>     */}
-
-                        <div className="flex flex-col space-y-2 py-4">
-                            <label htmlFor="patient-filter" className="font-medium text-gray-700">Filter Patients</label>
-
-                            <select
-                                id="patient-filter"
-                                onChange={(e) => handleFilterChange(e.target.value)}
-                                className="p-2 border border-gray-300 bg-gray-100 rounded-md"
-                            >
-                                <option value="">-- Choose Filter --</option>
-                                {[
-                                    { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
-                                    { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
-                                    { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
-                                ].map(({ label, filterName }) => (
-                                    <option key={filterName} value={filterName}>
-                                        {label}
-                                    </option>
-                                ))}
-                            </select>
                         </div>
-                    </div>
 
                     {/* Patients Table */}
                     <div className="overflow-x-auto max-h-[34rem]">
@@ -468,7 +373,7 @@ export default function Patients_List() {
                                                     <button
                                                         onClick={() => {
                                                             setSelectedUser(patient.id);
-                                                            setIsModaltreatment(true); // Open the treatment modal
+                                                            setIsModaltreatment(true);
                                                         }}
                                                         className="flex items-center justify-center w-10 bg-gray-200 text-gray-600 hover:text-black transition rounded-lg shadow-sm"
                                                         title="Treatment Recommendations"

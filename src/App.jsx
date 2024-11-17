@@ -61,6 +61,8 @@ import axios from 'axios';
 import DentistReport from './AdminDashBoard/Pages/ReportPages/Pages/DentistReport';
 import DentistPatient from './AdminDashBoard/Components/Dentist/DentistPatient';
 import Swal from 'sweetalert2';
+import ManagePatient from './AdminDashBoard/Components/Manage_Accounts/Manage_Patient';
+import Manage_Staff from './AdminDashBoard/Components/Manage_Accounts/Manage_Staff';
 
 function AdminRoutes() {
 
@@ -82,7 +84,7 @@ function AdminRoutes() {
       })
       .catch((error) => {
         console.log('Logout error:', error);
-        localStorage.clear(); 
+        localStorage.clear();
         navigate('/AdminLogin');
         window.location.reload();
       });
@@ -132,22 +134,11 @@ function AdminRoutes() {
   }, []);
 
   return (
-    // <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'} bg-green-200 bg-opacity-50 `}>
     <div className={`flex-1 ${isProfilePage ? '' : 'p-8 pt-0.5'}  `}>
-
-      {/* <div className="sticky top-0 z-20 bg-[#DDFBE7]"> */}
-
-      {Roletype !== 'dentist' && (
-        ''
-      )}
       <div className="sticky top-0  z-10 bg-white">
-        {/* <div className=" fixed right-0 top-0 z-10 bg-white pr-10"> */}
-
         <Notification_bell />
       </div>
-      <div className=' '>
-
-
+      <div>
         <Routes>
 
           <Route path="/" element={<Dashboard />} />
@@ -185,6 +176,10 @@ function AdminRoutes() {
           <Route path="/AnnouncementPage" element={<AnnouncementPage />} />
           <Route path="/Patient2d/:userid" element={<ParentModel2d />} />
 
+
+
+          <Route path="/patients-manage" element={<ManagePatient />} />
+          <Route path="/ManageStaff" element={<Manage_Staff />} />
 
           {/*//! edit of the info page and landing Pages */}
           <Route path="/AddGroupMember" element={<AddGroupMember />} />
@@ -236,19 +231,14 @@ function App() {
 
 
   useEffect(() => {
-
     Socket.on('TRIP', addNotificationToUI);
     Socket.on('disconnect', () => console.log('Disconnected from server'));
-
     return () => {
       Socket.off('TRIP', addNotificationToUI);
     };
   }, []);
 
   const addNotificationToUI = (notification) => {
-    // showToast('success', notification);
-
-
     let timerInterval;
     Swal.fire({
       title: "ALERT",
@@ -266,18 +256,12 @@ function App() {
         clearInterval(timerInterval);
       }
     }).then((result) => {
-      /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
         console.log("I was closed by the timer");
       }
     });
 
   };
-
-
-
-
-
 
   return (
     <Router>

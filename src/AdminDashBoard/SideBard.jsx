@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
     FaHome, FaCalendarAlt, FaUser, FaFileAlt,
-    FaUserPlus, FaPlus, FaSignOutAlt, FaBars,
-    FaTimes, FaChevronDown, FaChevronUp
+    FaUserEdit, FaPlus, FaSignOutAlt, FaBars,
+    FaTimes, FaChevronDown, FaChevronUp,
+
 } from 'react-icons/fa';
+
 import { useNavigate } from 'react-router-dom';
-import { get_profile } from './Fetchs/Admin/admin_profile';
-import ThemeController from '../Guest/GuestComponents/ThemeController';
 import Daisyui_modal from './Components/Daisyui_modal';
 import axios from 'axios';
 
@@ -14,9 +14,7 @@ import Swal from 'sweetalert2';
 export default function Sidebar() {
     const localrole = localStorage.getItem('Role')
     const [RoleType, setRoletype] = useState(localrole.toLocaleLowerCase())
-
     const BASEURL = import.meta.env.VITE_BASEURL;
-
     const [isOpen, setIsOpen] = useState(false);
     const [activeItem, setActiveItem] = useState('general');
     const [profilePic, setProfilePic] = useState('../../public/default-avatar.jpg');
@@ -87,21 +85,8 @@ export default function Sidebar() {
         setIsMedicalRequestsDropdownOpen(false);
     };
 
-    const toggleLandingPageDropdown = () => {
-        setIsLandingPageDropdownOpen(!isLandingPageDropdownOpen);
-        setIsAppointmentsDropdownOpen(false);
-        setIsMedicalRequestsDropdownOpen(false);
-    };
-
-    const toggleMedicalRequestsDropdown = () => {
-        setIsMedicalRequestsDropdownOpen(!isMedicalRequestsDropdownOpen);
-        setIsAppointmentsDropdownOpen(false);
-        setIsLandingPageDropdownOpen(false);
-    };
-
     const handleLogout = () => {
         Swal.fire({
-            //background: '#96D2D9', // Set the background color
             title: 'Log Out Confirmation',
             text: "Are you sure you want to log out? This will end your current session.",
             icon: 'warning',
@@ -111,12 +96,10 @@ export default function Sidebar() {
             confirmButtonText: 'Yes, log out!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Clear local storage and navigate
                 localStorage.clear();
                 navigate('/');
                 window.location.reload();
 
-                // Send logout request to server
                 axios.post(`${BASEURL}/Admin/auth/Logout`, {}, { withCredentials: true })
                     .then((res) => {
                         if (res.status === 200) {
@@ -135,9 +118,6 @@ export default function Sidebar() {
             }
         });
     };
-
-
-
     return (
         <div className='text-white z-40'>
             <button
@@ -149,12 +129,6 @@ export default function Sidebar() {
 
             <div className={`fixed  h-screen w-60 bg-[#032742] p-4 flex flex-col justify-between transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
                 <div>
-                    {/* <div className="flex justify-between items-center pb-3"> */}
-                    {/* <button className="" onClick={() => setIsModalOpen(true)}>
-                            <span className="material-symbols-outlined text-red-500">logout</span>
-                        </button> */}
-
-
                     <h2 className="text-xl uppercase font-serif font-bold mt-5 mb-5 text-center md:block">
                         <span className='text-white'>{dentalname.DentalName}</span> <span className='text-[#96D2D9]'>Clinic</span>
                     </h2>
@@ -179,7 +153,6 @@ export default function Sidebar() {
                             {RoleType == 'dentist' && (
 
                                 <div>
-                                    {/* <h1 className='text-2xl text-red-500'>dentist view only <span>icon</span> </h1> */}
                                     <li className={`flex items-center p-2 rounded cursor-pointer mt-10 ${activeItem === 'DentistAppointment' ? 'bg-[#0071b1] text-gray-800' : 'hover:bg-[#0071b1]'}`} onClick={() => handleNavigate('/DentistSchedule', 'DentistSchedule')}>
                                         <FaHome className="mr-3" />
                                         <span>My Appointments</span>
@@ -200,27 +173,23 @@ export default function Sidebar() {
                                     </li>
                                 </div>
 
-
                             )}
                             {/* //! ADMIN NAV BAR */}
 
                             {RoleType == 'admin' && (
-                                <div>
-                                    {/* <h1>for admin only</h1> */}
-
-
+                                <div className='space-y-1'>
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'general' ? 'bg-[#0071b1] text-white' : 'hover:bg-[#0071b1]'}`} onClick={() => handleNavigate('/dashboard', 'general')}>
                                         <FaHome className="mr-3" />
                                         <span>General</span>
                                     </li>
 
-                                    {/* Appointments Dropdown */}
                                     <li className="relative">
                                         <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'appointments' ? 'bg-[#0071b1] text-white' : 'hover:bg-[#0071b1]'}`} onClick={toggleAppointmentsDropdown}>
                                             <FaCalendarAlt className="mr-3" />
                                             <span>Appointments</span>
                                             {isAppointmentsDropdownOpen ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
                                         </div>
+
 
                                         {isAppointmentsDropdownOpen && (
                                             <ul className="ml-8 mt-2 space-y-1">
@@ -250,29 +219,6 @@ export default function Sidebar() {
                                         <span>Dental Certificate Requests</span>
                                     </li>
 
-
-                                    {/* <li className="relative"> */}
-                                    {/* <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleMedicalRequestsDropdown}>
-                                    <FaFileAlt className="mr-3" />
-                                    <span>Documents</span>
-                                    {isMedicalRequestsDropdownOpen ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
-                                </div> */}
-
-                                    {/* {isMedicalRequestsDropdownOpen && (
-                                    // <ul className="ml-3 mt-2 space-y-1">
-                                        {/* <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'medical-requests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests', 'medical-requests')}> */}
-                                    {/* <FaFileAlt className="pr-1" /> */}
-                                    {/* <span>Dental Certificate Requests</span> */}
-                                    {/* </li> */}
-                                    {/* <li className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'completedRequests' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={() => handleNavigate('/Medical_requests/completed', 'completedRequests')}>
-                                            <span className="material-symbols-outlined mr-2">done</span>
-                                            Completed Requests
-                                        </li> */}
-                                    {/* </ul> */}
-
-
-                                    {/* </li> */}
-
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'add-procedure' ? 'bg-[#0071b1] text-white' : 'hover:bg-[#0071b1]'}`} onClick={() => handleNavigate('/Add_Procedure', 'add-procedure')}>
                                         <FaPlus className="mr-3" />
                                         <span> Services</span>
@@ -282,47 +228,49 @@ export default function Sidebar() {
                                         <FaUser className="mr-3" />
                                         <span>Dentist</span>
                                     </li>
+                                    <li className="relative">
+                                        {/* Manage Accounts Header */}
+                                        <div
+                                            className={`flex items-center p-2 rounded cursor-pointer ${activeItem === "manageAccounts" ? "bg-[#0071b1] text-white" : "hover:bg-[#0071b1]"
+                                                }`}
+                                            onClick={() => setActiveItem(activeItem === "manageAccounts" ? "" : "manageAccounts")}
+                                        >
+                                            <FaUserEdit className="mr-3" />
+                                            <span>Manage Accounts</span>
+                                            {activeItem === "manageAccounts" ? (
+                                                <FaChevronUp className="ml-auto" />
+                                            ) : (
+                                                <FaChevronDown className="ml-auto" />
+                                            )}
+                                        </div>
+
+                                        {/* Dropdown Menu */}
+                                        {activeItem === "manageAccounts" && (
+                                            <ul className="ml-8 mt-2 space-y-1">
+                                                <li
+                                                    className={`flex items-center p-2 rounded cursor-pointer ${activeItem === "manage-patients" ? "bg-[#0071b1] text-white" : "hover:bg-[#0071b1]"
+                                                        }`}
+                                                    onClick={() => handleNavigate("/patients-manage", "manage-patients")}
+                                                >
+                                                    <FaUser className="mr-3" />
+                                                    <span>Manage Patients</span>
+                                                </li>
+                                                <li
+                                                    className={`flex items-center p-2 rounded cursor-pointer ${activeItem === "staff" ? "bg-[#0071b1] text-white" : "hover:bg-[#0071b1]"
+                                                        }`}
+                                                    onClick={() => handleNavigate("/ManageStaff", "staff")}
+                                                >
+                                                    <FaUserEdit className="mr-3" />
+                                                    <span>Manage Staff</span>
+                                                </li>
+                                            </ul>
+                                        )}
+                                    </li>
+
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'Reports' ? 'bg-[#0071b1] text-white' : 'hover:bg-[#0071b1]'}`} onClick={() => handleNavigate('/Total_procedures', 'Reports')}>
                                         <FaFileAlt className="mr-3" />
                                         <span>Reports</span>
                                     </li>
-
-
-
-                                    {/* Landing Page Dropdown */}
-                                    {/* <li className="relative">
-                                <div className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'landing-page' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`} onClick={toggleLandingPageDropdown}>
-                                    <span className="material-symbols-outlined mr-2">home</span>
-                                    <span>Landing Page</span>
-                                    {isLandingPageDropdownOpen ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
-                                </div>
-
-
-                                {isLandingPageDropdownOpen && (
-                                    <ul className="ml-8 mt-2 space-y-1">
-                                        <li
-                                            className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'AddGroupMember' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`}
-                                            onClick={() => handleNavigate('/Grouplist', 'Grouplist')}
-                                        >
-                                            <span className="material-symbols-outlined mr-2">
-                                                person
-                                            </span>
-                                            Group Member
-                                        </li>
-                                        <li
-                                            className={`p-2 rounded cursor-pointer flex items-center ${activeItem === 'Contactus_edit' ? 'bg-secondary text-gray-800' : 'hover:bg-secondary'}`}
-                                            onClick={() => handleNavigate('/Contactus_edit', 'Contactus_edit')}
-                                        >
-                                            <span className="material-symbols-outlined mr-2">
-                                                contacts
-                                            </span>
-                                            Contact us Edit
-                                        </li>
-
-                                    </ul>
-                                )}
-                            </li> */}
-
                                 </div>
                             )}
                         </ul>

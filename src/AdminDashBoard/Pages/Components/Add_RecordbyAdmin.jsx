@@ -133,7 +133,7 @@ export default function SetAppointment({ userIds }) {
                                         type="number"
                                         value={amount}
                                         readOnly
-                                        className="bg-gray-100 shadow-md w-full border border-gray-300 rounded-lg p-2 bg-gray-100"
+                                        className=" shadow-md w-full border border-gray-300 rounded-lg p-2 bg-gray-100"
                                         placeholder="Auto-calculated"
                                     />
                                 </div>

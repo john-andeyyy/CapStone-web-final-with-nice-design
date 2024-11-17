@@ -50,7 +50,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                         <option value="Periodontitis (mild)">Periodontitis (mild)</option>
                                         <option value="Periodontitis (moderate)">Periodontitis (moderate)</option>
                                         <option value="Periodontitis (severe)">Periodontitis (severe)</option>
-                                        <option value="Missing">Missing</option>
+                                        <option value="Extracted">Extracted</option>
                                         <option value="Implant">Implant</option>
                                         <option value="Decay">Decay</option>
                                         <option value="Restored">Restored</option>

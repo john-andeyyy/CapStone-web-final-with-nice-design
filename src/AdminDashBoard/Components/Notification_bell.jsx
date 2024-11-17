@@ -47,10 +47,7 @@ const NotificationBell = () => {
     };
 
     useEffect(() => {
-        console.log('this is a notification bell');
-
         fetchNotifications();
-
         Socket.on('new-admin-notification', NOTIFaddNotificationToUI);
         Socket.on('new-admin-notification-cancel', RED_addNotificationToUI);
         Socket.on('disconnect', () => console.log('Disconnected from server'));

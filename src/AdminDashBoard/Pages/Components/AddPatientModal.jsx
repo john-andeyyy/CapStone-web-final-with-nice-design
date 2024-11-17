@@ -220,6 +220,14 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                     </div>
 
                     <div className="flex flex-col  md:col-span-2 lg:col-span-4">
+                        <div className="text-sm text-gray-600 mb-4">
+                            <p className="italic">
+                                Note: The username is the First Name of the user in all uppercase letters.
+                            </p>
+                            <p className="italic">
+                                The password is the Last Name in all uppercase letters.
+                            </p>
+                        </div>
                         <div className="flex justify-center items-center flex-wrap">
                             <button
                                 type="submit"
@@ -242,11 +250,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                         </div>
                     </div>
                 </form>
-                <p className="text-red-600 text-left mt-4">
-                    Note: The username is  <strong>First Name</strong> of the user in all uppercase letters.
-                    <br />
-                    The password is <strong>Last Name</strong> of the user in all in all uppercase letters.
-                </p>
+              
             </div>
         </div>
     );
