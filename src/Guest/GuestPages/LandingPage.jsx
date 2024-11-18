@@ -15,7 +15,7 @@ export default function LandingPage() {
     const [procedures, setProcedures] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const historyRef = useRef(null); // Ref to the target section
+    const historyRef = useRef(null); 
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,8 +66,8 @@ export default function LandingPage() {
             <div className="relative min-h-screen">
                 <div className="block">
                     <img 
-                        src="public/1w.jpg"  // If in 'public', use "/girl-smiling.jpg"; if in 'src', use import
-                        alt="1 w" 
+                        src="/1w.jpg"  // If in 'public', use "/girl-smiling.jpg"; if in 'src', use import
+                        alt="image" 
                         className="w-full h-auto"       // Adjust these classes as needed
                     />
                 </div>
