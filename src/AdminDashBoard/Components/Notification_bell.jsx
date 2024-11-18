@@ -18,7 +18,7 @@ const NotificationBell = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     // Fetch notifications from the server
     const localrole = localStorage.getItem('Role')
-    const Rolenotif = localrole === 'admin' ? 'AdminNotif' : 'DentistNotif'
+    const Rolenotif = localrole === 'admin' || localrole === 'staff' ? 'AdminNotif' : 'DentistNotif'
 
 
 
@@ -28,7 +28,7 @@ const NotificationBell = () => {
                 withCredentials: true,
             });
 
-            if (localrole === 'admin') {
+            if (localrole === 'admin' || localrole === 'staff') {
                 const adminNotifications = response.data.filter(notification => notification.adminOnly === true);
                 setNotifications(adminNotifications.reverse());
                 const unreadNotifications = adminNotifications.filter(notification => !notification.adminisRead);
@@ -84,16 +84,15 @@ const NotificationBell = () => {
         setIsOpen(!isOpen);
     };
 
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    };
+
 
     const handleNotificationClick = async (notification) => {
-
+        
         if (localrole === 'dentist') {
-            navigate(`appointment/${selectedNotification.appointmentStatus[0].appointment_id}`)
-
+            // navigate(`appointment/${notification._id}`)
+            await markAsRead(notification._id);
+            const appointmentId = notification.appointmentStatus[0].appointment_id;
+            navigate(`appointment/${appointmentId}`)
         } else {
             console.log('notification', notification)
             if (!notification.adminisRead) {
@@ -116,7 +115,7 @@ const NotificationBell = () => {
             localrole === 'admin' ? 'adminmarkas' :
                 localrole === 'dentist' ? 'dentistmarkas' :
                     'staffmarkas';
-
+        console.log('RoleMARK', RoleMARK)
         try {
             await axios.put(`${Baseurl}/Notification/admin/${RoleMARK}`, {
                 notifid: notifId,
@@ -150,7 +149,10 @@ const NotificationBell = () => {
 
     return (
         <div className="relative flex justify-end items-center ">
-            <Settings />
+            {localStorage.getItem('Role') == 'admin' && (
+                <Settings />
+            )}
+
             <button className="btn btn-ghost btn-circle relative" onClick={toggleDropdown}>
                 <div className="indicator" title="notification">
                     <svg
@@ -194,7 +196,7 @@ const NotificationBell = () => {
                                     <li
                                         key={notification._id}
                                         className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-gray-100 
-                                        ${localrole === 'admin'
+                                            ${localrole === 'admin' || localrole === 'staff'
                                                 ? (!notification.adminisRead
                                                     ? 'bg-[#3FA8BF] font-medium bg-opacity-50'
                                                     : 'bg-[#3FA8BF] bg-opacity-15')
@@ -222,7 +224,7 @@ const NotificationBell = () => {
                                                 </p> */}
 
                                                 <p className="text-sm">
-                                                    {localrole === 'admin'
+                                                    {localrole === 'admin' || localrole === 'staff'
                                                         ? (notification.user_Appointment_Title || notification.user_Appointment_message || "")
                                                         : (localrole === 'dentist'
                                                             ? (notification.title ? "New appointment set" : (notification.user_Appointment_Title || notification.user_Appointment_message || ""))
@@ -257,7 +259,7 @@ const NotificationBell = () => {
                 <NotificationModal isOpen={isModalOpen} onClose={closeModal}>
                     {selectedNotification && (
                         <div className=''>
-                            <h1 className='text-center text-2xl font-bold text-[#3EB489]'>Notification</h1>
+                            <h1 className='text-center text-2xl font-bold text-[#032742]'>Notification</h1>
                             <div className="p-4">
                                 <h2 className="text-xl font-bold">{selectedNotification.user_Appointment_Title}</h2>
                                 <p>{selectedNotification.user_Appointment_message}</p>
@@ -265,7 +267,7 @@ const NotificationBell = () => {
                                     <button className="bg-[#D9D9D9] hover:bg-[#ADAAAA] btn mt-4" onClick={closeModal}>
                                         Close
                                     </button>
-                                    <button className="bg-[#3EB489] hover:bg-[#3eb489b3] btn mt-4" onClick={() => {
+                                    <button className="bg-[#2bbcff] hover:bg-[#74b4e5] btn mt-4" onClick={() => {
                                         closeModal();
                                         // navigate(`appointment/${selectedNotification.appointmentStatus[0].appointment_id}`);
                                         if (selectedNotification.user_Appointment_Title === 'Dental Certificate Request') {

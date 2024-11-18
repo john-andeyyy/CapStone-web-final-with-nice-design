@@ -148,6 +148,7 @@ const DentistReport = () => {
     };
 
     const generatePDF = () => {
+        console.warn('selectedDentistId', selectedDentistId)
         let reportData = {
             DentistId: selectedDentistId,
         };
@@ -226,23 +227,27 @@ const DentistReport = () => {
                 <div className={`mb-6 ${localStorage.getItem('Role') === 'dentist' ? 'mt-10' : 'mt-0'}`}>
                     {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 "> */}
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4  ">
-                        <ReportMenu />
-                        <div className="flex justify-center sm:justify-end items-center sm:items-start p-4 sm:p-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            {localStorage.getItem('Role') !== 'dentist' && (
+                                <ReportMenu />
+                            )}
+                        </div>
+
+                        <div className="flex flex-col justify-end items-center sm:items-end p-4 sm:p-5">
                             <button
                                 className={`px-4 py-2 text-white rounded transition duration-200 w-full sm:w-auto 
-                                    ${Object.keys(procedureCounts).length === 0 ?
+                ${Object.keys(procedureCounts).length === 0 ?
                                         'bg-gray-400 cursor-not-allowed' :
-                                        'bg-[#3FA8BF] hover:bg-[#96D2D9]'}`
-                                }
+                                        'bg-[#3FA8BF] hover:bg-[#96D2D9]'}`}
                                 onClick={generatePDF}
                                 disabled={Object.keys(procedureCounts).length === 0}
                             >
                                 Generate PDF
                             </button>
-
                         </div>
                     </div>
+
                     {/* </div> */}
                     <h2 className="text-3xl font-bold text-[#025373] text-center sm:text-left lg:text-center">Dentist Report</h2>
 

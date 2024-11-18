@@ -143,7 +143,7 @@ export default function Sidebar() {
                                 <img src={profilePic} alt="Profile" className="object-cover w-full h-full" />
                             </div>
                         </div>
-                        <span className="font-semibold text-center mt-2 text-white">{name}</span>
+                        <span className="font-semibold text-center mt-2 text-white"> {name}</span>
                     </div>
 
                     <div className="flex-grow text-white">
@@ -176,7 +176,7 @@ export default function Sidebar() {
                             )}
                             {/* //! ADMIN NAV BAR */}
 
-                            {RoleType == 'admin' && (
+                            {(RoleType == 'admin' || RoleType == 'staff') && (
                                 <div className='space-y-1'>
                                     <li className={`flex items-center p-2 rounded cursor-pointer ${activeItem === 'general' ? 'bg-[#0071b1] text-white' : 'hover:bg-[#0071b1]'}`} onClick={() => handleNavigate('/dashboard', 'general')}>
                                         <FaHome className="mr-3" />
@@ -230,21 +230,25 @@ export default function Sidebar() {
                                     </li>
                                     <li className="relative">
                                         {/* Manage Accounts Header */}
-                                        <div
-                                            className={`flex items-center p-2 rounded cursor-pointer ${activeItem === "manageAccounts" ? "bg-[#0071b1] text-white" : "hover:bg-[#0071b1]"
-                                                }`}
-                                            onClick={() => setActiveItem(activeItem === "manageAccounts" ? "" : "manageAccounts")}
-                                        >
-                                            <FaUserEdit className="mr-3" />
-                                            <span>Manage Accounts</span>
-                                            {activeItem === "manageAccounts" ? (
-                                                <FaChevronUp className="ml-auto" />
-                                            ) : (
-                                                <FaChevronDown className="ml-auto" />
-                                            )}
-                                        </div>
 
-                                        {/* Dropdown Menu */}
+                                        {RoleType == 'admin' && (
+
+
+                                            <div
+                                                className={`flex items-center p-2 rounded cursor-pointer ${activeItem === "manageAccounts" ? "bg-[#0071b1] text-white" : "hover:bg-[#0071b1]"
+                                                    }`}
+                                                onClick={() => setActiveItem(activeItem === "manageAccounts" ? "" : "manageAccounts")}
+                                            >
+                                                <FaUserEdit className="mr-3" />
+                                                <span>Manage Accounts</span>
+                                                {activeItem === "manageAccounts" ? (
+                                                    <FaChevronUp className="ml-auto" />
+                                                ) : (
+                                                    <FaChevronDown className="ml-auto" />
+                                                )}
+                                            </div>
+                                        )}
+
                                         {activeItem === "manageAccounts" && (
                                             <ul className="ml-8 mt-2 space-y-1">
                                                 <li

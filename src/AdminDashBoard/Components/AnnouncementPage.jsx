@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from '../Components/Modal'; // Import your Modal component
 import { showToast } from '../Components/ToastNotification';
+import Swal from 'sweetalert2';
 
 export default function AnnouncementPage() {
     const Baseurl = import.meta.env.VITE_BASEURL;
@@ -44,8 +45,25 @@ export default function AnnouncementPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Show SweetAlert loading spinner
+        Swal.fire({
+            title: 'Sending Announcement...',
+            html: 'Please wait while we send your announcement.',
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            willClose: () => {
+                // Handle any clean-up if necessary
+            }
+        });
+
         axios.post(`${Baseurl}/Announcement/create`, formData, { withCredentials: true })
             .then(response => {
+                // Close the SweetAlert loading spinner
+                Swal.close();
+
                 showToast('success', 'Announcement sent successfully');
                 setFormData({
                     isSendEmail: false,
@@ -55,7 +73,16 @@ export default function AnnouncementPage() {
                 FetchAnnouncement();
                 setShowModal(false);
             })
-            .catch(error => console.error('Error sending announcement:', error));
+            .catch(error => {
+                // Close the SweetAlert loading spinner on error
+                Swal.close();
+                console.error('Error sending announcement:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong, please try again.',
+                });
+            });
     };
 
     const openAnnouncementModal = (announcement) => {

@@ -37,7 +37,7 @@ export default function AdminLogin({ login }) {
 
                 // showToast('success', `Welcome ${response.data.Role}`);
                 Swal.fire({
-                    title: `Welcome back, ${response.data.Role}!`,
+                    title: `Welcome back!`,
                     text: "Glad to have you here again.",
                     icon: "success"
                 });
@@ -46,6 +46,8 @@ export default function AdminLogin({ login }) {
                     navigate('/dashboard');
                 } else if (Role == 'dentist') {
                     navigate('/DentistSchedule');
+                } else {
+                    navigate('/dashboard');
                 }
 
 
@@ -65,7 +67,7 @@ export default function AdminLogin({ login }) {
         const handleKeyPress = (event) => {
             if (event.ctrlKey && event.key === "m") {
                 Swal.fire({
-                    title: `ADMIN: admin admin .... DENTIST: 123 123 or Marilie 123`,
+                    title: `{ADMIN: admin admin} {DENTIST: 123 123 or Marilie 123} {un:Staff pass: staff}`,
                     width: 600,
                     padding: "3em",
                     color: "#716add",
@@ -80,30 +82,14 @@ export default function AdminLogin({ login }) {
             } else if (event.ctrlKey && event.key === ".") {
                 setUsername('admin')
                 setPassword('admin')
-                Swal.fire({
-                    title: `admin`,
-                    text: "Un: admin pass: admin",
-                    icon: "info",
-                    width: 600,
-                    padding: "3em",
-                    color: "#716add",
-                    background: "#fff",
-                });
+
             } else if (event.ctrlKey && event.key === ",") {
-                setUsername('123')
+                setUsername('dentist')
                 setPassword('123')
-                Swal.fire({
-                    title: `Dentist`,
-                    text: "Un: 123 pass: 123",
-                    icon: "info",
-                    width: 600,
-                    padding: "3em",
-                    color: "#716add",
-                    background: "#fff",
-                });
+
             } else if (event.ctrlKey && event.key === "/") {
-                setUsername('')
-                setPassword('')
+                setUsername('Staff')
+                setPassword('staff')
             }
         };
 
@@ -114,7 +100,7 @@ export default function AdminLogin({ login }) {
         };
     }, []);
 
-    const bg = '../../../public/page-turner1.png'
+    const bg = '/page-turner1.png'
     return (
 
         <div className="bg-cover bg-center h-screen" style={{ backgroundImage: `url(${bg})` }}>

@@ -25,12 +25,29 @@ export default function Add_Procedure() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
 
+  const localrole = localStorage.getItem('Role')
+
   useEffect(() => {
+
     const fetchProcedures = async () => {
       try {
+        // Show SweetAlert loading spinner
+        Swal.fire({
+          title: 'Loading Please Wait',
+          html: 'Please wait',
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
         const response = await axios.get(`${BASEURL}/Procedure/show`, {
           withCredentials: true
         });
+
+        // Close the SweetAlert loading spinner once the request is completed
+        Swal.close();
+
         if (Array.isArray(response.data)) {
           const sortedProcedures = sortProceduresAlphabetically(response.data);
           setProcedureList(sortedProcedures);
@@ -38,7 +55,14 @@ export default function Add_Procedure() {
           console.error('Unexpected response format:', response.data);
         }
       } catch (error) {
+        // Close the SweetAlert loading spinner on error
+        Swal.close();
         console.error('Error fetching procedures:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong while fetching procedures. Please try again.',
+        });
       }
     };
 
@@ -128,7 +152,7 @@ export default function Add_Procedure() {
       console.error('Error updating procedure status:', error);
     }
   };
-  
+
   const confirmtongleStatus = async (status) => {
     try {
       await axios.put(`${BASEURL}/Procedure/updatestatus/${procedureToDelete._id}`,
@@ -269,60 +293,52 @@ export default function Add_Procedure() {
           <h1 className='text-3xl font-bold l:text-sm'>Procedure List</h1>
           <div className='relative'>
 
-          <button className='btn bg-[#025373] hover:bg-[#03738C] text-white  md:ml-auto' onClick={openAddModal}>
-            Create Procedure
-          </button>
-            {/* <input
-              type='text'
-              placeholder='Search procedures...'
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className='block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#3EB489]'
-            />
-            <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
-              <span className="material-symbols-outlined">search</span>
-            </div> */}
+            {localrole == ' admin' && (
+              <button className='btn bg-[#025373] hover:bg-[#03738C] text-white  md:ml-auto' onClick={openAddModal}>
+                Create Procedure
+              </button>
+            )}
 
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 mb-4 py-5 md:flex md:items-center md:justify-between">
-  
-  {/* Search Input */}
-  <div className="relative w-full md:w-auto">
-    <input
-      type="text"
-      placeholder="Search procedures..."
-      value={searchQuery}
-      onChange={handleSearchChange}
-      className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#3EB489]"
-    />
-    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500">
-      <span className="material-symbols-outlined">search</span>
-    </div>
-  </div>
 
-  {/* Filter Buttons */}
-  <div className="flex flex-col md:flex-row items-center md:space-x-4 space-y-2 md:space-y-0 md:ml-auto">
-    <button
-      className={`btn ${availabilityFilter === true ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
-      onClick={() => setAvailabilityFilter(true)}
-    >
-      Show Available
-    </button>
-    <button
-      className={`btn ${availabilityFilter === false ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
-      onClick={() => setAvailabilityFilter(false)}
-    >
-      Show Not Available
-    </button>
-    <button
-      className={`btn ${availabilityFilter === null ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
-      onClick={() => setAvailabilityFilter(null)}
-    >
-      Show All
-    </button>
-  </div>
-</div>
+          {/* Search Input */}
+          <div className="relative w-full md:w-auto">
+            <input
+              type="text"
+              placeholder="Search procedures..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#3EB489]"
+            />
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500">
+              <span className="material-symbols-outlined">search</span>
+            </div>
+          </div>
+
+          {/* Filter Buttons */}
+          <div className="flex flex-col md:flex-row items-center md:space-x-4 space-y-2 md:space-y-0 md:ml-auto">
+            <button
+              className={`btn ${availabilityFilter === true ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
+              onClick={() => setAvailabilityFilter(true)}
+            >
+              Show Available
+            </button>
+            <button
+              className={`btn ${availabilityFilter === false ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
+              onClick={() => setAvailabilityFilter(false)}
+            >
+              Show Not Available
+            </button>
+            <button
+              className={`btn ${availabilityFilter === null ? 'bg-[#025373] hover:bg-[#03738C] text-white' : 'bg-[#012840] bg-opacity-35 hover:bg-[#03738C]'}`}
+              onClick={() => setAvailabilityFilter(null)}
+            >
+              Show All
+            </button>
+          </div>
+        </div>
 
 
         {/* table */}

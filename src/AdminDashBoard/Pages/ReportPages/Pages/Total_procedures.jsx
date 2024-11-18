@@ -344,7 +344,7 @@ export default function TotalProcedures() {
                     </div>
 
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 pb-5">
                         {/* Left Column: Scrollable Area */}
                         <div className="overflow-y-auto" style={{ maxHeight: '400px' }}>
                             <table className="min-w-full border">
@@ -371,7 +371,7 @@ export default function TotalProcedures() {
                             </table>
                         </div>
                         {/* Responsive Pie Chart */}
-                        <div className="rounded-xl"
+                        {/* <div className="rounded-xl"
                             style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
                             <div className="mt-4 sm:mt-0 bg-[#96D2D9]  py-3 rounded-xl">
                                 {Object.keys(currentReport).length > 0 ? (
@@ -380,7 +380,7 @@ export default function TotalProcedures() {
                                     <div className="text-center text-gray-700">No procedures recorded for this month/year.</div>
                                 )}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

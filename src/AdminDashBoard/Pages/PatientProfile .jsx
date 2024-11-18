@@ -5,7 +5,7 @@ import Tooth2d from '../Components/Tooth2d';
 import Add_RecordbyAdmin from './Components/Add_RecordbyAdmin';
 
 const PatientProfile = () => {
-    const defaultimage = '../../../public/default-avatar.jpg'
+    const defaultimage = '/default-avatar.jpg'
     const { id } = useParams();
     const navigate = useNavigate()
     const userIds = id;

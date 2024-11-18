@@ -37,28 +37,34 @@ const DentistTable = ({ loading, filteredDentists, handleRowClick, handle_availa
                                             <span className="material-symbols-outlined">visibility</span>
                                         </button>
                                         <button
-                                            className={`flex items-center ${dentist.isAvailable ? 'text-green-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-green-100 transition rounded-lg shadow-sm' : 'text-red-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-red-100 transition rounded-lg shadow-sm'}`}
-                                            onClick={() => handle_availability(dentist)}
-                                            title={dentist.isAvailable ? 'To Unavailable' : 'To Available'}
-                                        >
-                                            <span className="material-symbols-outlined">
-                                                {dentist.isAvailable ? 'check_circle' : 'do_not_disturb_on'}
-                                            </span>
-                                        </button>
-                                        <button
                                             className="text-yellow-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-yellow-100 hover:text-yellow-600 transition rounded-lg shadow-sm"
                                             onClick={() => navigate(`/DentistSchedule/${dentist._id}`)}
                                             title="Schedule"
                                         >
                                             <span className="material-symbols-outlined">calendar_month</span>
                                         </button>
-                                        <button
-                                            className="text-gray-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-gray-200 hover:text-gray-600 transition rounded-lg shadow-sm"
-                                            onClick={() => openModal(dentist._id)}
-                                            title="Manage Availability"
-                                        >
-                                            <span className="material-symbols-outlined">manage_accounts</span>
-                                        </button>
+                                        {localStorage.getItem('Role') == 'admin' && (
+                                            <div className='flex'>
+                                                <button
+                                                    className={`flex items-center ${dentist.isAvailable ? 'text-green-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-green-100 transition rounded-lg shadow-sm' : 'text-red-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-red-100 transition rounded-lg shadow-sm'}`}
+                                                    onClick={() => handle_availability(dentist)}
+                                                    title={dentist.isAvailable ? 'To Unavailable' : 'To Available'}
+                                                >
+                                                    <span className="material-symbols-outlined">
+                                                        {dentist.isAvailable ? 'check_circle' : 'do_not_disturb_on'}
+                                                    </span>
+                                                </button>
+
+                                                <button
+                                                    className="text-gray-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-gray-200 hover:text-gray-600 transition rounded-lg shadow-sm"
+                                                    onClick={() => openModal(dentist._id)}
+                                                    title="Manage Availability"
+                                                >
+                                                    <span className="material-symbols-outlined">manage_accounts</span>
+                                                </button>
+                                            </div>
+                                        )}
+
                                     </div>
                                 </td>
                             </tr>

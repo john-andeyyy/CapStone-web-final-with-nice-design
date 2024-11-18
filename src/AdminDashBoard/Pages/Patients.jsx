@@ -176,12 +176,12 @@ export default function Patients_List() {
                         {/* Action Buttons */}
                         {localStorage.getItem('Role') !== 'dentist' && (
                             <div className="flex space-x-2 sm:space-x-4">
-                                <button
-                                    onClick={() => setIsModalOpen(true)}
-                                    className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
-                                >
-                                    Add Patient
-                                </button>
+                                    <button
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
+                                    >
+                                        Add Patient
+                                    </button>
 
                                 <button
                                     onClick={generatePDF}
@@ -193,42 +193,42 @@ export default function Patients_List() {
                         )}
                     </div>
 
-                        <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                            {/* Search Input */}
-                            <div className="relative flex-grow mt-8">
-                                <input
-                                    type="text"
-                                    placeholder="Search by First, Last, or Middle Name"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
-                                    className="block pl-10 pr-4 py-3 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-96"  
-                                />
-                                <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
-                                    <span className="material-symbols-outlined">search</span>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col space-y-2 py-4">
-                                <label htmlFor="patient-filter" className="font-medium text-gray-700">Filter Patients</label>
-
-                                <select
-                                    id="patient-filter"
-                                    onChange={(e) => handleFilterChange(e.target.value)}
-                                    className="p-2 border border-gray-300 bg-gray-100 rounded-md"
-                                >
-                                    {/* <option value="all">All Patient</option> */}
-                                    {[
-                                        { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
-                                        { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
-                                        { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
-                                    ].map(({ label, filterName }) => (
-                                        <option key={filterName} value={filterName}>
-                                            {label}
-                                        </option>
-                                    ))}
-                                </select>
+                    <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        {/* Search Input */}
+                        <div className="relative flex-grow mt-8">
+                            <input
+                                type="text"
+                                placeholder="Search by First, Last, or Middle Name"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                className="block pl-10 pr-4 py-3 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-96"
+                            />
+                            <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
+                                <span className="material-symbols-outlined">search</span>
                             </div>
                         </div>
+
+                        <div className="flex flex-col space-y-2 py-4">
+                            <label htmlFor="patient-filter" className="font-medium text-gray-700">Filter Patients</label>
+
+                            <select
+                                id="patient-filter"
+                                onChange={(e) => handleFilterChange(e.target.value)}
+                                className="p-2 border border-gray-300 bg-gray-100 rounded-md"
+                            >
+                                {/* <option value="all">All Patient</option> */}
+                                {[
+                                    { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
+                                    { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
+                                    { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
+                                ].map(({ label, filterName }) => (
+                                    <option key={filterName} value={filterName}>
+                                        {label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
 
                     {/* Patients Table */}
                     <div className="overflow-x-auto max-h-[34rem]">

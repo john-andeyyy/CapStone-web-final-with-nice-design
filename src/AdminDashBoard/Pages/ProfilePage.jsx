@@ -10,7 +10,7 @@ const ProfilePage = () => {
     const [showEmailModal, setShowEmailModal] = useState(false);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [newEmail, setNewEmail] = useState('');
-    const DefaultPFP = '../../../public/default-avatar.jpg'
+    const DefaultPFP = '/default-avatar.jpg'
     const [otp, setOtp] = useState('');
     const [currentpassword, setcurrentpassword] = useState('');
     const [loading, setLoading] = useState(false);

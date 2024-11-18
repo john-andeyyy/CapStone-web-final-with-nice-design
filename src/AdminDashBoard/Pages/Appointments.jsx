@@ -249,15 +249,8 @@ export default function Appointments() {
                 confirmButtonText: newStatus.toLowerCase() === "approved" ? "Approve" : "Reject"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If confirmed, proceed with the status update
                     updateStatus(app_id, newStatus);
 
-                    // Show a success message after confirmation
-                    Swal.fire({
-                        title: `Appointment ${newStatus}`,
-                        text: `You have ${newStatus.toLowerCase()} the appointment`,
-                        icon: "success"
-                    });
                 }
             });
         }
@@ -265,7 +258,17 @@ export default function Appointments() {
 
     // const updateAppointmentStatus = async (app_id, newStatus) => {
     const updateStatus = async (app_id, newStatus, message = "") => {
+        Swal.fire({
+            title: 'Updating',
+            html: 'Please wait while',
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         const Rejectmsg = message
+
         try {
             if (newStatus === 'Approved') {
                 setLoadingApprove(prev => ({ ...prev, [app_id]: true }));
@@ -283,10 +286,14 @@ export default function Appointments() {
             );
 
             if (response.status === 200) {
-                // if (true) {
-                // showToast('success', `Appointment: ${newStatus} `);
+                // Show a success message after confirmation
+                Swal.close();
 
-                console.log("Appointment status updated successfully");
+                Swal.fire({
+                    title: `Appointment ${newStatus}`,
+                    text: `You have ${newStatus.toLowerCase()} the appointment`,
+                    icon: "success"
+                });
 
                 setAppointments(prevAppointments => {
                     return prevAppointments.map(app =>

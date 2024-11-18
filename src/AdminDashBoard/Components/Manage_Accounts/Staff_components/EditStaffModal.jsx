@@ -96,7 +96,7 @@ export default function EditStaffModal({ staffId, onClose, onSave }) {
     if (!staffData) {
         return null;
     }
-    const default_pfp = '../../../../../public/default-avatar.jpg'
+    const default_pfp = '/default-avatar.jpg'
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

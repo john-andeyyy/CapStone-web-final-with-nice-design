@@ -2,7 +2,7 @@ import axios from "axios";
 import { showToast } from '../../Components/ToastNotification';
 
 const BASEURL = import.meta.env.VITE_BASEURL;
-const DefaultPFP = '../../../../public/default-Dentistpfp.png'
+const DefaultPFP = '/default-avatar.jpg'
 
 export const get_profile = async () => {
 

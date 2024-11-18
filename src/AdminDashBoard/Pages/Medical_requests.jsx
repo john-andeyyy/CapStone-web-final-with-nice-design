@@ -23,6 +23,14 @@ export default function MedicalRequests() {
 
   const getAppointments = async () => {
     setLoading(true);
+    Swal.fire({
+      title: 'Loading Please Wait',
+      html: 'Please wait',
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
     try {
       // const response = await axios.get(`${BASEURL}/Appointments/appointments/filter`, {
       const response = await axios.get(`${BASEURL}/Appointments/appointments/noimage`, {
@@ -37,6 +45,8 @@ export default function MedicalRequests() {
       console.error('Error fetching appointments:', error);
     } finally {
       setLoading(false);
+      Swal.close();
+
     }
   };
   useEffect(() => {

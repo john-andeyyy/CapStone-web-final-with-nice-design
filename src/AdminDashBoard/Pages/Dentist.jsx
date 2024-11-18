@@ -8,6 +8,7 @@ import { alignProperty } from '@mui/material/styles/cssUtils';
 import CreateDentist from '../Components/Dentist/CreateDentist';
 import DentistDetailsModal from '../Components/Dentist/DentistDetailsModal';
 import DentistTable from '../Components/Dentist/DentistTable';
+import Swal from 'sweetalert2';
 
 export default function Dentist() {
     const BASEURL = import.meta.env.VITE_BASEURL;
@@ -21,8 +22,8 @@ export default function Dentist() {
     const [availabilityFilter, setAvailabilityFilter] = useState('available');
     const [isEditmodal, setisEditmodal] = useState(false);
 
-   
-    
+
+
     const [newDentist, setNewDentist] = useState({
         FirstName: '',
         LastName: '',
@@ -41,13 +42,23 @@ export default function Dentist() {
     const [error, setError] = useState('');
 
     const fetchDentistList = async () => {
-        setLoading(true);
+        // setLoading(true);
+        Swal.fire({
+            title: 'Loading Please Wait',
+            html: 'Please wait',
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         try {
             const response = await axios.get(`${BASEURL}/dentist/dentistlist`, {
                 withCredentials: true
             });
             setDentists(response.data);
             setError('');
+            Swal.close();
+
         } catch (error) {
             setError('Failed to fetch dentist list. Please try again.');
         } finally {
@@ -84,7 +95,7 @@ export default function Dentist() {
     };
 
     const [errorMessage, seterrorMessage] = useState('')
-    
+
     const handleCreateDentist = async (dentistData) => {
         // e.preventDefault();
 
@@ -104,7 +115,7 @@ export default function Dentist() {
         formData.append('Gender', dentistData.Gender);
         formData.append('LicenseNo', dentistData.LicenseNo);
         formData.append('Username', dentistData.Username);
-        formData.append('Password', dentistData.Password);  
+        formData.append('Password', dentistData.Password);
         formData.append('Email', dentistData.Email);
         formData.append('ProfilePicture', dentistData.ProfilePicture);
 
@@ -284,9 +295,12 @@ export default function Dentist() {
                     </div>
                 </div>
 
-                <button className="bg-[#025373] hover:bg-[#03738C] py-2 px-4 rounded-lg text-white" onClick={handleAddDentist}>
-                    Add Dentist
-                </button>
+
+                {localStorage.getItem('Role') == ' admin' && (
+                    <button className="bg-[#025373] hover:bg-[#03738C] py-2 px-4 rounded-lg text-white" onClick={handleAddDentist}>
+                        Add Dentist
+                    </button>
+                )}
             </div>
 
             <DentistTable
@@ -313,7 +327,7 @@ export default function Dentist() {
                 showAddModal={showAddModal}
                 handleCreateDentist={handleCreateDentist}
                 handleCloseAddModal={handleCloseAddModal}
-                newNewDentistData={setNewDentist}  
+                newNewDentistData={setNewDentist}
                 errorMessage={errorMessage}
 
             />
