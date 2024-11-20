@@ -34,7 +34,7 @@ const CreateTipModal = ({ onClose, onCreate }) => {
             });
     };
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-[#ffffff] p-6 rounded shadow-lg w-1/3">
                 <h2 className="font-bold text-lg mb-4 text-[#00000] text-center">Create New Tip</h2>
                 <input

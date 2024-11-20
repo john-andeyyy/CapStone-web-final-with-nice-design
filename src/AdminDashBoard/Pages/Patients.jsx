@@ -174,14 +174,17 @@ export default function Patients_List() {
                         </div>
 
                         {/* Action Buttons */}
-                        {localStorage.getItem('Role') !== 'dentist' && (
+                        {localStorage.getItem('Role') == 'admin' && (
                             <div className="flex space-x-2 sm:space-x-4">
-                                    <button
-                                        onClick={() => setIsModalOpen(true)}
-                                        className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
-                                    >
-                                        Add Patient
-                                    </button>
+
+                                  <div className='hidden'>
+                                        <button
+                                            onClick={() => setIsModalOpen(true)}
+                                            className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
+                                        >
+                                            Add Patient
+                                        </button>
+                                  </div >
 
                                 <button
                                     onClick={generatePDF}

@@ -234,7 +234,7 @@ export default function Appointments() {
                     Swal.fire(text); // Show the message entered by the user
 
                     // Proceed with updating the status
-                    udpatestatus(app_id, newStatus, text); // Pass the text with the status update
+                    updateStatus(app_id, newStatus, text); // Pass the text with the status update
                 }
             });
         } else {

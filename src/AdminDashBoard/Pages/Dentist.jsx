@@ -296,7 +296,7 @@ export default function Dentist() {
                 </div>
 
 
-                {localStorage.getItem('Role') == ' admin' && (
+                {localStorage.getItem('Role') == 'admin' && (
                     <button className="bg-[#025373] hover:bg-[#03738C] py-2 px-4 rounded-lg text-white" onClick={handleAddDentist}>
                         Add Dentist
                     </button>

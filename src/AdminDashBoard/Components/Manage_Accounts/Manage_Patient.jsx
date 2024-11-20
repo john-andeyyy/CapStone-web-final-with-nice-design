@@ -22,7 +22,8 @@ export default function ManagePatient() {
             .then((response) => {
                 
                 setPatients(response.data);
-                setFilteredPatients(response.data);  
+                setFilteredPatients(response.data);
+                console.log('response.data', response.data)  
                 setLoading(false);
             })
             .catch((error) => {

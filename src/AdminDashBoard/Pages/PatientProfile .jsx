@@ -70,7 +70,6 @@ const PatientProfile = () => {
 
             setShowButton(anyPendingOrEmpty);
             setDentalHistory(historydata);
-            console.log('Formatted Procedure History', historydata);
 
         } catch (error) {
             console.log(error.message);
@@ -274,7 +273,6 @@ const PatientProfile = () => {
 
                                     return (
                                         <div key={field} className="field">
-                                            {console.log("field", field)}
                                             <label className="block text-sm font-medium capitalize">
                                                 {field}
                                             </label>

@@ -41,13 +41,21 @@ const CalendarComponent = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [statusFilters, setStatusFilters] = useState({
-        Pending: false,
-        Rejected: false,
+        Pending: true,
+        Rejected: true,
         Approved: true,
-        Completed: false,
-        Missed: false,
-        Cancelled: false,
+        Completed: true,
+        Missed: true,
+        Cancelled: true,
     });
+    // const [statusFilters, setStatusFilters] = useState({
+    //     Pending: false,
+    //     Rejected: false,
+    //     Approved: true,
+    //     Completed: false,
+    //     Missed: false,
+    //     Cancelled: false,
+    // });
 
     const fetchAppointments = async () => {
         try {
@@ -240,7 +248,7 @@ const CalendarComponent = () => {
                     <div
                         key={status}
                         className={`flex items-center cursor-pointer p-2 rounded-md ${getBackgroundColor(status)} hover:bg-opacity-75 transition duration-200`}
-                        onClick={() => toggleStatusFilter(status)}
+                        // onClick={() => toggleStatusFilter(status)}
                     >
                         <span
                             className="material-symbols-outlined text-2xl"
@@ -268,7 +276,7 @@ const CalendarComponent = () => {
                             startAccessor="start"
                             endAccessor="end"
                             style={{
-                                height: 'calc(100vh - 200px)', // Adjust height dynamically
+                                height: 'calc(100vh - 100px)', 
                                 width: '100%', // Make calendar width 100%
                                 backgroundColor: 'bg-base-200',
                                 borderRadius: '10px',
@@ -284,7 +292,7 @@ const CalendarComponent = () => {
                             selectable
                             views={['month', 'week', 'day', 'agenda']}
                             min={new Date(0, 0, 0, 8, 0, 0)} // 8 AM
-                            max={new Date(0, 0, 0, 17, 0, 0)} // 5 PM
+                            max={new Date(0, 0, 0, 20, 0, 0)} // 5 PM
                             components={{
                                 day: {
                                     date: CustomDayCell,

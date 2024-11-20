@@ -5,6 +5,19 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal,
 
     const close =()=>{
         handleCloseAddModal()
+        setNewDentist({
+                FirstName: '',
+                LastName: '',
+                MiddleName: '',
+                ContactNumber: '',
+                Address: '',
+                Gender: '',
+                LicenseNo: '',
+                ProfilePicture: null,
+                Username: '',
+                Password: '',
+                Email: ''
+            })
         setError('')
     }
     
@@ -34,6 +47,19 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal,
         newNewDentistData(newDentist);
         handleCreateDentist(newDentist); // Pass newDentist directly without event
         console.log('event', event);
+        setNewDentist({
+            FirstName: '',
+            LastName: '',
+            MiddleName: '',
+            ContactNumber: '',
+            Address: '',
+            Gender: '',
+            LicenseNo: '',
+            ProfilePicture: null,
+            Username: '',
+            Password: '',
+            Email: ''
+        })
     };
 
 
@@ -94,7 +120,7 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal,
                             />
                         </div>
                         <div className="flex flex-col">
-                            <label className="font-semibold  mb-1">Middle Name <span className="text-red-500">*</span></label>
+                            <label className="font-semibold  mb-1">Middle Name</label>
                             <input
                                 type="text"
                                 name="MiddleName"
@@ -105,6 +131,7 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal,
                             />
                         </div>
                     </div>
+                    
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 

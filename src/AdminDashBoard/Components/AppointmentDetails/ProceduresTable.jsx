@@ -80,6 +80,10 @@ const ProceduresTable = ({ appointment }) => {
         const addedProceduresTotal = addedProcedures.reduce((total, proc) => total + proc.Price, 0);
         return existingProceduresTotal + addedProceduresTotal;
     };
+    useEffect(() => {
+        settoal(calculateTotal());
+    }, [userProceduresList, addedProcedures, markedForRemoval]);
+
     const [totoalamount, settoal] = useState(calculateTotal());
 
     const handleSelectProcedures = (selectedProcedures) => {

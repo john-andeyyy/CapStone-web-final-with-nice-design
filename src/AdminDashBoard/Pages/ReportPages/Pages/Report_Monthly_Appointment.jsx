@@ -51,9 +51,18 @@ export default function Report_Monthly_Appointment() {
     const filterAppointments = (appointments) => {
         let filteredData = appointments;
 
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1); 
+
+        const todayISOString = tomorrow.toISOString().split('T')[0]; // Get date in 'YYYY-MM-DD' format
+
         if (isToday) {
-            const today = new Date().toISOString().split('T')[0];
-            filteredData = appointments.filter(appointment => appointment.date.startsWith(today));
+            filteredData = appointments.filter(appointment => {
+                const appointmentDate = new Date(appointment.date).toISOString().split('T')[0]; // Convert to 'YYYY-MM-DD'
+                return appointmentDate === todayISOString;
+            });
         } else {
             if (viewingYearly) {
                 filteredData = appointments.filter(appointment =>
@@ -86,6 +95,7 @@ export default function Report_Monthly_Appointment() {
         setMissedCount(missed);
         setFilteredAppointments(filteredData);
     };
+
 
     const getChartData = () => {
         const counts = { completed: [], missed: [] };

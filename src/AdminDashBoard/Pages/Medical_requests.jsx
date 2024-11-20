@@ -32,14 +32,12 @@ export default function MedicalRequests() {
       }
     });
     try {
-      // const response = await axios.get(`${BASEURL}/Appointments/appointments/filter`, {
       const response = await axios.get(`${BASEURL}/Appointments/appointments/noimage`, {
 
         withCredentials: true
       });
       if (response.status === 200) {
         setRequests(response.data);
-        console.log('response', response)
       }
     } catch (error) {
       console.error('Error fetching appointments:', error);
@@ -161,8 +159,7 @@ export default function MedicalRequests() {
     });
   };
 
-  const handleArchiveRequest = async () => {
-    console.error('selectedRequest', selectedRequest)
+  const handleArchiveRequest = async (request) => {
     Swal.fire({
       title: 'Processing...',
       text: 'Please wait while we process your request.',
@@ -173,10 +170,9 @@ export default function MedicalRequests() {
         Swal.showLoading();
       }
     });
-    if (!selectedRequest) return;
     setActionLoading(true);
     try {
-      await axios.put(`${BASEURL}/SendDentalCertificate/${selectedRequest.id}`, {
+      await axios.put(`${BASEURL}/SendDentalCertificate/${request.id}`, {
         Status: 'Archive'
       }, {
         withCredentials: true
@@ -191,7 +187,7 @@ export default function MedicalRequests() {
       });
 
       setRequests(requests.map((request) =>
-        request.id === selectedRequest.id ? { ...request, medcertiStatus: 'Archive' } : request
+        request.id === request.id ? { ...request, medcertiStatus: 'Archive' } : request
       ));
       setArchiveConfirmation(false);
       setSelectedRequest(null);
@@ -203,7 +199,7 @@ export default function MedicalRequests() {
   };
 
   // Function to confirm archiving
-  const confirmArchiveRequest = () => {
+  const confirmArchiveRequest = (request) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -214,8 +210,8 @@ export default function MedicalRequests() {
       confirmButtonText: "Yes, archive it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        handleArchiveRequest();
-      
+        handleArchiveRequest(request);
+
       }
     });
   };
@@ -268,7 +264,7 @@ export default function MedicalRequests() {
         icon: "success"
       });
 
-      
+
       setRequests(requests.map((request) =>
         request.id === selectedRequest.id ? { ...request, medcertiStatus: 'Accepted' } : request
       ));
@@ -361,8 +357,8 @@ export default function MedicalRequests() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="p-2 border border-gray-300 bg-gray-100 rounded-md"
             >
-              <option value="Approved">Approved</option>
               <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
               <option value="Rejected">Rejected</option>
               <option value="Archive">Archive</option>
             </select>
@@ -428,15 +424,26 @@ export default function MedicalRequests() {
                       {/* Actions */}
                       {statusFilter === 'Approved' && (
                         <td className="text-center p-2 border border-black hidden lg:table-cell">
-                          <button
-                            className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
-                            onClick={() => navigate(`/appointment/${request.id}`)}
-                            title="View"
-                          >
-                            <span className="material-symbols-outlined">visibility</span>
-                          </button>
+                          <div className="flex justify-center space-x-2">
+                            <button
+                              className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
+                              onClick={() => navigate(`/appointment/${request.id}`)}
+                              title="View"
+                            >
+                              <span className="material-symbols-outlined">visibility</span>
+                            </button>
+                            <button
+                              className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
+                              onClick={() => downloadPatientMedicalCertificate(request)}
+                              title="Download"
+                            >
+                              <span className="material-symbols-outlined">download</span>
+                            </button>
+                          </div>
                         </td>
                       )}
+
+
 
                       {statusFilter !== 'Approved' && statusFilter !== 'All' && (
                         <td className="text-center p-2 border border-black hidden lg:table-cell">
@@ -484,7 +491,7 @@ export default function MedicalRequests() {
                                 className="flex items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
                                 onClick={() => {
                                   setSelectedRequest(request);
-                                  confirmArchiveRequest();
+                                  confirmArchiveRequest(request);
                                 }}
                                 title="Archive"
                               >
@@ -492,14 +499,7 @@ export default function MedicalRequests() {
                               </button>
                             )}
 
-                            {/* Download Button */}
-                            <button
-                              className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
-                              onClick={() => downloadPatientMedicalCertificate(request)}
-                              title="Download"
-                            >
-                              <span className="material-symbols-outlined">download</span>
-                            </button>
+
                           </div>
                         </td>
                       )}

@@ -111,20 +111,19 @@ export default function EditPatientModal({ patientId, onClose, onSave }) {
     if (!patientData) {
         return <div className=""></div>;
     }
-
+const defaultpfp = '/default-avatar.jpg'
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-lg shadow-xl w-full sm:w-[600px] md:w-[900px] max-w-full">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Edit Patient Information</h2>
 
                 <div className="mb-6 flex justify-center">
-                    {patientData.ProfilePicture && (
                         <img
-                            src={patientData.ProfilePicture}
+                            src={patientData.ProfilePicture || defaultpfp}
                             alt="Profile"
                             className="w-24 h-24 rounded-full border-4 border-gray-200 shadow-md"
                         />
-                    )}
+                    
                 </div>
 
                 <form onSubmit={handleSaveChanges}>

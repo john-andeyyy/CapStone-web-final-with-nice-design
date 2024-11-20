@@ -293,7 +293,7 @@ export default function Add_Procedure() {
           <h1 className='text-3xl font-bold l:text-sm'>Procedure List</h1>
           <div className='relative'>
 
-            {localrole == ' admin' && (
+            {localrole == 'admin' && (
               <button className='btn bg-[#025373] hover:bg-[#03738C] text-white  md:ml-auto' onClick={openAddModal}>
                 Create Procedure
               </button>

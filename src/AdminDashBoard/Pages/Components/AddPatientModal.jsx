@@ -71,9 +71,10 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                     text: 'There was an error adding the patient. Please try again.',
                 });
             } finally {
-                // setIsLoading(false); 
-                // setIsAgreed(false)
+                setIsLoading(false); 
+                setIsAgreed(false)
                 handleCancel()
+
             }
         },
     });

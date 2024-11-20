@@ -44,7 +44,7 @@ const DentistTable = ({ loading, filteredDentists, handleRowClick, handle_availa
                                             <span className="material-symbols-outlined">calendar_month</span>
                                         </button>
                                         {localStorage.getItem('Role') == 'admin' && (
-                                            <div className='flex'>
+                                            <div className=" space-x-2 flex">
                                                 <button
                                                     className={`flex items-center ${dentist.isAvailable ? 'text-green-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-green-100 transition rounded-lg shadow-sm' : 'text-red-500 flex flex-col items-center justify-center w-8 sm:w-10 bg-red-100 transition rounded-lg shadow-sm'}`}
                                                     onClick={() => handle_availability(dentist)}

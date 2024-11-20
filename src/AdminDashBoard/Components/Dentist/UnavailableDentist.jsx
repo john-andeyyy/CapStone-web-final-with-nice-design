@@ -16,7 +16,7 @@ const Modal = ({ isOpen, onClose, onSubmit, editFrom, editTo, setEditFrom, setEd
                             <label htmlFor="editFromDate" className="block mb-1 mr-2 mt-1">From:</label>
                             <input
                                 id="editFromDate"
-                                type="datetime-local"
+                                type="date"
                                 value={editFrom}
                                 onChange={(e) => setEditFrom(e.target.value)}
                                 className="border rounded px-2 py-1"
@@ -29,7 +29,7 @@ const Modal = ({ isOpen, onClose, onSubmit, editFrom, editTo, setEditFrom, setEd
                             <label htmlFor="editToDate" className="block mb-1 mr-7 mt-1">To:</label>
                             <input
                                 id="editToDate"
-                                type="datetime-local"
+                                type="date"
                                 value={editTo}
                                 onChange={(e) => setEditTo(e.target.value)}
                                 className="border rounded px-2 py-1"
@@ -144,7 +144,7 @@ const UnavailableDentist = ({ dentistId }) => {
             setEditFrom('');
             setEditTo('');
             fetchUnavailableTimes();
-            showToast('success', ' Udpate successful!');
+            showToast('success', ' Update successful!');
 
         } catch (err) {
             setError(err.response?.data?.message || 'Error updating unavailable time');

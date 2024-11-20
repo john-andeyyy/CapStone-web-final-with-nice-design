@@ -19,6 +19,7 @@ const AppointmentsReport = () => {
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
+
                 const response = await axios.get(`${import.meta.env.VITE_BASEURL}/Appointments/appointments/filter`);
                 if (Array.isArray(response.data)) {
                     setAppointments(response.data);
@@ -394,7 +395,6 @@ const AppointmentsReport = () => {
 
 
                 </div>
-                {/* </div> */}
             </div>
         </div>
     );

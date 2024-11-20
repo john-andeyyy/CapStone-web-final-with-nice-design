@@ -135,9 +135,8 @@ export default function Sidebar() {
                     <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
                         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                     </button>
-                    {/* </div> */}
 
-                    <div className="flex flex-col items-center pb-3" onClick={handleImageClick}>
+                    <div className="flex flex-col items-center pb-3 py-5 " onClick={handleImageClick}>
                         <div className="avatar">
                             <div className="w-20 h-20 rounded-full cursor-pointer overflow-hidden">
                                 <img src={profilePic} alt="Profile" className="object-cover w-full h-full" />
