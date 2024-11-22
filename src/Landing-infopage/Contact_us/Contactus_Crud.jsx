@@ -19,33 +19,31 @@ export default function ContactusDisplay() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false); // Added for submission loading state
-
-    useEffect(() => {
-        const fetchContactInfo = async () => {
-            try {
-                const response = await axios.get(`${BASEURL}/Contactus/contactus`);
-                if (response.data && response.data.length > 0) {
-                    const data = response.data[0];
-                    setContactInfo(data);
-                    setFormData({
-                        DentalName: data.DentalName,
-                        ContactNumber: data.ContactNumber,
-                        Address: data.Address,
-                        Facebooklink: data.Facebooklink,
-                        Email: data.Email,
-                        WeekdaysTime: data.WeekdaysTime,
-                        WeekendsTime: data.WeekendsTime,
-                        logo: null, // Reset logo on fetch
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching contact info:', error);
-                setError('Failed to load contact information.');
-            } finally {
-                setLoading(false);
+    const fetchContactInfo = async () => {
+        try {
+            const response = await axios.get(`${BASEURL}/Contactus/contactus`);
+            if (response.data && response.data.length > 0) {
+                const data = response.data[0];
+                setContactInfo(data);
+                setFormData({
+                    DentalName: data.DentalName,
+                    ContactNumber: data.ContactNumber,
+                    Address: data.Address,
+                    Facebooklink: data.Facebooklink,
+                    Email: data.Email,
+                    WeekdaysTime: data.WeekdaysTime,
+                    WeekendsTime: data.WeekendsTime,
+                    logo: null, // Reset logo on fetch
+                });
             }
-        };
-
+        } catch (error) {
+            console.error('Error fetching contact info:', error);
+            setError('Failed to load contact information.');
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
         fetchContactInfo();
     }, [BASEURL]);
 
@@ -95,7 +93,7 @@ export default function ContactusDisplay() {
                 fileInput.value = '';
             }
             showToast('success', 'Updated successfully!');
-
+            fetchContactInfo()
         } catch (error) {
             console.error('Error updating contact info:', error);
             alert('Failed to update contact information');
