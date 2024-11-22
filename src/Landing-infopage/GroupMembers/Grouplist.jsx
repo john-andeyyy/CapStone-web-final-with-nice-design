@@ -176,22 +176,22 @@ export default function Grouplist() {
             </div> */}
 
             <div className='flex justify-between items-center p-5'>
-        <h1 className='text-3xl font-bold l:text-sm'>The DenTeam Members:</h1>
-        <div className='relative'>
-          <input
-            type='text'
-            placeholder='Search members...'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className='bg-gray-100 shadow-md block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
-          />
-          <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
-            <span className="material-symbols-outlined">search</span>
-          </div>
+                <h1 className='text-3xl font-bold l:text-sm'>The DenTeam Members:</h1>
+                <div className='relative'>
+                    <input
+                        type='text'
+                        placeholder='Search members...'
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className='bg-gray-100 shadow-md block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+                    />
+                    <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
+                        <span className="material-symbols-outlined">search</span>
+                    </div>
 
-        </div>
+                </div>
 
-      </div>
+            </div>
 
             {/* Toggle buttons for views */}
             <div className="flex space-x-4 mb-8 ml-5">
@@ -237,38 +237,38 @@ export default function Grouplist() {
                                         <td className="p-2 border border-black" data-label="Role">{member.Role}</td>
                                         <td className="p-2 border border-black" data-label="Contact Number">{member.ContactNumber}</td>
                                         <td className="p-2 border border-black text-center space-x-3" data-label="Actions">
-                                        <div className="flex space-x-2 justify-center items-center">
-                                        <button
-                                                onClick={() => {
-                                                    setisViewModalOpen(true); // Open the modal
-                                                    setselectedMemberData(member); // Set the selected member's data
-                                                }}
-                                                className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
-                                                title="View"
-                                            >
-                                                <span className="material-symbols-outlined">visibility</span>
-                                            </button>
+                                            <div className="flex space-x-2 justify-center items-center">
+                                                <button
+                                                    onClick={() => {
+                                                        setisViewModalOpen(true); // Open the modal
+                                                        setselectedMemberData(member); // Set the selected member's data
+                                                    }}
+                                                    className="flex items-center justify-center w-10 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-lg shadow-sm"
+                                                    title="View"
+                                                >
+                                                    <span className="material-symbols-outlined">visibility</span>
+                                                </button>
 
-                                    
-                                            <button
-                                                onClick={() => {
-                                                    handleEditClick(member);
-                                                    setselectedMemberData(member);
-                                                }}
-                                                className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
-                                                title='Edit'
-                                            >
-                                               <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span>
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setisDeleteModalOpen(true);
-                                                    setselectedMemberData(member);
-                                                }}
-                                                className="flex flex-col items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm" title='delete'
-                                            >
-                                             <span className="material-symbols-outlined">delete</span>
-                                            </button>
+
+                                                <button
+                                                    onClick={() => {
+                                                        handleEditClick(member);
+                                                        setselectedMemberData(member);
+                                                    }}
+                                                    className="flex flex-col items-center justify-center w-10 bg-gray-200 text-gray-500 hover:text-gray-600 transition rounded-lg shadow-sm"
+                                                    title='Edit'
+                                                >
+                                                    <span className="material-symbols-outlined text-lg" aria-hidden="true">edit</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setisDeleteModalOpen(true);
+                                                        setselectedMemberData(member);
+                                                    }}
+                                                    className="flex flex-col items-center justify-center w-10 bg-red-100 text-red-500 hover:text-red-600 transition rounded-lg shadow-sm" title='delete'
+                                                >
+                                                    <span className="material-symbols-outlined">delete</span>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -495,18 +495,18 @@ export default function Grouplist() {
             {isViewModalOpen && selectedMemberData && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-[#ffffff] p-8 rounded-md shadow-lg max-w-lg w-full">
-                    <div className="relative">
-                        <h2 className="text-xl text-[#00000] text-center font-bold mb-4">
-                            Member Details
-                        </h2>
-                        
-                        <span 
-                            className="material-symbols-outlined absolute top-0 right-0 cursor-pointer p-2"
-                            onClick={() => setisViewModalOpen(false)}
-                        >
-                            close
-                        </span>
-                    </div>
+                        <div className="relative">
+                            <h2 className="text-xl text-[#00000] text-center font-bold mb-4">
+                                Member Details
+                            </h2>
+
+                            <span
+                                className="material-symbols-outlined absolute top-0 right-0 cursor-pointer p-2"
+                                onClick={() => setisViewModalOpen(false)}
+                            >
+                                close
+                            </span>
+                        </div>
 
                         {/* Display profile picture if it exists */}
                         <div className="mb-4 flex justify-center">

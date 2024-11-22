@@ -283,7 +283,6 @@ function App() {
         <>
           <div className="sticky top-0 z-10">
             <GuestNavBar />
-            {/* {alert(import.meta.env.VITE_BASEURL)} */}
           </div>
           <Routes>
             <Route path="/" element={<LandingPage />} />

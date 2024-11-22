@@ -34,16 +34,16 @@ export default function TheDeanTeam() {
             {/* <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div> */}
             {/* <h1 className="text-3xl font-bold mb-4 text-green-500 p-2">DenTeam:</h1> */}
             <div className='p-8'>
-            <div id="title" className="flex justify-center pb-7">
-                <div
+                <div id="title" className="flex justify-center pb-7">
+                    <div
                     // className="rounded-md shadow-md mx-10"
                     // style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}
-                >
-                    <h1 className="text-5xl font-bold uppercase p-2 text-center">
-                    THE <span className="text-[#025373]">DENTEAM</span>
-                    </h1>
+                    >
+                        <h1 className="text-5xl font-bold uppercase p-2 text-center">
+                            THE <span className="text-[#025373]">DENTEAM</span>
+                        </h1>
+                    </div>
                 </div>
-                </div>  
 
 
                 <div className=" p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -71,13 +71,14 @@ export default function TheDeanTeam() {
                                         <span>{member.ContactNumber}</span>
                                     </div>
 
-                                    <div className='flex space-x-5'>
+                                    <div className=''>
                                         <a href={member.Facebooklink} target="_blank" rel="noopener noreferrer" className="text-[#025373]">
                                             Facebook Profile
                                         </a>
-                                        <a href={member.Email} target="_blank" rel="noopener noreferrer" className="text-[#025373]">
+                                        <p>Email: <span>{member.Email}</span></p>
+                                        {/* <a href={member.Email} target="_blank" rel="noopener noreferrer" className="text-[#025373]">
                                             Email
-                                        </a>
+                                        </a> */}
                                     </div>
                                 </div>
                             </div>

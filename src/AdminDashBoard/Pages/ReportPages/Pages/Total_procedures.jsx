@@ -109,12 +109,6 @@ export default function TotalProcedures() {
     };
     const saveAsPDF = () => {
         createPDF();
-
-        Swal.fire({
-            title: "PDF Generated!",
-            text: "Your PDF has been successfully generated.",
-            icon: "success"
-        });
     };
 
     const createPDF = () => {

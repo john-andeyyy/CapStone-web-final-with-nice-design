@@ -15,7 +15,7 @@ export default function Patients_List() {
     const [patientsInfo, setPatientsInfo] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selecteduser, setSelectedUser] = useState('');
-    const [filter, setfilter] = useState('all')
+    const [filter, setfilter] = useState('active')
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [filters, setFilters] = useState({
         showActive: true,
@@ -145,14 +145,22 @@ export default function Patients_List() {
                 showArchived: true,
                 showNoRecord: true,
             });
-            setfilter("");
+            setfilter('all');
         } else {
             setFilters((prevFilters) => ({
                 showActive: filterName === "showActive",
                 showArchived: filterName === "showArchived",
                 showNoRecord: filterName === "showNoRecord",
             }));
-            setfilter(filterName);
+
+            if (filterName == 'showActive') {
+                setfilter('active');
+            } else if (filterName == 'showArchived') {
+                setfilter('archived');
+            } else if (filterName == 'showNoRecord') {
+                setfilter('processing');
+            } 
+
         }
     };
 
@@ -177,14 +185,14 @@ export default function Patients_List() {
                         {localStorage.getItem('Role') == 'admin' && (
                             <div className="flex space-x-2 sm:space-x-4">
 
-                                  <div className='hidden'>
-                                        <button
-                                            onClick={() => setIsModalOpen(true)}
-                                            className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
-                                        >
-                                            Add Patient
-                                        </button>
-                                  </div >
+                                <div className='hidden'>
+                                    <button
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
+                                    >
+                                        Add Patient
+                                    </button>
+                                </div >
 
                                 <button
                                     onClick={generatePDF}
@@ -224,6 +232,7 @@ export default function Patients_List() {
                                     { label: 'Active Patients (Within 3 months)', filterName: 'showActive' },
                                     { label: 'Archived Patients (Older than 3 months)', filterName: 'showArchived' },
                                     { label: 'Processing (No last visit)', filterName: 'showNoRecord' },
+                                    { label: 'All Patients', filterName: 'all' },
                                 ].map(({ label, filterName }) => (
                                     <option key={filterName} value={filterName}>
                                         {label}

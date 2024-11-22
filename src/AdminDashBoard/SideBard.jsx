@@ -130,8 +130,20 @@ export default function Sidebar() {
             <div className={`fixed  h-screen w-60 bg-[#032742] p-4 flex flex-col justify-between transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
                 <div>
                     <h2 className="text-xl uppercase font-serif font-bold mt-5 mb-5 text-center md:block">
-                        <span className='text-white'>{dentalname.DentalName}</span> <span className='text-[#96D2D9]'>Clinic</span>
+                        {dentalname?.DentalName?.includes('Clinic') ? (
+                            <span className="text-white">
+                                {dentalname.DentalName.split('Clinic')[0]}
+                                <span className="text-[#96D2D9]">Clinic</span>
+                                {dentalname.DentalName.split('Clinic')[1]}
+                            </span>
+                        ) : (
+                            <>
+                                <span className="text-white">{dentalname?.DentalName || 'Default Name'}</span>
+                                <span className="text-[#96D2D9]"> Clinic</span>
+                            </>
+                        )}
                     </h2>
+
                     <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
                         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                     </button>

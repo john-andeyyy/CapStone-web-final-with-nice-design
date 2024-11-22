@@ -62,25 +62,29 @@ export default function Announcement() {
     };
 
     return (
-        <div className="p rounded-lg">
-            <div className='relative mb-4'>
-                <h1 className='flex items-center text-2xl font-semibold text-white p-3'>
-                    {/* <span className="material-symbols-outlined text-red-500 mr-1">
-                    campaign
-                    </span> */}
-                    Announcements
-                </h1>
+        <div className="p rounded-lg max-h-96">
+            <div className=' relative mb-4  '>
+                <div>
+                    <h1 className='flex items-center text-2xl font-semibold text-white p-3'>
+                        {/* <span className="material-symbols-outlined text-red-500 mr-1">
+                        campaign
+                        </span> */}
+                        Announcements
+                    </h1>
+                </div>
 
-                <button
-                    className='absolute top-0 right-0 font-semibold text-md sm:text-lg md:text-sm text-white'
-                    onClick={() => navigate('/AnnouncementPage')}
-                >
-                    <span className="ml-1">See More</span>
-                </button>
+                <div>
+                    <button
+                        className='absolute top-0 right-0 font-semibold text-md sm:text-lg md:text-sm text-white'
+                        onClick={() => navigate('/AnnouncementPage')}
+                    >
+                        <span className="ml-1">See More</span>
+                    </button>
+                </div>
             </div>
 
 
-            <div className="border-2 bg-white border-[#96D2D9] rounded-lg max-h-72 overflow-y-auto p-5">
+            <div className="border-2 bg-white border-[#96D2D9] rounded-lg max-h-56 overflow-y-auto p-5 ">
                 {loading ? (
                     <p className="text-center py-4">Loading announcements...</p>
                 ) : announcements.length > 0 ? (
