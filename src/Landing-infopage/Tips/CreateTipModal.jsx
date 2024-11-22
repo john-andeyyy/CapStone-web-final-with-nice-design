@@ -52,7 +52,7 @@ const CreateTipModal = ({ onClose, onCreate }) => {
                 />
 
                 <div className='mb-2'>
-                    <span className=''>Upload Picture</span>
+                    <span className=''>Upload Image</span>
                 </div>
                 <input
                     type="file"
