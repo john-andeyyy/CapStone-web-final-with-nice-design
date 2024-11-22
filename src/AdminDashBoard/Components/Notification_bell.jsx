@@ -20,6 +20,17 @@ const NotificationBell = () => {
     const localrole = localStorage.getItem('Role')
     const Rolenotif = localrole === 'admin' || localrole === 'staff' ? 'AdminNotif' : 'DentistNotif'
 
+    const formatDate = (date) => {
+        const options = {
+            month: 'short', // Short month name (e.g., 'Oct')
+            day: 'numeric', // Day of the month (e.g., '21')
+            hour: '2-digit', // Hour (e.g., '12')
+            minute: '2-digit', // Minute (e.g., '30')
+            hour12: true, // Use 12-hour clock
+        };
+
+        return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
+    };
 
 
     const fetchNotifications = async () => {
@@ -181,7 +192,7 @@ const NotificationBell = () => {
 
 
             {isOpen && (
-                <div ref={dropdownRef} className="absolute top-full right-0 mt-2 w-80 bg-neutral shadow-lg rounded-lg z-10 overflow-hidden">
+                <div ref={dropdownRef} className="absolute top-full right-0 mt-2 w-96 bg-neutral shadow-lg rounded-lg z-10 overflow-hidden">
                     <div className="p-3 text-lg border-b border-gray-200 flex justify-between">
                         <div>Notifications</div>
                         <button onClick={() => {
@@ -191,7 +202,7 @@ const NotificationBell = () => {
                             view all
                         </button>
                     </div>
-                    <div className="max-h-96 overflow-y-auto">
+                    <div className="max-h-96  overflow-y-auto">
                         {notifications.length === 0 ? (
                             <div className="p-3 text-center text-gray-500">No new notifications</div>
                         ) : (
@@ -247,10 +258,10 @@ const NotificationBell = () => {
                                                         ? `${notification.patientStatus[0].patient.LastName}, ${notification.patientStatus[0].patient.FirstName} ${notification.patientStatus[0].patient.MiddleName || ''}`
                                                         : 'Patient information unavailable'}
                                                 </p>
-                                                {/* Uncomment if needed:
-        <p className="text-xs text-gray-500">
-            created at: {formatDate(notification.createdAt)}
-        </p> */}
+                                                {/* Uncomment if needed: */}
+                                                <p className="text-xs text-gray-500">
+                                                    created at: {formatDate(notification.createdAt)}
+                                                </p> 
                                             </div>
 
                                         </div>

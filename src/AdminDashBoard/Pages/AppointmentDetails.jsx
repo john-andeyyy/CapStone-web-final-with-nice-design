@@ -379,19 +379,20 @@ export default function AppointmentDetails() {
                             </div>
                         )}
 
-                        <div className="flex flex-col ">
-                            {RequestToCancel && (
-                                <div className="flex flex-col items-start">
-                                    <p className=" font-bold uppercase">Request to Cancel</p>
-                                    <button className="ml-10 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300"
-                                        onClick={() => { Cancellappointment() }}
-                                    >
-                                        Cancel Appointment
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-
+                        {localStorage.getItem('Role') !== 'dentist' && (
+                            <div className="flex flex-col ">
+                                {RequestToCancel && (
+                                    <div className="flex flex-col items-start">
+                                        <p className=" font-bold uppercase">Request to Cancel</p>
+                                        <button className="ml-10 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300"
+                                            onClick={() => { Cancellappointment() }}
+                                        >
+                                            Cancel Appointment
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
 
@@ -399,16 +400,17 @@ export default function AppointmentDetails() {
                 </div>
                 <ProceduresTable appointment={appointment} />
 
-                <div className="flex justify-center">
-                    <button className='btn bg-[#025373] hover:bg-[#03738C] text-white'
-                        onClick={() => toggleImages()}>
-                        <span className="material-symbols-outlined">
-                            {showimage ? 'visibility' : 'visibility_off'}
-                        </span>
-                        {showimage ? 'Hide Images' : 'Show Images'}
-                    </button>
-                </div>
-
+                {appointment.Status === 'Completed' && (
+                    <div className="flex justify-center">
+                        <button className='btn bg-[#025373] hover:bg-[#03738C] text-white'
+                            onClick={() => toggleImages()}>
+                            <span className="material-symbols-outlined">
+                                {showimage ? 'visibility' : 'visibility_off'}
+                            </span>
+                            {showimage ? 'Hide Images' : 'Show Images'}
+                        </button>
+                    </div>
+                )}
                 {showimage && (
                     <div>
                         <div className='flex space-x-3'>

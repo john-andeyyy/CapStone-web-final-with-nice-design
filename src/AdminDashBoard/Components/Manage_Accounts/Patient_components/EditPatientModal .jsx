@@ -129,7 +129,7 @@ const defaultpfp = '/default-avatar.jpg'
                 <form onSubmit={handleSaveChanges}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-600">First Name</label>
+                            <label className="block text-sm font-medium text-gray-600">First Name <span className='text-red-600 '>*</span> </label>
                             <input
                                 type="text"
                                 name="FirstName"
@@ -139,7 +139,7 @@ const defaultpfp = '/default-avatar.jpg'
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-600">Last Name</label>
+                            <label className="block text-sm font-medium text-gray-600">Last Name<span className='text-red-600 '>*</span></label>
                             <input
                                 type="text"
                                 name="LastName"
@@ -159,7 +159,7 @@ const defaultpfp = '/default-avatar.jpg'
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-600">Email</label>
+                            <label className="block text-sm font-medium text-gray-600">Email<span className='text-red-600 '>*</span></label>
                             <input
                                 type="email"
                                 name="Email"
@@ -169,7 +169,7 @@ const defaultpfp = '/default-avatar.jpg'
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-600">Username</label>
+                            <label className="block text-sm font-medium text-gray-600">Username<span className='text-red-600 '>*</span></label>
                             <input
                                 type="text"
                                 name="Username"
@@ -179,7 +179,7 @@ const defaultpfp = '/default-avatar.jpg'
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-600">Phone Number</label>
+                            <label className="block text-sm font-medium text-gray-600">Phone Number<span className='text-red-600 '>*</span></label>
                             <input
                                 type="tel"
                                 name="PhoneNumber"
@@ -190,7 +190,7 @@ const defaultpfp = '/default-avatar.jpg'
                             {errors.PhoneNumber && <p className="text-red-500 text-xs">{errors.PhoneNumber}</p>}
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-600">Age</label>
+                            <label className="block text-sm font-medium text-gray-600">Age<span className='text-red-600 '>*</span></label>
                             <input
                                 type="number"
                                 name="Age"
@@ -200,7 +200,7 @@ const defaultpfp = '/default-avatar.jpg'
                             />
                         </div>
                         <div className="mb-4 col-span-2">
-                            <label className="block text-sm font-medium text-gray-600">Address</label>
+                            <label className="block text-sm font-medium text-gray-600">Address<span className='text-red-600 '>*</span></label>
                             <textarea
                                 name="Address"
                                 value={patientData.Address}
