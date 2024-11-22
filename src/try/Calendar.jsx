@@ -292,7 +292,7 @@ const CalendarComponent = () => {
                             selectable
                             views={['month', 'week', 'day', 'agenda']}
                             min={new Date(0, 0, 0, 8, 0, 0)} // 8 AM
-                            max={new Date(0, 0, 0, 20, 0, 0)} // 5 PM
+                            max={new Date(0, 0, 0, 21, 0, 0)} 
                             components={{
                                 day: {
                                     date: CustomDayCell,

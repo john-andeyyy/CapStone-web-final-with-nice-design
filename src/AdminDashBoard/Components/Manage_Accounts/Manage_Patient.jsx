@@ -109,7 +109,7 @@ export default function ManagePatient() {
                 <table className="table-auto w-full border-collapse text-sm">
                     <thead className="bg-[#012840] text-white sticky top-0 z-1">
                         <tr>
-                            <th className="p-4 text-center border-b">No.</th>
+                            <th className="p-4 text-center border-b">Patient ID</th>
                             <th className="p-4 text-center border-b">Last Name</th>
                             <th className="p-4 text-center border-b md:table-cell">First Name</th>
                             <th className="p-4 text-center border-b hidden md:table-cell">Middle Name</th>

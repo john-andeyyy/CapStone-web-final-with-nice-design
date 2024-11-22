@@ -27,7 +27,7 @@ export default function SetAppointment({ userIds }) {
         setStartTime('');
         setEndTime('');
         setAmount('');
-        setIsNotesVisible(false); // Reset the notes visibility toggle
+        setIsNotesVisible(false); 
     };
 
     const { data: dentistData } = DentistList();
@@ -108,7 +108,7 @@ export default function SetAppointment({ userIds }) {
             }}>
 
                 <div className='py-10'>
-                    <h3 className="text-xl font-bold text-[#00000] text-center mb-6">Set Appointment</h3>
+                    <h3 className="text-xl font-bold text-[#00000] text-center mb-6">Add Record only</h3>
 
                     <div className="space-y-4 ">
                         <div className="grid grid-cols-2 gap-4">

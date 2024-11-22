@@ -101,7 +101,7 @@ export default function Manage_Staff() {
                 <table className="table-auto w-full border-collapse text-sm">
                     <thead className="bg-[#012840] text-white sticky top-0 z-10">
                         <tr>
-                            <th className="p-4 text-center border-b">No.</th>
+                            <th className="p-4 text-center border-b">Staff ID</th>
                             <th className="p-4 text-center border-b">Last Name</th>
                             <th className="p-4 text-center border-b">First Name</th>
                             <th className="p-4 text-center border-b hidden md:table-cell">Middle Name</th>

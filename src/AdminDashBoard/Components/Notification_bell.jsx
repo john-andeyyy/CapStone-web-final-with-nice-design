@@ -28,7 +28,7 @@ const NotificationBell = () => {
                 withCredentials: true,
             });
 
-            if (localrole === 'admin' || localrole === 'staff') {
+            if (localrole === 'admin') {
                 const adminNotifications = response.data.filter(notification => notification.adminOnly === true);
                 setNotifications(adminNotifications.reverse());
                 const unreadNotifications = adminNotifications.filter(notification => !notification.adminisRead);
@@ -37,6 +37,11 @@ const NotificationBell = () => {
                 const dentistNotifications = response.data
                 setNotifications(dentistNotifications.reverse());
                 const unreadNotifications = dentistNotifications.filter(notification => !notification.DentistRead);
+                setUnreadCount(unreadNotifications.length);
+            } else if (localrole === 'staff') {
+                const adminNotifications = response.data.filter(notification => notification.adminOnly === true);
+                setNotifications(adminNotifications.reverse());
+                const unreadNotifications = adminNotifications.filter(notification => !notification.staffisRead);
                 setUnreadCount(unreadNotifications.length);
             }
 
@@ -87,14 +92,13 @@ const NotificationBell = () => {
 
 
     const handleNotificationClick = async (notification) => {
-        
+
         if (localrole === 'dentist') {
             // navigate(`appointment/${notification._id}`)
             await markAsRead(notification._id);
             const appointmentId = notification.appointmentStatus[0].appointment_id;
             navigate(`appointment/${appointmentId}`)
         } else {
-            console.log('notification', notification)
             if (!notification.adminisRead) {
                 await markAsRead(notification._id);
             }
@@ -115,7 +119,7 @@ const NotificationBell = () => {
             localrole === 'admin' ? 'adminmarkas' :
                 localrole === 'dentist' ? 'dentistmarkas' :
                     'staffmarkas';
-        console.log('RoleMARK', RoleMARK)
+        // console.log('RoleMARK', RoleMARK)
         try {
             await axios.put(`${Baseurl}/Notification/admin/${RoleMARK}`, {
                 notifid: notifId,
@@ -196,14 +200,19 @@ const NotificationBell = () => {
                                     <li
                                         key={notification._id}
                                         className={`my-1 p-3 pl-4 border-b border-gray-200 cursor-pointer text-black hover:bg-gray-100 
-                                            ${localrole === 'admin' || localrole === 'staff'
+                                            ${localrole === 'admin'
                                                 ? (!notification.adminisRead
                                                     ? 'bg-[#3FA8BF] font-medium bg-opacity-50'
                                                     : 'bg-[#3FA8BF] bg-opacity-15')
-                                                : (localrole === 'dentist' && !notification.DentistRead
-                                                    ? 'bg-[#3FA8BF] font-medium bg-opacity-50'
-                                                    : 'bg-[#3FA8BF] bg-opacity-15')
+                                                : localrole === 'staff'
+                                                    ? (!notification.staffisRead
+                                                        ? 'bg-[#3FA8BF] font-medium bg-opacity-50'
+                                                        : 'bg-[#3FA8BF] bg-opacity-15')
+                                                    : localrole === 'dentist' && !notification.DentistRead
+                                                        ? 'bg-[#3FA8BF] font-medium bg-opacity-50'
+                                                        : 'bg-[#3FA8BF] bg-opacity-15'
                                             }
+
 `}
                                         onClick={() => handleNotificationClick(notification)}
                                     >

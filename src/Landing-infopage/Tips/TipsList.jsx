@@ -8,6 +8,7 @@ import { showToast } from '../../AdminDashBoard/Components/ToastNotification';
 const TipsList = () => {
     const [tips, setTips] = useState([]);
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [update, setupdate] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [showViewModal, setShowViewModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -32,6 +33,11 @@ const TipsList = () => {
     useEffect(() => {
         fetchTips();
     }, []);
+
+    useEffect(() => {
+        fetchTips();
+        setupdate((false))
+    }, [update]);
 
     const handleUpdateClick = (tip) => {
         setSelectedTip(tip);
@@ -256,6 +262,7 @@ const TipsList = () => {
                     tip={selectedTip}
                     onClose={() => setShowUpdateModal(false)}
                     onUpdate={updateTipInList}
+                    setupdate={setupdate}
                 />
             )}
 

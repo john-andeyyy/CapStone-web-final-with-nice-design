@@ -153,6 +153,8 @@ export default function TotalProcedures() {
                 link.download = `procedures_report_${year}_${month}.pdf`;
                 link.click();
 
+                // window.open(fileURL, '_blank');
+
                 // Close the loading SweetAlert after file download
                 swalLoading.close();
 

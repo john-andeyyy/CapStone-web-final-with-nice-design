@@ -247,7 +247,7 @@ export default function Patients_List() {
                         <table className="table-auto w-full border-collapse">
                             <thead className="bg-[#012840] text-white sticky top-0 z-1">
                                 <tr>
-                                    <th className="p-2 text-center border border-black">No.</th>
+                                        <th className="p-2 text-center border border-black">Patient ID</th>
                                     <th className="p-2 text-center border border-black">Last Name</th>
                                     <th className="p-2 text-center border border-black  md:table-cell">First Name</th>
                                     <th className="p-2 text-center border border-black hidden md:table-cell">Middle Name</th>

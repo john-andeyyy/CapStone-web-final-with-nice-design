@@ -22,7 +22,20 @@ export default function EditStaffModal({ staffId, onClose, onSave }) {
             const response = await axios.post(`${BASEURL}/Admin/auth/ClinicStaff-data`, {
                 userid: staffId,
             });
-            setStaffData(response.data || {});
+            
+            const fetchedData = response.data || {};
+
+            // Check if the contactNumber exists and doesn't start with '0', and add '0' if necessary
+            if (fetchedData.contactNumber) {
+                const contactNumberStr = String(fetchedData.contactNumber); // Convert to string if it's not already
+                if (!contactNumberStr.startsWith('0')) {
+                    fetchedData.contactNumber = '0' + contactNumberStr; // Prepend '0'
+                }
+            }
+
+            setStaffData(fetchedData);
+
+
             Swal.close();
         } catch (error) {
             console.error('Error fetching staff data:', error);
@@ -37,6 +50,7 @@ export default function EditStaffModal({ staffId, onClose, onSave }) {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
 
+        
         if (name === 'contactNumber' && !/^\d*$/.test(value)) {
             return;
         }

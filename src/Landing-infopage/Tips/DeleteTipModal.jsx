@@ -8,7 +8,7 @@ const DeleteTipModal = ({ tip, onClose, onDelete }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-[#C6E4DA] p-8 rounded-lg shadow-lg w-[400px] h-[500px] flex flex-col">
                 <h2 className="font-bold text-2xl mb-4 text-center text-red-500">Confirm Delete</h2>
                 <div className="flex justify-center mb-4">

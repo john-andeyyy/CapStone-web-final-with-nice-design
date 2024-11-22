@@ -22,19 +22,53 @@ export default function NotificationPage() {
         fetchPatients();
     }, []);
 
-    const fetchNotifications = async () => {
-        setLoading(true);
-        try {
-            const response = await axios.get(`${Baseurl}/Notification/admin/getAllNotif`, { withCredentials: true });
-            const adminNotifications = response.data
-                .filter(notification => notification.adminOnly === true);
+    // const fetchNotifications = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const response = await axios.get(`${Baseurl}/Notification/admin/getAllNotif`, { withCredentials: true });
+    //         const adminNotifications = response.data
+    //             .filter(notification => notification.adminOnly === true);
 
-            setNotifications(adminNotifications.reverse());
+    //         setNotifications(adminNotifications.reverse());
+    //     } catch (error) {
+    //         setError('Error fetching notifications');
+    //         console.error('Error fetching notifications:', error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    const localrole = localStorage.getItem('Role')
+    const Rolenotif = localrole === 'admin' || localrole === 'staff' ? 'AdminNotif' : 'DentistNotif'
+
+
+
+    const fetchNotifications = async () => {
+        try {
+            const response = await axios.get(`${Baseurl}/Notification/admin/${Rolenotif}`, {
+                withCredentials: true,
+            });
+
+            if (localrole === 'admin') {
+                const adminNotifications = response.data.filter(notification => notification.adminOnly === true);
+                setNotifications(adminNotifications.reverse());
+                const unreadNotifications = adminNotifications.filter(notification => !notification.adminisRead);
+                // setUnreadCount(unreadNotifications.length);
+            } else if (localrole === 'dentist') {
+                const dentistNotifications = response.data
+                setNotifications(dentistNotifications.reverse());
+                const unreadNotifications = dentistNotifications.filter(notification => !notification.DentistRead);
+                // setUnreadCount(unreadNotifications.length);
+            } else if (localrole === 'staff') {
+                const adminNotifications = response.data.filter(notification => notification.adminOnly === true);
+                setNotifications(adminNotifications.reverse());
+                const unreadNotifications = adminNotifications.filter(notification => !notification.staffisRead);
+                // setUnreadCount(unreadNotifications.length);
+            }
+
+
         } catch (error) {
-            setError('Error fetching notifications');
             console.error('Error fetching notifications:', error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -229,12 +263,15 @@ export default function NotificationPage() {
     return (
         <div className="p-4 pt-0 sm:p-6 max-w-full mx-auto flex flex-col h-screen">
             <div className='flex space-x-5 pb-2'>
-                <button
-                    onClick={() => setModalType('new')}
-                    className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
-                >
-                    Send New Notification
-                </button>
+                {localStorage.getItem('Role') !== 'dentist' && (
+                    <button
+                        onClick={() => setModalType('new')}
+                        className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
+                    >
+                        Send New Notification
+                    </button>
+                )}
+
             </div>
 
             <div className="flex-grow overflow-auto">

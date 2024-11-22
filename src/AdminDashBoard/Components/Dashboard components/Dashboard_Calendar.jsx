@@ -88,12 +88,13 @@ export default function Dashboard_Calendar() {
                 <div className="time-slots overflow-auto max-h-64">
                     {dayEvents.length > 0 ? (
                         <table className="table-auto w-full text-lg border-separate border-spacing-y-2">
-                            <thead>
+                            <thead className=''>
                                 <tr className="bg-[#012840] text-white">
-                                    <th className="p-3 text-left">No.</th>
-                                    <th className="p-3 text-left">Event Title</th>
-                                    <th className="p-3 text-left">Event Time</th>
+                                    <th className="p-3 text-center">No.</th>
+                                    <th className="p-3 text-center">Event Title</th>
+                                    <th className="p-3 text-center">Event Time</th>
                                 </tr>
+
                             </thead>
                             <tbody>
                                 {dayEvents

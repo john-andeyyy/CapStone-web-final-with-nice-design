@@ -17,6 +17,7 @@ const AvailableTimeSlots = ({
         return day === 0 || day === 6 ? 17 : 20; // Saturday and Sunday -> 5 PM, Mon-Fri -> 8 PM
     };
 
+
     const endtime = getEndTime(new Date(selectedDate));
     const timeSlotsAM = [];
     const timeSlotsPM = [];
@@ -125,10 +126,10 @@ const AvailableTimeSlots = ({
                                     label = 'Reserved';
                                     buttonClass = 'bg-yellow-300 text-gray-800';
                                 } else if (isOverlapping) {
-                                    label = 'Overlap';
+                                    label = 'Not Fit';
                                     buttonClass = 'bg-red-200 text-gray-500';
                                 } else if (isExceedingAMLimit) {
-                                    label = 'Exceeds AM';
+                                    label = 'Not Fit';
                                     buttonClass = 'bg-red-200 text-gray-500';
                                 } else if (isDisabled) {
                                     label = 'Not Available';
@@ -168,11 +169,15 @@ const AvailableTimeSlots = ({
                                     const appointmentEnd = new Date(appointment.end);
                                     return slot >= appointmentStart && slot < appointmentEnd;
                                 });
+                                const day = new Date(selectedDate).getDay();
+                                const isWeekend = day === 0 || day === 6;
 
                                 const isSlotInThePast = slot < now && !isBooked && !isUnavailable;
                                 const isOverlapping = isOverlappingWithAppointments(slot);
                                 const slotEndTime = new Date(slot.getTime() + SelectedProcedureDuration * 60000);
                                 const isExceedingRemainingTime = slotEndTime > endOfDay;
+                                const is8PMOrBeyond = slot.getHours() === 20 && !isWeekend;
+                                const isClosedWeekendSlot = isWeekend && slot.getHours() >= 17;
 
                                 const isDisabled =
                                     allButtonsDisabled ||
@@ -180,18 +185,23 @@ const AvailableTimeSlots = ({
                                     isBooked ||
                                     isSlotInThePast ||
                                     isOverlapping ||
-                                    isExceedingRemainingTime;
+                                    isExceedingRemainingTime ||
+                                    is8PMOrBeyond ||
+                                    isClosedWeekendSlot;
 
                                 let label;
                                 let buttonClass;
-                                if (isSlotInThePast) {
+                                if (is8PMOrBeyond || isClosedWeekendSlot) {
+                                    label = 'Closed';
+                                    buttonClass = 'bg-red-500 text-white';
+                                } else if (isSlotInThePast) {
                                     label = 'Past';
                                     buttonClass = 'bg-red-200 text-gray-500';
                                 } else if (isBooked) {
                                     label = 'Reserved';
                                     buttonClass = 'bg-yellow-300 text-gray-800';
                                 } else if (isOverlapping) {
-                                    label = 'Overlap';
+                                    label = 'Not Fit';
                                     buttonClass = 'bg-red-200 text-gray-500';
                                 } else if (isDisabled) {
                                     label = 'Not Available';

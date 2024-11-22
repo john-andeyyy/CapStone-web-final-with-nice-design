@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { showToast } from '../../AdminDashBoard/Components/ToastNotification';
 
-const UpdateTipModal = ({ tip, onClose, onUpdate }) => {
+const UpdateTipModal = ({ tip, onClose, onUpdate, setupdate }) => {
     const [title, setTitle] = useState(tip.Title);
     const [description, setDescription] = useState(tip.Description);
     const [image, setImage] = useState(null);
@@ -25,7 +25,7 @@ const UpdateTipModal = ({ tip, onClose, onUpdate }) => {
                     image: response.data.updatedTip.image ? response.data.updatedTip.image.toString('base64') : null
                 });
 
-
+                setupdate(true)
 
                 showToast('success', 'Tip Updated successful!');
 
@@ -58,7 +58,7 @@ const UpdateTipModal = ({ tip, onClose, onUpdate }) => {
                     placeholder="Description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="bg-gray-100 border p-2 w-full mb-4 rounded-md shadow-md"
+                    className="bg-gray-100 border p-2 w-full mb-4 min-h-32 max-h-80 rounded-md shadow-md"
                 />
                 <div className='mb-2'>
                     <span className=''>Upload Picture</span>

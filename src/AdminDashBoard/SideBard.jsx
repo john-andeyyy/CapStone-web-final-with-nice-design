@@ -164,7 +164,7 @@ export default function Sidebar() {
                             {RoleType == 'dentist' && (
 
                                 <div>
-                                    <li className={`flex items-center p-2 rounded cursor-pointer mt-10 ${activeItem === 'DentistAppointment' ? 'bg-[#0071b1] text-gray-800' : 'hover:bg-[#0071b1]'}`} onClick={() => handleNavigate('/DentistSchedule', 'DentistSchedule')}>
+                                    <li className={`flex items-center p-2 rounded cursor-pointer mt-10 ${activeItem === 'DentistSchedule' ? 'bg-[#0071b1]  text-white ' : 'hover:bg-[#0071b1]'}`} onClick={() => handleNavigate('/DentistSchedule', 'DentistSchedule')}>
                                         <FaHome className="mr-3" />
                                         <span>My Appointments</span>
                                     </li>

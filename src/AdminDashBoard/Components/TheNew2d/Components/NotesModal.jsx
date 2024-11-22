@@ -211,7 +211,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     {successMessage && <div className="text-green-500 mb-2">{successMessage}</div>}
                 </div>
                 <div className="mb-2 ">
-                    <h2 className="text-2xl font-bold text-center uppercase text-[#266D53]">{teethname} Notes</h2>
+                    <h2 className="text-2xl font-bold text-center uppercase text-[#0082d5]">{teethname} <span className='text-black'>Notes</span></h2>
                 </div>
 
                 {/* Tooth Details Section */}
@@ -237,18 +237,19 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                         className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                                         required
                                     >
-                                        <option value="Healthy">Healthy</option>
-                                        <option value="Gingivitis">Gingivitis</option>
-                                        <option value="Periodontitis (mild)">Periodontitis (mild)</option>
-                                        <option value="Periodontitis (moderate)">Periodontitis (moderate)</option>
-                                        <option value="Periodontitis (severe)">Periodontitis (severe)</option>
-                                        <option value="Extracted">Extracted</option>
-                                        <option value="Implant">Implant</option>
-                                        <option value="Decay">Decay</option>
-                                        <option value="Restored">Restored</option>
                                         <option value="Abscess">Abscess</option>
                                         <option value="Bleeding on Probing">Bleeding on Probing</option>
                                         <option value="Calculus Present">Calculus Present</option>
+                                        <option value="Decay">Decay</option>
+                                        <option value="Extracted">Extracted</option>
+                                        <option value="Gingivitis">Gingivitis</option>
+                                        <option value="Healthy">Healthy</option>
+                                        <option value="Implant">Implant</option>
+                                        <option value="Periodontitis (mild)">Periodontitis (mild)</option>
+                                        <option value="Periodontitis (moderate)">Periodontitis (moderate)</option>
+                                        <option value="Periodontitis (severe)">Periodontitis (severe)</option>
+                                        <option value="Restored">Restored</option>
+
                                     </select>
                                 </div>
                                 <div className="flex flex-col w-1/2">
@@ -289,7 +290,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     {/* Toggle button for adding a new note */}
                     <button
                         onClick={() => setIsAddingNote(!isAddingNote)}
-                        className={`px-4 py-2 rounded text-white transition ${isAddingNote ? 'bg-[#D9D9D9] hover:bg-[#ADAAAA]' : 'bg-[#3EB489] hover:bg-[#62A78E]'}`}
+                        className={`px-4 py-2 rounded text-white transition ${isAddingNote ? 'bg-[#D9D9D9] hover:bg-[#ADAAAA]' : 'bg-[#00a4f8] hover:bg-[#2bbcff]'}`}
                     >
                         {isAddingNote ? 'Cancel' : 'Add New Note'}
                     </button>
@@ -366,7 +367,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
 
 
 
-                <div className={`px-5 overflow-y-auto max-h-96 min-h-20 mb-4 bg-green-100 border border-green-200 rounded-md shadow-sm ${notelist.length <= 3 ? '' : 'flex flex-col-reverse'}`}>
+                <div className={`px-5 overflow-y-auto max-h-96 min-h-20 mb-4 bg-[#b5e5ff] border border-green-200 rounded-md shadow-sm ${notelist.length <= 3 ? '' : 'flex flex-col-reverse'}`}>
                     <ul className="list-disc mb-4 pt-5">
                         {Array.isArray(notelist.note) && notelist.note.length > 0 ? (
                             notelist.note.slice().reverse().map((note, index) => (

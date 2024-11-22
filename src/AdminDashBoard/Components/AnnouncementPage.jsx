@@ -196,12 +196,16 @@ export default function AnnouncementPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
                 {/* <h2 className="text-3xl font-bold">Announcements</h2> */}
                 <div className="">
-                    <button
+                    
+                    {localStorage.getItem('Role') !== 'dentist' && (  
+                        <button
                         className="btn text-white px-2 py-1 rounded bg-[#025373] hover:bg-[#03738C]"
                         onClick={() => setShowModal(true)}
-                    >
+                        >
                         Send New Announcement
                     </button>
+                    )}
+
                 </div>
             </div>
 

@@ -79,17 +79,17 @@ export default function AdminLogin({ login }) {
                     no-repeat
                 `
                 });
-            } else if (event.ctrlKey && event.key === ".") {
+            } else if (event.ctrlKey && event.key === "/") {
+                setUsername('dentist')
+                setPassword('dentist')
+            } else if (event.ctrlKey && event.key === ",") {
                 setUsername('admin')
                 setPassword('admin')
 
-            } else if (event.ctrlKey && event.key === ",") {
-                setUsername('dentist')
-                setPassword('123')
+            } else if (event.ctrlKey && event.key === ".") {
 
-            } else if (event.ctrlKey && event.key === "/") {
                 setUsername('Staff')
-                setPassword('staff')
+                setPassword('Staff')
             }
         };
 

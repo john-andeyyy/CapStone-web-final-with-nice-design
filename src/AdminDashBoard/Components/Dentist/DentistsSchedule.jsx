@@ -19,7 +19,7 @@ const DentistSchedule = () => {
     const [filteredAppointments, setFilteredAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [filter, setFilter] = useState('');
+    const [filter, setFilter] = useState('thisDay');
     const [customDateRange, setCustomDateRange] = useState({ start: null, end: null });
     const [showCustomDatePicker, setShowCustomDatePicker] = useState(false);
     const [selectedYear, setSelectedYear] = useState('');
