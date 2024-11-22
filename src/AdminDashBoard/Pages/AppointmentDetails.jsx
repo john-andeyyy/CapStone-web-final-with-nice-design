@@ -229,7 +229,8 @@ export default function AppointmentDetails() {
             );
 
             if (response.status === 200) {
-                showToast('success', `Appointment: ${newStatus} `);
+                showToast('success', `Appointment was Cancelled `);
+                getdata();
 
                 RequestToCancel(false)
             }
