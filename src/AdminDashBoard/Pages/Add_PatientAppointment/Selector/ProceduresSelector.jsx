@@ -109,9 +109,9 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited, mis
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-65 flex justify-center items-center z-50">
-                    <div className="bg-[#C6E4DA] rounded-lg shadow-lg p-6 w-[64rem]">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-[64rem]">
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-lg font-medium text-[#266D53]">Select Procedures</h2>
+                            <h2 className="text-lg font-medium text-black">Select Procedures</h2>
                             <button
                                 className="text-gray-600 hover:text-gray-800 text-3xl"
                                 onClick={() => setIsModalOpen(false)}
@@ -152,7 +152,7 @@ export default function ProceduresSelector({ onselectprocedures, isSubmited, mis
                                             {filteredProcedures.map((procedure, index) => (
                                                 <div
                                                     key={procedure._id}
-                                                    className={`flex items-center space-x-2 p-3 ${index % 2 === 0 ? 'bg-[#3EB489]' : 'bg-[#66deb2]'}`}
+                                                    className={`flex items-center space-x-2 p-3 ${index % 2 === 0 ? 'bg-[#3fa8bf]' : 'bg-[#96d2d9]'}`}
                                                     onClick={() => handleCheckboxChange(procedure)}
                                                 >
                                                     <input
