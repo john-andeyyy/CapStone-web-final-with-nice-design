@@ -5,7 +5,7 @@ import { showToast } from '../Components/ToastNotification';
 export default function NotificationPage() {
     const [notifications, setNotifications] = useState([]);
     const [selectedPatients, setSelectedPatients] = useState([]);
-    const [newNotification, setNewNotification] = useState({ Title: '', Message: '', sendTo: 'sendToOne', isSendEmail: false });
+    const [newNotification, setNewNotification] = useState({ Title: 'Notification', Message: '', sendTo: 'sendToOne', isSendEmail: false });
     const [editedNotification, setEditedNotification] = useState({ id: null, Title: '', Message: '' });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -330,14 +330,14 @@ export default function NotificationPage() {
                                 placeholder="Title"
                                 value={newNotification.Title}
                                 onChange={handleNewNotificationChange}
-                                className="block mb-2 p-2 border rounded w-full"
+                                className="block capitalize mb-2 p-2 border rounded w-full"
                             />
                             <textarea
                                 name="Message"
                                 placeholder="Message"
                                 value={newNotification.Message}
                                 onChange={handleNewNotificationChange}
-                                className="block mb-2 p-2 border rounded w-full"
+                                className="block capitalize mb-2 p-2 border rounded w-full"
                                 rows="4"
                             />
 
@@ -347,7 +347,7 @@ export default function NotificationPage() {
                                     name="sendTo"
                                     value={newNotification.sendTo}
                                     onChange={handleNewNotificationChange}
-                                    className="block w-full mb-2 p-2 border rounded"
+                                    className="block capitalize w-full mb-2 p-2 border rounded"
                                 >
                                     <option value="sendToOne">Send to One Patient</option>
                                     <option value="sendToCustom">Send to Custom Patients</option>
@@ -363,7 +363,7 @@ export default function NotificationPage() {
                                                 // Set the Title to the selected patient's name
 
                                             }}
-                                            className="block w-full mb-2 p-2 border rounded"
+                                            className="block capitalize w-full mb-2 p-2 border rounded"
                                         >
                                             <option value="">Select Patient</option>
                                             {patients.map(patient => (
@@ -452,14 +452,14 @@ export default function NotificationPage() {
                                 placeholder="Title"
                                 value={editedNotification.Title}
                                 onChange={(e) => setEditedNotification({ ...editedNotification, Title: e.target.value })}
-                                className="block mb-2 p-2 border rounded w-full"
+                                className="block capitalize mb-2 p-2 border rounded w-full"
                             />
                             <textarea
                                 name="Message"
                                 placeholder="Message"
                                 value={editedNotification.Message}
                                 onChange={(e) => setEditedNotification({ ...editedNotification, Message: e.target.value })}
-                                className="block mb-2 p-2 border rounded w-full"
+                                className="block capitalize mb-2 p-2 border rounded w-full"
                                 rows="4"
                             />
                             <div className="flex justify-end space-x-4">

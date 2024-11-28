@@ -119,7 +119,7 @@ export default function Sidebar() {
         });
     };
     return (
-        <div className='text-white z-40'>
+        <div className='text-white z-10'>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="lg:hidden fixed top-4 left-4 text-primary"

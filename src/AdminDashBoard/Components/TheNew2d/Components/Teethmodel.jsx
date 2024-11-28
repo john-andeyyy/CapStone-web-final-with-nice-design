@@ -85,7 +85,7 @@ const Teethmodel = ({ status, id, name, onClick, notes }) => {
             <div className='text-sm text-center w-20 h-w-20'>
                 {name}
                 <br />
-                {status}
+                {/* {status} */}
             </div>
         </div>
     );

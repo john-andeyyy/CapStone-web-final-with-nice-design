@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Legend = () => (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="p-6 pt-0 bg-white rounded-lg shadow-md">
         {/* <h3 className="text-xl font-semibold mb-6 text-gray-800">Markings (Filter)</h3> */}
         <h3 className="text-xl font-semibold mb-6 text-gray-800">Appointment Status</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -179,7 +179,7 @@ export default function Hero_Crud() {
                       name="Title"
                       value={formData.Title}
                       onChange={handleChange}
-                      className="bg-gray-100 border p-2 rounded-lg mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                      className=" border p-2 rounded-lg mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                       placeholder="Title"
                       required
                     />

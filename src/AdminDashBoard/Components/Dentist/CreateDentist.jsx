@@ -249,13 +249,13 @@ const CreateDentist = ({ showAddModal, handleCreateDentist, handleCloseAddModal,
                     )}
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button onClick={()=>{close()}} className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white py-2 rounded">Close</button>
                         <button
                             type="submit"
                             className="bg-[#025373] hover:bg-[#03738C] text-white py-2 rounded"
                         >
                             Add
                         </button>
-                        <button onClick={()=>{close()}} className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white py-2 rounded">Close</button>
                     </div>
                 </form>
             </div>

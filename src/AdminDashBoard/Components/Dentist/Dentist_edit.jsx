@@ -249,8 +249,8 @@ console.log(response.data)
                         </div>
                     </div>
                     <div className="flex justify-center gap-4">
-                        <button type="submit" className="bg-[#025373] hover:bg-[#03738C] text-white rounded-md px-4 py-2">Update</button>
                         <button type="button" onClick={onClose} className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white rounded-md px-4 py-2">Cancel</button>
+                        <button type="submit" className="bg-[#025373] hover:bg-[#03738C] text-white rounded-md px-4 py-2">Update</button>
                     </div>
                 </form>
             </div>

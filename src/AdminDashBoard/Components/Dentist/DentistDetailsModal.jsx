@@ -35,6 +35,13 @@ const DentistDetailsModal = ({ showModal, selectedDentist, setisEditmodal, setSh
                     )}
 
                     <div className="grid grid-cols-2 gap-4">
+
+                        <button
+                            onClick={handleCloseModal}
+                            className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white py-2 px-4 rounded"
+                        >
+                            Close
+                        </button>
                         <button
                             className="bg-[#025373] hover:bg-[#03738C] text-white py-2 px-4 rounded"
                             onClick={() => {
@@ -43,13 +50,6 @@ const DentistDetailsModal = ({ showModal, selectedDentist, setisEditmodal, setSh
                             }}
                         >
                             Edit
-                        </button>
-
-                        <button
-                            onClick={handleCloseModal}
-                            className="bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white py-2 px-4 rounded"
-                        >
-                            Close
                         </button>
                     </div>
                 </div>

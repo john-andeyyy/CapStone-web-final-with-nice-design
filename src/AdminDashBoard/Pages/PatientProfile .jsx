@@ -13,12 +13,13 @@ const PatientProfile = () => {
         FirstName: "",
         LastName: "",
         MiddleName: "",
+
     });
     const [dentalHistory, setDentalHistory] = useState([]);
     const [showButton, setShowButton] = useState(false);
     const [loading, setloading] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false); 
-    const [fullPatient, setFullPatient] = useState(null); 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [fullPatient, setFullPatient] = useState(null);
     const Baseurl = import.meta.env.VITE_BASEURL
     const requiredFields = [
         'First Name',
@@ -29,10 +30,29 @@ const PatientProfile = () => {
         'Address',
         'PhoneNumber',
         'Zipcode',
+        "Birthday",
         'age',
-        'Civil Status',
-        'Gender'
+        // 'Civil Status',
+        'Gender',
     ];
+    function computeAge(dob) {
+        const birthDate = new Date(dob);
+        const today = new Date();
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+
+        // Adjust if the birthday has not occurred this year yet
+        if (
+            monthDifference < 0 ||
+            (monthDifference === 0 && today.getDate() < birthDate.getDate())
+        ) {
+            age--;
+        }
+
+        return age;
+    }
+ 
 
     const get_patient = async () => {
         try {
@@ -49,7 +69,9 @@ const PatientProfile = () => {
                 FirstName: response.data.FirstName || "...",
                 LastName: response.data.LastName || "...",
                 MiddleName: response.data.MiddleName || "...",
-                ProfilePicture: response.data.ProfilePicture 
+                ProfilePicture: response.data.ProfilePicture,
+                age: computeAge(response.data.age) 
+
             });
 
             const history = await axios.get(
@@ -268,8 +290,21 @@ const PatientProfile = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {fullPatient &&
                                 requiredFields.map((field) => {
-                                    // Normalize the field to match object keys (remove spaces)
                                     const normalizedField = field.replace(/\s+/g, ""); // Removes spaces
+
+                                    // Handle age and birthday fields separately
+                                    const isAgeField = field.toLowerCase() === "age";
+                                    const isBirthdayField = field.toLowerCase() === "birthday";
+
+                                    const fieldValue = isAgeField
+                                        ? computeAge(fullPatient["age"]) || "N/A" // Compute age dynamically
+                                        : isBirthdayField
+                                            ? new Date(fullPatient["age"]).toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            }) || "N/A" // Format birthday
+                                            : fullPatient[normalizedField] || "..."; // Default logic for other fields
 
                                     return (
                                         <div key={field} className="field">
@@ -278,15 +313,15 @@ const PatientProfile = () => {
                                             </label>
                                             <input
                                                 type="text"
-                                                value={fullPatient[normalizedField] || "..."}
+                                                value={fieldValue}
                                                 readOnly
                                                 className="bg-gray-100 p-2 mt-1 block w-full rounded-md border-gray-300 shadow-md"
                                             />
                                         </div>
                                     );
                                 })}
-
                         </div>
+
 
                     </div>
                 </div>

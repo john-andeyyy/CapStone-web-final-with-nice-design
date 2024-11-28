@@ -287,8 +287,8 @@ export default function MedicalRequests() {
     const id = request.id;
 
     Swal.fire({
-      title: "Fetching Your Certificate",
-      text: "We are retrieving your dental certificate. Please wait a moment.",
+      title: "Generating Certificate",
+      text: "Please wait a moment.",
       icon: "info",
       allowOutsideClick: false,
       didOpen: () => {
@@ -498,8 +498,13 @@ export default function MedicalRequests() {
                                 <span className="material-symbols-outlined">archive</span>
                               </button>
                             )}
-
-
+                            <button
+                              className="flex items-center justify-center w-10 bg-green-100 text-green-500 hover:text-green-600 transition rounded-lg shadow-sm"
+                              onClick={() => downloadPatientMedicalCertificate(request)}
+                              title="Download"
+                            >
+                              <span className="material-symbols-outlined">download</span>
+                            </button>
                           </div>
                         </td>
                       )}

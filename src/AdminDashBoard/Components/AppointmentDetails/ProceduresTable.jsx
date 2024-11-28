@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProceduresModal from './ProceduresModal';
 
-const ProceduresTable = ({ appointment }) => {
+const ProceduresTable = ({ appointment, appointmentStatus }) => {
     const [userProceduresList, setUserProceduresList] = useState(appointment.procedures || []);
     const [allProcedures, setAllProcedures] = useState([]);
     const [addedProcedures, setAddedProcedures] = useState([]);
@@ -35,7 +35,8 @@ const ProceduresTable = ({ appointment }) => {
     useEffect(() => {
         setUserProceduresList(appointment.procedures || []);
         setEditedAmount(appointment.Amount || 0);
-    }, [appointment]);
+        console.log('appointmentStatus', appointmentStatus)
+    }, [appointment, appointmentStatus]);
 
     const handleMarkForRemoval = (id) => {
         setMarkedForRemoval(prev => [...prev, id]);
@@ -135,16 +136,15 @@ const ProceduresTable = ({ appointment }) => {
                 <div className='flex flex-col justify-end text-right'>
                     <div>
 
-                        {localStorage.getItem('Role') !== 'dentist' && (
+                        {(appointmentStatus == 'Completed') && (localStorage.getItem('Role') !== 'dentist') && (
                             <button
                                 onClick={handleToggleEdit}
-                                className={`px-4 py-2 rounded ${isEditing ? 'bg-[#025373] hover:bg-[#03738C]' : 'bg-[#025373] hover:bg-[#03738C]'
-                                    } text-white`}
+                                className={`px-4 py-2 rounded ${isEditing ? 'bg-[#025373] hover:bg-[#03738C]' : 'bg-[#025373] hover:bg-[#03738C]'} text-white`}
                             >
                                 {isEditing ? 'Save' : 'Edit'}
                             </button>
-
                         )}
+
 
 
 

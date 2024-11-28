@@ -225,7 +225,7 @@ export default function SetAppointment({ userIds }) {
                             onClick={handleSubmit}
                             disabled={loading}
                         >
-                            {loading ? <span className="loading loading-spinner loading-sm"></span> : 'Submit'}
+                            {loading ? <span className="loading loading-spinner loading-sm"></span> : 'Save'}
                         </button>
                     </div>
                 </div>

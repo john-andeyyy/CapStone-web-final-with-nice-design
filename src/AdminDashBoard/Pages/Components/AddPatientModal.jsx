@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
     const [isAgreed, setIsAgreed] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);  
+    const [isLoading, setIsLoading] = useState(false);
     const formik = useFormik({
         initialValues: {
             LastName: '',
@@ -31,12 +31,12 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                 .matches(/^\d{11}$/, 'Phone number must be exactly 11 digits.'),
             Address: Yup.string().required('Address is required.'),
             Age: Yup.number()
-                .required('Age is required.')
-                .typeError('Age must be a number.'),
+                .required('Birthday is required.')
+                .typeError('Birthday must be a number.'),
             Zipcode: Yup.string().required('Zipcode is required.'),
-            CivilStatus: Yup.string()
-                .required('Civil status is required.')
-                .oneOf(['Single', 'Married', 'Divorced', 'Widowed'], 'Invalid Civil Status value.'),
+            // CivilStatus: Yup.string()
+            //     .required('Civil status is required.')
+            //     .oneOf(['Single', 'Married', 'Divorced', 'Widowed'], 'Invalid Civil Status value.'),
             Gender: Yup.string().required('Gender is required.'),
         }),
         onSubmit: async (values) => {
@@ -51,7 +51,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                 return;
             }
 
-            setIsLoading(true); 
+            setIsLoading(true);
 
             try {
                 const response = await axios.post(`${Baseurl}/Patient/auth/WalkingAccount`, values);
@@ -71,7 +71,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                     text: 'There was an error adding the patient. Please try again.',
                 });
             } finally {
-                setIsLoading(false); 
+                setIsLoading(false);
                 setIsAgreed(false)
                 handleCancel()
 
@@ -80,8 +80,8 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
     });
 
     const handleCancel = () => {
-        formik.resetForm(); 
-        onClose(); 
+        formik.resetForm();
+        onClose();
         setIsAgreed(false)
 
     };
@@ -123,7 +123,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                         value={formik.values[key]}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                        className={`border capitalize  ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                                         placeholder={`Enter${key.replace(/([A-Z])/g, ' $1')}`}
                                     />
                                 )}
@@ -156,14 +156,15 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="mb-2 font-medium text-gray-800">Age <span className="text-red-500">*</span></label>
+                            <label className="mb-2 font-medium text-gray-800">Birthday <span className="text-red-500">*</span></label>
                             <input
-                                type="number"
+                                type="date"
                                 name="Age"
                                 value={formik.values.Age}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                className={`border ${formik.touched.Age && formik.errors.Age ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+
+                                className={`border capitalize  ${formik.touched.Age && formik.errors.Age ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                             />
                             {formik.touched.Age && formik.errors.Age && (
                                 <span className="text-red-500 text-sm">{formik.errors.Age}</span>
@@ -178,21 +179,23 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 value={formik.values.Zipcode}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                className={`border ${formik.touched.Zipcode && formik.errors.Zipcode ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                placeholder={'Enter Zipcode'}
+
+                                className={`border capitalize  ${formik.touched.Zipcode && formik.errors.Zipcode ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                             />
                             {formik.touched.Zipcode && formik.errors.Zipcode && (
                                 <span className="text-red-500 text-sm">{formik.errors.Zipcode}</span>
                             )}
                         </div>
 
-                        <div className="flex flex-col">
+                        {/* <div className="flex flex-col">
                             <label className="mb-2 font-medium text-gray-800">Civil Status <span className="text-red-500">*</span></label>
                             <select
                                 name="CivilStatus"
                                 value={formik.values.CivilStatus}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                className={`border ${formik.touched.CivilStatus && formik.errors.CivilStatus ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md`}
+                                className={`border capitalize  ${formik.touched.CivilStatus && formik.errors.CivilStatus ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md`}
                             >
                                 <option value="" label="Select Civil Status" />
                                 <option value="Single">Single</option>
@@ -201,9 +204,9 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 <option value="Widowed">Widowed</option>
                             </select>
                             {formik.touched.CivilStatus && formik.errors.CivilStatus && (
-                                <span className="text-red-500 text-sm">{formik.errors.CivilStatus}</span>
+                                <span className=" capitalize  text-red-500 text-sm">{formik.errors.CivilStatus}</span>
                             )}
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Checkbox agreement */}
@@ -213,7 +216,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                             id="agreement"
                             checked={isAgreed}
                             onChange={(e) => setIsAgreed(e.target.checked)}
-                            className="mr-2"
+                            className=" mr-2"
                         />
                         <label htmlFor="agreement" className="text-sm text-gray-800">
                             I agree to the terms and conditions, including data privacy policies.
@@ -229,18 +232,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 The password is the Last Name in all uppercase letters.
                             </p>
                         </div>
-                        <div className="flex justify-center items-center flex-wrap">
-                            <button
-                                type="submit"
-                                className="bg-[#025373] hover:bg-[#03738C] text-white p-2 rounded-md transition duration-200 w-full md:w-auto"
-                                disabled={isLoading}  
-                            >
-                                {isLoading ? (
-                                    <span>Loading...</span>  
-                                ) : (
-                                    'Add Patient'
-                                )}
-                            </button>
+                        <div className="flex justify-center items-center flex-wrap  ">
                             <button
                                 type="button"
                                 onClick={handleCancel}
@@ -248,10 +240,22 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                             >
                                 Cancel
                             </button>
+                            <button
+                                type="submit"
+                                className="bg-[#025373] hover:bg-[#03738C] text-white p-2 rounded-md transition duration-200 w-full md:w-auto mt-2 md:mt-0 md:ml-2"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <span>Loading...</span>
+                                ) : (
+                                    'Add Patient'
+                                )}
+                            </button>
+
                         </div>
                     </div>
                 </form>
-              
+
             </div>
         </div>
     );

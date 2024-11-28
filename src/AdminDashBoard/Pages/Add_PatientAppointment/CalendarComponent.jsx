@@ -93,9 +93,6 @@ const CalendarComponent = () => {
             const filteredAppointments = selecteddentistData
                 ? allAppointments.filter(appointment => appointment.dentistid === selecteddentistData._id)
                 : allAppointments;
-
-
-
             const combinedEvents = [...filteredAppointments, ...unavailableEvents];
             setEvents(combinedEvents);
         } else {
@@ -104,8 +101,6 @@ const CalendarComponent = () => {
             setEvents(allAppointments);
         }
     };
-
-
 
     const handleSelectPatient = (selectedPatient) => {
         if (selectedPatient) {
@@ -123,7 +118,7 @@ const CalendarComponent = () => {
             const totalDuration = procedures.reduce((sum, procedure) => sum + parseInt(procedure.Duration), 0);
 
             // console.log('selectedProcedures', Procedures)
-            setSelectedProcedureDuration(totalDuration)
+            // setSelectedProcedureDuration(totalDuration)
             setProcedures(Procedures)
 
         } else {
@@ -374,7 +369,8 @@ const CalendarComponent = () => {
         localDate.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
         const totalDuration = procedures.reduce((sum, procedure) => sum + parseInt(procedure.Duration), 0);
         const endDate = new Date(localDate);
-        endDate.setMinutes(endDate.getMinutes() + totalDuration);
+        // endDate.setMinutes(endDate.getMinutes() + totalDuration);
+        endDate.setMinutes(endDate.getMinutes() + 60);
         const appointmentData = {
             notes: notes,
             procedureIds: procedures.map(p => p._id),
@@ -433,7 +429,8 @@ const CalendarComponent = () => {
                             />
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4"> {/* Set to 2 columns on large screens */}
+                    {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">  */}
+                    <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-4">
                         <div className="border border-[#012840] rounded-md flex flex-col justify-between min-h-[500px]">
                             <div>
                                 <CalendarView
@@ -449,46 +446,50 @@ const CalendarComponent = () => {
                                     selectedDate={selectedDate} // Pass selectedDate to CalendarView
 
                                 />
-                                <p className='px-5'>Please note that the appointment will automatically be moved 2 days from now at midnight.</p>
-                                <Legend />
+                                {/* <p className='px-5'>Please note that the appointment will automatically be moved 2 days from now at midnight.</p> */}
+
                             </div>
                         </div>
-                        <div className="border border-[#012840] rounded-md flex justify-center min-h-[500px] w-full">
-                            <AvailableTimeSlots
-                                selectedDate={date}
-                                unavailableDates={unavailableDates}
-                                appointments={filteredAppointments}
-                                onSelectTimeSlot={handleSelectTimeSlot}
-                                // isDisabled={availableSlotsDisabled}
-                                allButtonsDisabled={allButtonsDisabled}
-                                isPast={isPast}
-                                SelectedProcedureDuration={SelectedProcedureDuration}
-                            />
-                            {/* {selectedDentist ? (
-                                <AvailableTimeSlots
-                                    selectedDate={date}
-                                    unavailableDates={unavailableDates}
-                                    appointments={filteredAppointments}
-                                    onSelectTimeSlot={handleSelectTimeSlot}
-                                    // isDisabled={availableSlotsDisabled}
-                                    allButtonsDisabled={allButtonsDisabled}
-                                    isPast={isPast}
-                                    SelectedProcedureDuration={SelectedProcedureDuration}
-                                />
-
-                            ) : (
-                                <div className="flex items-center justify-center min-h-screen">
-                                    <div className="bg-blue-100 p-6 rounded-md shadow-lg text-center">
-                                        <p className="text-lg font-semibold text-gray-800">
-                                            Select Dentist first
-                                        </p>
+                        <div className="border border-[#012840] rounded-md flex flex-col justify-between min-h-[500px] w-full">
+                            {selectedDate !== null && procedures.length !== 0 && selectedPatient !== null && selectedDentist !== null ? (
+                                <div>
+                                    <div className="">
+                                        <AvailableTimeSlots
+                                            selectedDate={date}
+                                            unavailableDates={unavailableDates}
+                                            appointments={filteredAppointments}
+                                            onSelectTimeSlot={handleSelectTimeSlot}
+                                            // isDisabled={availableSlotsDisabled}
+                                            allButtonsDisabled={allButtonsDisabled}
+                                            isPast={isPast}
+                                            SelectedProcedureDuration={SelectedProcedureDuration}
+                                        />
                                     </div>
 
                                 </div>
+                            ) : (
+                                <div className="flex m-2 flex-col items-center justify-center p-4 bg-red-100 border border-red-500 rounded-md">
+                                    {selectedPatient === null && (
+                                        <p className="text-red-800 font-semibold mb-2">Please select a patient.</p>
+                                    )}
+                                    {selectedDentist === null && (
+                                        <p className="text-red-800 font-semibold mb-2">Please select a dentist.</p>
+                                    )}
+                                    {procedures.length === 0 && (
+                                        <p className="text-red-800 font-semibold mb-2">Please select a procedure.</p>
+                                    )}
+                                    {selectedDate === null && (
+                                        <p className="text-red-800 font-semibold mb-2">Please select a date.</p>
+                                    )}
+                                </div>
+                            )}
+                            <div>
+                                <Legend />
+                            </div>
 
-                            )} */}
 
                         </div>
+
                     </div>
                 </div>
             )}

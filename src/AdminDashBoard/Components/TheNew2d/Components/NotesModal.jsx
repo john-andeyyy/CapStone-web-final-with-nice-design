@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import SemiFullModal from '../../../../ComponentModal/MediumModal';
-import Modal90 from '../../../../ComponentModal/Modal90';
 import Swal from 'sweetalert2';
 
 const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId, toothId, jaw, onRefresh, selectedTooth }) => {
@@ -36,9 +35,8 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                 note: newNote,
             });
 
-            // Make sure to check if response contains the 'notes' array
             if (response.data && response.data.notes) {
-                setNotelist([...response.data.notes]); // Convert to an array and update notelist
+                setNotelist([...response.data.notes]);
                 console.log('response.data.notes', response.data.notes)
                 setNewNote('')
                 setIsAddingNote(false)
@@ -70,7 +68,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
 
             });
             setUpdatedNote('');
-            setNotelist({ note: response.data.note }); // Update notelist from response
+            setNotelist({ note: response.data.note });
             setNoteIndexToUpdate(null);
             await onRefresh();
         } catch (error) {
@@ -99,7 +97,6 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                 },
             });
 
-            // Ensure to update notelist with the new note array from response
             if (response.data && response.data.note) {
                 setNotelist({ note: response.data.note });
             } else {
@@ -219,7 +216,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     {isEditingTooth ? (
                         <form onSubmit={handleUpdateToothDetails} className="flex flex-col">
                             <div className="grid grid-cols-2 gap-2">
-                                <div className="mb-2">
+                                {/* <div className="mb-2">
                                     <label className="block">Tooth Name:</label>
                                     <input
                                         type="text"
@@ -228,31 +225,9 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                         className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                                         required
                                     />
-                                </div>
-                                <div className="mb-2">
-                                    <label className="block">Status:</label>
-                                    <select
-                                        value={toothDetails.status}
-                                        onChange={(e) => setToothDetails({ ...toothDetails, status: e.target.value })}
-                                        className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                        required
-                                    >
-                                        <option value="Abscess">Abscess</option>
-                                        <option value="Bleeding on Probing">Bleeding on Probing</option>
-                                        <option value="Calculus Present">Calculus Present</option>
-                                        <option value="Decay">Decay</option>
-                                        <option value="Extracted">Extracted</option>
-                                        <option value="Gingivitis">Gingivitis</option>
-                                        <option value="Healthy">Healthy</option>
-                                        <option value="Implant">Implant</option>
-                                        <option value="Periodontitis (mild)">Periodontitis (mild)</option>
-                                        <option value="Periodontitis (moderate)">Periodontitis (moderate)</option>
-                                        <option value="Periodontitis (severe)">Periodontitis (severe)</option>
-                                        <option value="Restored">Restored</option>
+                                </div> */}
 
-                                    </select>
-                                </div>
-                                <div className="flex flex-col w-1/2">
+                                {/* <div className="flex flex-col w-1/2">
                                     <div className="flex flex-col ">
                                         <label className="block text-sm mb-1">Tooth Type:</label>
                                         <select
@@ -265,7 +240,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                             <option value="Temporary">Temporary</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="flex justify-between">
                                 <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Save Changes</button>
@@ -275,17 +250,67 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     ) : (
                         <div className=" mt-10">
                             <div className='flex'>
-                                <p className="mr-4">Status: <span className='text-xl font-bold capitalize'>{toothDetails.status}</span></p>
-                                <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline">Edit</button>
+                                {/* <p className="mr-4">Status: <span className='text-xl font-bold capitalize'>{toothDetails.status}</span></p> */}
                             </div>
+                            <div className='flex justify-between'>
                                 <p className="mr-4">Tooth Type: <span className='text-xl font-bold capitalize'>{toothDetails.toothType}</span></p>
+                                <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline bg-[#B5E5FF] p-5 py-2 rou">Edit</button>
+
+                            </div>
                         </div>
                     )}
+                    <div className="mb-2">
+                        <label className="block">Status:</label>
+                        <div className="grid grid-cols-4 gap-4">
+                            {[
+                                "Abscess",
+                                "Bleeding on Probing",
+                                "Calculus Present",
+                                "Decay",
+                                "Extracted",
+                                "Gingivitis",
+                                "Healthy",
+                                "Implant",
+                                "Periodontitis (mild)",
+                                "Periodontitis (moderate)",
+                                "Periodontitis (severe)",
+                                "Restored"
+                            ].map((status) => (
+                                <div key={status} className="flex items-center">
+                                    <label className="inline-flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            value={status}
+                                            checked={toothDetails.status.includes(status)}
+                                            onChange={(e) => {
+                                                const newStatus = e.target.checked
+                                                    ? [...toothDetails.status, status]
+                                                    : toothDetails.status.filter((s) => s !== status);
+                                                setToothDetails({ ...toothDetails, status: newStatus });
+                                            }}
+                                            className={`form-checkbox ${isEditingTooth ? 'checkbox checkbox-error' : 'hidden'} disabled:bg-green-200 disabled:border-gray-400 disabled:text-gray-500`}
+                                            disabled={!isEditingTooth}
+                                        />
+                                        {!isEditingTooth && (
+
+                                            <span className="material-symbols-outlined text-green-500 ml-2">
+                                                {toothDetails.status.includes(status) ? 'radio_button_checked' : 'radio_button_unchecked'}
+                                            </span>
+                                        )}
+
+                                        <span className="ml-2">{status}</span>
+
+                                    </label>
+                                </div>
+
+
+                            ))}
+                        </div>
+                    </div>
+
+
                 </div>
-
-
                 <div className='grid grid-cols-2 mt-5'>
-
                     <h2 className="text-xl font-bold">Notes:</h2>
                     {/* Toggle button for adding a new note */}
                     <button
@@ -328,13 +353,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     >
                         {isAddingNote ? 'Cancel' : 'Add New Note'}
                     </button> */}
-
-
-
-
                 </div>
-
-
                 {/* Update Existing Note Section */}
                 {noteIndexToUpdate !== null && (
                     <div className='flex w-full items-center mb-4'>
@@ -364,9 +383,6 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                         </button>
                     </div>
                 )}
-
-
-
                 <div className={`px-5 overflow-y-auto max-h-96 min-h-20 mb-4 bg-[#b5e5ff] border border-green-200 rounded-md shadow-sm ${notelist.length <= 3 ? '' : 'flex flex-col-reverse'}`}>
                     <ul className="list-disc mb-4 pt-5">
                         {Array.isArray(notelist.note) && notelist.note.length > 0 ? (
@@ -402,10 +418,8 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                             <li className="text-gray-500 text-center">No notes available.</li>
                         )}
                     </ul>
-
                 </div>
-
-                {localStorage.getItem('Role') !== 'dentist' && (
+                {/* {localStorage.getItem('Role') !== 'dentist' && (
                     <div className="absolute bottom-4 right-4 flex flex-col items-end">
                         <button
                             onClick={confirmDeleteTooth}
@@ -416,13 +430,8 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                             <p className="text-sm font-semibold text-white">Admin only</p>
                         </button>
                     </div>
-                )}
-
+                )} */}
             </div>
-
-
-
-
             {/* Delete Note Confirmation Prompt */}
             {showDeleteNoteConfirmation.show && (
                 <div className="text-center mb-4">

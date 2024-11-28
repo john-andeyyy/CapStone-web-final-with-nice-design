@@ -141,7 +141,7 @@ export default function AnnouncementPage() {
                                     value={formData.Title}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                                        className="capitalize w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                                     placeholder="Enter announcement title"
                                 />
                             </div>
@@ -153,7 +153,7 @@ export default function AnnouncementPage() {
                                     value={formData.Message}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                                        className=" capitalize w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                                     placeholder="Enter announcement message"
                                 ></textarea>
                             </div>

@@ -66,6 +66,9 @@ export default function AppointmentDetails() {
         } catch (error) {
             console.error('Error fetching appointment details:', error);
             setLoading(false);
+        }finally{
+            setIsEditing(false)
+            setshowimage(false)
         }
     };
 
@@ -398,7 +401,10 @@ export default function AppointmentDetails() {
 
 
                 </div>
-                <ProceduresTable appointment={appointment} />
+                <ProceduresTable
+                    appointment={appointment}
+                    appointmentStatus={appointment.Status}
+                />
 
                 {appointment.Status === 'Completed' && (
                     <div className="flex justify-center">

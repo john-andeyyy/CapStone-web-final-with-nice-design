@@ -135,6 +135,13 @@ export default function ManagePatient() {
                                         >
                                             <span className="material-symbols-outlined">edit</span>
                                         </button>
+                                        <button
+                                            className="flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-full shadow-sm"
+                                            onClick={() => { navigate(`/PatientProfile/${patient.id}`)}}
+                                            title="View"
+                                        >
+                                            <span className="material-symbols-outlined">description</span>
+                                        </button>
                                     </td>
                                 </tr>
                             ))

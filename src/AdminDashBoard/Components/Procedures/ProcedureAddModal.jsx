@@ -46,7 +46,7 @@ const ProcedureAddModal = ({
                                         : hours * 60 + (newProcedure.Duration % 60);
                                     setNewProcedure({ ...newProcedure, Duration: totalMinutes });
                                 }}
-                                className="border p-2 w-20  p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500"
+                                className="border p-2 w-20   bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500"
                                 min="0"
                                 required
                             />
@@ -64,7 +64,7 @@ const ProcedureAddModal = ({
                                         (minutes === '' ? 0 : minutes);
                                     setNewProcedure({ ...newProcedure, Duration: totalMinutes });
                                 }}
-                                className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 p-2 w-20"
+                                className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 w-20"
                                 min="0"
                                 max="59"
                                 required
@@ -85,7 +85,7 @@ const ProcedureAddModal = ({
                                 placeholder="Price"
                                 value={newProcedure.Price}
                                 onChange={(e) => setNewProcedure({ ...newProcedure, Price: e.target.value })}
-                                className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 p-2  pl-8 " // Add padding left to avoid overlap with the peso sign
+                                className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500  pl-8 " // Add padding left to avoid overlap with the peso sign
                                 required
                             />
                         </div>
@@ -102,7 +102,7 @@ const ProcedureAddModal = ({
                     placeholder="Description"
                     value={newProcedure.Description}
                     onChange={(e) => setNewProcedure({ ...newProcedure, Description: e.target.value })}
-                    className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 p-2 mb-2 "
+                    className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500mb-2 "
                     required
                 />
 
@@ -113,7 +113,7 @@ const ProcedureAddModal = ({
                     </label>
                     <input
                         type="file"
-                        accept="image/*" 
+                        accept="image/*"
                         onChange={(e) => {
                             const file = e.target.files[0];
                             setNewProcedure({ ...newProcedure, Image: file });
@@ -124,10 +124,10 @@ const ProcedureAddModal = ({
                                 };
                                 reader.readAsDataURL(file);
                             } else {
-                                setImagePreview(null); 
+                                setImagePreview(null);
                             }
                         }}
-                        className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 p-2 mb-2 "
+                        className="border p-2 bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500 mb-2 "
                     />
                 </div>
 
@@ -143,9 +143,7 @@ const ProcedureAddModal = ({
 
                 {/* Modal Actions */}
                 <div className="modal-action">
-                    <button type="submit" className="btn bg-[#025373] hover:bg-[#03738C] text-white">
-                        Add Procedure
-                    </button>
+                    
                     <button
                         type="button"
                         className="btn bg-[#ADAAAA] hover:bg-[#D9D9D9] text-white"
@@ -155,6 +153,9 @@ const ProcedureAddModal = ({
                         }}
                     >
                         Cancel
+                    </button>
+                    <button type="submit" className="btn bg-[#025373] hover:bg-[#03738C] text-white">
+                        Add Procedure
                     </button>
                 </div>
             </form>
