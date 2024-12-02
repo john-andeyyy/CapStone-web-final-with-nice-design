@@ -119,7 +119,9 @@ export default function AdminLogin({ login }) {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                                 disabled={loading}
-                                className="bg-gray-100 text-gray-900 border border-gray-300 rounded-md p-2 mt-1 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                style={{ textTransform: "none" }}
+
+                                className=" bg-gray-100 text-gray-900 border border-gray-300 rounded-md p-2 mt-1 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
                             />
                         </label>
                         <label className="form-control w-full mb-1">
@@ -131,6 +133,7 @@ export default function AdminLogin({ login }) {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 disabled={loading}
+                                style={{ textTransform: "none" }}
                                 className="bg-gray-100 text-gray-900 border border-gray-300 rounded-md p-2 mt-1 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
                             />
                         </label>

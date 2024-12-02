@@ -42,7 +42,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                 className="bg-gray-100 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-
+{/* 
                         <div className="flex flex-col">
                             <label className="text-sm font-medium mb-2">Tooth Type</label>
                             <select
@@ -54,7 +54,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                                 <option value="Permanent">Permanent</option>
                                 <option value="Temporary">Temporary</option>
                             </select>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -86,7 +86,22 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                         <div className="flex flex-col">
                             <label className="text-sm font-medium mb-2">Status</label>
                             <div className="grid grid-cols-3 gap-4">
-                                {['Healthy', 'Gingivitis', 'Periodontitis (mild)', 'Periodontitis (moderate)', 'Periodontitis (severe)', 'Extracted', 'Implant', 'Decay', 'Restored', 'Abscess', 'Bleeding on Probing', 'Calculus Present'].map((statusOption) => (
+                                {[
+                                    "Healthy",
+                                    "Caries (Decayed)",
+                                    "Restored",
+                                    "Missing",
+                                    "Extracted",
+                                    "Impacted",
+                                    "Fractured",
+                                    "Erupted",
+                                    "Partially Erupted",
+                                    "Endodontically Treated",
+                                    "Abscessed",
+                                    "Periodontally Compromised",
+                                    "Fluorosis-Affected",
+                                    "Transposed"
+                                ].map((statusOption) => (
                                     <div key={statusOption} className="flex items-center">
                                         <input
                                             type="checkbox"
@@ -103,7 +118,7 @@ const AddToothModal = ({ isOpen, onClose, onAdd, patientId }) => {
                     </div>
 
 
-                    <div className="flex justify-center mt-8">
+                    <div className="flex justify-end mt-8">
                         <button
                             type="submit"
                             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"

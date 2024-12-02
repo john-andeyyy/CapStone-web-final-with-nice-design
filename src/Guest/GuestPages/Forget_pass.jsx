@@ -24,8 +24,8 @@ export default function Forget_pass() {
             setMessage(response.data.message || 'Password reset link sent to your email!');
             setStep(2);
         } catch (error) {
-            setMessage('Error sending reset link. Please try again.');
-            console.error(error);
+            setMessage(error.response.data);
+            // console.error(error);
         } finally {
             setLoading(false);
         }
@@ -72,85 +72,86 @@ export default function Forget_pass() {
 
     return (
         <div className="relative min-h-screen">
-              {/* <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div> */}
-              <div className="flex-1 rounded-md"
-                        style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="bg-[#96D2D9] rounded-lg shadow-lg p-8 w-96">
-                <h2 className="text-2xl font-bold text-[#025373] text-center mb-4">Reset Password</h2>
-                {message && <p className="text-center text-blue-500 mb-4">{message}</p>}
+            {/* <div className="absolute inset-0 bg-[url('/sana.png')] bg-cover bg-center opacity-50 -z-10"></div> */}
+            <div className="flex-1 rounded-md"
+                style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
+                <div className="flex items-center justify-center min-h-screen">
+                    <div className="bg-[#96D2D9] rounded-lg shadow-lg p-8 w-96">
+                        <h2 className="text-2xl font-bold text-[#025373] text-center mb-4">Reset Password</h2>
+                        {message && <p className="text-center text-red-500 mb-4">{message}</p>}
 
-                {step === 1 && (
-                    <form onSubmit={handleRequestPasswordReset}>
-                        <label className="block text-[#012840] mb-2">Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter your email"
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
-                            disabled={loading}
-                        >
-                            {loading ? 'Sending...' : 'Request Password Reset'}
-                        </button>
-                    </form>
-                )}
+                        {step === 1 && (
+                            <form onSubmit={handleRequestPasswordReset}>
+                                <label className="block text-[#012840] mb-2">Email</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    style={{ textTransform: "none" }}
+                                    className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Enter your email"
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Sending...' : 'Request Password Reset'}
+                                </button>
+                            </form>
+                        )}
 
-                {step === 2 && (
-                    <form onSubmit={handleVerifyOtp}>
-                        <label className="block text-[#025373] mb-2">Enter OTP</label>
-                        <input
-                            type="number"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter OTP sent to your email"
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
-                            disabled={loading}
-                        >
-                            {loading ? 'Verifying...' : 'Verify OTP'}
-                        </button>
-                    </form>
-                )}
+                        {step === 2 && (
+                            <form onSubmit={handleVerifyOtp}>
+                                <label className="block text-[#025373] mb-2">Enter OTP</label>
+                                <input
+                                    type="number"
+                                    value={otp}
+                                    onChange={(e) => setOtp(e.target.value)}
+                                    className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Enter OTP sent to your email"
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Verifying...' : 'Verify OTP'}
+                                </button>
+                            </form>
+                        )}
 
-                {step === 3 && (
-                    <form onSubmit={handleResetPassword}>
-                        <label className="block text-[#025373] mb-2">New Password</label>
-                        <input
-                            type="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter your new password"
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
-                            disabled={loading}
-                        >
-                            {loading ? 'Resetting...' : 'Reset Password'}
-                        </button>
-                    </form>
-                )}
+                        {step === 3 && (
+                            <form onSubmit={handleResetPassword}>
+                                <label className="block text-[#025373] mb-2">New Password</label>
+                                <input
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Enter your new password"
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Resetting...' : 'Reset Password'}
+                                </button>
+                            </form>
+                        )}
 
-                <div className="mt-4 text-center">
-                    <Link to={`/AdminLogin`} className="text-[#025373] hover:text-[#03738C] transition duration-150">
-                        Back to Login
-                    </Link>
+                        <div className="mt-4 text-center">
+                            <Link to={`/AdminLogin`} className="text-[#025373] hover:text-[#03738C] transition duration-150">
+                                Back to Login
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
         </div>
     );
 }

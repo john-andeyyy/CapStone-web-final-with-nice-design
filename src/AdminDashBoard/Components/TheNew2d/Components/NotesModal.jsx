@@ -8,7 +8,6 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
     const [newNote, setNewNote] = useState('');
     const [noteIndexToUpdate, setNoteIndexToUpdate] = useState(null);
     const [updatedNote, setUpdatedNote] = useState('');
-    const [toothDetails, setToothDetails] = useState({ name: toothName, status: toothStatus, toothType: selectedTooth.toothType });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -18,6 +17,8 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
     const [showDeleteToothConfirmation, setShowDeleteToothConfirmation] = useState(false);
     const [showDeleteNoteConfirmation, setShowDeleteNoteConfirmation] = useState({ show: false, index: null });
     const [toothType, setToothType] = useState(selectedTooth.toothType);
+    const [toothDetails, setToothDetails] = useState({ name: toothName, status: toothStatus, toothType: selectedTooth.toothType });
+    const [backupToothDetails, setBackupToothDetails] = useState({ name: toothName, status: toothStatus, toothType: selectedTooth.toothType });
 
     const Baseurl = import.meta.env.VITE_BASEURL;
 
@@ -185,6 +186,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
             });
 
             setIsEditingTooth(false);
+
             await onRefresh();
         } catch (error) {
             console.error('Error updating tooth details:', error);
@@ -192,6 +194,18 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleEditClick = () => {
+        setBackupToothDetails({ ...toothDetails }); // Store the original state before editing
+        setIsEditingTooth(true);
+    };
+
+    const handleCancelClick = () => {
+        // alert(';')
+
+        setToothDetails({ ...backupToothDetails });
+        setIsEditingTooth(false);
     };
 
     return (
@@ -216,46 +230,23 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                     {isEditingTooth ? (
                         <form onSubmit={handleUpdateToothDetails} className="flex flex-col">
                             <div className="grid grid-cols-2 gap-2">
-                                {/* <div className="mb-2">
-                                    <label className="block">Tooth Name:</label>
-                                    <input
-                                        type="text"
-                                        value={toothDetails.name}
-                                        onChange={(e) => setToothDetails({ ...toothDetails, name: e.target.value })}
-                                        className="border border-gray-300 p-2 w-full text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                        required
-                                    />
-                                </div> */}
-
-                                {/* <div className="flex flex-col w-1/2">
-                                    <div className="flex flex-col ">
-                                        <label className="block text-sm mb-1">Tooth Type:</label>
-                                        <select
-                                            value={toothType}
-                                            onChange={(e) => setToothType(e.target.value)}
-                                            className="bg-gray-100 shadow-md border rounded w-full py-2 px-3"
-                                            required
-                                        >
-                                            <option value="Permanent">Permanent</option>
-                                            <option value="Temporary">Temporary</option>
-                                        </select>
-                                    </div>
-                                </div> */}
                             </div>
                             <div className="flex justify-between">
                                 <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Save Changes</button>
-                                <button type="button" onClick={() => setIsEditingTooth(false)} className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Cancel</button>
+                                <button
+                                    type="button"
+                                    onClick={handleCancelClick} // Reset state and exit edit mode
+                                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                                >
+                                    Cancel
+                                </button>
                             </div>
                         </form>
                     ) : (
-                        <div className=" mt-10">
-                            <div className='flex'>
-                                {/* <p className="mr-4">Status: <span className='text-xl font-bold capitalize'>{toothDetails.status}</span></p> */}
-                            </div>
-                            <div className='flex justify-between'>
-                                <p className="mr-4">Tooth Type: <span className='text-xl font-bold capitalize'>{toothDetails.toothType}</span></p>
-                                <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline bg-[#B5E5FF] p-5 py-2 rou">Edit</button>
+                        <div className=" mt-">
 
+                            <div className='flex justify-end'>
+                                <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline bg-[#B5E5FF] p-5 py-2 rou">Edit</button>
                             </div>
                         </div>
                     )}
@@ -263,18 +254,20 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                         <label className="block">Status:</label>
                         <div className="grid grid-cols-4 gap-4">
                             {[
-                                "Abscess",
-                                "Bleeding on Probing",
-                                "Calculus Present",
-                                "Decay",
-                                "Extracted",
-                                "Gingivitis",
                                 "Healthy",
-                                "Implant",
-                                "Periodontitis (mild)",
-                                "Periodontitis (moderate)",
-                                "Periodontitis (severe)",
-                                "Restored"
+                                "Caries (Decayed)",
+                                "Restored",
+                                "Missing",
+                                "Extracted",
+                                "Impacted",
+                                "Fractured",
+                                "Erupted",
+                                "Partially Erupted",
+                                "Endodontically Treated",
+                                "Abscessed",
+                                "Periodontally Compromised",
+                                "Fluorosis-Affected",
+                                "Transposed"
                             ].map((status) => (
                                 <div key={status} className="flex items-center">
                                     <label className="inline-flex items-center">
@@ -292,29 +285,25 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                                             disabled={!isEditingTooth}
                                         />
                                         {!isEditingTooth && (
-
                                             <span className="material-symbols-outlined text-green-500 ml-2">
                                                 {toothDetails.status.includes(status) ? 'radio_button_checked' : 'radio_button_unchecked'}
                                             </span>
                                         )}
-
                                         <span className="ml-2">{status}</span>
-
                                     </label>
                                 </div>
-
-
                             ))}
                         </div>
                     </div>
-
-
                 </div>
                 <div className='grid grid-cols-2 mt-5'>
                     <h2 className="text-xl font-bold">Notes:</h2>
                     {/* Toggle button for adding a new note */}
                     <button
-                        onClick={() => setIsAddingNote(!isAddingNote)}
+                        onClick={() => {
+                            setIsAddingNote(!isAddingNote)
+                            setNewNote('')
+                        }}
                         className={`px-4 py-2 rounded text-white transition ${isAddingNote ? 'bg-[#D9D9D9] hover:bg-[#ADAAAA]' : 'bg-[#00a4f8] hover:bg-[#2bbcff]'}`}
                     >
                         {isAddingNote ? 'Cancel' : 'Add New Note'}
