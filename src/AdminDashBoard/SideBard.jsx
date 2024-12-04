@@ -88,11 +88,12 @@ export default function Sidebar() {
     const handleLogout = () => {
         Swal.fire({
             title: 'Log Out Confirmation',
-            text: "Are you sure you want to log out? This will end your current session.",
+            text: "Are you sure you want to log out? ",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#025373',
             cancelButtonColor: '#ADAAAA',
+            reverseButtons: true,
             confirmButtonText: 'Yes, log out!'
         }).then((result) => {
             if (result.isConfirmed) {

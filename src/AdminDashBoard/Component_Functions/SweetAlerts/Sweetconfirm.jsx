@@ -7,9 +7,9 @@ export default function Sweetconfirm({
     confirmButtonText = "Yes, confirm it!", // Default confirm button text
     cancelButtonText = "Cancel", // Default cancel button text
     confirmButtonColor = "#025373", // Default confirm button color
-    cancelButtonColor = "#ADAAAA", // Default cancel button color
-    icon = "warning", // Default icon type
-    onConfirm, // Function to call on confirmation
+    cancelButtonColor = "#ADAAAA",
+    icon = "warning",
+    onConfirm, 
 }) {
     const handleConfirm = () => {
         Swal.fire({

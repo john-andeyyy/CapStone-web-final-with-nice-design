@@ -149,6 +149,7 @@ export default function MedicalRequests() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
+      reverseButtons: true,
       confirmButtonText: "Yes, Reject it!"
     }).then((result) => {
       if (result.isConfirmed && result.value) {
@@ -207,6 +208,7 @@ export default function MedicalRequests() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
+      reverseButtons: true,
       confirmButtonText: "Yes, archive it!"
     }).then((result) => {
       if (result.isConfirmed) {
@@ -226,6 +228,7 @@ export default function MedicalRequests() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
+      reverseButtons: true,
       confirmButtonText: "Yes, Approved it!"
     }).then((result) => {
       if (result.isConfirmed) {

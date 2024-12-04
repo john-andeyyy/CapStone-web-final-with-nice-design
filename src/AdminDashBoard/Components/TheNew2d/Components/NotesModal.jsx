@@ -124,6 +124,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
+            reverseButtons: true,
             confirmButtonText: 'Yes, delete it!',
             cancelButtonText: 'Cancel'
         }).then((result) => {

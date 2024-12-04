@@ -126,6 +126,7 @@ export default function Add_Procedure() {
         showCancelButton: true,
         confirmButtonColor: status ? "#025373" : "#03738C",
         cancelButtonColor: "#ADAAAA",
+        reverseButtons: true,
         confirmButtonText: `Yes, mark as ${statusText}`
       });
 

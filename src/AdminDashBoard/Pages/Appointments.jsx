@@ -246,6 +246,7 @@ export default function Appointments() {
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
+                reverseButtons: true,
                 confirmButtonText: newStatus.toLowerCase() === "approved" ? "Approve" : "Reject"
             }).then((result) => {
                 if (result.isConfirmed) {
