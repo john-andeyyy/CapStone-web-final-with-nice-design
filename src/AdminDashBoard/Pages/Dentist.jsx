@@ -272,9 +272,17 @@ export default function Dentist() {
                                 type="text"
                                 placeholder="Search Dentist"
                                 value={filterText}
-                                onChange={(e) => setFilterText(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    const capitalizedValue = value.length > 0
+                                        ? value.charAt(0).toUpperCase() + value.slice(1)
+                                        : value;
+
+                                    setFilterText(capitalizedValue);
+                                }}
                                 className="block w-full bg-gray-100 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                             />
+
                             <div className='absolute left-3 top-3 h-4 w-4 text-gray-500'>
                                 <span className="material-symbols-outlined">search</span>
                             </div>

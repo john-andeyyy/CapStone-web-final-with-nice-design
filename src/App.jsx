@@ -1,4 +1,5 @@
 import '../custom.css';
+import './Utils/Firstlettercapital'
 import Socket from './Utils/Socket';
 import { showToast } from './AdminDashBoard/Components/ToastNotification';
 

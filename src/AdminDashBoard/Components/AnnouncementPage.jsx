@@ -37,11 +37,17 @@ export default function AnnouncementPage() {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
+
+        const capitalizedValue = type !== 'checkbox' && value.length > 0
+            ? value.charAt(0).toUpperCase() + value.slice(1)
+            : value;
+
         setFormData(prevState => ({
             ...prevState,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? checked : capitalizedValue
         }));
     };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -141,7 +147,7 @@ export default function AnnouncementPage() {
                                     value={formData.Title}
                                     onChange={handleChange}
                                     required
-                                        className="capitalize w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                                        className=" w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                                     placeholder="Enter announcement title"
                                 />
                             </div>
@@ -153,7 +159,7 @@ export default function AnnouncementPage() {
                                     value={formData.Message}
                                     onChange={handleChange}
                                     required
-                                        className=" capitalize w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                                        className="  w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                                     placeholder="Enter announcement message"
                                 ></textarea>
                             </div>
@@ -172,19 +178,19 @@ export default function AnnouncementPage() {
 
                             <div className="flex justify-end space-x-3">
                                 <button
-                                    type="submit"
-                                    className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
-                                >
-                                    Send Announcement
-                                </button>
-
-                                <button
                                     type="button"
                                     onClick={closeAnnouncementModal}
                                     className="text-white px-4 py-2 rounded bg-[#ADAAAA] hover:bg-[#D9D9D9]"
                                 >
                                     Close
                                 </button>
+                                <button
+                                    type="submit"
+                                    className="bg-[#025373] hover:bg-[#03738C] text-white px-4 py-2 rounded"
+                                >
+                                    Send Announcement
+                                </button>
+
 
 
                             </div>

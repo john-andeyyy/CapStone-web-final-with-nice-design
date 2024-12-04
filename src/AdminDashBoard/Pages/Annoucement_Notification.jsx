@@ -19,16 +19,12 @@ function Announcement_Notification() {
                 <div className="mb-4">
                     <button
                         onClick={handleToggle}
-                        // className={`px-4 py-2 mx-2 text-white rounded ${showAnnouncement ? 'bg-blue-500' : 'bg-green-500'
                         className={`px-4 py-2 mx-2 text-white rounded ${showAnnouncement ? 'bg-[#3FA8BF] hover:bg-[#96D2D9]' : 'bg-[#3FA8BF] hover:bg-[#96D2D9]'
                             } hover:opacity-80 transition`}
                     >
                         {showAnnouncement ? 'Send Notifications' : 'Send Announcements'}
                     </button>
                 </div>
-
-                {/* Conditional rendering based on the state */}
-
             </div>
             {showAnnouncement ? <AnnouncementPage /> : <NotificationPage />}
         </div>

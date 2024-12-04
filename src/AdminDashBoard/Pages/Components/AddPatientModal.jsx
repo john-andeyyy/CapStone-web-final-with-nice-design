@@ -30,9 +30,6 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                 .required('Phone number is required.')
                 .matches(/^\d{11}$/, 'Phone number must be exactly 11 digits.'),
             Address: Yup.string().required('Address is required.'),
-            Age: Yup.number()
-                .required('Birthday is required.')
-                .typeError('Birthday must be a number.'),
             Zipcode: Yup.string().required('Zipcode is required.'),
             // CivilStatus: Yup.string()
             //     .required('Civil status is required.')
@@ -123,7 +120,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                         value={formik.values[key]}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        className={`border capitalize  ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                        className={`border   ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                                         placeholder={`Enter${key.replace(/([A-Z])/g, ' $1')}`}
                                     />
                                 )}
@@ -174,7 +171,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                         <div className="flex flex-col">
                             <label className="mb-2 font-medium text-gray-800">Zipcode <span className="text-red-500">*</span></label>
                             <input
-                                type="text"
+                                type="number"
                                 name="Zipcode"
                                 value={formik.values.Zipcode}
                                 onChange={formik.handleChange}

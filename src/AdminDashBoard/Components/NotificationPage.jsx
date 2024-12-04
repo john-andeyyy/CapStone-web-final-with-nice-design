@@ -22,22 +22,6 @@ export default function NotificationPage() {
         fetchPatients();
     }, []);
 
-    // const fetchNotifications = async () => {
-    //     setLoading(true);
-    //     try {
-    //         const response = await axios.get(`${Baseurl}/Notification/admin/getAllNotif`, { withCredentials: true });
-    //         const adminNotifications = response.data
-    //             .filter(notification => notification.adminOnly === true);
-
-    //         setNotifications(adminNotifications.reverse());
-    //     } catch (error) {
-    //         setError('Error fetching notifications');
-    //         console.error('Error fetching notifications:', error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
     const localrole = localStorage.getItem('Role')
     const Rolenotif = localrole === 'admin' || localrole === 'staff' ? 'AdminNotif' : 'DentistNotif'
 
@@ -84,8 +68,14 @@ export default function NotificationPage() {
 
     const handleNewNotificationChange = (e) => {
         const { name, value } = e.target;
-        setNewNotification(prevState => ({ ...prevState, [name]: value }));
+        
+        const capitalizedValue = value.length > 0
+            ? value.charAt(0).toUpperCase() + value.slice(1)
+            : value;
+
+        setNewNotification(prevState => ({ ...prevState, [name]: capitalizedValue }));
     };
+
 
     const sendNotification = async () => {
         if (!isConfirmed) {
@@ -330,14 +320,14 @@ export default function NotificationPage() {
                                 placeholder="Title"
                                 value={newNotification.Title}
                                 onChange={handleNewNotificationChange}
-                                className="block capitalize mb-2 p-2 border rounded w-full"
+                                className="block  mb-2 p-2 border rounded w-full"
                             />
                             <textarea
                                 name="Message"
                                 placeholder="Message"
                                 value={newNotification.Message}
                                 onChange={handleNewNotificationChange}
-                                className="block capitalize mb-2 p-2 border rounded w-full"
+                                className="block  mb-2 p-2 border rounded w-full"
                                 rows="4"
                             />
 

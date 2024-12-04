@@ -68,7 +68,14 @@ export default function ManagePatient() {
     };
 
     const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
+        let value = e.target.value;
+
+        // Capitalize only the first letter and keep the rest unchanged
+        const capitalizedValue = value.length > 0
+            ? value.charAt(0).toUpperCase() + value.slice(1)
+            : value;
+
+        setSearchQuery(capitalizedValue);
     };
 
     if (loading) {

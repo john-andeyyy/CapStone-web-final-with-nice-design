@@ -84,11 +84,10 @@ export default function MedicalRequests() {
     };
 
     return (
-      request.patient &&
-      request.patient.FirstName &&
-      request.patient.FirstName.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      request.patient?.FirstName?.toLowerCase().includes(searchQuery.toLowerCase()) &&
       showBasedOnStatus(statusFilter)
     );
+
   });
   const handleDeleteRequest = async (Rejectmsg, request) => {
 

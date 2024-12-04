@@ -18,8 +18,14 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 input {
-    text-transform: capitalize;
+    text-transform: none; /* Prevents capitalization for all */
 }
+
+input::placeholder {
+    text-transform: none;
+}
+
+
 .no-capitalization {
-  text-transform: none; /* Override capitalization */
+    text-transform: none; 
 }
