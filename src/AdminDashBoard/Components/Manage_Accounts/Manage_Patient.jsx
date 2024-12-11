@@ -20,10 +20,10 @@ export default function ManagePatient() {
     const fetch_patient = async () => {
         axios.get(`${BASEURL}/Patient/auth/getAllPatients`, { withCredentials: true })
             .then((response) => {
-                
+
                 setPatients(response.data);
                 setFilteredPatients(response.data);
-                console.log('response.data', response.data)  
+                console.log('response.data', response.data)
                 setLoading(false);
             })
             .catch((error) => {
@@ -39,7 +39,7 @@ export default function ManagePatient() {
 
     useEffect(() => {
         if (searchQuery === '') {
-            setFilteredPatients(patients); 
+            setFilteredPatients(patients);
         } else {
             const lowercasedQuery = searchQuery.toLowerCase();
             setFilteredPatients(
@@ -91,6 +91,7 @@ export default function ManagePatient() {
             <div className='flex justify-between pb-10'>
                 <h1 className="text-2xl font-semibold text-gray-800 mb-4">Manage Patients</h1>
                 <button
+                    id='create_patient'
                     onClick={() => setIsModalOpenADD_PATIENT(true)}
                     className="p-2 text-white bg-[#025373] hover:bg-[#03738C] rounded w-full sm:w-auto"
                 >
@@ -105,7 +106,7 @@ export default function ManagePatient() {
                     value={searchQuery}
                     onChange={handleSearchChange}
                     placeholder="Search by First, Last, or Middle Name"
-                    className="block pl-10 pr-4 py-3 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-96"  
+                    className="block pl-10 pr-4 py-3 border border-gray-300 bg-gray-100 rounded-md focus:outline-none focus:border-blue-500 w-full sm:w-96"
                 />
                 <div className="absolute left-3 top-3 h-4 w-4 text-gray-500">
                     <span className="material-symbols-outlined">search</span>
@@ -144,7 +145,7 @@ export default function ManagePatient() {
                                         </button>
                                         <button
                                             className="flex items-center justify-center w-12 h-12 bg-blue-100 text-blue-500 hover:text-blue-600 transition rounded-full shadow-sm"
-                                            onClick={() => { navigate(`/PatientProfile/${patient.id}`)}}
+                                            onClick={() => { navigate(`/PatientProfile/${patient.id}`) }}
                                             title="View"
                                         >
                                             <span className="material-symbols-outlined">description</span>

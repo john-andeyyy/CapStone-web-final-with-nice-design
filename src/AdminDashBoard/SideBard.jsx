@@ -14,7 +14,8 @@ import Swal from 'sweetalert2';
 export default function Sidebar() {
     const localrole = localStorage.getItem('Role')
     const [RoleType, setRoletype] = useState(localrole.toLocaleLowerCase())
-    const BASEURL = import.meta.env.VITE_BASEURL;
+    const BASEURL = import.meta.env.VITE_BASEURL || 'http://localhost:3000';
+    
     const [isOpen, setIsOpen] = useState(false);
     const [activeItem, setActiveItem] = useState('general');
     const [profilePic, setProfilePic] = useState('../../public/default-avatar.jpg');
@@ -26,8 +27,6 @@ export default function Sidebar() {
     const navigate = useNavigate();
 
     const fetchProfile = async () => {
-
-
         try {
             const temp_response = await axios.get(`${BASEURL}/Admin/auth/Admin`,
                 {

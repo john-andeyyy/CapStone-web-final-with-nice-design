@@ -36,11 +36,11 @@ export default function AdminLogin({ login }) {
 
 
                 // showToast('success', `Welcome ${response.data.Role}`);
-                Swal.fire({
-                    title: `Welcome back!`,
-                    text: "Glad to have you here again.",
-                    icon: "success"
-                });
+                // Swal.fire({
+                //     title: `Welcome back!`,
+                //     text: "Glad to have you here again.",
+                //     icon: "success"
+                // });
 
                 if (Role === 'admin') {
                     navigate('/dashboard');
@@ -114,13 +114,14 @@ export default function AdminLogin({ login }) {
                             <span className="label-text text-[#025373]">Username/Email:</span>
                             <input
                                 type="text"
+                                id='username'
                                 placeholder="Enter your username or email"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                                 disabled={loading}
                                 style={{ textTransform: "none" }}
-
+                                name="username"
                                 className=" bg-gray-100 text-gray-900 border border-gray-300 rounded-md p-2 mt-1 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
                             />
                         </label>
@@ -128,12 +129,14 @@ export default function AdminLogin({ login }) {
                             <span className="label-text text-[#025373]">Password:</span>
                             <input
                                 type="password"
+                                id='password'
                                 placeholder="Enter your password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 disabled={loading}
                                 style={{ textTransform: "none" }}
+                                name="password"
                                 className="bg-gray-100 text-gray-900 border border-gray-300 rounded-md p-2 mt-1 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
                             />
                         </label>
@@ -144,6 +147,7 @@ export default function AdminLogin({ login }) {
                         </div>
                         <button
                             type="submit"
+                            id='loginButton'
                             disabled={loading}
                             className={`text-white font-bold py-2 rounded-md mt-4 bg-[#025373] hover:bg-[#03738C] transition duration-150 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >

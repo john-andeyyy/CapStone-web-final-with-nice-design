@@ -5,6 +5,7 @@ import OurService from '../GuestComponents/OurService';
 import { useNavigate } from 'react-router-dom';
 import Tips from '../../AdminDashBoard/Components/Dashboard components/Tips';
 
+// const BASEURL = import.meta.env.VITE_BASEURL;
 const BASEURL = import.meta.env.VITE_BASEURL;
 const localApiUrl = `${BASEURL}/Landingpage/landing-pages`;
 const proceduresApiUrl = `${BASEURL}/Procedure/showwithimage`;

@@ -228,74 +228,109 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
 
                 {/* Tooth Details Section */}
                 <div className="mb-4">
-                    {isEditingTooth ? (
-                        <form onSubmit={handleUpdateToothDetails} className="flex flex-col">
-                            <div className="grid grid-cols-2 gap-2">
-                            </div>
-                            <div className="flex justify-between">
-                                <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Save Changes</button>
-                                <button
-                                    type="button"
-                                    onClick={handleCancelClick} // Reset state and exit edit mode
-                                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    ) : (
-                        <div className=" mt-">
-
-                            <div className='flex justify-end'>
-                                <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline bg-[#B5E5FF] p-5 py-2 rou">Edit</button>
-                            </div>
-                        </div>
-                    )}
-                    <div className="mb-2">
-                        <label className="block">Status:</label>
-                        <div className="grid grid-cols-4 gap-4">
-                            {[
-                                "Healthy",
-                                "Caries (Decayed)",
-                                "Restored",
-                                "Missing",
-                                "Extracted",
-                                "Impacted",
-                                "Fractured",
-                                "Erupted",
-                                "Partially Erupted",
-                                "Endodontically Treated",
-                                "Abscessed",
-                                "Periodontally Compromised",
-                                "Fluorosis-Affected",
-                                "Transposed"
-                            ].map((status) => (
-                                <div key={status} className="flex items-center">
-                                    <label className="inline-flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            value={status}
-                                            checked={toothDetails.status.includes(status)}
-                                            onChange={(e) => {
-                                                const newStatus = e.target.checked
-                                                    ? [...toothDetails.status, status]
-                                                    : toothDetails.status.filter((s) => s !== status);
-                                                setToothDetails({ ...toothDetails, status: newStatus });
-                                            }}
-                                            className={`form-checkbox ${isEditingTooth ? 'checkbox checkbox-error' : 'hidden'} disabled:bg-green-200 disabled:border-gray-400 disabled:text-gray-500`}
-                                            disabled={!isEditingTooth}
-                                        />
-                                        {!isEditingTooth && (
-                                            <span className="material-symbols-outlined text-green-500 ml-2">
-                                                {toothDetails.status.includes(status) ? 'radio_button_checked' : 'radio_button_unchecked'}
-                                            </span>
-                                        )}
-                                        <span className="ml-2">{status}</span>
-                                    </label>
+                    <div className='pb-5'>
+                        {isEditingTooth ? (
+                            <form onSubmit={handleUpdateToothDetails} className="flex flex-col">
+                                <div className="flex space-x-3 justify-end ">
+                                    <button
+                                        type="button"
+                                        onClick={handleCancelClick}
+                                        className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Save Changes</button>
                                 </div>
-                            ))}
-                        </div>
+                            </form>
+                        ) : (
+                            <div className=" mt-">
+
+                                <div className='flex justify-end'>
+                                    <button onClick={() => setIsEditingTooth(true)} className="text-blue-500 hover:underline bg-[#B5E5FF] p-5 py-2 rou">Edit</button>
+                                </div>
+                            </div>
+                        )}
                     </div>
+
+
+                    <div>
+                        {toothDetails.status.includes("Healthy") ? (
+                            <div>
+                                <label className="inline-flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        value="Healthy"
+                                        checked={true}
+                                        onChange={(e) => {
+                                            const newStatus = e.target.checked
+                                                ? [...toothDetails.status]
+                                                : toothDetails.status.filter((s) => s !== "Healthy");
+                                            setToothDetails({ ...toothDetails, status: newStatus });
+                                        }}
+                                        className={`form-checkbox ${isEditingTooth ? 'checkbox checkbox-error' : 'hidden'} disabled:bg-green-200 disabled:border-gray-400 disabled:text-gray-500`}
+                                        disabled={!isEditingTooth}
+                                    />
+                                    {!isEditingTooth && (
+                                        <span className="material-symbols-outlined text-green-500 ml-2">
+                                            radio_button_checked
+                                        </span>
+                                    )}
+                                    <span className="ml-2">Healthy</span>
+                                </label>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-4 gap-4">
+                                {[
+                                    "Healthy",
+                                    "Caries (Decayed)",
+                                    "Restored",
+                                    "Missing",
+                                    "Extracted",
+                                    "Impacted",
+                                    "Fractured",
+                                    "Erupted",
+                                    "Partially Erupted",
+                                    "Endodontically Treated",
+                                    "Abscessed",
+                                    "Periodontally Compromised",
+                                    "Fluorosis-Affected",
+                                    "Transposed"
+                                ].map((status) => (
+                                    <div key={status} className="flex items-center">
+                                        <label className="inline-flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                value={status}
+                                                checked={toothDetails.status.includes(status)}
+                                                onChange={(e) => {
+                                                    const isChecked = e.target.checked;
+                                                    const newStatus =
+                                                        status === "Healthy" && isChecked
+                                                            ? ["Healthy"]
+                                                            : isChecked
+                                                                ? [...toothDetails.status.filter((s) => s !== "Healthy"), status]
+                                                                : toothDetails.status.filter((s) => s !== status);
+                                                    setToothDetails({ ...toothDetails, status: newStatus });
+                                                }}
+                                                className={`form-checkbox ${isEditingTooth ? 'checkbox checkbox-error' : 'hidden'} disabled:bg-green-200 disabled:border-gray-400 disabled:text-gray-500`}
+                                                disabled={!isEditingTooth}
+                                            />
+                                            {!isEditingTooth && (
+                                                <span className="material-symbols-outlined text-green-500 ml-2">
+                                                    {toothDetails.status.includes(status) ? 'radio_button_checked' : 'radio_button_unchecked'}
+                                                </span>
+                                            )}
+                                            <span className="ml-2">{status}</span>
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+
+
+
                 </div>
                 <div className='grid grid-cols-2 mt-5'>
                     <h2 className="text-xl font-bold">Notes:</h2>
@@ -315,7 +350,6 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                 {/* Add New Note Section */}
                 <div className="flex items-center mb-4 w-full mt-5">
                     {isAddingNote && <h1 className="text-xl font-bold mr-4">Create:</h1>}
-                    {/* Form for adding a new note */}
                     {isAddingNote && (
                         <form onSubmit={handleAddNote} className="flex flex-grow mr-4">
                             <input
@@ -335,16 +369,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                             </button>
                         </form>
                     )}
-
-                    {/* Toggle button for adding a new note
-                    <button
-                        onClick={() => setIsAddingNote(!isAddingNote)}
-                        className={`px-4 py-2 rounded text-white transition ${isAddingNote ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}`}
-                    >
-                        {isAddingNote ? 'Cancel' : 'Add New Note'}
-                    </button> */}
                 </div>
-                {/* Update Existing Note Section */}
                 {noteIndexToUpdate !== null && (
                     <div className='flex w-full items-center mb-4'>
                         Edit
@@ -373,6 +398,7 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                         </button>
                     </div>
                 )}
+
                 <div className={`px-5 overflow-y-auto max-h-96 min-h-20 mb-4 bg-[#b5e5ff] border border-green-200 rounded-md shadow-sm ${notelist.length <= 3 ? '' : 'flex flex-col-reverse'}`}>
                     <ul className="list-disc mb-4 pt-5">
                         {Array.isArray(notelist.note) && notelist.note.length > 0 ? (
@@ -409,18 +435,6 @@ const NotesModal = ({ isOpen, onClose, toothName, toothStatus, notes, patientId,
                         )}
                     </ul>
                 </div>
-                {/* {localStorage.getItem('Role') !== 'dentist' && (
-                    <div className="absolute bottom-4 right-4 flex flex-col items-end">
-                        <button
-                            onClick={confirmDeleteTooth}
-                            className={`px-4 py-2 rounded transition ${localStorage.getItem('Role') === 'admin' ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-gray-400 text-gray-200 cursor-not-allowed'}`}
-                            disabled={localStorage.getItem('Role') !== 'admin'}
-                        >
-                            Delete Tooth
-                            <p className="text-sm font-semibold text-white">Admin only</p>
-                        </button>
-                    </div>
-                )} */}
             </div>
             {/* Delete Note Confirmation Prompt */}
             {showDeleteNoteConfirmation.show && (

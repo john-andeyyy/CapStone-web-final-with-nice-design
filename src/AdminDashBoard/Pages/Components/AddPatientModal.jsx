@@ -94,12 +94,13 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                     <div className="grid grid-cols-3 gap-4 lg:col-span-4">
                         {['LastName', 'FirstName', 'MiddleName', 'Email', 'PhoneNumber', 'Address'].map((key) => (
                             <div key={key} className="flex flex-col">
-                                <label className="mb-2 font-medium text-gray-800">
+                                <label htmlFor={key} className="mb-2 font-medium text-gray-800">
                                     {key.replace(/([A-Z])/g, ' $1')}
                                     {key !== 'MiddleName' && <span className="text-red-500"> *</span>}
                                 </label>
                                 {key === 'PhoneNumber' ? (
                                     <input
+                                        id={key}
                                         type="text"
                                         name={key}
                                         value={formik.values[key]}
@@ -111,17 +112,18 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                         }}
                                         onBlur={formik.handleBlur}
                                         className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
-                                        placeholder={`Enter${key.replace(/([A-Z])/g, ' $1')}`}
+                                        placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1')}`}
                                     />
                                 ) : (
                                     <input
+                                        id={key}
                                         type={key === 'Email' ? 'email' : key === 'Age' ? 'number' : 'text'}
                                         name={key}
                                         value={formik.values[key]}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        className={`border   ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
-                                        placeholder={`Enter${key.replace(/([A-Z])/g, ' $1')}`}
+                                        className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                        placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1')}`}
                                     />
                                 )}
                                 {formik.touched[key] && formik.errors[key] && (
@@ -134,8 +136,9 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                     {/* Separate grid for Gender, Age, Zipcode, and CivilStatus (4-column layout) */}
                     <div className="lg:col-span-4 grid grid-cols-4 gap-4">
                         <div className="flex flex-col">
-                            <label className="mb-2 font-medium text-gray-800">Gender <span className="text-red-500">*</span></label>
+                            <label htmlFor="Gender" className="mb-2 font-medium text-gray-800">Gender <span className="text-red-500">*</span></label>
                             <select
+                                id="Gender"
                                 name="Gender"
                                 value={formik.values.Gender}
                                 onChange={formik.handleChange}
@@ -143,7 +146,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 className={`border ${formik.touched.Gender && formik.errors.Gender ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md`}
                             >
                                 <option value="" label="Select gender" />
-                                <option value="Male">Male</option>
+                                <option value="Male" id='male'>Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Prefer not to say">Prefer not to say</option>
                             </select>
@@ -153,15 +156,15 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="mb-2 font-medium text-gray-800">Birthday <span className="text-red-500">*</span></label>
+                            <label htmlFor="Age" className="mb-2 font-medium text-gray-800">Birthday <span className="text-red-500">*</span></label>
                             <input
+                                id="Age"
                                 type="date"
                                 name="Age"
                                 value={formik.values.Age}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-
-                                className={`border capitalize  ${formik.touched.Age && formik.errors.Age ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                className={`border ${formik.touched.Age && formik.errors.Age ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                             />
                             {formik.touched.Age && formik.errors.Age && (
                                 <span className="text-red-500 text-sm">{formik.errors.Age}</span>
@@ -169,58 +172,38 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="mb-2 font-medium text-gray-800">Zipcode <span className="text-red-500">*</span></label>
+                            <label htmlFor="Zipcode" className="mb-2 font-medium text-gray-800">Zipcode <span className="text-red-500">*</span></label>
                             <input
+                                id="Zipcode"
                                 type="number"
                                 name="Zipcode"
                                 value={formik.values.Zipcode}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                placeholder={'Enter Zipcode'}
-
-                                className={`border capitalize  ${formik.touched.Zipcode && formik.errors.Zipcode ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                placeholder="Enter Zipcode"
+                                className={`border ${formik.touched.Zipcode && formik.errors.Zipcode ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                             />
                             {formik.touched.Zipcode && formik.errors.Zipcode && (
                                 <span className="text-red-500 text-sm">{formik.errors.Zipcode}</span>
                             )}
                         </div>
-
-                        {/* <div className="flex flex-col">
-                            <label className="mb-2 font-medium text-gray-800">Civil Status <span className="text-red-500">*</span></label>
-                            <select
-                                name="CivilStatus"
-                                value={formik.values.CivilStatus}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                className={`border capitalize  ${formik.touched.CivilStatus && formik.errors.CivilStatus ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md`}
-                            >
-                                <option value="" label="Select Civil Status" />
-                                <option value="Single">Single</option>
-                                <option value="Married">Married</option>
-                                <option value="Divorced">Divorced</option>
-                                <option value="Widowed">Widowed</option>
-                            </select>
-                            {formik.touched.CivilStatus && formik.errors.CivilStatus && (
-                                <span className=" capitalize  text-red-500 text-sm">{formik.errors.CivilStatus}</span>
-                            )}
-                        </div> */}
                     </div>
 
                     {/* Checkbox agreement */}
                     <div className="flex items-center lg:col-span-4">
                         <input
-                            type="checkbox"
                             id="agreement"
+                            type="checkbox"
                             checked={isAgreed}
                             onChange={(e) => setIsAgreed(e.target.checked)}
-                            className=" mr-2"
+                            className="mr-2"
                         />
                         <label htmlFor="agreement" className="text-sm text-gray-800">
                             I agree to the terms and conditions, including data privacy policies.
                         </label>
                     </div>
 
-                    <div className="flex flex-col  md:col-span-2 lg:col-span-4">
+                    <div className="flex flex-col md:col-span-2 lg:col-span-4">
                         <div className="text-sm text-gray-600 mb-4">
                             <p className="italic">
                                 Note: The username is the First Name of the user in all uppercase letters.
@@ -229,7 +212,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                 The password is the Last Name in all uppercase letters.
                             </p>
                         </div>
-                        <div className="flex justify-center items-center flex-wrap  ">
+                        <div className="flex justify-center items-center flex-wrap">
                             <button
                                 type="button"
                                 onClick={handleCancel}
@@ -248,14 +231,13 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                     'Add Patient'
                                 )}
                             </button>
-
                         </div>
                     </div>
                 </form>
-
             </div>
         </div>
     );
+
 };
 
 export default AddPatientModal;

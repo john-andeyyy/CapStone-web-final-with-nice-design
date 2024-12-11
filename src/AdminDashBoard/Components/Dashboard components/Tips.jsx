@@ -52,8 +52,6 @@ export default function DashboardTips() {
     }
 
     return (
-        // <div className=" flex-1 rounded-md ml-10 mr-10"
-        // style={{ boxShadow: '0 4px 8px rgba(0,0,0, 0.5)' }}>
         <div className="bg-gray-200 rounded-md p-5">
             <h2 className="text-5xl font-bold  text-[#012840] ">
                 Tips from Alejandria's Dental Clinic
@@ -79,6 +77,6 @@ export default function DashboardTips() {
                 ))}
             </div>
         </div>
-        // </div>
+
     );
 }

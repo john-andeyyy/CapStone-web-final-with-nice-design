@@ -85,6 +85,7 @@ export default function Forget_pass() {
                                 <label className="block text-[#012840] mb-2">Email</label>
                                 <input
                                     type="email"
+                                    id='emailinput'
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     style={{ textTransform: "none" }}
@@ -94,6 +95,7 @@ export default function Forget_pass() {
                                 />
                                 <button
                                     type="submit"
+                                    id='submitbtn'
                                     className={`w-full mt-4 py-2 rounded-md text-white ${loading ? 'bg-[#ADAAAA]' : 'bg-[#025373] hover:bg-[#03738C]'}`}
                                     disabled={loading}
                                 >
@@ -107,6 +109,7 @@ export default function Forget_pass() {
                                 <label className="block text-[#025373] mb-2">Enter OTP</label>
                                 <input
                                     type="number"
+                                    id='inputotp'
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value)}
                                     className="bg-gray-100 text-black w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
