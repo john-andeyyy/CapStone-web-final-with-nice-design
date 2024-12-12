@@ -93,7 +93,7 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                     {/* Fields in a 3-column layout */}
                     <div className="grid grid-cols-3 gap-4 lg:col-span-4">
                         {['LastName', 'FirstName', 'MiddleName', 'Email', 'PhoneNumber', 'Address'].map((key) => (
-                            <div key={key} className="flex flex-col">
+                            <div key={key} className="flex flex-col ">
                                 <label htmlFor={key} className="mb-2 font-medium text-gray-800">
                                     {key.replace(/([A-Z])/g, ' $1')}
                                     {key !== 'MiddleName' && <span className="text-red-500"> *</span>}
@@ -111,20 +111,22 @@ const AddPatientModal = ({ isOpen, onClose, onPatientAdded }) => {
                                             }
                                         }}
                                         onBlur={formik.handleBlur}
-                                        className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                        className={` border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
                                         placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1')}`}
                                     />
                                 ) : (
-                                    <input
-                                        id={key}
-                                        type={key === 'Email' ? 'email' : key === 'Age' ? 'number' : 'text'}
-                                        name={key}
-                                        value={formik.values[key]}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        className={`border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
-                                        placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1')}`}
-                                    />
+                                        <input
+                                            id={key}
+                                            type={key === 'Email' ? 'email' : key === 'Age' ? 'number' : 'text'}
+                                            name={key}
+                                            value={formik.values[key]}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            className={`${key === 'Email' ? '' : 'capitalize'
+                                                } border ${formik.touched[key] && formik.errors[key] ? 'border-red-500' : 'border-gray-300'} p-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4285F4] transition duration-200`}
+                                            placeholder={`Enter ${key.replace(/([A-Z])/g, ' $1')}`}
+                                        />
+
                                 )}
                                 {formik.touched[key] && formik.errors[key] && (
                                     <span className="text-red-500 text-sm">{formik.errors[key]}</span>
